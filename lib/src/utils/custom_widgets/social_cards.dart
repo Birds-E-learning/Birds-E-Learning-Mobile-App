@@ -18,7 +18,7 @@ class SocialCard extends StatelessWidget {
       onTap: onTap,
       child: Container(
         height: 60,
-        width: size.width * 0.25,
+        width: size.width * 0.27,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(4),
             border: Border.all(color: greys300)),
