@@ -1,5 +1,6 @@
 import 'dart:async';
-
+import 'package:birds_learning_network/src/features/core/walk_through/view/walk_through_one.dart';
+import 'package:birds_learning_network/src/utils/global_constants/asset_paths/image_path.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -40,7 +41,7 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     Timer(const Duration(seconds: 3), () {
       Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => const PreviewScreen()));
+          MaterialPageRoute(builder: (_) => const FirstWalkThroughPage()));
     });
   }
 
@@ -53,22 +54,11 @@ class _SplashScreenState extends State<SplashScreen> {
           horizontal: size.width * 0.25, vertical: size.height * 0.25),
       child: Center(
         child: Image.asset(
-          "assets/images/birds.png",
+          ImagePath.birds,
           width: size.width * 0.5,
           height: size.height * 0.5,
         ),
       ),
-    );
-  }
-}
-
-class PreviewScreen extends StatelessWidget {
-  const PreviewScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(),
     );
   }
 }
