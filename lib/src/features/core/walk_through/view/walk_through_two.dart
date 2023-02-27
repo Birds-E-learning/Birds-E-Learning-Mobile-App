@@ -1,4 +1,4 @@
-import 'package:birds_learning_network/src/features/core/walk_through/view/walk_text_three.dart';
+import 'package:birds_learning_network/src/features/core/walk_through/view/walk_through_three.dart';
 import 'package:birds_learning_network/src/features/core/walk_through/view/walk_through.dart';
 import 'package:birds_learning_network/src/utils/global_constants/asset_paths/image_path.dart';
 import 'package:birds_learning_network/src/utils/mixins/core_mixins/walk_through/walk_through.dart';

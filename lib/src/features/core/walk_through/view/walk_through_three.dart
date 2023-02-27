@@ -1,3 +1,4 @@
+import 'package:birds_learning_network/src/features/core/auth/view/sign_up.dart';
 import 'package:birds_learning_network/src/features/core/walk_through/view/walk_through.dart';
 import 'package:birds_learning_network/src/utils/global_constants/asset_paths/image_path.dart';
 import 'package:birds_learning_network/src/utils/mixins/core_mixins/walk_through/walk_through.dart';
@@ -11,7 +12,10 @@ class ThirdWalkThroughPage extends StatelessWidget with WalkThroughTextWidget {
       image: ImagePath.walkImage3,
       position: 2,
       child: walkText3(),
-      onPressed: () {},
+      onPressed: () {
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (_) => const SignUpScreen()));
+      },
     );
   }
 }
