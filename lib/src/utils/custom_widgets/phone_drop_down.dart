@@ -15,7 +15,7 @@ class PhoneDropDown extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        height: 60,
+        height: 50,
         padding: const EdgeInsets.only(left: 5),
         decoration: BoxDecoration(
             border: Border.all(), borderRadius: BorderRadius.circular(4)),

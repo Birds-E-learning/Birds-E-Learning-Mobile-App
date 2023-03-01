@@ -8,17 +8,35 @@ class AuthStyles {
       fontWeight: FontWeight.w600,
       color: deepGrey);
 
+  static const TextStyle signInStyle = TextStyle(
+      fontFamily: "Inter",
+      fontSize: 24,
+      fontWeight: FontWeight.w600,
+      color: deepGrey);
+
   static const TextStyle labelStyle = TextStyle(
       fontSize: 16,
       fontWeight: FontWeight.w400,
       color: green,
       fontFamily: "Inter");
 
+  static const TextStyle headerStyle = TextStyle(
+      fontSize: 12,
+      fontWeight: FontWeight.w500,
+      color: success1000,
+      fontFamily: "Inter");
+
   static const TextStyle termsStyle = TextStyle(
-      fontSize: 10,
+      fontSize: 12,
       fontWeight: FontWeight.w400,
       fontFamily: "Inter",
       color: grey500);
+
+  static const TextStyle forgotStyle = TextStyle(
+      fontSize: 12,
+      fontWeight: FontWeight.w400,
+      fontFamily: "Inter",
+      color: black);
 
   static const TextStyle optionStyle = TextStyle(
       fontSize: 16,
@@ -26,15 +44,39 @@ class AuthStyles {
       color: greys200,
       fontFamily: "Inter");
 
+  static const TextStyle forgotTextStyle = TextStyle(
+      fontSize: 14,
+      fontWeight: FontWeight.w400,
+      color: grey700,
+      fontFamily: "Inter");
+
   static const TextStyle richStyle1 = TextStyle(
-      fontSize: 16,
-      fontWeight: FontWeight.w600,
+      fontSize: 14,
+      fontWeight: FontWeight.w400,
       color: greys400,
       fontFamily: "Inter");
 
   static const TextStyle richStyle2 = TextStyle(
-      fontSize: 16,
+      fontSize: 14,
       fontWeight: FontWeight.w400,
       color: skipColor,
+      fontFamily: "Inter");
+
+  static const TextStyle verifyStyle = TextStyle(
+      fontSize: 32,
+      fontWeight: FontWeight.w600,
+      color: skipColor,
+      fontFamily: "Inter");
+
+  static const TextStyle otpTextStyle1 = TextStyle(
+      fontSize: 12,
+      fontWeight: FontWeight.w400,
+      color: greys400,
+      fontFamily: "Inter");
+
+  static const TextStyle otpSuccessStyle = TextStyle(
+      fontSize: 16,
+      fontWeight: FontWeight.w500,
+      color: grey700,
       fontFamily: "Inter");
 }

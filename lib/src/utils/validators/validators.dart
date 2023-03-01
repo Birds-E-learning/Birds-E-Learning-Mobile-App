@@ -1,4 +1,6 @@
 import 'package:birds_learning_network/src/global_model/repositories/email_validator.dart';
+import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
+import 'package:flutter/material.dart';
 
 class InputValidators {
   dynamic nameValidator(String? value, type) {
@@ -34,5 +36,14 @@ class InputValidators {
       return "Phone number must be filled";
     }
     return null;
+  }
+
+  IconButton passwordVisibility(VoidCallback onPressed, bool showPassword) {
+    return IconButton(
+      onPressed: onPressed,
+      icon: !showPassword
+          ? const Icon(Icons.visibility_off_outlined, color: blackSolid)
+          : const Icon(Icons.visibility_outlined, color: blackSolid),
+    );
   }
 }

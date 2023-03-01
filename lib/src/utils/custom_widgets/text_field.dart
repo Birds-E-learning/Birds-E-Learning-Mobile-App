@@ -13,6 +13,7 @@ class CustomTextField extends StatelessWidget with AuthStyles {
     this.inputFormatters,
     this.validator,
     this.readOnly = false,
+    this.hintText = "",
     this.obscureText = false,
     this.suffixColor = strokeColor,
     this.suffixIcon,
@@ -28,6 +29,7 @@ class CustomTextField extends StatelessWidget with AuthStyles {
   final bool readOnly;
   final int maxLines;
   final int? minLines;
+  final String hintText;
   final String labelText;
   final Widget? suffixIcon;
   final Color suffixColor;
@@ -36,56 +38,70 @@ class CustomTextField extends StatelessWidget with AuthStyles {
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      controller: controller,
-      keyboardType: keyboardType,
-      validator: validator,
-      obscureText: obscureText,
-      autovalidateMode: autovalidateMode,
-      inputFormatters: inputFormatters,
-      readOnly: readOnly,
-      maxLines: maxLines,
-      minLines: minLines,
-      style: const TextStyle(fontFamily: "Inter"),
-      decoration: InputDecoration(
-        labelText: labelText,
-        labelStyle: const TextStyle(color: deepGrey, fontFamily: "Inter"),
-        suffixIcon: suffixIcon,
-        suffixIconColor: suffixColor,
-        fillColor: white,
-        // isDense: true,
-        focusColor: deepGrey,
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(4),
-          borderSide: const BorderSide(
-            color: deepGrey,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          labelText,
+          style: AuthStyles.headerStyle,
+        ),
+        const SizedBox(height: 10),
+        SizedBox(
+          height: 50,
+          child: TextFormField(
+            controller: controller,
+            keyboardType: keyboardType,
+            validator: validator,
+            obscureText: obscureText,
+            autovalidateMode: autovalidateMode,
+            inputFormatters: inputFormatters,
+            readOnly: readOnly,
+            maxLines: maxLines,
+            minLines: minLines,
+            style: const TextStyle(fontFamily: "Inter"),
+            decoration: InputDecoration(
+              labelStyle: const TextStyle(color: deepGrey, fontFamily: "Inter"),
+              suffixIcon: suffixIcon,
+              suffixIconColor: suffixColor,
+              fillColor: white,
+              hintText: hintText,
+              hintStyle: AuthStyles.labelStyle,
+              isDense: true,
+              focusColor: deepGrey,
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(4),
+                borderSide: const BorderSide(
+                  color: deepGrey,
+                ),
+              ),
+              focusedErrorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(4),
+                borderSide: const BorderSide(
+                  color: Colors.redAccent,
+                ),
+              ),
+              errorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(4),
+                borderSide: const BorderSide(
+                  color: Colors.redAccent,
+                ),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(4),
+                borderSide: const BorderSide(
+                  color: deepGrey,
+                ),
+              ),
+              disabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(4),
+                borderSide: const BorderSide(
+                  color: deepGrey,
+                ),
+              ),
+            ),
           ),
         ),
-        focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(4),
-          borderSide: const BorderSide(
-            color: Colors.redAccent,
-          ),
-        ),
-        errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(4),
-          borderSide: const BorderSide(
-            color: Colors.redAccent,
-          ),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(4),
-          borderSide: const BorderSide(
-            color: deepGrey,
-          ),
-        ),
-        disabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(4),
-          borderSide: const BorderSide(
-            color: deepGrey,
-          ),
-        ),
-      ),
+      ],
     );
   }
 }
