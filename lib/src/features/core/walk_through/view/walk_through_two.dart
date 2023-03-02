@@ -1,3 +1,4 @@
+import 'package:birds_learning_network/src/config/routing/route.dart';
 import 'package:birds_learning_network/src/features/core/walk_through/view/walk_through_three.dart';
 import 'package:birds_learning_network/src/features/core/walk_through/view/walk_through.dart';
 import 'package:birds_learning_network/src/utils/global_constants/asset_paths/image_path.dart';
@@ -14,8 +15,7 @@ class SecondWalkThroughPage extends StatelessWidget with WalkThroughTextWidget {
       isShort: true,
       child: walkTex2(),
       onPressed: () {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (_) => const ThirdWalkThroughPage()));
+        RoutingService.pushRouting(context, const ThirdWalkThroughPage());
       },
     );
   }

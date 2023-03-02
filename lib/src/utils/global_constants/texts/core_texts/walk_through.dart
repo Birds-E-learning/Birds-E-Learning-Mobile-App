@@ -5,4 +5,5 @@ class WalkThroughTexts {
   static const walkThrough3 = "Learn at your own free time";
   static const skip = "Skip";
   static const next = "Next";
+  static const getStarted = "Get Started";
 }

@@ -1,7 +1,7 @@
+import 'package:birds_learning_network/src/config/routing/route.dart';
 import 'package:birds_learning_network/src/features/core/auth/view/auth_screen.dart';
 import 'package:birds_learning_network/src/features/core/auth/view/enter_otp.dart';
 import 'package:birds_learning_network/src/utils/custom_widgets/text_field.dart';
-import 'package:birds_learning_network/src/utils/global_constants/styles/auth_styles/auth_style.dart';
 import 'package:birds_learning_network/src/utils/global_constants/texts/core_texts/auth_texts.dart';
 import 'package:birds_learning_network/src/utils/helper_widgets/button_black.dart';
 import 'package:birds_learning_network/src/utils/mixins/core_mixins/auth_mixins/auth_mixins.dart';
@@ -61,12 +61,13 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen>
                     child: BlackButtonWidget(
                       child: AuthTextWidgets.otpButtonText(),
                       onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (_) => EnterOTPScreen(
-                                      email: email.text.trim(),
-                                    )));
+                        if (_formKey.currentState!.validate()) {
+                          RoutingService.pushReplacementRouting(
+                              context,
+                              EnterOTPScreen(
+                                email: email.text.trim(),
+                              ));
+                        }
                       },
                     ),
                   ),
@@ -75,7 +76,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen>
                     AuthTexts.noOtp,
                     AuthTexts.resend,
                     () {
-                      print("Will Resend Soon");
+                      if (_formKey.currentState!.validate()) {}
                     },
                   )
                 ],

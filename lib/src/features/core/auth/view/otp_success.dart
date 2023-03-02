@@ -1,4 +1,6 @@
+import 'package:birds_learning_network/src/config/routing/route.dart';
 import 'package:birds_learning_network/src/features/core/auth/view/auth_screen.dart';
+import 'package:birds_learning_network/src/features/core/auth/view/sign_in.dart';
 import 'package:birds_learning_network/src/utils/global_constants/asset_paths/image_path.dart';
 import 'package:birds_learning_network/src/utils/global_constants/texts/core_texts/auth_texts.dart';
 import 'package:birds_learning_network/src/utils/helper_widgets/button_black.dart';
@@ -31,7 +33,8 @@ class OtpSuccessPage extends StatelessWidget with AuthTextWidgets {
               SizedBox(
                 width: double.infinity,
                 child: BlackButtonWidget(
-                  onPressed: () {},
+                  onPressed: () => RoutingService.pushAndRemoveAllRoute(
+                      context, const LoginScreen()),
                   child: AuthTextWidgets.buttonText(AuthTexts.complete),
                 ),
               )

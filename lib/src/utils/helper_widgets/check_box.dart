@@ -7,7 +7,7 @@ SizedBox checkBox(bool checked, ValueChanged<bool?> onChanged) {
     width: 17,
     child: Checkbox(
       value: checked,
-      checkColor: skipColor,
+      checkColor: white,
       fillColor: MaterialStateProperty.all(grey500),
       onChanged: onChanged,
     ),

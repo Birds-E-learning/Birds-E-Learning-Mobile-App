@@ -7,7 +7,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 mixin AuthTextWidgets on Object implements AuthStyles, AuthTexts {
-  Text signUp() {
+  Text signsUp() {
     return const Text(
       AuthTexts.signUp,
       style: AuthStyles.signUpStyle,
@@ -17,6 +17,13 @@ mixin AuthTextWidgets on Object implements AuthStyles, AuthTexts {
   Text firstLogin() {
     return const Text(
       AuthTexts.firstLogin,
+      style: AuthStyles.signInStyle,
+    );
+  }
+
+  Text loginHeader(String name) {
+    return Text(
+      "${AuthTexts.loginHeader}$name!",
       style: AuthStyles.signInStyle,
     );
   }
@@ -158,7 +165,7 @@ mixin AuthTextWidgets on Object implements AuthStyles, AuthTexts {
             style: AuthStyles.termsStyle.copyWith(color: skipColor),
             recognizer: TapGestureRecognizer()
               ..onTap = () {
-                print("heeyy");
+                // print("heeyy");
               }),
         const TextSpan(
           text: AuthTexts.terms3,

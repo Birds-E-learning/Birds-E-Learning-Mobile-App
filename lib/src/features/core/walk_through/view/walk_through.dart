@@ -1,4 +1,6 @@
 import 'dart:ui';
+import 'package:birds_learning_network/src/config/routing/route.dart';
+import 'package:birds_learning_network/src/features/core/auth/view/sign_up.dart';
 import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
 import 'package:birds_learning_network/src/utils/helper_widgets/button_black.dart';
 import 'package:birds_learning_network/src/utils/helper_widgets/button_white.dart';
@@ -13,11 +15,13 @@ class WalkThroughScreen extends StatelessWidget with WalkThroughTextWidget {
       required this.child,
       required this.position,
       this.isShort = false,
+      this.lastScreen = false,
       required this.onPressed});
   final String image;
   final Widget child;
   final double position;
   final bool isShort;
+  final bool lastScreen;
   final VoidCallback onPressed;
 
   @override
@@ -73,22 +77,34 @@ class WalkThroughScreen extends StatelessWidget with WalkThroughTextWidget {
                 ),
               ),
               const SizedBox(height: 60),
-              child,
+              Align(alignment: Alignment.center, child: child),
               const SizedBox(height: 60),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SizedBox(
-                    width: size.width * 0.4,
-                    child: WhiteButtonWidget(
-                        onPressed: () {}, child: skipButtonText()),
-                  ),
-                  SizedBox(
-                    width: size.width * 0.4,
-                    child: BlackButtonWidget(
-                        onPressed: onPressed, child: nextButtonText()),
-                  )
-                ],
+              Container(
+                child: lastScreen
+                    ? SizedBox(
+                        width: double.infinity,
+                        child: BlackButtonWidget(
+                            onPressed: onPressed, child: startedButtonText()),
+                      )
+                    : Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SizedBox(
+                            width: size.width * 0.42,
+                            child: WhiteButtonWidget(
+                                onPressed: () {
+                                  RoutingService.pushReplacementRouting(
+                                      context, const SignUpScreen());
+                                },
+                                child: skipButtonText()),
+                          ),
+                          SizedBox(
+                            width: size.width * 0.42,
+                            child: BlackButtonWidget(
+                                onPressed: onPressed, child: nextButtonText()),
+                          )
+                        ],
+                      ),
               )
             ],
           ),

@@ -6,8 +6,8 @@ class InputValidators {
   dynamic nameValidator(String? value, type) {
     final RegExp nameRegExp = RegExp('[a-zA-Z]');
     if (value!.isEmpty) {
-      return "$type name must be filled";
-    } else if (nameRegExp.hasMatch(value)) {
+      return "$type name is required";
+    } else if (!nameRegExp.hasMatch(value)) {
       return "Enter a valid name";
     }
     return null;
@@ -15,16 +15,16 @@ class InputValidators {
 
   dynamic passwordValidator(String? value) {
     if (value!.isEmpty) {
-      return "Password must be filled";
-    } else if (value.length < 5) {
-      return "Password must be at least 5 digits";
+      return "Password is required";
+    } else if (value.length < 8) {
+      return "Password must be 8 characters or more";
     }
     return null;
   }
 
   dynamic emailValidator(String? value) {
     if (value!.isEmpty) {
-      return "Email address must be field";
+      return "Email address is required";
     } else if (!validateEmail(value)) {
       return "Enter a valid email address";
     }
@@ -33,7 +33,7 @@ class InputValidators {
 
   dynamic numberValidator(String? value) {
     if (value!.isEmpty) {
-      return "Phone number must be filled";
+      return "Phone number is required";
     }
     return null;
   }
@@ -41,7 +41,7 @@ class InputValidators {
   IconButton passwordVisibility(VoidCallback onPressed, bool showPassword) {
     return IconButton(
       onPressed: onPressed,
-      icon: !showPassword
+      icon: showPassword
           ? const Icon(Icons.visibility_off_outlined, color: blackSolid)
           : const Icon(Icons.visibility_outlined, color: blackSolid),
     );

@@ -41,62 +41,60 @@ class CustomTextField extends StatelessWidget with AuthStyles {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          labelText,
-          style: AuthStyles.headerStyle,
-        ),
-        const SizedBox(height: 10),
-        SizedBox(
-          height: 50,
-          child: TextFormField(
-            controller: controller,
-            keyboardType: keyboardType,
-            validator: validator,
-            obscureText: obscureText,
-            autovalidateMode: autovalidateMode,
-            inputFormatters: inputFormatters,
-            readOnly: readOnly,
-            maxLines: maxLines,
-            minLines: minLines,
-            style: const TextStyle(fontFamily: "Inter"),
-            decoration: InputDecoration(
-              labelStyle: const TextStyle(color: deepGrey, fontFamily: "Inter"),
-              suffixIcon: suffixIcon,
-              suffixIconColor: suffixColor,
-              fillColor: white,
-              hintText: hintText,
-              hintStyle: AuthStyles.labelStyle,
-              isDense: true,
-              focusColor: deepGrey,
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(4),
-                borderSide: const BorderSide(
-                  color: deepGrey,
-                ),
+        // Text(
+        //   labelText,
+        //   style: AuthStyles.headerStyle,
+        // ),
+        // const SizedBox(height: 5),
+        TextFormField(
+          controller: controller,
+          keyboardType: keyboardType,
+          validator: validator,
+          obscureText: obscureText,
+          autovalidateMode: autovalidateMode,
+          inputFormatters: inputFormatters,
+          readOnly: readOnly,
+          maxLines: maxLines,
+          minLines: minLines,
+          style: const TextStyle(fontFamily: "Inter"),
+          decoration: InputDecoration(
+            labelText: labelText,
+            labelStyle: AuthStyles.labelStyle,
+            suffixIcon: suffixIcon,
+            suffixIconColor: suffixColor,
+            fillColor: white,
+            hintText: hintText,
+            hintStyle: AuthStyles.labelStyle,
+            isDense: true,
+            focusColor: deepGrey,
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(4),
+              borderSide: const BorderSide(
+                color: deepGrey,
               ),
-              focusedErrorBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(4),
-                borderSide: const BorderSide(
-                  color: Colors.redAccent,
-                ),
+            ),
+            focusedErrorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(4),
+              borderSide: const BorderSide(
+                color: Colors.redAccent,
               ),
-              errorBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(4),
-                borderSide: const BorderSide(
-                  color: Colors.redAccent,
-                ),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(4),
+              borderSide: const BorderSide(
+                color: Colors.redAccent,
               ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(4),
-                borderSide: const BorderSide(
-                  color: deepGrey,
-                ),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(4),
+              borderSide: const BorderSide(
+                color: deepGrey,
               ),
-              disabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(4),
-                borderSide: const BorderSide(
-                  color: deepGrey,
-                ),
+            ),
+            disabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(4),
+              borderSide: const BorderSide(
+                color: deepGrey,
               ),
             ),
           ),

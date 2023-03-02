@@ -22,6 +22,7 @@ class AuthTexts {
   static const String loginWith = "Or Login with";
   static const String noAccount = "Don’t have an account? ";
   static const String firstLogin = "Hi there, 👋";
+  static const String loginHeader = "Welcome back, ";
   static const String reset = "Reset Password";
 
   static const String firstNameHint = "John";

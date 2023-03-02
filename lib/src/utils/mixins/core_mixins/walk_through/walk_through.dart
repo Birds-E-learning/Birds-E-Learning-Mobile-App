@@ -45,4 +45,11 @@ mixin WalkThroughTextWidget on Object implements WalkThroughTexts, TextStyles {
       style: TextStyles.buttonStyle.copyWith(color: nextColor),
     );
   }
+
+  Text startedButtonText() {
+    return Text(
+      WalkThroughTexts.getStarted,
+      style: TextStyles.buttonStyle.copyWith(color: nextColor),
+    );
+  }
 }
