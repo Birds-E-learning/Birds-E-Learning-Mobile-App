@@ -10,18 +10,11 @@ import 'package:birds_learning_network/src/utils/mixins/core_mixins/auth_mixins/
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class EnterOTPScreen extends StatefulWidget with AuthTextWidgets, AuthTexts {
+class EnterOTPScreen extends StatelessWidget with AuthTextWidgets, AuthTexts {
   const EnterOTPScreen(
       {super.key, required this.email, this.isRegister = false});
   final String email;
   final bool isRegister;
-
-  @override
-  State<EnterOTPScreen> createState() => _EnterOTPScreenState();
-}
-
-class _EnterOTPScreenState extends State<EnterOTPScreen> with AuthTextWidgets {
-  String otp = "";
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -44,7 +37,7 @@ class _EnterOTPScreenState extends State<EnterOTPScreen> with AuthTextWidgets {
                   const SizedBox(height: 50),
                   AuthTextWidgets.verifyText(),
                   const SizedBox(height: 15),
-                  AuthTextWidgets.verifyEmail(widget.email),
+                  AuthTextWidgets.verifyEmail(email),
                   const SizedBox(height: 20),
                   OtpField(
                     onSubmit: (value) => verify.getOtp(value),
@@ -61,9 +54,8 @@ class _EnterOTPScreenState extends State<EnterOTPScreen> with AuthTextWidgets {
                           if (verify.otp.isNotEmpty) {
                             verify.onClick();
                             OtpModel data = OtpModel(
-                                otp: verify.otp,
-                                userEmail: widget.email.toString());
-                            verify.verifyOTP(context, data, widget.isRegister);
+                                otp: verify.otp, userEmail: email.toString());
+                            verify.verifyOTP(context, data, isRegister, email);
                           }
                         },
                         child: verify.isClicked
@@ -75,7 +67,8 @@ class _EnterOTPScreenState extends State<EnterOTPScreen> with AuthTextWidgets {
                     AuthTexts.noOtp,
                     AuthTexts.resend,
                     () {
-                      verify.resendOtp(context, widget.email);
+                      verify.resendOtp(
+                          context, email, isRegister ? "Resend" : "Reset");
                     },
                   )
                 ],

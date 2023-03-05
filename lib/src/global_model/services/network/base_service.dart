@@ -2,15 +2,19 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:birds_learning_network/src/global_model/apis/app_exception.dart';
+import 'package:birds_learning_network/src/utils/helper_widgets/response_snack.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class NetworkService {
-  Future getRequest(String url, Map<String, String> header) async {
+  Future getRequest(String url, Map<String, String> header, context) async {
     dynamic responseJson;
     try {
-      http.Response response = await http.get(Uri.parse(url), headers: header);
-      responseJson = returnResponse(response);
+      http.Response response = await http
+          .get(Uri.parse(url), headers: header)
+          .timeout(const Duration(seconds: 20));
+      print(response.body);
+      responseJson = returnResponse(response, context);
     } on SocketException catch (_) {
       throw FetchDataException("No Internet Connection");
     }
@@ -18,13 +22,15 @@ class NetworkService {
   }
 
   Future postRequest(
-      String url, Map<String, String> header, Object body) async {
+      String url, Map<String, String> header, Object body, context) async {
     dynamic responseJson;
     try {
-      http.Response response = await http.post(Uri.parse(url),
-          headers: header, body: jsonEncode(body));
+      http.Response response = await http
+          .post(Uri.parse(url), headers: header, body: jsonEncode(body))
+          .timeout(const Duration(seconds: 20));
+      print(jsonEncode(body));
       print(response.body);
-      responseJson = returnResponse(response);
+      responseJson = returnResponse(response, context);
     } on SocketException catch (_) {
       throw FetchDataException("No Internet Connection");
     }
@@ -32,15 +38,17 @@ class NetworkService {
   }
 
   @visibleForTesting
-  dynamic returnResponse(http.Response response) {
+  dynamic returnResponse(http.Response response, context) {
+    var responseData = jsonDecode(response.body);
     switch (response.statusCode) {
       case 200:
-        dynamic responseJson = jsonDecode(response.body);
+        dynamic responseJson = responseData;
         return responseJson;
       case 201:
         dynamic responseJson = jsonDecode(response.body);
         return responseJson;
       case 400:
+        showSnack(context, "08", responseData["responseMessage"]);
         throw BadRequestException(response.body.toString());
       case 401:
       case 403:

@@ -13,6 +13,7 @@ class OtpField extends StatelessWidget with AuthStyles {
       fieldWidth: 60,
       showFieldAsBox: false,
       numberOfFields: 4,
+      clearText: true,
       borderWidth: 4,
       borderColor: deepBlack,
       focusedBorderColor: deepGrey,

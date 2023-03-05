@@ -33,20 +33,26 @@ class SignUpProvider extends ChangeNotifier {
   }
 
   Future userSignUp(context, SignUpModel data) async {
-    SignUpResponse response = await AuthRepository().getSignUpResponse(data);
-    if (response.responseCode == "00") {
+    try {
+      SignUpResponse response =
+          await AuthRepository().getSignUpResponse(data, context);
+      if (response.responseCode == "00") {
+        onClick();
+        RoutingService.pushReplacementRouting(
+            context,
+            EnterOTPScreen(
+              email: data.emailAddress!,
+              isRegister: true,
+            ));
+        return response;
+      } else {
+        onClick();
+        showSnack(context, response.responseCode!, response.responseMessage!);
+      }
+    } catch (e) {
       onClick();
-      showSnack(context, response.responseCode!, response.responseMessage!);
-      RoutingService.pushReplacementRouting(
-          context,
-          EnterOTPScreen(
-            email: data.emailAddress!,
-            isRegister: true,
-          ));
-      return response;
-    } else {
-      onClick();
-      showSnack(context, response.responseCode!, response.responseMessage!);
+      print(e);
+      showSnack(context, "02", "Network TimedOut");
     }
   }
 }

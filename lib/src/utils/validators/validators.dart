@@ -22,6 +22,15 @@ class InputValidators {
     return null;
   }
 
+  dynamic confirmPasswordValidator(String? value, String password) {
+    if (value!.isEmpty) {
+      return "Password is required";
+    } else if (value != password) {
+      return "Password mismatch";
+    }
+    return null;
+  }
+
   dynamic emailValidator(String? value) {
     if (value!.isEmpty) {
       return "Email address is required";

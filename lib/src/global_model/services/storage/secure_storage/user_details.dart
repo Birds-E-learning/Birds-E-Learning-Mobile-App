@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:birds_learning_network/src/features/core/auth/model/response_model/login_response.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class UserSecureStorage {
@@ -6,7 +9,8 @@ class UserSecureStorage {
   final String _tokenKey = "token";
   final String _passwordKey = "password";
   final String _usernameKey = "username";
-  final String _isCheckKey = "isCheck";
+  // final String _isCheckKey = "isCheck";
+  final String _userDataKey = "userData";
 
   Future setToken(String token) async {
     await storage.write(key: _tokenKey, value: token);
@@ -14,6 +18,10 @@ class UserSecureStorage {
 
   Future setPassword(String password) async {
     await storage.write(key: _passwordKey, value: password);
+  }
+
+  Future setUserData(LoginResponse userData) async {
+    await storage.write(key: _userDataKey, value: jsonEncode(userData));
   }
 
   Future setUsername(String username) async {
@@ -30,5 +38,12 @@ class UserSecureStorage {
 
   Future<String?> getUsername() async {
     return await storage.read(key: _usernameKey);
+  }
+
+  Future<LoginResponse> getUserData() async {
+    String? value = await storage.read(key: _userDataKey);
+    LoginResponse response = LoginResponse.fromJson(jsonDecode(value!));
+
+    return response;
   }
 }

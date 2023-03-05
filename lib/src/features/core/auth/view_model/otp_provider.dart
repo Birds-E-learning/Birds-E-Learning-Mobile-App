@@ -26,25 +26,32 @@ class OtpProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future verifyOTP(context, OtpModel data, bool isRegistered) async {
-    OtpResponse response = await AuthRepository().getOtpResponse(data);
-    if (response.responseCode == "00") {
+  Future verifyOTP(
+      context, OtpModel data, bool isRegistered, String email) async {
+    try {
+      OtpResponse response =
+          await AuthRepository().getOtpResponse(isRegistered, data, context);
+      if (response.responseCode == "00") {
+        onClick();
+        isRegistered
+            ? RoutingService.pushReplacementRouting(
+                context, const OtpSuccessPage())
+            : RoutingService.pushReplacementRouting(
+                context, ResetPassword(email: email));
+        return response;
+      } else {
+        showSnack(context, response.responseCode!, response.responseMessage!);
+        onClick();
+      }
+    } catch (e) {
       onClick();
-      showSnack(context, response.responseCode!, response.responseMessage!);
-      isRegistered
-          ? RoutingService.pushReplacementRouting(
-              context, const OtpSuccessPage())
-          : RoutingService.pushReplacementRouting(
-              context, const ResetPassword());
-      return response;
-    } else {
-      showSnack(context, response.responseCode!, response.responseMessage!);
-      onClick();
+      showSnack(context, "02", "Network TimedOut");
     }
   }
 
-  Future resendOtp(context, String email) async {
-    OtpResponse response = await AuthRepository().getResendOtpResponse(email);
+  Future resendOtp(context, String email, String mode) async {
+    OtpResponse response =
+        await AuthRepository().getResendOtpResponse(mode, email, context);
     if (response.responseCode == "00") {
       showSnack(context, response.responseCode!, response.responseMessage!);
     } else {

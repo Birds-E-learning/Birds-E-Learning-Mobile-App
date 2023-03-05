@@ -1,9 +1,12 @@
 import 'package:birds_learning_network/src/config/routing/route.dart';
+import 'package:birds_learning_network/src/features/core/auth/model/request_model/auth_model.dart';
 import 'package:birds_learning_network/src/features/core/auth/model/request_model/login_model.dart';
 import 'package:birds_learning_network/src/features/core/auth/view/auth_screen.dart';
 import 'package:birds_learning_network/src/features/core/auth/view/forgot_password.dart';
 import 'package:birds_learning_network/src/features/core/auth/view/sign_up.dart';
 import 'package:birds_learning_network/src/features/core/auth/view_model/login_provider/login_provider.dart';
+import 'package:birds_learning_network/src/features/core/auth/view_model/oauth_provider.dart';
+import 'package:birds_learning_network/src/global_model/services/storage/shared_preferences/device_info.dart';
 import 'package:birds_learning_network/src/global_model/services/storage/shared_preferences/user_details.dart';
 import 'package:birds_learning_network/src/utils/custom_widgets/o_auth.dart';
 import 'package:birds_learning_network/src/utils/custom_widgets/text_field.dart';
@@ -14,7 +17,6 @@ import 'package:birds_learning_network/src/utils/helper_widgets/option_row.dart'
 import 'package:birds_learning_network/src/utils/mixins/core_mixins/auth_mixins/auth_mixins.dart';
 import 'package:birds_learning_network/src/utils/validators/validators.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -34,6 +36,7 @@ class _LoginScreenState extends State<LoginScreen>
   TextEditingController password = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   String? userFirstName;
+  String? deviceId_;
 
   @override
   void dispose() {
@@ -44,15 +47,14 @@ class _LoginScreenState extends State<LoginScreen>
 
   @override
   void initState() {
-    SchedulerBinding.instance.addPostFrameCallback((_) async {
-      setUser();
-    });
+    setUser();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    OAuthProvider auth = context.read<OAuthProvider>();
     return Scaffold(
       body: SafeArea(
         child: Consumer<LoginProvider>(
@@ -106,18 +108,21 @@ class _LoginScreenState extends State<LoginScreen>
                       SizedBox(
                         width: double.infinity,
                         child: BlackButtonWidget(
-                          onPressed: () {
+                          onPressed: () async {
+                            FocusScope.of(context).unfocus();
                             if (login.isClicked) {
                               login.onClick();
                               return;
                             }
                             if (_formKey.currentState!.validate()) {
                               LoginModel data = LoginModel(
-                                email: email.text.trim(),
-                                password: password.text.trim(),
-                              );
+                                  email: email.text.trim(),
+                                  password: password.text.trim(),
+                                  rememberMe: login.isChecked,
+                                  deviceId: deviceId_ ?? "");
                               login.onClick();
-                              login.userLogin(context, data);
+                              if (!mounted) return;
+                              login.userLogin(context, data, false);
                             }
                           },
                           child: login.isClicked
@@ -129,9 +134,30 @@ class _LoginScreenState extends State<LoginScreen>
                       optionWidget(size, AuthTexts.loginWith),
                       const SizedBox(height: 20),
                       OAuthWidget(
-                        onFacebookTap: () {},
-                        onGoogleTap: () {},
-                        onAppleTap: () {},
+                        onFacebookTap: () async {
+                          auth.onFacebookClick();
+                          AuthModel body = AuthModel(
+                              authServiceProvider: "FACEBOOK",
+                              deviceId: deviceId_ ?? "");
+                          await auth.oAuthCall(body, "LOGIN", context);
+                        },
+                        onGoogleTap: () async {
+                          auth.onGoogleClicked();
+                          AuthModel body = AuthModel(
+                              authServiceProvider: "GOOGLE",
+                              deviceId: deviceId_ ?? "");
+                          await auth.oAuthCall(body, "LOGIN", context);
+                          // auth.isDone
+                          //     ? WebView(data: body, url: auth.url)
+                          //     : null;
+                        },
+                        onAppleTap: () async {
+                          // auth.onAppleClicked();
+                          // AuthModel body = AuthModel(
+                          //     authServiceProvider: "APPLE",
+                          //     deviceId: deviceId_);
+                          // await auth.oAuthCall(body,"LOGIN", context);
+                        },
                       ),
                       const SizedBox(height: 15),
                       accountCheck(
@@ -159,6 +185,7 @@ class _LoginScreenState extends State<LoginScreen>
     if (!mounted) return;
     password.text = await context.read<LoginProvider>().getPassword();
     userFirstName = await UserPreferences.getUserFirstName();
+    deviceId_ = await DevicePreference.getDeviceId();
     setState(() {});
   }
 }

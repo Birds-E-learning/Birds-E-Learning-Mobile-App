@@ -1,28 +1,31 @@
 import 'dart:convert';
+import 'package:birds_learning_network/src/global_model/model/device_details.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DevicePreference {
   static Future getDeviceDetails() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var deviceDetails = prefs.getString("device");
+    // print(deviceDetails);
     return jsonDecode(deviceDetails ?? "");
   }
 
-  static Future<bool> saveDeviceDetails(device) async {
-    setDeviceId(device["id"]);
-    final device_ = json.encode(device);
+  static Future<bool> saveDeviceDetails(DeviceDetailsModel device) async {
+    await setDeviceId(device.id ?? "");
+    final device_ = json.encode(device.toJson());
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return await prefs.setString("device", device_);
   }
 
-  static Future<bool> setDeviceId(id) async {
+  static Future<bool> setDeviceId(String id) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return await prefs.setString("id", id);
   }
 
   static getDeviceId() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? deviceId = prefs.getString("id");
+    var deviceId = prefs.getString("id");
+    // print(deviceId);
     return deviceId;
   }
 
@@ -38,24 +41,6 @@ class DevicePreference {
   //     "systemVersion": data.systemVersion,
   //   };
   // }
-
-  // Future getWebDetails() async {
-  //   SharedPreferences prefs_ = await SharedPreferences.getInstance();
-  //   final webDevice = prefs_.getString("web");
-  //   return jsonDecode(webDevice!);
-  // }
-
-  // static Future<bool> setIosDetails(ios) async {
-  //   final iosData = json.encode(ios);
-  //   SharedPreferences pref_ = await SharedPreferences.getInstance();
-
-  //   final setIos = pref_.setString("ios", iosData);
-  //   return setIos;
-  // }
-
-  // static Future<bool> setWebDetails(web) async {
-  //   final webData = json.encode(web);
-  //   SharedPreferences pref_ = await SharedPreferences.getInstance();
 
   //   final setWeb = pref_.setString("web", webData);
   //   return setWeb;

@@ -19,9 +19,18 @@ class OAuthWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        SocialCard(onTap: onFacebookTap, image: ImagePath.facebook),
-        SocialCard(onTap: onGoogleTap, image: ImagePath.google),
-        SocialCard(onTap: onAppleTap, image: ImagePath.apple),
+        SocialCard(
+            onTap: onFacebookTap,
+            image: ImagePath.facebook,
+            serviceProvider: "FACEBOOK"),
+        SocialCard(
+            onTap: onGoogleTap,
+            image: ImagePath.google,
+            serviceProvider: "GOOGLE"),
+        SocialCard(
+            onTap: onAppleTap,
+            image: ImagePath.apple,
+            serviceProvider: "APPLE"),
       ],
     );
   }

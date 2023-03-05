@@ -38,68 +38,58 @@ class CustomTextField extends StatelessWidget with AuthStyles {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // Text(
-        //   labelText,
-        //   style: AuthStyles.headerStyle,
-        // ),
-        // const SizedBox(height: 5),
-        TextFormField(
-          controller: controller,
-          keyboardType: keyboardType,
-          validator: validator,
-          obscureText: obscureText,
-          autovalidateMode: autovalidateMode,
-          inputFormatters: inputFormatters,
-          readOnly: readOnly,
-          maxLines: maxLines,
-          minLines: minLines,
-          style: const TextStyle(fontFamily: "Inter"),
-          decoration: InputDecoration(
-            labelText: labelText,
-            labelStyle: AuthStyles.labelStyle,
-            suffixIcon: suffixIcon,
-            suffixIconColor: suffixColor,
-            fillColor: white,
-            hintText: hintText,
-            hintStyle: AuthStyles.labelStyle,
-            isDense: true,
-            focusColor: deepGrey,
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(4),
-              borderSide: const BorderSide(
-                color: deepGrey,
-              ),
-            ),
-            focusedErrorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(4),
-              borderSide: const BorderSide(
-                color: Colors.redAccent,
-              ),
-            ),
-            errorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(4),
-              borderSide: const BorderSide(
-                color: Colors.redAccent,
-              ),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(4),
-              borderSide: const BorderSide(
-                color: deepGrey,
-              ),
-            ),
-            disabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(4),
-              borderSide: const BorderSide(
-                color: deepGrey,
-              ),
-            ),
+    return TextFormField(
+      controller: controller,
+      keyboardType: keyboardType,
+      validator: validator,
+      obscureText: obscureText,
+      autovalidateMode: autovalidateMode,
+      inputFormatters: inputFormatters,
+      readOnly: readOnly,
+      maxLines: maxLines,
+      minLines: minLines,
+      style: const TextStyle(fontFamily: "Inter"),
+      decoration: InputDecoration(
+        labelText: labelText,
+        labelStyle: AuthStyles.labelStyle,
+        suffixIcon: suffixIcon,
+        suffixIconColor: suffixColor,
+        fillColor: white,
+        hintText: hintText,
+        hintStyle: AuthStyles.labelStyle,
+        isDense: true,
+        focusColor: deepGrey,
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(4),
+          borderSide: const BorderSide(
+            color: deepGrey,
           ),
         ),
-      ],
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(4),
+          borderSide: const BorderSide(
+            color: Colors.redAccent,
+          ),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(4),
+          borderSide: const BorderSide(
+            color: Colors.redAccent,
+          ),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(4),
+          borderSide: const BorderSide(
+            color: deepGrey,
+          ),
+        ),
+        disabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(4),
+          borderSide: const BorderSide(
+            color: deepGrey,
+          ),
+        ),
+      ),
     );
   }
 }

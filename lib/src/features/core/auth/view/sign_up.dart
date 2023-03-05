@@ -1,7 +1,11 @@
 import 'package:birds_learning_network/src/config/routing/route.dart';
+import 'package:birds_learning_network/src/features/core/auth/model/request_model/auth_model.dart';
+import 'package:birds_learning_network/src/features/core/auth/model/request_model/login_model.dart';
 import 'package:birds_learning_network/src/features/core/auth/model/request_model/sign_up_model.dart';
 import 'package:birds_learning_network/src/features/core/auth/view/auth_screen.dart';
 import 'package:birds_learning_network/src/features/core/auth/view/sign_in.dart';
+import 'package:birds_learning_network/src/features/core/auth/view_model/login_provider/login_provider.dart';
+import 'package:birds_learning_network/src/features/core/auth/view_model/oauth_provider.dart';
 import 'package:birds_learning_network/src/features/core/auth/view_model/sign_up_provider/sign_up.dart';
 import 'package:birds_learning_network/src/global_model/services/storage/shared_preferences/device_info.dart';
 import 'package:birds_learning_network/src/global_model/services/storage/shared_preferences/user_details.dart';
@@ -35,6 +39,7 @@ class _SignUpScreenState extends State<SignUpScreen>
   TextEditingController phone = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   String? phoneCode;
+  String? deviceId_;
   @override
   void dispose() {
     firstName.dispose();
@@ -46,8 +51,15 @@ class _SignUpScreenState extends State<SignUpScreen>
   }
 
   @override
+  void initState() {
+    setData();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    OAuthProvider auth = context.read<OAuthProvider>();
     return Scaffold(
       body: SafeArea(
         child: Consumer<SignUpProvider>(
@@ -105,7 +117,7 @@ class _SignUpScreenState extends State<SignUpScreen>
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           SizedBox(
-                            height: 55,
+                            height: 53,
                             width: 95,
                             child: PhoneDropDown(
                               onSelect: (value) {
@@ -142,6 +154,7 @@ class _SignUpScreenState extends State<SignUpScreen>
                         width: double.infinity,
                         child: BlackButtonWidget(
                             onPressed: () async {
+                              FocusScope.of(context).unfocus();
                               if (register.isClicked) {
                                 register.onClick();
                                 return;
@@ -153,20 +166,24 @@ class _SignUpScreenState extends State<SignUpScreen>
                               }
                               if (_formKey.currentState!.validate()) {
                                 register.onClick();
-                                String? deviceId_ =
-                                    await DevicePreference.getDeviceId();
                                 SignUpModel data = SignUpModel(
                                     username: email.text.trim(),
                                     emailAddress: email.text.trim(),
                                     password: password.text.trim(),
-                                    deviceId: deviceId_!,
+                                    deviceId: deviceId_ ?? "",
                                     firstName: firstName.text.trim(),
                                     lastName: lastName.text.trim(),
                                     channel: "MOBILE",
                                     userRoles: [],
                                     mobileNumber:
                                         "$phoneCode${phone.text.trim()}");
-
+                                LoginModel loginData = LoginModel(
+                                    email: email.text.trim(),
+                                    password: password.text.trim(),
+                                    deviceId: deviceId_);
+                                Provider.of<LoginProvider>(context,
+                                        listen: false)
+                                    .getLoginData(loginData);
                                 if (!mounted) return;
                                 await register.userSignUp(context, data);
                               }
@@ -179,9 +196,29 @@ class _SignUpScreenState extends State<SignUpScreen>
                       optionWidget(size, AuthTexts.signUpWith),
                       const SizedBox(height: 20),
                       OAuthWidget(
-                          onFacebookTap: () {},
-                          onGoogleTap: () {},
-                          onAppleTap: () {}),
+                        onFacebookTap: () async {
+                          auth.onFacebookClick();
+                          AuthModel body = AuthModel(
+                              authServiceProvider: "FACEBOOK",
+                              deviceId: deviceId_ ?? "");
+                          await auth.oAuthCall(body, "SIGNUP", context);
+                        },
+                        onGoogleTap: () async {
+                          auth.onGoogleClicked();
+                          AuthModel body = AuthModel(
+                              authServiceProvider: "GOOGLE",
+                              deviceId: deviceId_ ?? "");
+                          if (!mounted) return;
+                          await auth.oAuthCall(body, "SIGNUP", context);
+                        },
+                        onAppleTap: () async {
+                          // auth.onAppleClicked();
+                          // AuthModel body = AuthModel(
+                          //     authServiceProvider: "APPLE",
+                          //     deviceId: deviceId_ ?? "");
+                          // await auth.oAuthCall(body,  "SIGNUP", context);
+                        },
+                      ),
                       const SizedBox(height: 15),
                       accountCheck(
                         AuthTexts.hasAccount1,
@@ -206,5 +243,10 @@ class _SignUpScreenState extends State<SignUpScreen>
         ),
       ),
     );
+  }
+
+  void setData() async {
+    deviceId_ = await DevicePreference.getDeviceId();
+    setState(() {});
   }
 }
