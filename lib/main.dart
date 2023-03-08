@@ -1,11 +1,13 @@
 import 'dart:async';
 import 'package:birds_learning_network/src/config/routing/route.dart';
 import 'package:birds_learning_network/src/features/core/auth/model/request_model/auto_login_model.dart';
+import 'package:birds_learning_network/src/features/core/auth/view/sign_in.dart';
 import 'package:birds_learning_network/src/features/core/auth/view_model/login_provider/login_provider.dart';
 import 'package:birds_learning_network/src/features/core/auth/view_model/oauth_provider.dart';
 import 'package:birds_learning_network/src/features/core/auth/view_model/otp_provider.dart';
 import 'package:birds_learning_network/src/features/core/auth/view_model/password_reset/reset_password_provider.dart';
 import 'package:birds_learning_network/src/features/core/auth/view_model/sign_up_provider/sign_up.dart';
+import 'package:birds_learning_network/src/features/core/settings/view_model/filter_provider.dart';
 import 'package:birds_learning_network/src/features/core/walk_through/view/walk_through_one.dart';
 import 'package:birds_learning_network/src/global_model/services/native_app/device_details.dart';
 import 'package:birds_learning_network/src/global_model/services/storage/shared_preferences/user_details.dart';
@@ -36,6 +38,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => OtpProvider()),
         ChangeNotifierProvider(create: (context) => OAuthProvider()),
         ChangeNotifierProvider(create: (context) => ResetPasswordProvider()),
+        ChangeNotifierProvider(create: (context) => FilterProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -70,8 +73,12 @@ class _SplashScreenState extends State<SplashScreen> {
       bool isLoggedIn = await UserPreferences.getLoginStatus();
       if (!mounted) return;
       if (isLoggedIn) {
-        Provider.of<LoginProvider>(context, listen: false)
-            .autoLogin(await getData(), context);
+        try {
+          Provider.of<LoginProvider>(context, listen: false)
+              .autoLogin(await getData(), context);
+        } catch (e) {
+          RoutingService.pushReplacementRouting(context, const LoginScreen());
+        }
       } else {
         RoutingService.pushReplacementRouting(
             context, const FirstWalkThroughPage());

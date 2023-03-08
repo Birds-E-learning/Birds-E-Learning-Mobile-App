@@ -9,4 +9,5 @@ class ImagePath {
   static const String facebook = "assets/icons/facebook.svg";
   static const String apple = "assets/icons/apple.svg";
   static const String auth = "assets/icons/auth_stroke.svg";
+  static const String started = "assets/images/started.png";
 }

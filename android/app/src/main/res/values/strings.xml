@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Birds Learning Network</string>
+
+    <string name="facebook_app_id">898205968133509</string>
+    <string name="fb_login_protocol_scheme">fb898205968133509</string>
+    <string name="facebook_client_token">7a4f6d45f0ac27665f63f8e9b5f4d1e0</string>
+</resources>

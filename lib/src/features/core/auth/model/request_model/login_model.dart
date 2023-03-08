@@ -4,6 +4,7 @@ class LoginModel {
   String? channel;
   String? deviceId;
   bool? rememberMe;
+  String? loginBy;
 
   LoginModel({
     this.email,
@@ -11,6 +12,7 @@ class LoginModel {
     this.channel = "MOBILE",
     this.deviceId,
     this.rememberMe = false,
+    this.loginBy = "LOCAL_DOMAIN",
   });
 
   LoginModel.fromJson(Map<String, dynamic> json) {
@@ -19,6 +21,7 @@ class LoginModel {
     channel = json['channel'] as String?;
     deviceId = json['deviceId'] as String?;
     rememberMe = json['rememberMe'] as bool?;
+    loginBy = json['loginBy'] as String?;
   }
 
   Map<String, dynamic> toJson() {
@@ -28,6 +31,7 @@ class LoginModel {
     json['deviceId'] = deviceId;
     json['channel'] = channel;
     json['rememberMe'] = rememberMe;
+    json['loginBy'] = loginBy;
     return json;
   }
 }

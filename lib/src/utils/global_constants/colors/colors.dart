@@ -23,3 +23,4 @@ const Color success1000 = Color(0XFF214505);
 const Color blackSolid = Color(0XFF1C1B1F);
 const Color success800 = Color(0XFF428A0A);
 const Color deepBlack = Color(0XFF000000);
+const Color grey100 = Color(0XFFCECDCE);

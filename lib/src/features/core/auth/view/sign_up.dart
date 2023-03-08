@@ -11,6 +11,7 @@ import 'package:birds_learning_network/src/global_model/services/storage/shared_
 import 'package:birds_learning_network/src/global_model/services/storage/shared_preferences/user_details.dart';
 import 'package:birds_learning_network/src/utils/custom_widgets/o_auth.dart';
 import 'package:birds_learning_network/src/utils/custom_widgets/phone_drop_down.dart';
+import 'package:birds_learning_network/src/utils/custom_widgets/social_cards.dart';
 import 'package:birds_learning_network/src/utils/custom_widgets/text_field.dart';
 import 'package:birds_learning_network/src/utils/global_constants/texts/core_texts/auth_texts.dart';
 import 'package:birds_learning_network/src/utils/helper_widgets/button_black.dart';
@@ -113,31 +114,20 @@ class _SignUpScreenState extends State<SignUpScreen>
                             register.showPassword),
                       ),
                       const SizedBox(height: 15),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SizedBox(
-                            height: 53,
-                            width: 95,
-                            child: PhoneDropDown(
-                              onSelect: (value) {
-                                setState(() {
-                                  phoneCode = value.phoneCode.toString();
-                                });
-                              },
-                              data: phoneCode == null ? "+000" : "+$phoneCode",
-                            ),
-                          ),
-                          const SizedBox(width: 20),
-                          Expanded(
-                              child: CustomTextField(
-                            controller: phone,
-                            labelText: AuthTexts.number,
-                            hintText: AuthTexts.phoneHint,
-                            keyboardType: TextInputType.number,
-                            validator: (value) => numberValidator(value),
-                          ))
-                        ],
+                      CustomTextField(
+                        prefix: PhoneDropDown(
+                          onSelect: (value) {
+                            setState(() {
+                              phoneCode = value.phoneCode.toString();
+                            });
+                          },
+                          data: phoneCode == null ? "+000" : "+$phoneCode",
+                        ),
+                        controller: phone,
+                        labelText: AuthTexts.number,
+                        hintText: AuthTexts.phoneHint,
+                        keyboardType: TextInputType.number,
+                        validator: (value) => numberValidator(value),
                       ),
                       const SizedBox(height: 15),
                       Row(
@@ -195,30 +185,16 @@ class _SignUpScreenState extends State<SignUpScreen>
                       const SizedBox(height: 20),
                       optionWidget(size, AuthTexts.signUpWith),
                       const SizedBox(height: 20),
-                      OAuthWidget(
-                        onFacebookTap: () async {
-                          auth.onFacebookClick();
-                          AuthModel body = AuthModel(
-                              authServiceProvider: "FACEBOOK",
-                              deviceId: deviceId_ ?? "");
-                          await auth.oAuthCall(body, "SIGNUP", context);
-                        },
-                        onGoogleTap: () async {
-                          auth.onGoogleClicked();
-                          AuthModel body = AuthModel(
-                              authServiceProvider: "GOOGLE",
-                              deviceId: deviceId_ ?? "");
-                          if (!mounted) return;
-                          await auth.oAuthCall(body, "SIGNUP", context);
-                        },
-                        onAppleTap: () async {
-                          // auth.onAppleClicked();
-                          // AuthModel body = AuthModel(
-                          //     authServiceProvider: "APPLE",
-                          //     deviceId: deviceId_ ?? "");
-                          // await auth.oAuthCall(body,  "SIGNUP", context);
-                        },
-                      ),
+                      GoogleCard(
+                          text: AuthTexts.googleTextUp,
+                          onTap: () async {
+                            auth.onGoogleClicked();
+                            AuthModel body = AuthModel(
+                                authServiceProvider: "GOOGLE",
+                                deviceId: deviceId_ ?? "");
+                            if (!mounted) return;
+                            await auth.oAuthCall(body, "SIGNUP", context);
+                          }),
                       const SizedBox(height: 15),
                       accountCheck(
                         AuthTexts.hasAccount1,
@@ -250,3 +226,65 @@ class _SignUpScreenState extends State<SignUpScreen>
     setState(() {});
   }
 }
+
+// OAuthWidget(
+//   onFacebookTap: () async {
+//     if (auth.facebookClicked) {
+//       auth.onFacebookClick();
+//       return;
+//     }
+//     auth.onFacebookClick();
+//     auth.facebookAuth(deviceId_ ?? "", context);
+//   },
+//   onGoogleTap: () async {
+// auth.onGoogleClicked();
+// AuthModel body = AuthModel(
+//     authServiceProvider: "GOOGLE",
+//     deviceId: deviceId_ ?? "");
+// if (!mounted) return;
+// await auth.oAuthCall(body, "SIGNUP", context);
+//   },
+//   onAppleTap: () async {
+//     // auth.onAppleClicked();
+//     // AuthModel body = AuthModel(
+//     //     authServiceProvider: "APPLE",
+//     //     deviceId: deviceId_ ?? "");
+//     // await auth.oAuthCall(body,  "SIGNUP", context);
+//   },
+// ),
+
+// Row(
+//   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//   children: [
+//     SizedBox(
+//       height: 51,
+//       width: 95,
+//       child: PhoneDropDown(
+//         onSelect: (value) {
+//           setState(() {
+//             phoneCode = value.phoneCode.toString();
+//           });
+//         },
+//         data: phoneCode == null ? "+000" : "+$phoneCode",
+//       ),
+//     ),
+//     const SizedBox(width: 20),
+//     Expanded(
+//         child:
+// CustomTextField(
+//       prefix: PhoneDropDown(
+//         onSelect: (value) {
+//           setState(() {
+//             phoneCode = value.phoneCode.toString();
+//           });
+//         },
+//         data: phoneCode == null ? "+000" : "+$phoneCode",
+//       ),
+//       controller: phone,
+//       labelText: AuthTexts.number,
+//       hintText: AuthTexts.phoneHint,
+//       keyboardType: TextInputType.number,
+//       validator: (value) => numberValidator(value),
+//     ))
+//   ],
+// ),

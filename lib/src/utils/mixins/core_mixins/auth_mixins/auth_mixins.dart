@@ -35,6 +35,13 @@ mixin AuthTextWidgets on Object implements AuthStyles, AuthTexts {
     );
   }
 
+  static Text googleText(String text) {
+    return Text(
+      text,
+      style: AuthStyles.labelStyle.copyWith(color: grey500),
+    );
+  }
+
   Text forgotPassword() {
     return const Text(
       AuthTexts.forgotPass,

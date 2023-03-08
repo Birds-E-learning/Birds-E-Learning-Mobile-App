@@ -9,6 +9,7 @@ import 'package:birds_learning_network/src/features/core/auth/view_model/oauth_p
 import 'package:birds_learning_network/src/global_model/services/storage/shared_preferences/device_info.dart';
 import 'package:birds_learning_network/src/global_model/services/storage/shared_preferences/user_details.dart';
 import 'package:birds_learning_network/src/utils/custom_widgets/o_auth.dart';
+import 'package:birds_learning_network/src/utils/custom_widgets/social_cards.dart';
 import 'package:birds_learning_network/src/utils/custom_widgets/text_field.dart';
 import 'package:birds_learning_network/src/utils/global_constants/texts/core_texts/auth_texts.dart';
 import 'package:birds_learning_network/src/utils/helper_widgets/button_black.dart';
@@ -133,32 +134,19 @@ class _LoginScreenState extends State<LoginScreen>
                       const SizedBox(height: 20),
                       optionWidget(size, AuthTexts.loginWith),
                       const SizedBox(height: 20),
-                      OAuthWidget(
-                        onFacebookTap: () async {
-                          auth.onFacebookClick();
-                          AuthModel body = AuthModel(
-                              authServiceProvider: "FACEBOOK",
-                              deviceId: deviceId_ ?? "");
-                          await auth.oAuthCall(body, "LOGIN", context);
-                        },
-                        onGoogleTap: () async {
-                          auth.onGoogleClicked();
-                          AuthModel body = AuthModel(
-                              authServiceProvider: "GOOGLE",
-                              deviceId: deviceId_ ?? "");
-                          await auth.oAuthCall(body, "LOGIN", context);
-                          // auth.isDone
-                          //     ? WebView(data: body, url: auth.url)
-                          //     : null;
-                        },
-                        onAppleTap: () async {
-                          // auth.onAppleClicked();
-                          // AuthModel body = AuthModel(
-                          //     authServiceProvider: "APPLE",
-                          //     deviceId: deviceId_);
-                          // await auth.oAuthCall(body,"LOGIN", context);
-                        },
-                      ),
+                      GoogleCard(
+                          text: AuthTexts.googleTextIn,
+                          onTap: () async {
+                            if (auth.googleClicked) {
+                              auth.onGoogleClicked();
+                              return;
+                            }
+                            auth.onGoogleClicked();
+                            AuthModel body = AuthModel(
+                                authServiceProvider: "GOOGLE",
+                                deviceId: deviceId_ ?? "");
+                            await auth.oAuthCall(body, "LOGIN", context);
+                          }),
                       const SizedBox(height: 15),
                       accountCheck(
                         AuthTexts.noAccount,
@@ -189,3 +177,38 @@ class _LoginScreenState extends State<LoginScreen>
     setState(() {});
   }
 }
+
+
+ // OAuthWidget(
+                      //   onFacebookTap: () async {
+                      //     if (auth.facebookClicked) {
+                      //       auth.onFacebookClick();
+                      //       return;
+                      //     }
+                      //     auth.onFacebookClick();
+                      //     await login.facebookAuthLogin(
+                      //         deviceId_ ?? "", context);
+                      //   },
+                      //   onGoogleTap: () async {
+                          // if (auth.googleClicked) {
+                          //   auth.onGoogleClicked();
+                          //   return;
+                          // }
+                          // auth.onGoogleClicked();
+                          // AuthModel body = AuthModel(
+                          //     authServiceProvider: "GOOGLE",
+                          //     deviceId: deviceId_ ?? "");
+                          // await auth.oAuthCall(body, "LOGIN", context);
+                      //   },
+                      //   onAppleTap: () async {
+                      //     if (auth.appleClicked) {
+                      //       auth.onAppleClicked();
+                      //       return;
+                      //     }
+                      //     // auth.onAppleClicked();
+                      //     // AuthModel body = AuthModel(
+                      //     //     authServiceProvider: "APPLE",
+                      //     //     deviceId: deviceId_);
+                      //     // await auth.oAuthCall(body,"LOGIN", context);
+                      //   },
+                      // ),

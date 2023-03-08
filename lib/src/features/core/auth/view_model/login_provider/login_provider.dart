@@ -4,11 +4,13 @@ import 'package:birds_learning_network/src/features/core/auth/model/request_mode
 import 'package:birds_learning_network/src/features/core/auth/model/request_model/login_model.dart';
 import 'package:birds_learning_network/src/features/core/auth/model/response_model/login_response.dart';
 import 'package:birds_learning_network/src/features/core/auth/view/sign_in.dart';
+import 'package:birds_learning_network/src/features/core/auth/view_model/oauth_provider.dart';
 import 'package:birds_learning_network/src/features/core/settings/view/filter/filter_screen.dart';
 import 'package:birds_learning_network/src/global_model/services/storage/secure_storage/user_details.dart';
 import 'package:birds_learning_network/src/global_model/services/storage/shared_preferences/user_details.dart';
 import 'package:birds_learning_network/src/utils/helper_widgets/response_snack.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
 class LoginProvider extends ChangeNotifier {
   bool _isClicked = false;
@@ -17,6 +19,8 @@ class LoginProvider extends ChangeNotifier {
   bool _completeClicked = false;
   LoginModel _loginData = LoginModel();
   final storage = UserSecureStorage();
+  AuthRepository repository = AuthRepository();
+  OAuthProvider auth = OAuthProvider();
 
   bool get isChecked => _isChecked;
 
@@ -68,8 +72,7 @@ class LoginProvider extends ChangeNotifier {
 
   Future userLogin(context, LoginModel data, bool autoLogin) async {
     try {
-      LoginResponse response =
-          await AuthRepository().getLoginResponse(data, context);
+      LoginResponse response = await repository.getLoginResponse(data, context);
       onClick();
       if (response.responseCode == "00") {
         await UserPreferences.setUserFirstName(
@@ -84,7 +87,6 @@ class LoginProvider extends ChangeNotifier {
       }
       notifyListeners();
     } catch (e) {
-      print(e);
       autoLogin ? onCompleteClick() : onClick();
       showSnack(context, "02", "Network TimedOut");
     }
@@ -117,8 +119,54 @@ class LoginProvider extends ChangeNotifier {
       }
       notifyListeners();
     } catch (e) {
-      print(e);
-      // showSnack(context, "02", "Network TimedOut");
+      RoutingService.pushReplacementRouting(context, const LoginScreen());
     }
+  }
+
+  Future facebookAuthLogin(String deviceId, context) async {
+    try {
+      LoginResult res = await FacebookAuth.instance
+          .login(permissions: ["email", "public_profile"]);
+      switch (res.status) {
+        case LoginStatus.success:
+          final userData = await FacebookAuth.instance.getUserData();
+          List<String> names = userData["name"].toString().split(" ");
+          userData["firstName"] = names[0];
+          userData["lastName"] = names[names.length - 1];
+          LoginModel body = LoginModel(
+              loginBy: "FACEBOOK",
+              email: userData["email"],
+              deviceId: deviceId);
+          LoginResponse loginResponse =
+              await repository.getLoginResponse(body, context);
+          if (loginResponse.responseCode == "00") {
+            await UserPreferences.setUserFirstName(
+                loginResponse.responseData!.firstName!);
+            await UserPreferences.setUserData(loginResponse);
+            await UserPreferences.setLoginStatus(true);
+            await storage.setToken(loginResponse.responseData!.authToken!);
+            await storage.setUserData(loginResponse);
+            auth.facebookClicked ? auth.onFacebookClick() : null;
+            RoutingService.pushAndRemoveAllRoute(context, const FilterScreen());
+            notifyListeners();
+          } else {
+            auth.facebookClicked ? auth.onFacebookClick() : null;
+            showSnack(context, loginResponse.responseCode!,
+                loginResponse.responseMessage!);
+          }
+          break;
+        case LoginStatus.cancelled:
+          break;
+        case LoginStatus.failed:
+          break;
+        default:
+          break;
+      }
+    } catch (e) {
+      print(e);
+      auth.facebookClicked ? auth.onFacebookClick() : null;
+      showSnack(context, "02", "Network TimedOut");
+    }
+    notifyListeners();
   }
 }

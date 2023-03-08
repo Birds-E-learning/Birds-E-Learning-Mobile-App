@@ -17,6 +17,7 @@ class SignUpModel {
   String? city;
   String? country;
   String? channel;
+  String? signupBy;
 
   SignUpModel({
     this.firstName,
@@ -36,7 +37,8 @@ class SignUpModel {
     this.language,
     this.city,
     this.country,
-    this.channel,
+    this.channel = "MOBILE",
+    this.signupBy = "LOCAL_DOMAIN",
   });
 
   SignUpModel.fromJson(Map<String, dynamic> json) {
@@ -58,6 +60,7 @@ class SignUpModel {
     city = json['city'] as String?;
     country = json['country'] as String?;
     channel = json['channel'] as String?;
+    signupBy = json['signupBy'] as String?;
   }
 
   Map<String, dynamic> toJson() {
@@ -80,6 +83,7 @@ class SignUpModel {
     json['city'] = city;
     json['country'] = country;
     json['channel'] = channel;
+    json['signupBy'] = signupBy;
     return json;
   }
 }
