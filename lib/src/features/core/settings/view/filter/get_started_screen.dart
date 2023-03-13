@@ -1,4 +1,6 @@
+import 'package:birds_learning_network/src/config/routing/route.dart';
 import 'package:birds_learning_network/src/features/core/auth/view/auth_screen.dart';
+import 'package:birds_learning_network/src/features/modules/profile/view/profile_page.dart';
 import 'package:birds_learning_network/src/utils/global_constants/asset_paths/image_path.dart';
 import 'package:birds_learning_network/src/utils/helper_widgets/button_black.dart';
 import 'package:birds_learning_network/src/utils/helper_widgets/button_white.dart';
@@ -42,7 +44,11 @@ class GetStartedPage extends StatelessWidget with FilterTextWidgets {
                   SizedBox(
                     width: size.width * 0.4,
                     child: BlackButtonWidget(
-                        onPressed: () {}, child: proceedButtonText()),
+                        onPressed: () {
+                          RoutingService.pushAndRemoveAllRoute(
+                              context, const UserProfilePage());
+                        },
+                        child: proceedButtonText()),
                   )
                 ],
               )

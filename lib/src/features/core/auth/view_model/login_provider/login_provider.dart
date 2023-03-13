@@ -6,6 +6,7 @@ import 'package:birds_learning_network/src/features/core/auth/model/response_mod
 import 'package:birds_learning_network/src/features/core/auth/view/sign_in.dart';
 import 'package:birds_learning_network/src/features/core/auth/view_model/oauth_provider.dart';
 import 'package:birds_learning_network/src/features/core/settings/view/filter/filter_screen.dart';
+import 'package:birds_learning_network/src/features/modules/profile/view/profile_page.dart';
 import 'package:birds_learning_network/src/global_model/services/storage/secure_storage/user_details.dart';
 import 'package:birds_learning_network/src/global_model/services/storage/shared_preferences/user_details.dart';
 import 'package:birds_learning_network/src/utils/helper_widgets/response_snack.dart';
@@ -77,7 +78,7 @@ class LoginProvider extends ChangeNotifier {
       if (response.responseCode == "00") {
         await UserPreferences.setUserFirstName(
             response.responseData!.firstName!);
-        await UserPreferences.setUserData(response);
+        await UserPreferences.setUserEmail(response.responseData!.email!);
         await UserPreferences.setLoginStatus(true);
         await storage.setToken(response.responseData!.authToken!);
         await storage.setUserData(response);
@@ -109,7 +110,7 @@ class LoginProvider extends ChangeNotifier {
       if (response.responseCode == "00") {
         await UserPreferences.setUserFirstName(
             response.responseData!.firstName!);
-        await UserPreferences.setUserData(response);
+        await UserPreferences.setUserEmail(response.responseData!.email!);
         await storage.setToken(response.responseData!.authToken!);
         await storage.setUserData(response);
         RoutingService.pushReplacementRouting(context, const FilterScreen());
@@ -137,12 +138,14 @@ class LoginProvider extends ChangeNotifier {
               loginBy: "FACEBOOK",
               email: userData["email"],
               deviceId: deviceId);
+
           LoginResponse loginResponse =
               await repository.getLoginResponse(body, context);
           if (loginResponse.responseCode == "00") {
             await UserPreferences.setUserFirstName(
                 loginResponse.responseData!.firstName!);
-            await UserPreferences.setUserData(loginResponse);
+            await UserPreferences.setUserEmail(
+                loginResponse.responseData!.email!);
             await UserPreferences.setLoginStatus(true);
             await storage.setToken(loginResponse.responseData!.authToken!);
             await storage.setUserData(loginResponse);

@@ -9,6 +9,9 @@ import 'package:birds_learning_network/src/features/core/auth/view_model/passwor
 import 'package:birds_learning_network/src/features/core/auth/view_model/sign_up_provider/sign_up.dart';
 import 'package:birds_learning_network/src/features/core/settings/view_model/filter_provider.dart';
 import 'package:birds_learning_network/src/features/core/walk_through/view/walk_through_one.dart';
+import 'package:birds_learning_network/src/features/modules/profile/view_model/card_provider.dart';
+import 'package:birds_learning_network/src/features/modules/profile/view_model/change_password_provider.dart';
+import 'package:birds_learning_network/src/features/modules/profile/view_model/profile_provider.dart';
 import 'package:birds_learning_network/src/global_model/services/native_app/device_details.dart';
 import 'package:birds_learning_network/src/global_model/services/storage/shared_preferences/user_details.dart';
 import 'package:birds_learning_network/src/utils/global_constants/asset_paths/image_path.dart';
@@ -22,7 +25,7 @@ import 'src/global_model/services/storage/shared_preferences/device_info.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  await SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+  // await SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
   runApp(const MyApp());
 }
 
@@ -39,6 +42,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => OAuthProvider()),
         ChangeNotifierProvider(create: (context) => ResetPasswordProvider()),
         ChangeNotifierProvider(create: (context) => FilterProvider()),
+        ChangeNotifierProvider(create: (context) => ProfileProvider()),
+        ChangeNotifierProvider(create: (context) => ChangePasswordProvider()),
+        ChangeNotifierProvider(create: (context) => CardProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

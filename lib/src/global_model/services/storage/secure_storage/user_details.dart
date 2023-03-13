@@ -21,6 +21,7 @@ class UserSecureStorage {
   }
 
   Future setUserData(LoginResponse userData) async {
+    await setToken(userData.responseData!.authToken ?? "");
     await storage.write(key: _userDataKey, value: jsonEncode(userData));
   }
 
@@ -28,8 +29,8 @@ class UserSecureStorage {
     await storage.write(key: _usernameKey, value: username);
   }
 
-  Future<String?> getToken() async {
-    return await storage.read(key: _tokenKey);
+  Future<String> getToken() async {
+    return await storage.read(key: _tokenKey) ?? "";
   }
 
   Future<String?> getPassword() async {

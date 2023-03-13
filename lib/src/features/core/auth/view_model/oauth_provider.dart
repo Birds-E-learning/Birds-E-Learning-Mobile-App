@@ -96,7 +96,8 @@ class OAuthProvider extends ChangeNotifier {
             if (loginResponse.responseCode == "00") {
               await UserPreferences.setUserFirstName(
                   loginResponse.responseData!.firstName!);
-              await UserPreferences.setUserData(loginResponse);
+              await UserPreferences.setUserEmail(
+                  loginResponse.responseData!.email!);
               await UserPreferences.setLoginStatus(true);
               await storage.setToken(loginResponse.responseData!.authToken!);
               await storage.setUserData(loginResponse);
@@ -188,7 +189,7 @@ class OAuthProvider extends ChangeNotifier {
       if (response.responseCode == "00") {
         await UserPreferences.setUserFirstName(
             response.responseData!.firstName!);
-        await UserPreferences.setUserData(response);
+        await UserPreferences.setUserEmail(response.responseData!.email!);
         await UserPreferences.setLoginStatus(true);
         await storage.setToken(response.responseData!.authToken!);
         await storage.setUserData(response);

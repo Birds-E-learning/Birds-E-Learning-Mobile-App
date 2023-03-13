@@ -22,6 +22,17 @@ class InputValidators {
     return null;
   }
 
+  dynamic newPasswordValidator(String? value, String password) {
+    if (value!.isEmpty) {
+      return "Password is required";
+    } else if (value.length < 8) {
+      return "Password must be 8 characters or more";
+    } else if (value == password) {
+      return "New Password should not be same as Old Password";
+    }
+    return null;
+  }
+
   dynamic confirmPasswordValidator(String? value, String password) {
     if (value!.isEmpty) {
       return "Password is required";

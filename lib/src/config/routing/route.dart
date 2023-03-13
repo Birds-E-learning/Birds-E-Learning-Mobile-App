@@ -5,6 +5,11 @@ class RoutingService {
     return Navigator.push(context, MaterialPageRoute(builder: (_) => screen));
   }
 
+  static pushFullScreenRouting(BuildContext context, Widget screen) {
+    return Navigator.of(context, rootNavigator: true).push(
+        MaterialPageRoute(fullscreenDialog: true, builder: (_) => screen));
+  }
+
   static pushReplacementRouting(BuildContext context, Widget screen) {
     return Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (_) => screen));
@@ -24,7 +29,7 @@ class RoutingService {
   }
 
   static pushAndRemoveAllRoute(BuildContext context, Widget screen) {
-    return Navigator.pushAndRemoveUntil(
-        context, MaterialPageRoute(builder: (_) => screen), (route) => false);
+    return Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (_) => screen), (route) => false);
   }
 }

@@ -19,6 +19,7 @@ class CustomTextField extends StatelessWidget with AuthStyles {
     this.suffixColor = strokeColor,
     this.suffixIcon,
     this.prefix,
+    this.filled = false,
     this.maxLines = 1,
     this.minLines,
     super.key,
@@ -35,6 +36,7 @@ class CustomTextField extends StatelessWidget with AuthStyles {
   final String labelText;
   final Widget? suffixIcon;
   final Widget? prefix;
+  final bool filled;
   final Color suffixColor;
   final AutovalidateMode autovalidateMode;
   final List<TextInputFormatter>? inputFormatters;
@@ -58,39 +60,43 @@ class CustomTextField extends StatelessWidget with AuthStyles {
         labelStyle: AuthStyles.labelStyle,
         suffixIcon: suffixIcon,
         suffixIconColor: suffixColor,
-        fillColor: white,
+        filled: filled,
+        fillColor: filled ? backgroundBlurColor : white,
         hintText: hintText,
         hintStyle: AuthStyles.labelStyle,
         isDense: true,
         focusColor: deepGrey,
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(4),
-          borderSide: const BorderSide(
-            color: deepGrey,
+          borderRadius: BorderRadius.circular(filled ? 6 : 4),
+          borderSide: BorderSide(
+            width: 0.5,
+            color: filled ? success500 : deepGrey,
           ),
         ),
         focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(4),
+          borderRadius: BorderRadius.circular(filled ? 6 : 4),
           borderSide: const BorderSide(
             color: Colors.redAccent,
           ),
         ),
         errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(4),
+          borderRadius: BorderRadius.circular(filled ? 6 : 4),
           borderSide: const BorderSide(
             color: Colors.redAccent,
           ),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(4),
-          borderSide: const BorderSide(
-            color: deepGrey,
+          borderRadius: BorderRadius.circular(filled ? 6 : 4),
+          borderSide: BorderSide(
+            width: 0.5,
+            color: filled ? success500 : deepGrey,
           ),
         ),
         disabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(4),
-          borderSide: const BorderSide(
-            color: deepGrey,
+          borderRadius: BorderRadius.circular(filled ? 6 : 4),
+          borderSide: BorderSide(
+            width: 0.5,
+            color: filled ? success500 : deepGrey,
           ),
         ),
       ),

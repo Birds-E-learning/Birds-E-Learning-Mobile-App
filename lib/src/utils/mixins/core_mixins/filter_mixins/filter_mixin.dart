@@ -68,12 +68,14 @@ mixin FilterTextWidgets on Object implements FilterTexts, FilterStyle {
   Container topicText(String topic, Color backgroundColor, Color color) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      alignment: Alignment.center,
       decoration: BoxDecoration(
           color: color,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(color: deepBlack)),
       child: Text(
         topic,
+        textAlign: TextAlign.center,
         style: FilterStyle.topicStyle.copyWith(color: backgroundColor),
       ),
     );

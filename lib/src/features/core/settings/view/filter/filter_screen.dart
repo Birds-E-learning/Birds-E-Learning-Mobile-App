@@ -2,10 +2,12 @@ import 'package:birds_learning_network/src/config/routing/route.dart';
 import 'package:birds_learning_network/src/features/core/auth/view/auth_screen.dart';
 import 'package:birds_learning_network/src/features/core/settings/view/filter/get_started_screen.dart';
 import 'package:birds_learning_network/src/features/core/settings/view_model/filter_provider.dart';
+import 'package:birds_learning_network/src/features/modules/profile/view/profile_page.dart';
 import 'package:birds_learning_network/src/utils/custom_widgets/text_field.dart';
 import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
 import 'package:birds_learning_network/src/utils/global_constants/texts/core_texts/filter_texts.dart';
 import 'package:birds_learning_network/src/utils/helper_widgets/button_black.dart';
+import 'package:birds_learning_network/src/utils/helper_widgets/loading_indicator.dart';
 import 'package:birds_learning_network/src/utils/mixins/core_mixins/filter_mixins/filter_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -20,12 +22,19 @@ class FilterScreen extends StatefulWidget {
 class _FilterScreenState extends State<FilterScreen>
     with FilterTextWidgets, FilterTexts {
   TextEditingController textField = TextEditingController();
-  final _formKey = GlobalKey<FormState>();
+  // final _formKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
     textField.dispose();
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    Provider.of<FilterProvider>(context, listen: false)
+        .getPreferenceList(context);
+    super.initState();
   }
 
   @override
@@ -54,7 +63,8 @@ class _FilterScreenState extends State<FilterScreen>
                     child: CustomFieldNoLabel(
                       controller: textField,
                       hintText: FilterTexts.hintText,
-                      maxLines: 8,
+                      maxLines: 7,
+                      readOnly: true,
                     ),
                   ),
                   const SizedBox(height: 30),
@@ -79,9 +89,11 @@ class _FilterScreenState extends State<FilterScreen>
                                   !textField.text
                                       .contains(filter.myList[index])) {
                                 textField.text += "${filter.myList[index]}, ";
+                                filter.addPref(filter.myList[index]);
                               } else {
                                 textField.text = textField.text.replaceFirst(
                                     "${filter.myList[index]}, ", "");
+                                filter.removePref(filter.myList[index]);
                               }
                             },
                             child: topicText(
@@ -93,22 +105,35 @@ class _FilterScreenState extends State<FilterScreen>
                       },
                     ),
                   ),
-                  const SizedBox(height: 30),
+                  const SizedBox(height: 50),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
                     child: SizedBox(
                       width: double.infinity,
                       child: BlackButtonWidget(
-                          onPressed: () {
-                            RoutingService.pushReplacementRouting(
-                                context, const GetStartedPage());
+                          onPressed: () async {
+                            if (filter.buttonClicked) {
+                              filter.onButtonClick();
+                              return;
+                            }
+                            if (filter.userPrefList.isEmpty) {
+                              RoutingService.pushAndRemoveAllRoute(
+                                  context, const GetStartedPage());
+                            } else {
+                              print(filter.userPrefList);
+                              filter.onButtonClick();
+                              await filter.postPreferenceList(context);
+                            }
                           },
-                          child: getStartedButtonText()),
+                          child: filter.buttonClicked
+                              ? loadingIdicator()
+                              : getStartedButtonText()),
                     ),
                   ),
                   const SizedBox(height: 10),
                   setupProfile(() {
-                    print("Profile");
+                    RoutingService.pushAndRemoveAllRoute(
+                        context, const UserProfilePage());
                   }),
                 ],
               ),

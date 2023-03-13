@@ -14,7 +14,21 @@ class NetworkService {
           .get(Uri.parse(url), headers: header)
           .timeout(const Duration(seconds: 20));
       print(response.body);
-      responseJson = returnResponse(response, context);
+      responseJson = getReturnResponse(response, context);
+    } on SocketException catch (_) {
+      throw FetchDataException("No Internet Connection");
+    }
+    return responseJson;
+  }
+
+  Future deleteRequest(String url, Map<String, String> header, context) async {
+    dynamic responseJson;
+    try {
+      http.Response response = await http
+          .delete(Uri.parse(url), headers: header)
+          .timeout(const Duration(seconds: 20));
+      print(response.body);
+      responseJson = getReturnResponse(response, context);
     } on SocketException catch (_) {
       throw FetchDataException("No Internet Connection");
     }
@@ -28,13 +42,34 @@ class NetworkService {
       http.Response response = await http
           .post(Uri.parse(url), headers: header, body: jsonEncode(body))
           .timeout(const Duration(seconds: 20));
-      print(jsonEncode(body));
       print(response.body);
       responseJson = returnResponse(response, context);
     } on SocketException catch (_) {
       throw FetchDataException("No Internet Connection");
     }
     return responseJson;
+  }
+
+  @visibleForTesting
+  dynamic getReturnResponse(http.Response response, context) {
+    var responseData = jsonDecode(response.body);
+    switch (response.statusCode) {
+      case 200:
+        dynamic responseJson = responseData;
+        return responseJson;
+      case 201:
+        dynamic responseJson = jsonDecode(response.body);
+        return responseJson;
+      case 400:
+        throw BadRequestException(response.body.toString());
+      case 401:
+      case 403:
+        throw UnauthorisedException(response.body.toString());
+      case 500:
+      default:
+        throw FetchDataException(
+            'Error occured while communicating with server with status code : ${response.statusCode}');
+    }
   }
 
   @visibleForTesting
