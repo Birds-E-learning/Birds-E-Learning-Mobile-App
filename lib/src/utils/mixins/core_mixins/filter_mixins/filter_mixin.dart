@@ -67,7 +67,7 @@ mixin FilterTextWidgets on Object implements FilterTexts, FilterStyle {
 
   Container topicText(String topic, Color backgroundColor, Color color) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
       alignment: Alignment.center,
       decoration: BoxDecoration(
           color: color,

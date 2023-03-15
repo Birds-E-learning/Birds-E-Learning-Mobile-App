@@ -1,5 +1,6 @@
 import 'package:birds_learning_network/src/config/routing/route.dart';
 import 'package:birds_learning_network/src/features/core/auth/model/response_model/login_response.dart';
+import 'package:birds_learning_network/src/features/modules/courses/empty_course_screen.dart';
 import 'package:birds_learning_network/src/features/modules/profile/custom_widgets/pages_row.dart';
 import 'package:birds_learning_network/src/features/modules/profile/view/cards/card_setting.dart';
 import 'package:birds_learning_network/src/features/modules/profile/view/change_password.dart';
@@ -93,7 +94,10 @@ class _UserProfilePageState extends State<UserProfilePage>
                   CustomPageRow(
                       icon: ImagePath.profileCourse,
                       text: ProfileTexts.myCourses,
-                      onTap: () {}),
+                      onTap: () {
+                        RoutingService.pushFullScreenRouting(
+                            context, const EmptyCoursePage());
+                      }),
                   const SizedBox(height: 25),
                   CustomPageRow(
                       icon: ImagePath.certificate,
