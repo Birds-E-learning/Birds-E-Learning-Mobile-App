@@ -28,4 +28,11 @@ class BaseUrl {
   final String addCardLink = "${base}payment/card/link";
   final String getDebitCards = "${base}payment/card/all";
   final String deleteCardLink = "${base}payment/card/unlink?cardNo=";
+
+  // Course Management
+  final String getCoursePref = "${base}course/preference/graph";
+  final String getCourseQuick = "${base}course/quick/graph";
+  final String getCoursetrending = "${base}course/trending/graph";
+  final String getCourses = "${base}course/graph/all";
+  final String allCourses = "${base}course/compact/graph/all";
 }

@@ -14,6 +14,7 @@ class ImagePath {
   static const String mastercard = "assets/images/mastercard.png";
   static const String visa = "assets/images/visa.png";
   static const String verve = "assets/images/verve.png";
+  static const String testimonyImage = "assets/images/testimony_image.png";
 
   //  ------AUTH ICONS-----
   static const String google = "assets/icons/google.svg";
@@ -48,4 +49,23 @@ class ImagePath {
   static const String imageZip = "assets/icons/images_zip.svg";
   static const String task = "assets/icons/task.svg";
   static const String star = "assets/icons/star.svg";
+  static const String facilitsator = "assets/icons/facilitator.svg";
+  static const String starFill = "assets/icons/star_fill.svg";
+  static const String starUnfill = "assets/icons/star_unfill.svg";
+  static const String thumbnail = "assets/images/thumbnail.png";
+  static const String titlePics = "assets/images/title_pics.png";
+  static const String facilitator = "assets/images/facilitator.png";
+  static const String arrowUpLesson = "assets/icons/arrow_up_lesson.svg";
+  static const String arrowDownLesson = "assets/icons/arrow_down_lesson.svg";
+
+  //     User Home
+
+  static const String homeIcon = "assets/icons/home.svg";
+  static const String cartIcon = "assets/icons/cart.svg";
+  static const String courseIcon = "assets/icons/course.svg";
+  static const String accountIcon = "assets/icons/account.svg";
+  static const String activeAcount = "assets/icons/account_active.svg";
+  static const String activeCourse = "assets/icons/course_active.svg";
+  static const String activeCart = "assets/icons/cart_active.svg";
+  static const String activeHome = "assets/icons/home_active.svg";
 }

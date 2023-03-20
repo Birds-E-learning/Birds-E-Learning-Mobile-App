@@ -6,9 +6,9 @@ import 'package:birds_learning_network/src/utils/mixins/module_mixins/courses_mi
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class EmptyCoursePage extends StatelessWidget
+class MyCoursesPage extends StatelessWidget
     with CourseTextWidgets, CoursesText {
-  const EmptyCoursePage({super.key});
+  const MyCoursesPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -25,17 +25,15 @@ class EmptyCoursePage extends StatelessWidget
         child: Padding(
           padding: EdgeInsets.symmetric(
               horizontal: size.width * 0.05, vertical: size.height * 0.05),
-          child: Center(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(height: size.height * 0.1),
-                SvgPicture.asset(ImagePath.noCourse),
-                const SizedBox(height: 20),
-                noCourseText(() {}),
-              ],
-            ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(height: size.height * 0.1),
+              SvgPicture.asset(ImagePath.noCourse),
+              const SizedBox(height: 20),
+              noCourseText(() {}),
+            ],
           ),
         ),
       ),
