@@ -8,6 +8,7 @@ import 'package:birds_learning_network/src/features/modules/profile/view/profile
 import 'package:birds_learning_network/src/global_model/services/storage/secure_storage/user_details.dart';
 import 'package:birds_learning_network/src/global_model/services/storage/shared_preferences/user_details.dart';
 import 'package:birds_learning_network/src/utils/helper_widgets/response_snack.dart';
+import 'package:birds_learning_network/src/utils/ui_utils/app_dialogs/success_dialog.dart';
 import 'package:flutter/material.dart';
 
 class ProfileProvider extends ChangeNotifier {
@@ -75,20 +76,24 @@ class ProfileProvider extends ChangeNotifier {
   Future updateUserProfile(context, UpdateProfileModel data) async {
     try {
       UpdateProfileResponse response = await repo.updateUser(context, data);
-      print("update==user===> ${response.responseMessage}");
       if (response.responseCode == "00") {
         LoginResponse loginResponse =
             await repo.getSingleUser(context, data.emailAddress!);
         doneClicked ? onDoneClick() : null;
-        print("user====details===> ${loginResponse.responseMessage}");
         if (loginResponse.responseCode == "00") {
+          successDialog(
+              context, "Successful", "Profile Successfully Updated", "OK", () {
+            RoutingService.popRouting(context);
+            RoutingService.popRouting(context);
+          });
           await UserPreferences.setUserFirstName(
               loginResponse.responseData!.firstName!);
           await UserPreferences.setUserEmail(
-              loginResponse.responseData!.email!);
+              response.responseData!.newEmail ?? "");
+
+          await UserPreferences.setUserEmail(
+              response.responseData!.newPhotoLink ?? "");
           await storage.setUserData(loginResponse);
-          RoutingService.pushAndRemoveAllRoute(
-              context, const UserProfilePage());
         } else {
           showSnack(context, loginResponse.responseCode!,
               loginResponse.responseMessage!);

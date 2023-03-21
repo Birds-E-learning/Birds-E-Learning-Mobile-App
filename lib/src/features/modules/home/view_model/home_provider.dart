@@ -1,7 +1,7 @@
 import 'package:birds_learning_network/src/features/modules/courses/view/course_screen.dart';
 import 'package:birds_learning_network/src/features/modules/home/model/repository/home_repository.dart';
 import 'package:birds_learning_network/src/features/modules/home/model/response_model/get_courses_pref.dart';
-import 'package:birds_learning_network/src/features/modules/home/view/cart.dart';
+import 'package:birds_learning_network/src/features/modules/user_cart/view/cart.dart';
 import 'package:birds_learning_network/src/features/modules/home/view/home_page.dart';
 import 'package:birds_learning_network/src/features/modules/profile/view/profile_page.dart';
 import 'package:birds_learning_network/src/global_model/services/storage/shared_preferences/user_details.dart';

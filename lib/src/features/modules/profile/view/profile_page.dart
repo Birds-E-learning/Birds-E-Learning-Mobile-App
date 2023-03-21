@@ -6,9 +6,12 @@ import 'package:birds_learning_network/src/features/modules/profile/view/cards/c
 import 'package:birds_learning_network/src/features/modules/profile/view/change_password.dart';
 import 'package:birds_learning_network/src/features/modules/profile/view/contact_us.dart';
 import 'package:birds_learning_network/src/features/modules/profile/view/edit_profile.dart';
+import 'package:birds_learning_network/src/features/modules/profile/view/preferences_screen.dart';
+import 'package:birds_learning_network/src/features/modules/profile/view/widgets/profile_shimmer.dart';
 import 'package:birds_learning_network/src/features/modules/profile/view_model/profile_provider.dart';
 import 'package:birds_learning_network/src/global_model/repositories/url_launcher.dart';
 import 'package:birds_learning_network/src/global_model/services/storage/secure_storage/user_details.dart';
+import 'package:birds_learning_network/src/global_model/services/storage/shared_preferences/user_details.dart';
 import 'package:birds_learning_network/src/utils/custom_widgets/custom_bacground.dart';
 import 'package:birds_learning_network/src/utils/global_constants/asset_paths/image_path.dart';
 import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
@@ -31,6 +34,7 @@ class _UserProfilePageState extends State<UserProfilePage>
   String email = "john.doe@gmail.com";
   String photoLink = "";
   bool received = false;
+  bool isLoading = true;
 
   @override
   void initState() {
@@ -61,7 +65,9 @@ class _UserProfilePageState extends State<UserProfilePage>
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  profilePicture(photoLink, null),
+                  isLoading
+                      ? const ProfilePictureShimmer()
+                      : profilePicture(photoLink, null),
                   const SizedBox(width: 20),
                   Expanded(
                     child: Column(
@@ -110,6 +116,14 @@ class _UserProfilePageState extends State<UserProfilePage>
                       onTap: () {
                         RoutingService.pushFullScreenRouting(
                             context, const CardSettingPage());
+                      }),
+                  const SizedBox(height: 25),
+                  CustomPageRow(
+                      icon: ImagePath.preferences,
+                      text: ProfileTexts.preferences,
+                      onTap: () {
+                        RoutingService.pushFullScreenRouting(
+                            context, const EditPreferenceScreen());
                       }),
                   const SizedBox(height: 25),
                   CustomPageRow(
@@ -166,11 +180,17 @@ class _UserProfilePageState extends State<UserProfilePage>
 
   void getUserDetails() async {
     LoginResponse user = await UserSecureStorage().getUserData();
+    String picUrl = await UserPreferences.getUserPhoto();
     setState(() {
       fullName = user.responseData!.fullName ??
           "${user.responseData!.firstName} ${user.responseData!.lastName}";
       email = user.responseData!.email ?? "john.doe@gmail.com";
-      photoLink = user.responseData!.photoLink ?? "";
+      photoLink = user.responseData!.photoLink ==
+                  "https://birds-e-learning.herokuapp.com/img/profile.png" &&
+              picUrl != ""
+          ? picUrl
+          : user.responseData!.photoLink!;
+      isLoading = false;
       received = photoLink == "" ? false : true;
     });
   }

@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:birds_learning_network/src/features/core/auth/model/response_model/login_response.dart';
 import 'package:birds_learning_network/src/features/modules/profile/model/request_model/update_profile_model.dart';
+import 'package:birds_learning_network/src/features/modules/profile/view/widgets/profile_shimmer.dart';
 import 'package:birds_learning_network/src/features/modules/profile/view_model/profile_provider.dart';
+import 'package:birds_learning_network/src/global_model/services/storage/shared_preferences/user_details.dart';
 import 'package:birds_learning_network/src/utils/custom_widgets/custom_bacground.dart';
 import 'package:birds_learning_network/src/utils/custom_widgets/drop_down.dart';
 import 'package:birds_learning_network/src/utils/custom_widgets/phone_drop_down.dart';
@@ -13,6 +17,7 @@ import 'package:birds_learning_network/src/utils/mixins/module_mixins/profile_mi
 import 'package:birds_learning_network/src/utils/ui_utils/app_dialogs/image_picker.dart';
 import 'package:birds_learning_network/src/utils/validators/validators.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
@@ -34,6 +39,7 @@ class _EditProfilePageState extends State<EditProfilePage>
 
   dynamic gender_;
   XFile? _pickedImg;
+  bool isLoaded = false;
 
   @override
   void initState() {
@@ -75,7 +81,9 @@ class _EditProfilePageState extends State<EditProfilePage>
                 Center(
                   child: Stack(
                     children: [
-                      profilePicture(photoLink, _pickedImg),
+                      isLoaded
+                          ? profilePicture(photoLink, _pickedImg)
+                          : const ProfilePictureShimmer(),
                       Positioned(
                         bottom: 0,
                         right: 3,
@@ -158,9 +166,11 @@ class _EditProfilePageState extends State<EditProfilePage>
                           UpdateProfileModel data = UpdateProfileModel(
                               fullName: fullName.text.trim(),
                               emailAddress: email.text.trim(),
+                              photoLink: await getImageData(),
                               mobileNumber: getNumber(
                                   profile.countryCode, phone.text.trim()),
                               gender: gender_);
+                          if (!mounted) return;
                           await profile.updateUserProfile(context, data);
                         }
                       },
@@ -180,19 +190,36 @@ class _EditProfilePageState extends State<EditProfilePage>
     LoginResponse user =
         await Provider.of<ProfileProvider>(context, listen: false)
             .getUserData();
+
+    String picUrl = await UserPreferences.getUserPhoto();
     setState(() {
       email.text = user.responseData!.email ?? "";
       fullName.text = user.responseData!.fullName ??
           "${user.responseData!.firstName} ${user.responseData!.lastName}";
       phone.text = user.responseData!.mobileNumber ?? "";
       gender.text = user.responseData!.gender ?? "";
-      photoLink = user.responseData!.photoLink ?? "";
-      // gender_ = user.responseData!.gender;
+      photoLink = user.responseData!.photoLink ==
+                  "https://birds-e-learning.herokuapp.com/img/profile.png" &&
+              picUrl != ""
+          ? picUrl
+          : user.responseData!.photoLink!;
+      isLoaded = true;
+      gender_ = user.responseData!.gender;
     });
   }
 
+  Future<String> getImageData() async {
+    if (_pickedImg != null) {
+      Uint8List fileBytes = await _pickedImg!.readAsBytes();
+      String base64String = base64Encode(fileBytes);
+      return base64String;
+    } else {
+      return "";
+    }
+  }
+
   String getNumber(String code, String phone) {
-    if (code == phone.substring(1, code.length + 1)) {
+    if (code == phone.substring(1, code.length + 1) || code == "000") {
       return phone;
     } else {
       return "$code$phone";

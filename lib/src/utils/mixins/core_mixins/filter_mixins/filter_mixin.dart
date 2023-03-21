@@ -12,6 +12,13 @@ mixin FilterTextWidgets on Object implements FilterTexts, FilterStyle {
     );
   }
 
+  Text doneButtonText() {
+    return const Text(
+      "Done",
+      style: FilterStyle.buttonStyle,
+    );
+  }
+
   Text skipButtonText() {
     return Text(
       FilterTexts.skipText,

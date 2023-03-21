@@ -5,6 +5,7 @@ class ProfileTexts {
   static const String myCourses = "My Courses";
   static const String certificate = "Certificate";
   static const String cardSetting = "Card Settings";
+  static const String preferences = "Preferences";
   static const String contactText = "Contact Us";
   static const String termsText = "Terms of Service";
   static const String privacyText = "Privacy Policy";
