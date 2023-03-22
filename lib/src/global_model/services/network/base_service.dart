@@ -12,7 +12,7 @@ class NetworkService {
     try {
       http.Response response = await http
           .get(Uri.parse(url), headers: header)
-          .timeout(const Duration(seconds: 20));
+          .timeout(const Duration(seconds: 30));
       print(response.body);
       responseJson = getReturnResponse(response, context);
     } on SocketException catch (_) {

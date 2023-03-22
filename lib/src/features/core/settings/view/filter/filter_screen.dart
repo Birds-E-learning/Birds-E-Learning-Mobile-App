@@ -1,6 +1,7 @@
 import 'package:birds_learning_network/src/config/routing/route.dart';
 import 'package:birds_learning_network/src/features/core/auth/view/auth_screen.dart';
 import 'package:birds_learning_network/src/features/core/settings/view/filter/get_started_screen.dart';
+import 'package:birds_learning_network/src/features/core/settings/view/widgets/card_shimmer.dart';
 import 'package:birds_learning_network/src/features/core/settings/view_model/filter_provider.dart';
 import 'package:birds_learning_network/src/features/modules/profile/view/profile_page.dart';
 import 'package:birds_learning_network/src/utils/custom_widgets/text_field.dart';
@@ -67,43 +68,59 @@ class _FilterScreenState extends State<FilterScreen>
                     ),
                   ),
                   const SizedBox(height: 30),
-                  GridView.builder(
-                      // primary: false,
-                      shrinkWrap: true,
-                      itemCount: filter.myList.length,
-                      physics: const NeverScrollableScrollPhysics(),
-                      gridDelegate:
-                          const SliverGridDelegateWithMaxCrossAxisExtent(
-                              maxCrossAxisExtent: 150,
-                              mainAxisSpacing: 10,
-                              crossAxisSpacing: 10,
-                              childAspectRatio: 21 / 9),
-                      itemBuilder: (BuildContext context, int index) {
-                        if (filter.selectedCards.length <
-                            filter.myList.length) {
-                          filter.selectedCards.add(false);
-                        }
-                        return InkWell(
-                          onTap: () {
-                            // print(filter.myList[index]);
-                            filter.setValue(index);
-                            if (filter.selectedCards[index] &&
-                                !textField.text
-                                    .contains(filter.myList[index])) {
-                              textField.text += "${filter.myList[index]}, ";
-                              filter.addPref(filter.myList[index]);
-                            } else {
-                              textField.text = textField.text.replaceFirst(
-                                  "${filter.myList[index]}, ", "");
-                              filter.removePref(filter.myList[index]);
+                  filter.myList.isEmpty
+                      ? GridView.builder(
+                          shrinkWrap: true,
+                          itemCount: 6,
+                          physics: const NeverScrollableScrollPhysics(),
+                          gridDelegate:
+                              const SliverGridDelegateWithMaxCrossAxisExtent(
+                                  maxCrossAxisExtent: 150,
+                                  mainAxisSpacing: 10,
+                                  crossAxisSpacing: 10,
+                                  childAspectRatio: 21 / 9),
+                          itemBuilder: (_, __) {
+                            return const FilterCardShimmer();
+                          })
+                      : GridView.builder(
+                          // primary: false,
+                          shrinkWrap: true,
+                          itemCount: filter.myList.length,
+                          physics: const NeverScrollableScrollPhysics(),
+                          gridDelegate:
+                              const SliverGridDelegateWithMaxCrossAxisExtent(
+                                  maxCrossAxisExtent: 150,
+                                  mainAxisSpacing: 10,
+                                  crossAxisSpacing: 10,
+                                  childAspectRatio: 21 / 9),
+                          itemBuilder: (BuildContext context, int index) {
+                            if (filter.selectedCards.length <
+                                filter.myList.length) {
+                              filter.selectedCards.add(false);
                             }
-                          },
-                          child: topicText(
-                              filter.myList[index],
-                              filter.selectedCards[index] ? white : grey700,
-                              filter.selectedCards[index] ? grey700 : white),
-                        );
-                      }),
+                            return InkWell(
+                              onTap: () {
+                                // print(filter.myList[index]);
+                                filter.setValue(index);
+                                if (filter.selectedCards[index] &&
+                                    !textField.text
+                                        .contains(filter.myList[index])) {
+                                  textField.text += "${filter.myList[index]}, ";
+                                  filter.addPref(filter.myList[index]);
+                                } else {
+                                  textField.text = textField.text.replaceFirst(
+                                      "${filter.myList[index]}, ", "");
+                                  filter.removePref(filter.myList[index]);
+                                }
+                              },
+                              child: topicText(
+                                  filter.myList[index],
+                                  filter.selectedCards[index] ? white : grey700,
+                                  filter.selectedCards[index]
+                                      ? grey700
+                                      : white),
+                            );
+                          }),
                   // Wrap(
                   //   spacing: 10,
                   //   runSpacing: 10,
