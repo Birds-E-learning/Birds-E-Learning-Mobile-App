@@ -2,7 +2,6 @@ import 'package:birds_learning_network/src/config/routing/route.dart';
 import 'package:birds_learning_network/src/features/core/settings/model/repositories/filter_repository.dart';
 import 'package:birds_learning_network/src/features/core/settings/model/request_model/save_preference.dart';
 import 'package:birds_learning_network/src/features/core/settings/model/response_model/get_preference.dart';
-import 'package:birds_learning_network/src/features/core/settings/model/response_model/save_pref_response.dart';
 import 'package:birds_learning_network/src/features/core/settings/view/filter/get_started_screen.dart';
 import 'package:birds_learning_network/src/global_model/services/storage/shared_preferences/device_info.dart';
 import 'package:birds_learning_network/src/global_model/services/storage/shared_preferences/user_details.dart';
@@ -66,7 +65,7 @@ class FilterProvider extends ChangeNotifier {
           _myList.add(val.name!);
           notifyListeners();
         }
-        print(_myList);
+        // print(_myList);
       }
       notifyListeners();
     } catch (_) {

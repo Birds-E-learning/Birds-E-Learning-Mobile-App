@@ -36,4 +36,16 @@ class ImagePath {
   static const String addCard = "assets/icons/add_card.svg";
   static const String phoneCall = "assets/icons/phone_call.svg";
   static const String outgoingMail = "assets/icons/outgoing_mail.svg";
+
+  // Courses
+  static const String noCourse = "assets/icons/no_course.svg";
+  static const String digitalCourse = "assets/icons/digital_course.svg";
+  static const String figmaCourse = "assets/icons/figma_course.svg";
+  static const String copyCourse = "assets/icons/copy_course.svg";
+  static const String figmaBackground = "assets/icons/figma_background.svg";
+  static const String pdfImage = "assets/icons/pdf.svg";
+  static const String sourceFile = "assets/icons/folder_zip.svg";
+  static const String imageZip = "assets/icons/images_zip.svg";
+  static const String task = "assets/icons/task.svg";
+  static const String star = "assets/icons/star.svg";
 }

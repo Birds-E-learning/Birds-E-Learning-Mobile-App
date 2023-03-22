@@ -45,7 +45,6 @@ class _FilterScreenState extends State<FilterScreen>
           child: Consumer<FilterProvider>(
         builder: (_, filter, __) => AuthenticationWidget(
           child: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
             child: Padding(
               padding: EdgeInsets.symmetric(
                   vertical: size.height * 0.03, horizontal: size.width * 0.04),
@@ -68,43 +67,88 @@ class _FilterScreenState extends State<FilterScreen>
                     ),
                   ),
                   const SizedBox(height: 30),
-                  SizedBox(
-                    height: 40,
-                    child: ListView.builder(
+                  GridView.builder(
                       // primary: false,
-                      scrollDirection: Axis.horizontal,
+                      shrinkWrap: true,
                       itemCount: filter.myList.length,
+                      physics: const NeverScrollableScrollPhysics(),
+                      gridDelegate:
+                          const SliverGridDelegateWithMaxCrossAxisExtent(
+                              maxCrossAxisExtent: 150,
+                              mainAxisSpacing: 10,
+                              crossAxisSpacing: 10,
+                              childAspectRatio: 21 / 9),
                       itemBuilder: (BuildContext context, int index) {
                         if (filter.selectedCards.length <
                             filter.myList.length) {
                           filter.selectedCards.add(false);
                         }
-                        return Padding(
-                          padding: const EdgeInsets.only(right: 10),
-                          child: InkWell(
-                            onTap: () {
-                              // print(filter.myList[index]);
-                              filter.setValue(index);
-                              if (filter.selectedCards[index] &&
-                                  !textField.text
-                                      .contains(filter.myList[index])) {
-                                textField.text += "${filter.myList[index]}, ";
-                                filter.addPref(filter.myList[index]);
-                              } else {
-                                textField.text = textField.text.replaceFirst(
-                                    "${filter.myList[index]}, ", "");
-                                filter.removePref(filter.myList[index]);
-                              }
-                            },
-                            child: topicText(
-                                filter.myList[index],
-                                filter.selectedCards[index] ? white : grey700,
-                                filter.selectedCards[index] ? grey700 : white),
-                          ),
+                        return InkWell(
+                          onTap: () {
+                            // print(filter.myList[index]);
+                            filter.setValue(index);
+                            if (filter.selectedCards[index] &&
+                                !textField.text
+                                    .contains(filter.myList[index])) {
+                              textField.text += "${filter.myList[index]}, ";
+                              filter.addPref(filter.myList[index]);
+                            } else {
+                              textField.text = textField.text.replaceFirst(
+                                  "${filter.myList[index]}, ", "");
+                              filter.removePref(filter.myList[index]);
+                            }
+                          },
+                          child: topicText(
+                              filter.myList[index],
+                              filter.selectedCards[index] ? white : grey700,
+                              filter.selectedCards[index] ? grey700 : white),
                         );
-                      },
-                    ),
-                  ),
+                      }),
+                  // Wrap(
+                  //   spacing: 10,
+                  //   runSpacing: 10,
+                  //   direction: Axis.horizontal,
+                  //   textDirection: TextDirection.ltr,
+                  //   children: [
+                  //     SizedBox(
+                  //       width: double.infinity,
+                  //       child: ListView.builder(
+                  //         // shrinkWrap: true,
+                  //         itemExtent: size.width,
+                  //         scrollDirection: Axis.horizontal,
+                  //         itemCount: filter.myList.length,
+                  //         itemBuilder: (BuildContext context, int index) {
+                  // if (filter.selectedCards.length <
+                  //     filter.myList.length) {
+                  //   filter.selectedCards.add(false);
+                  // }
+                  // return InkWell(
+                  //   onTap: () {
+                  //     // print(filter.myList[index]);
+                  //     filter.setValue(index);
+                  //     if (filter.selectedCards[index] &&
+                  //         !textField.text
+                  //             .contains(filter.myList[index])) {
+                  //       textField.text += "${filter.myList[index]}, ";
+                  //       filter.addPref(filter.myList[index]);
+                  //     } else {
+                  //       textField.text = textField.text.replaceFirst(
+                  //           "${filter.myList[index]}, ", "");
+                  //       filter.removePref(filter.myList[index]);
+                  //     }
+                  //   },
+                  //   child: topicText(
+                  //       filter.myList[index],
+                  //       filter.selectedCards[index] ? white : grey700,
+                  //       filter.selectedCards[index]
+                  //           ? grey700
+                  //           : white),
+                  // );
+                  //         },
+                  //       ),
+                  //     ),
+                  //   ],
+                  // ),
                   const SizedBox(height: 50),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
