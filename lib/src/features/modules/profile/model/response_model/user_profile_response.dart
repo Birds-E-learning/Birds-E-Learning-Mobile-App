@@ -33,6 +33,7 @@ class ResponseData {
   String? newMiddleName;
   String? newLastName;
   String? newGender;
+  String? newPhotoLink;
   String? updatedAt;
   String? updatedBy;
 
@@ -43,6 +44,7 @@ class ResponseData {
     this.newMiddleName,
     this.newLastName,
     this.newGender,
+    this.newPhotoLink,
     this.updatedAt,
     this.updatedBy,
   });
@@ -54,6 +56,7 @@ class ResponseData {
     newMiddleName = json['newMiddleName'] as String?;
     newLastName = json['newLastName'] as String?;
     newGender = json['newGender'] as String?;
+    newPhotoLink = json['newPhotoLink'] as String?;
     updatedAt = json['updatedAt'] as String?;
     updatedBy = json['updatedBy'] as String?;
   }
@@ -66,6 +69,7 @@ class ResponseData {
     json['newMiddleName'] = newMiddleName;
     json['newLastName'] = newLastName;
     json['newGender'] = newGender;
+    json['newPhotoLink'] = newPhotoLink;
     json['updatedAt'] = updatedAt;
     json['updatedBy'] = updatedBy;
     return json;

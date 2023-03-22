@@ -13,7 +13,9 @@ import 'package:birds_learning_network/src/features/modules/home/view_model/cour
 import 'package:birds_learning_network/src/features/modules/home/view_model/home_provider.dart';
 import 'package:birds_learning_network/src/features/modules/profile/view_model/card_provider.dart';
 import 'package:birds_learning_network/src/features/modules/profile/view_model/change_password_provider.dart';
+import 'package:birds_learning_network/src/features/modules/profile/view_model/edit_preference.dart';
 import 'package:birds_learning_network/src/features/modules/profile/view_model/profile_provider.dart';
+import 'package:birds_learning_network/src/features/modules/user_cart/view_model/cart_provider.dart';
 import 'package:birds_learning_network/src/global_model/services/native_app/device_details.dart';
 import 'package:birds_learning_network/src/global_model/services/storage/shared_preferences/user_details.dart';
 import 'package:birds_learning_network/src/utils/global_constants/asset_paths/image_path.dart';
@@ -49,6 +51,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => CardProvider()),
         ChangeNotifierProvider(create: (context) => HomeProvider()),
         ChangeNotifierProvider(create: (context) => CourseContentProvider()),
+        ChangeNotifierProvider(create: (context) => PreferenceProvider()),
+        ChangeNotifierProvider(create: (context) => CartProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

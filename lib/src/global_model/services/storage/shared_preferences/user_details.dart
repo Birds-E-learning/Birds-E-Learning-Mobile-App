@@ -26,6 +26,17 @@ class UserPreferences {
     return name ?? "There";
   }
 
+  static Future<bool> setUserPhoto(String photo) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return await prefs.setString("photo", photo);
+  }
+
+  static Future<String> getUserPhoto() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var userPhoto = prefs.getString("photo");
+    return userPhoto ?? "";
+  }
+
   static Future<bool> setUserEmail(String email) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return await prefs.setString("email", email);

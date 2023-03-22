@@ -37,6 +37,7 @@ class ImagePath {
   static const String addCard = "assets/icons/add_card.svg";
   static const String phoneCall = "assets/icons/phone_call.svg";
   static const String outgoingMail = "assets/icons/outgoing_mail.svg";
+  static const String preferences = "assets/icons/preferences.svg";
 
   // Courses
   static const String noCourse = "assets/icons/no_course.svg";
@@ -68,4 +69,9 @@ class ImagePath {
   static const String activeCourse = "assets/icons/course_active.svg";
   static const String activeCart = "assets/icons/cart_active.svg";
   static const String activeHome = "assets/icons/home_active.svg";
+
+  // Cart Icons
+
+  static const String emptyCart = "assets/icons/empty_cart.svg";
+  static const String cartImage = "assets/icons/cart_image.svg";
 }

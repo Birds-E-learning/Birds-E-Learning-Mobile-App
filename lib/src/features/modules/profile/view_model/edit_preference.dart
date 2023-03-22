@@ -5,34 +5,22 @@ import 'package:birds_learning_network/src/features/core/settings/model/response
 import 'package:birds_learning_network/src/features/core/settings/view/filter/get_started_screen.dart';
 import 'package:birds_learning_network/src/global_model/services/storage/shared_preferences/device_info.dart';
 import 'package:birds_learning_network/src/global_model/services/storage/shared_preferences/user_details.dart';
+import 'package:birds_learning_network/src/utils/ui_utils/app_dialogs/success_dialog.dart';
 import 'package:flutter/material.dart';
 
-class FilterProvider extends ChangeNotifier {
-  List<bool> selectedCards = [];
+class PreferenceProvider extends ChangeNotifier {
+  bool _doneClicked = false;
   List<String> _myList = [];
   final List<String> _userPrefList = [];
-  int selectedIndex = -1;
+  List<bool> selectedCards = [];
   FilterRepository repo = FilterRepository();
-  bool _buttonClicked = false;
 
-  bool get buttonClicked => _buttonClicked;
+  bool get doneClicked => _doneClicked;
   List<String> get myList => _myList;
-  List<String> get userPrefList => _userPrefList;
+  List<String> get userPrefList => _myList;
 
-  // void onCardClick() {
-  //   if (_color == grey700) {
-  //     _backgroundColor = grey700;
-  //     _color = white;
-  //     notifyListeners();
-  //   } else {
-  //     _color = grey700;
-  //     _backgroundColor = white;
-  //     notifyListeners();
-  //   }
-  // }
-
-  void setValue(index) {
-    selectedCards[index] = !selectedCards[index];
+  void onDoneClick() {
+    _doneClicked = !_doneClicked;
     notifyListeners();
   }
 
@@ -46,19 +34,15 @@ class FilterProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void getIndex(index) {
-    selectedIndex = index;
-    notifyListeners();
-  }
-
-  void onButtonClick() {
-    _buttonClicked = !_buttonClicked;
+  void setValue(int index) {
+    selectedCards[index] = !selectedCards[index];
     notifyListeners();
   }
 
   Future getPreferenceList(context) async {
     try {
       _myList = [];
+      selectedCards = [];
       List<PreferenceResponseData>? prefList =
           await repo.getFilterData(context);
       if (prefList != null && prefList.isNotEmpty) {
@@ -82,12 +66,16 @@ class FilterProvider extends ChangeNotifier {
           userEmail: email, deviceId: deviceId, preferenceList: _userPrefList);
 
       String code = await repo.saveUserPreference(context, data);
-      buttonClicked ? onButtonClick() : null;
+      doneClicked ? onDoneClick() : null;
       if (code == "00") {
-        RoutingService.pushAndRemoveAllRoute(context, const GetStartedPage());
+        successDialog(
+            context, "Successful!", "Preferences successfully saved", "OK", () {
+          RoutingService.popRouting(context);
+          RoutingService.popRouting(context);
+        });
       }
     } catch (e) {
-      buttonClicked ? onButtonClick() : null;
+      doneClicked ? onDoneClick() : null;
     }
   }
 }
