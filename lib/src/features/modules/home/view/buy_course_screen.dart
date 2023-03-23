@@ -193,10 +193,6 @@ class _BuyCourseScreenState extends State<BuyCourseScreen>
                       return LessonCard(
                           index: index,
                           onPlayTap: () async {
-                            print(
-                                "Preview======>>>>>> ${widget.course.lessons![index].previewUrl}");
-                            print(
-                                "url==========>>>>>>${widget.course.lessons![index].url}");
                             await updateVideoController(widget
                                     .course.lessons![index].url ??
                                 "https://www.youtube.com/watch?v=tO01J-M3g0U");
@@ -235,7 +231,7 @@ class _BuyCourseScreenState extends State<BuyCourseScreen>
                     height: 60,
                     child: BlackButtonWidget(
                         onPressed: () {},
-                        child: buttonText("Login", nextColor)),
+                        child: buttonText("Enroll Now", nextColor)),
                   ),
                   const SizedBox(height: 10),
                   Row(

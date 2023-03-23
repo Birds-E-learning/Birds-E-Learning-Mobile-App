@@ -1,9 +1,9 @@
 import 'package:birds_learning_network/src/config/routing/route.dart';
+import 'package:birds_learning_network/src/features/core/settings/view/widgets/card_shimmer.dart';
 import 'package:birds_learning_network/src/features/core/settings/view_model/filter_provider.dart';
 import 'package:birds_learning_network/src/features/modules/home/custom_widgets/course_card.dart';
 import 'package:birds_learning_network/src/features/modules/home/custom_widgets/course_row_card.dart';
 import 'package:birds_learning_network/src/features/modules/home/custom_widgets/facilitator_card.dart';
-import 'package:birds_learning_network/src/features/modules/home/model/response_model/get_courses_pref.dart';
 import 'package:birds_learning_network/src/features/modules/home/view/buy_course_screen.dart';
 import 'package:birds_learning_network/src/features/modules/home/view/category_screen.dart';
 import 'package:birds_learning_network/src/features/modules/home/view/widgets/custom_shimmer_card.dart';
@@ -30,11 +30,11 @@ class _UserHomePageState extends State<UserHomePage>
     with HomeWidgets, HomeText, FilterTextWidgets {
   final TextEditingController _controller = TextEditingController();
 
-  @override
-  void initState() {
-    Provider.of<HomeProvider>(context, listen: false).getHomeData(context);
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   Provider.of<HomeProvider>(context, listen: false).getHomeData(context);
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -91,46 +91,58 @@ class _UserHomePageState extends State<UserHomePage>
                 ),
                 const SizedBox(height: 20),
                 home.onSearch
-                    ? Container(child: null)
-                    : SizedBox(
-                        height: 40,
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: filter.myList.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            if (home.selectedCards.length <
-                                filter.myList.length) {
-                              home.selectedCards.add(false);
-                            }
-                            return InkWell(
-                              onTap: () {
-                                if (!home.selectedCards[index] &&
-                                    _controller.text.trim().isEmpty) {
-                                  home.setValue(index);
-                                  _controller.text = filter.myList[index];
-                                  home.onSearchTriggered(true);
-                                  home.onSearchClicked(_controller.text.trim());
-                                } else if (home.selectedCards[index] &&
-                                    _controller.text.trim() ==
-                                        filter.myList[index]) {
-                                  _controller.text = "";
-                                  home.setValue(index);
-                                  home.onSearchTriggered(false);
+                    ? Container(child: null) //const FilterCardShimmer()
+                    : filter.myList.isEmpty
+                        ? SizedBox(
+                            height: 40,
+                            child: ListView.builder(
+                                itemCount: 10,
+                                scrollDirection: Axis.horizontal,
+                                itemBuilder: (_, __) {
+                                  return const FilterCardShimmer();
+                                }))
+                        : SizedBox(
+                            height: 40,
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: filter.myList.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                if (home.selectedCards.length <
+                                    filter.myList.length) {
+                                  home.selectedCards.add(false);
                                 }
+                                return InkWell(
+                                  onTap: () {
+                                    if (!home.selectedCards[index] &&
+                                        _controller.text.trim().isEmpty) {
+                                      home.setValue(index);
+                                      _controller.text = filter.myList[index];
+                                      home.onSearchTriggered(true);
+                                      home.onSearchClicked(
+                                          _controller.text.trim());
+                                    } else if (home.selectedCards[index] &&
+                                        _controller.text.trim() ==
+                                            filter.myList[index]) {
+                                      _controller.text = "";
+                                      home.setValue(index);
+                                      home.onSearchTriggered(false);
+                                    }
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(left: 10),
+                                    child: topicText(
+                                        filterWatch.myList[index],
+                                        home.selectedCards[index]
+                                            ? white
+                                            : grey700,
+                                        home.selectedCards[index]
+                                            ? grey700
+                                            : Colors.transparent),
+                                  ),
+                                );
                               },
-                              child: Padding(
-                                padding: const EdgeInsets.only(left: 10),
-                                child: topicText(
-                                    filterWatch.myList[index],
-                                    home.selectedCards[index] ? white : grey700,
-                                    home.selectedCards[index]
-                                        ? grey700
-                                        : Colors.transparent),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
+                            ),
+                          ),
                 const SizedBox(height: 20),
                 context.watch<HomeProvider>().searchResult.isNotEmpty &&
                         home.onSearch

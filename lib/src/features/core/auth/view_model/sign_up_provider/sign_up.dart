@@ -51,7 +51,6 @@ class SignUpProvider extends ChangeNotifier {
       }
     } catch (e) {
       onClick();
-      print(e);
       showSnack(context, "02", "Network TimedOut");
     }
   }

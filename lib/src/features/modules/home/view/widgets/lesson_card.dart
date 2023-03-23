@@ -64,8 +64,7 @@ class LessonCard extends StatelessWidget {
                           lesson: lesson,
                           name: lesson.name ?? "lesson unavailable",
                           isPreview: false,
-                          onTap: () => showSnack(context, "02",
-                              "Buy the course to start the lesson"),
+                          onTap: () {},
                         ),
                       ],
                     )
