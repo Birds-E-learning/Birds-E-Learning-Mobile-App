@@ -206,25 +206,25 @@ class _BuyCourseScreenState extends State<BuyCourseScreen>
                           lesson: widget.course.lessons![index]);
                     },
                   ),
-                  const SizedBox(height: 10),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      headerText("Student Testimonials"),
-                      const SizedBox(height: 5),
-                      totalStudentText(5423),
-                      const SizedBox(height: 10),
-                      ListView.builder(
-                          itemCount: 3,
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemBuilder: (BuildContext context, int index) {
-                            return const TestimonyCard();
-                          })
-                    ],
-                  ),
+                  // const SizedBox(height: 10),
+                  // Column(
+                  //   crossAxisAlignment: CrossAxisAlignment.start,
+                  //   children: [
+                  //     headerText("Student Testimonials"),
+                  //     const SizedBox(height: 5),
+                  //     totalStudentText(5423),
+                  //     const SizedBox(height: 10),
+                  //     ListView.builder(
+                  //         itemCount: 3,
+                  //         physics: const NeverScrollableScrollPhysics(),
+                  //         shrinkWrap: true,
+                  //         itemBuilder: (BuildContext context, int index) {
+                  //           return const TestimonyCard();
+                  //         })
+                  //   ],
+                  // ),
                   const SizedBox(height: 20),
-                  bigAmountText("NGN 5,000.00"),
+                  bigAmountText(widget.course.salePrice ?? "5,000.00"),
                   const SizedBox(height: 10),
                   SizedBox(
                     width: double.infinity,
@@ -294,10 +294,11 @@ class _BuyCourseScreenState extends State<BuyCourseScreen>
   }
 
   Future<void> youtubePlayer() async {
-    List vidId = widget.course.video!.split("/");
+    List vidId = widget.course.lessons![0].previewUrl!.split("/");
     _ytController = YoutubePlayerController(
-      initialVideoId: YoutubePlayer.convertUrlToId(widget.course.video!) ??
-          vidId[vidId.length - 1],
+      initialVideoId:
+          YoutubePlayer.convertUrlToId(widget.course.lessons![0].previewUrl!) ??
+              vidId[vidId.length - 1],
       flags: const YoutubePlayerFlags(
         autoPlay: false,
         mute: false,
@@ -306,8 +307,8 @@ class _BuyCourseScreenState extends State<BuyCourseScreen>
   }
 
   Future<void> loadVideoPlayer() async {
-    videoPlayerController =
-        VideoPlayerController.network(widget.course.video ?? "");
+    videoPlayerController = VideoPlayerController.network(
+        widget.course.lessons![0].previewUrl ?? "");
     await Future.wait([videoPlayerController.initialize()]);
     _controller = ChewieController(
       videoPlayerController: videoPlayerController,
@@ -325,12 +326,16 @@ class _BuyCourseScreenState extends State<BuyCourseScreen>
   }
 
   Future showVideoPlayer(context) async {
-    if (widget.course.video!.toLowerCase().contains("youtube.com")) {
+    if (widget.course.lessons![0].previewUrl!
+        .toLowerCase()
+        .contains("youtube.com")) {
       Provider.of<CourseContentProvider>(context, listen: false).youtubeVid =
           true;
       await youtubePlayer();
       if (mounted) setState(() {});
-    } else if (widget.course.video!.toLowerCase().contains(".mp4")) {
+    } else if (widget.course.lessons![0].previewUrl!
+        .toLowerCase()
+        .contains(".mp4")) {
       Provider.of<CourseContentProvider>(context, listen: false).video = true;
       await loadVideoPlayer();
       if (mounted) setState(() {});

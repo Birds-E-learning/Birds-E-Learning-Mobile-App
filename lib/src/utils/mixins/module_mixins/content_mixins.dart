@@ -20,9 +20,9 @@ mixin ContentWidget on Object implements CourseContentStyle {
     );
   }
 
-  Text titleAmountText(String amount) {
+  Text titleAmountText(dynamic amount) {
     return Text(
-      "NGN$amount",
+      amount.toString(),
       style: CourseContentStyle.amountStyle,
     );
   }
