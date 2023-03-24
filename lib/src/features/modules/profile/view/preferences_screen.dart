@@ -1,8 +1,5 @@
-import 'package:birds_learning_network/src/config/routing/route.dart';
 import 'package:birds_learning_network/src/features/core/auth/view/auth_screen.dart';
-import 'package:birds_learning_network/src/features/core/settings/view/filter/get_started_screen.dart';
 import 'package:birds_learning_network/src/features/core/settings/view/widgets/card_shimmer.dart';
-import 'package:birds_learning_network/src/features/core/settings/view_model/filter_provider.dart';
 import 'package:birds_learning_network/src/features/modules/profile/view_model/edit_preference.dart';
 import 'package:birds_learning_network/src/utils/custom_widgets/text_field.dart';
 import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
@@ -14,6 +11,7 @@ import 'package:birds_learning_network/src/utils/helper_widgets/response_snack.d
 import 'package:birds_learning_network/src/utils/mixins/core_mixins/filter_mixins/filter_mixin.dart';
 import 'package:birds_learning_network/src/utils/mixins/module_mixins/profile_mixins.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 
 class EditPreferenceScreen extends StatefulWidget {
@@ -35,8 +33,9 @@ class _EditPreferenceScreenState extends State<EditPreferenceScreen>
 
   @override
   void initState() {
-    Provider.of<PreferenceProvider>(context, listen: false)
-        .getPreferenceList(context);
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      await showPref();
+    });
     super.initState();
   }
 
@@ -104,12 +103,16 @@ class _EditPreferenceScreenState extends State<EditPreferenceScreen>
                                   childAspectRatio: 21 / 9),
                           itemBuilder: (BuildContext context, int index) {
                             if (filter.selectedCards.length <
+                                    filter.myList.length &&
+                                filter.prefList
+                                    .contains(filter.myList[index])) {
+                              filter.selectedCards.add(true);
+                            } else if (filter.selectedCards.length <
                                 filter.myList.length) {
                               filter.selectedCards.add(false);
                             }
                             return InkWell(
                               onTap: () {
-                                // print(filter.myList[index]);
                                 filter.setValue(index);
                                 if (filter.selectedCards[index] &&
                                     !textField.text
@@ -161,5 +164,19 @@ class _EditPreferenceScreenState extends State<EditPreferenceScreen>
         ),
       )),
     );
+  }
+
+  Future showPref() async {
+    await Provider.of<PreferenceProvider>(context, listen: false)
+        .getUserPreferenceList(context);
+    if (!mounted) return;
+    await Provider.of<PreferenceProvider>(context, listen: false)
+        .getPreferenceList(context);
+    if (!mounted) return;
+    List<String> prefList =
+        Provider.of<PreferenceProvider>(context, listen: false).prefList;
+    if (prefList.isNotEmpty) {
+      textField.text = "${prefList.toSet().join(", ")}, ";
+    }
   }
 }
