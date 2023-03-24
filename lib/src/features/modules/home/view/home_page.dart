@@ -5,7 +5,9 @@ import 'package:birds_learning_network/src/features/modules/home/custom_widgets/
 import 'package:birds_learning_network/src/features/modules/home/custom_widgets/course_row_card.dart';
 import 'package:birds_learning_network/src/features/modules/home/custom_widgets/facilitator_card.dart';
 import 'package:birds_learning_network/src/features/modules/home/view/buy_course_screen.dart';
-import 'package:birds_learning_network/src/features/modules/home/view/category_screen.dart';
+import 'package:birds_learning_network/src/features/modules/home/view/categories/preference_courses.dart';
+import 'package:birds_learning_network/src/features/modules/home/view/categories/quick_courses.dart';
+import 'package:birds_learning_network/src/features/modules/home/view/categories/trending_courses.dart';
 import 'package:birds_learning_network/src/features/modules/home/view/widgets/custom_shimmer_card.dart';
 import 'package:birds_learning_network/src/features/modules/home/view_model/home_provider.dart';
 import 'package:birds_learning_network/src/utils/custom_widgets/custom_bacground.dart';
@@ -163,13 +165,15 @@ class _UserHomePageState extends State<UserHomePage>
                               padding: EdgeInsets.symmetric(
                                   horizontal: size.width * 0.04),
                               itemBuilder: (BuildContext context, int index) {
-                                return InkWell(
-                                    onTap: () {
-                                      print(home.searchResult[index].toJson());
-                                    },
-                                    child: CourseRowCards(
-                                      course: home.searchResult[index],
-                                    ));
+                                return CourseRowCards(
+                                  course: home.searchResult[index],
+                                  onTap: () =>
+                                      RoutingService.pushFullScreenRouting(
+                                          context,
+                                          BuyCourseScreen(
+                                              course:
+                                                  home.searchResult[index])),
+                                );
                               }),
                         ],
                       )
@@ -200,14 +204,55 @@ class _UserHomePageState extends State<UserHomePage>
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 categoryRowText(
-                                  "Trending Courses",
+                                  "Top Picks for you",
                                   () {
                                     RoutingService.pushFullScreenRouting(
                                         context,
-                                        CategoryScreen(
-                                          title: "Trending Courses",
-                                          courses: home.trendingCourses,
-                                        ));
+                                        const PreferenceCoursesScreen());
+                                  },
+                                  EdgeInsets.symmetric(
+                                      horizontal: size.width * 0.04),
+                                ),
+                                const SizedBox(height: 15),
+                                SizedBox(
+                                  height: 205,
+                                  child: home.prefCourses.isEmpty
+                                      ? ListView.builder(
+                                          itemCount: 6,
+                                          scrollDirection: Axis.horizontal,
+                                          itemBuilder: (BuildContext context,
+                                              int index) {
+                                            return const CustomHomeCardShimmer();
+                                          })
+                                      : ListView.builder(
+                                          itemCount:
+                                              home.prefCourses.length > 10
+                                                  ? 10
+                                                  : home.prefCourses.length,
+                                          scrollDirection: Axis.horizontal,
+                                          itemBuilder: (BuildContext context,
+                                              int index) {
+                                            return InkWell(
+                                              onTap: () =>
+                                                  RoutingService.pushRouting(
+                                                      context,
+                                                      BuyCourseScreen(
+                                                          course:
+                                                              home.prefCourses[
+                                                                  index])),
+                                              child: CourseCard(
+                                                onFavPressed: () {},
+                                                course: home.prefCourses[index],
+                                              ),
+                                            );
+                                          }),
+                                ),
+                                const SizedBox(height: 15),
+                                categoryRowText(
+                                  "Trending Courses",
+                                  () {
+                                    RoutingService.pushFullScreenRouting(
+                                        context, const TrendingCoursesScreen());
                                   },
                                   EdgeInsets.symmetric(
                                       horizontal: size.width * 0.04),
@@ -249,62 +294,10 @@ class _UserHomePageState extends State<UserHomePage>
                                 ),
                                 const SizedBox(height: 20),
                                 categoryRowText(
-                                  "Top Picks for you",
-                                  () {
-                                    RoutingService.pushFullScreenRouting(
-                                        context,
-                                        CategoryScreen(
-                                          title: "Top Picks for you",
-                                          courses: home.prefCourses,
-                                        ));
-                                  },
-                                  EdgeInsets.symmetric(
-                                      horizontal: size.width * 0.04),
-                                ),
-                                const SizedBox(height: 15),
-                                SizedBox(
-                                  height: 205,
-                                  child: home.prefCourses.isEmpty
-                                      ? ListView.builder(
-                                          itemCount: 6,
-                                          scrollDirection: Axis.horizontal,
-                                          itemBuilder: (BuildContext context,
-                                              int index) {
-                                            return const CustomHomeCardShimmer();
-                                          })
-                                      : ListView.builder(
-                                          itemCount:
-                                              home.prefCourses.length > 10
-                                                  ? 10
-                                                  : home.prefCourses.length,
-                                          scrollDirection: Axis.horizontal,
-                                          itemBuilder: (BuildContext context,
-                                              int index) {
-                                            return InkWell(
-                                              onTap: () =>
-                                                  RoutingService.pushRouting(
-                                                      context,
-                                                      BuyCourseScreen(
-                                                          course:
-                                                              home.prefCourses[
-                                                                  index])),
-                                              child: CourseCard(
-                                                onFavPressed: () {},
-                                                course: home.prefCourses[index],
-                                              ),
-                                            );
-                                          }),
-                                ),
-                                const SizedBox(height: 15),
-                                categoryRowText(
                                   "Quick Courses",
                                   () {
                                     RoutingService.pushFullScreenRouting(
-                                        context,
-                                        CategoryScreen(
-                                          title: "Quick Courses",
-                                          courses: home.quickCourses,
-                                        ));
+                                        context, const QuickCoursesScreen());
                                   },
                                   EdgeInsets.symmetric(
                                       horizontal: size.width * 0.04),

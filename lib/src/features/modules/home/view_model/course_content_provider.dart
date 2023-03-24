@@ -7,7 +7,7 @@ class CourseContentProvider extends ChangeNotifier {
   bool _showVideo = false;
   String url = "https://www.youtube.com/watch?v=tO01J-M3g0U";
   List<bool> selectedLesson = [];
-  bool onLessonSelected = false;
+  // bool onLessonSelected = false;
 
   bool get isYoutube => _isYoutube;
   bool get isVideo => _isVideo;
@@ -16,8 +16,8 @@ class CourseContentProvider extends ChangeNotifier {
   set youtubeVid(value) => _isYoutube = value;
   set video(value) => _isVideo = value;
 
-  void onPreviewClick() {
-    _showVideo = !_showVideo;
+  void onPreviewClick(bool value) {
+    _showVideo = value;
     notifyListeners();
   }
 
@@ -40,6 +40,7 @@ class CourseContentProvider extends ChangeNotifier {
     _isYoutube = false;
     _isVideo = false;
     _showVideo = false;
+    selectedLesson = [];
     notifyListeners();
   }
 }
