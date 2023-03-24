@@ -43,8 +43,22 @@ class HomeProvider extends ChangeNotifier {
   // Home Screen Provider
 
   String _firstName = "There";
+
+  // the list for the courses searched
   List<CoursesPref> _searchResult = [];
+
+  // this list helps to note the selected preferences
   List<bool> selectedCards = [];
+
+  // this list holdds the clicked trending icons
+  List<bool> trendingIcons = [];
+
+  // holds the clicked quick favorite icons
+  List<bool> quickIcons = [];
+
+  // holds the clicked top picks favorite icons
+  List<bool> topIcons = [];
+
   List<String> courseList = [];
   Map<String, List<CoursesPref>> categories = {};
   final List<CoursesPref> _courses = [];
@@ -72,6 +86,21 @@ class HomeProvider extends ChangeNotifier {
 
   void setValue(index) {
     selectedCards[index] = !selectedCards[index];
+    notifyListeners();
+  }
+
+  void setTopValue(index) {
+    topIcons[index] = !topIcons[index];
+    notifyListeners();
+  }
+
+  void setQuickValue(index) {
+    quickIcons[index] = !quickIcons[index];
+    notifyListeners();
+  }
+
+  void setTrendingValue(index) {
+    trendingIcons[index] = !trendingIcons[index];
     notifyListeners();
   }
 

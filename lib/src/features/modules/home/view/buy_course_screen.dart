@@ -158,29 +158,41 @@ class _BuyCourseScreenState extends State<BuyCourseScreen>
                       data: widget.course.content,
                       shrinkWrap: true,
                       style: {
+                        "body": Style(
+                            margin: Margins.zero,
+                            fontSize: FontSize(12, Unit.px),
+                            fontStyle: FontStyle.normal,
+                            fontFamily: "Inter"),
                         "h4": Style(
+                            color: greys900,
                             fontSize: FontSize(16),
+                            fontFamily: "Inter",
                             fontWeight: FontWeight.w500,
-                            margin: Margins.only(
-                                bottom: 0, top: 10, unit: Unit.px)),
+                            margin:
+                                Margins.only(bottom: 5, top: 5, unit: Unit.px)),
                         "p": Style(
-                            margin: Margins.only(
-                                top: -10, bottom: 0, unit: Unit.px),
+                            margin:
+                                Margins.only(top: 0, bottom: 0, unit: Unit.px),
                             lineHeight: const LineHeight(0, units: "px"),
                             fontSize: FontSize(12),
+                            color: deepBlack,
+                            fontFamily: "Inter",
                             fontWeight: FontWeight.w400),
-                        "p , ul": Style(
-                          lineHeight: const LineHeight(2, units: "px"),
-                          fontSize: FontSize(12),
-                        ),
+                        "ul": Style(
+                            fontSize: FontSize(12),
+                            display: Display.inline,
+                            fontFamily: "Inter",
+                            margin: Margins.all(0, unit: Unit.px)),
                         "li": Style(
                           lineHeight: const LineHeight(0, units: "px"),
                           fontSize: FontSize(12),
+                          fontFamily: "Inter",
+                          margin: Margins.all(0, unit: Unit.px),
                         ),
-                        "cs_course_syslebus2": Style(fontSize: FontSize(12))
                       },
                     ),
                   ),
+                  const SizedBox(height: 10),
                   headerText("Course Content"),
                   const Padding(
                     padding: EdgeInsets.symmetric(vertical: 10),

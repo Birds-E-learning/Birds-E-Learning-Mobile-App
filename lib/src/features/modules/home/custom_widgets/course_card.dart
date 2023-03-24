@@ -11,9 +11,13 @@ class CourseCard extends StatelessWidget with ImagePath, HomeWidgets {
     super.key,
     required this.onFavPressed,
     required this.course,
+    this.iconData = Icons.favorite_outline,
+    this.iconColor = skipColor,
   });
   final VoidCallback onFavPressed;
   final CoursesPref course;
+  final Color iconColor;
+  final IconData iconData;
 
   @override
   Widget build(BuildContext context) {
@@ -22,9 +26,6 @@ class CourseCard extends StatelessWidget with ImagePath, HomeWidgets {
       margin: const EdgeInsets.only(left: 10),
       width: 165,
       // // height: 200,
-      // constraints: const BoxConstraints(
-      //   maxHeight: double.infinity,
-      // ),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           border: Border.all(
@@ -83,16 +84,15 @@ class CourseCard extends StatelessWidget with ImagePath, HomeWidgets {
                       ],
                     ),
                     IconButton(
-                        onPressed: () {},
-                        icon: const Icon(
-                          Icons.favorite_outline,
-                          color: skipColor,
+                        onPressed: onFavPressed,
+                        icon: Icon(
+                          iconData,
+                          color: iconColor,
                         ))
                   ],
                 ),
                 const SizedBox(height: 5),
-                amountText(
-                    course.salePrice ?? "NGN5000", course.price ?? "NGN5500")
+                amountText(course.salePrice ?? "5000", course.price ?? "5500")
               ],
             ),
           )

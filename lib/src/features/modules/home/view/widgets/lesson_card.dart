@@ -52,12 +52,16 @@ class LessonCard extends StatelessWidget {
               child: content.selectedLesson[index]
                   ? Column(
                       children: [
-                        // LessonPreview(
-                        //   index: index,
-                        //   lesson: lesson,
-                        //   onTap: onPlayTap,
-                        // ),
-                        // const SizedBox(height: 15),
+                        Container(
+                          child: index == 0
+                              ? LessonPreview(
+                                  index: index,
+                                  lesson: lesson,
+                                  onTap: onPlayTap,
+                                )
+                              : null,
+                        ),
+                        SizedBox(height: index == 0 ? 15 : 0),
                         LessonPreview(
                           index: index,
                           lesson: lesson,
@@ -88,7 +92,7 @@ class LessonPreview extends StatelessWidget {
       {super.key,
       required this.index,
       required this.lesson,
-      this.name = "Preview lesson",
+      this.name = "Preview Preview lesson",
       required this.onTap,
       this.isPreview = true});
   final dynamic index;
