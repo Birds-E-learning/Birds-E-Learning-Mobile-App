@@ -124,8 +124,8 @@ mixin ProfileWidgets on Object implements ProfileStyles, ProfileTexts {
   IconButton leadingIcon(context) {
     return IconButton(
         onPressed: () => RoutingService.popRouting(context),
-        icon: const Icon(
-          Icons.arrow_back,
+        icon: Icon(
+          Platform.isAndroid ? Icons.arrow_back : Icons.arrow_back_ios,
           color: deepBlack,
         ));
   }
