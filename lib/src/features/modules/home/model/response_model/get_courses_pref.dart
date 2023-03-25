@@ -27,7 +27,7 @@ class GetCourseCategory {
 }
 
 class ResponseData {
-  List<Categories>? categories;
+  List<CategoriesPref>? categories;
 
   ResponseData({
     this.categories,
@@ -35,7 +35,7 @@ class ResponseData {
 
   ResponseData.fromJson(Map<String, dynamic> json) {
     categories = (json['categories'] as List?)
-        ?.map((dynamic e) => Categories.fromJson(e as Map<String, dynamic>))
+        ?.map((dynamic e) => CategoriesPref.fromJson(e as Map<String, dynamic>))
         .toList();
   }
 
@@ -46,7 +46,7 @@ class ResponseData {
   }
 }
 
-class Categories {
+class CategoriesPref {
   String? name;
   dynamic imageId;
   String? content;
@@ -64,7 +64,7 @@ class Categories {
   String? updatedAt;
   List<CoursesPref>? courses;
 
-  Categories({
+  CategoriesPref({
     this.name,
     this.imageId,
     this.content,
@@ -83,7 +83,7 @@ class Categories {
     this.courses,
   });
 
-  Categories.fromJson(Map<String, dynamic> json) {
+  CategoriesPref.fromJson(Map<String, dynamic> json) {
     name = json['name'] as String?;
     imageId = json['imageId'] as dynamic;
     content = json['content'] as String?;

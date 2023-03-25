@@ -6,6 +6,7 @@ import 'package:birds_learning_network/src/features/core/auth/model/response_mod
 import 'package:birds_learning_network/src/features/core/auth/view/enter_otp.dart';
 import 'package:birds_learning_network/src/features/core/auth/view/sign_in.dart';
 import 'package:birds_learning_network/src/utils/helper_widgets/response_snack.dart';
+import 'package:birds_learning_network/src/utils/ui_utils/app_dialogs/success_dialog.dart';
 import 'package:flutter/material.dart';
 
 class ResetPasswordProvider extends ChangeNotifier {
@@ -62,8 +63,11 @@ class ResetPasswordProvider extends ChangeNotifier {
           await AuthRepository().getResetPasswordResponse(data, context);
       onResetClick();
       if (response.responseCode == "00") {
-        RoutingService.pushAndRemoveAllRoute(
-            context, const LoginScreen(firstTime: true));
+        successDialog(context, "Reset Successful!",
+            "Password successfully changed!", "OK", () {
+          RoutingService.pushAndRemoveAllRoute(
+              context, const LoginScreen(firstTime: true));
+        });
       } else {
         showSnack(context, response.responseCode!, response.responseMessage!);
       }

@@ -5,6 +5,7 @@ import 'package:birds_learning_network/src/features/modules/home/model/response_
 import 'package:birds_learning_network/src/features/modules/home/view/widgets/error_widget.dart';
 import 'package:birds_learning_network/src/features/modules/home/view/widgets/lesson_card.dart';
 import 'package:birds_learning_network/src/features/modules/home/view_model/course_content_provider.dart';
+import 'package:birds_learning_network/src/features/modules/payment/view/screens/payment_screen.dart';
 import 'package:birds_learning_network/src/utils/global_constants/asset_paths/image_path.dart';
 import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
 import 'package:birds_learning_network/src/utils/global_constants/styles/home_styles/home_styles.dart';
@@ -42,8 +43,8 @@ class _BuyCourseScreenState extends State<BuyCourseScreen>
   @override
   void initState() {
     super.initState();
-    Provider.of<CourseContentProvider>(context, listen: false).reset();
     SchedulerBinding.instance.addPostFrameCallback((_) async {
+      Provider.of<CourseContentProvider>(context, listen: false).reset();
       await showVideoPlayer(context, widget.course.video!);
     });
   }
@@ -158,29 +159,41 @@ class _BuyCourseScreenState extends State<BuyCourseScreen>
                       data: widget.course.content,
                       shrinkWrap: true,
                       style: {
+                        "body": Style(
+                            margin: Margins.zero,
+                            fontSize: FontSize(12, Unit.px),
+                            fontStyle: FontStyle.normal,
+                            fontFamily: "Inter"),
                         "h4": Style(
+                            color: greys900,
                             fontSize: FontSize(16),
+                            fontFamily: "Inter",
                             fontWeight: FontWeight.w500,
-                            margin: Margins.only(
-                                bottom: 0, top: 10, unit: Unit.px)),
+                            margin:
+                                Margins.only(bottom: 5, top: 5, unit: Unit.px)),
                         "p": Style(
-                            margin: Margins.only(
-                                top: -10, bottom: 0, unit: Unit.px),
+                            margin:
+                                Margins.only(top: 0, bottom: 0, unit: Unit.px),
                             lineHeight: const LineHeight(0, units: "px"),
                             fontSize: FontSize(12),
+                            color: deepBlack,
+                            fontFamily: "Inter",
                             fontWeight: FontWeight.w400),
-                        "p , ul": Style(
-                          lineHeight: const LineHeight(2, units: "px"),
-                          fontSize: FontSize(12),
-                        ),
+                        "ul": Style(
+                            fontSize: FontSize(12),
+                            display: Display.inline,
+                            fontFamily: "Inter",
+                            margin: Margins.all(0, unit: Unit.px)),
                         "li": Style(
                           lineHeight: const LineHeight(0, units: "px"),
                           fontSize: FontSize(12),
+                          fontFamily: "Inter",
+                          margin: Margins.all(0, unit: Unit.px),
                         ),
-                        "cs_course_syslebus2": Style(fontSize: FontSize(12))
                       },
                     ),
                   ),
+                  const SizedBox(height: 10),
                   headerText("Course Content"),
                   const Padding(
                     padding: EdgeInsets.symmetric(vertical: 10),
@@ -239,7 +252,8 @@ class _BuyCourseScreenState extends State<BuyCourseScreen>
                     width: double.infinity,
                     height: 60,
                     child: BlackButtonWidget(
-                        onPressed: () {},
+                        onPressed: () => RoutingService.pushRouting(
+                            context, const PaymentScreen()),
                         child: buttonText("Enroll Now", nextColor)),
                   ),
                   const SizedBox(height: 10),

@@ -7,13 +7,14 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class NetworkService {
-  Future getRequest(String url, Map<String, String> header, context) async {
+  Future getRequest(String url, Map<String, String> header, context,
+      {int time = 30}) async {
     dynamic responseJson;
     try {
       http.Response response = await http
           .get(Uri.parse(url), headers: header)
-          .timeout(const Duration(seconds: 30));
-      print(response.body);
+          .timeout(Duration(seconds: time));
+      // print(response.body);
       responseJson = getReturnResponse(response, context);
     } on SocketException catch (_) {
       throw FetchDataException("No Internet Connection");
@@ -27,7 +28,7 @@ class NetworkService {
       http.Response response = await http
           .delete(Uri.parse(url), headers: header)
           .timeout(const Duration(seconds: 20));
-      print(response.body);
+      // print(response.body);
       responseJson = getReturnResponse(response, context);
     } on SocketException catch (_) {
       throw FetchDataException("No Internet Connection");
@@ -42,7 +43,7 @@ class NetworkService {
       http.Response response = await http
           .post(Uri.parse(url), headers: header, body: jsonEncode(body))
           .timeout(const Duration(seconds: 20));
-      print(response.body);
+      // print(response.body);
       responseJson = returnResponse(response, context);
     } on SocketException catch (_) {
       throw FetchDataException("No Internet Connection");

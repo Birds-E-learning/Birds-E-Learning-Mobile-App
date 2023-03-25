@@ -20,6 +20,12 @@ class QuickCoursesScreen extends StatefulWidget {
 class _QuickCoursesScreenState extends State<QuickCoursesScreen>
     with HomeWidgets, HomeText {
   @override
+  void initState() {
+    Provider.of<HomeProvider>(context, listen: false).refreshData(context);
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     return Consumer<HomeProvider>(

@@ -32,15 +32,10 @@ class _UserHomePageState extends State<UserHomePage>
     with HomeWidgets, HomeText, FilterTextWidgets {
   final TextEditingController _controller = TextEditingController();
 
-  // @override
-  // void initState() {
-  //   Provider.of<HomeProvider>(context, listen: false).getHomeData(context);
-  //   super.initState();
-  // }
-
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
+    Provider.of<HomeProvider>(context, listen: false).refreshData(context);
     FilterProvider filter = Provider.of<FilterProvider>(context, listen: false);
     FilterProvider filterWatch = Provider.of<FilterProvider>(context);
     return Consumer<HomeProvider>(
@@ -232,6 +227,10 @@ class _UserHomePageState extends State<UserHomePage>
                                           scrollDirection: Axis.horizontal,
                                           itemBuilder: (BuildContext context,
                                               int index) {
+                                            if (home.topIcons.length <
+                                                home.prefCourses.length) {
+                                              home.topIcons.add(false);
+                                            }
                                             return InkWell(
                                               onTap: () =>
                                                   RoutingService.pushRouting(
@@ -241,7 +240,12 @@ class _UserHomePageState extends State<UserHomePage>
                                                               home.prefCourses[
                                                                   index])),
                                               child: CourseCard(
-                                                onFavPressed: () {},
+                                                iconData: home.topIcons[index]
+                                                    ? Icons.favorite
+                                                    : Icons.favorite_outline,
+                                                onFavPressed: () {
+                                                  home.setTopValue(index);
+                                                },
                                                 course: home.prefCourses[index],
                                               ),
                                             );
@@ -276,6 +280,10 @@ class _UserHomePageState extends State<UserHomePage>
                                           scrollDirection: Axis.horizontal,
                                           itemBuilder: (BuildContext context,
                                               int index) {
+                                            if (home.trendingIcons.length <
+                                                home.trendingCourses.length) {
+                                              home.trendingIcons.add(false);
+                                            }
                                             return InkWell(
                                               onTap: () => RoutingService
                                                   .pushFullScreenRouting(
@@ -285,7 +293,13 @@ class _UserHomePageState extends State<UserHomePage>
                                                               home.trendingCourses[
                                                                   index])),
                                               child: CourseCard(
-                                                onFavPressed: () {},
+                                                iconData: home
+                                                        .trendingIcons[index]
+                                                    ? Icons.favorite
+                                                    : Icons.favorite_outline,
+                                                onFavPressed: () {
+                                                  home.setTrendingValue(index);
+                                                },
                                                 course:
                                                     home.trendingCourses[index],
                                               ),
@@ -319,9 +333,12 @@ class _UserHomePageState extends State<UserHomePage>
                                                   ? 10
                                                   : home.quickCourses.length,
                                           scrollDirection: Axis.horizontal,
-                                          // shrinkWrap: true,
                                           itemBuilder: (BuildContext context,
                                               int index) {
+                                            if (home.quickIcons.length <
+                                                home.quickCourses.length) {
+                                              home.quickIcons.add(false);
+                                            }
                                             return InkWell(
                                               onTap: () => RoutingService
                                                   .pushFullScreenRouting(
@@ -331,7 +348,12 @@ class _UserHomePageState extends State<UserHomePage>
                                                               home.quickCourses[
                                                                   index])),
                                               child: CourseCard(
-                                                onFavPressed: () {},
+                                                iconData: home.quickIcons[index]
+                                                    ? Icons.favorite
+                                                    : Icons.favorite_outline,
+                                                onFavPressed: () {
+                                                  home.setQuickValue(index);
+                                                },
                                                 course:
                                                     home.quickCourses[index],
                                               ),

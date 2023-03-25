@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:birds_learning_network/src/features/core/settings/view_model/filter_provider.dart';
 import 'package:birds_learning_network/src/features/modules/courses/view/course_screen.dart';
 import 'package:birds_learning_network/src/features/modules/home/model/repository/home_repository.dart';
@@ -6,6 +8,7 @@ import 'package:birds_learning_network/src/features/modules/user_cart/view/cart.
 import 'package:birds_learning_network/src/features/modules/home/view/home_page.dart';
 import 'package:birds_learning_network/src/features/modules/profile/view/profile_page.dart';
 import 'package:birds_learning_network/src/global_model/services/storage/shared_preferences/user_details.dart';
+import 'package:birds_learning_network/src/utils/helper_widgets/response_snack.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -38,16 +41,48 @@ class HomeProvider extends ChangeNotifier {
     await prefCoursesGraph(context);
     await trendingCoursesGraph(context);
     await quickCoursesGraph(context);
+    getAllCourses(context);
+  }
+
+  Future refreshData(context) async {
+    Future.delayed(const Duration(seconds: 75), () async {
+      if (_courses.isEmpty) {
+        getAllCourses(context);
+      }
+      if (_prefCourses.isEmpty) {
+        await prefCoursesGraph(context);
+      }
+      if (_trendingCourses.isEmpty) {
+        await trendingCoursesGraph(context);
+      }
+      if (_quickCourses.isEmpty) {
+        await quickCoursesGraph(context);
+      }
+    });
   }
 
   // Home Screen Provider
 
   String _firstName = "There";
+
+  // the list for the courses searched
   List<CoursesPref> _searchResult = [];
+
+  // this list helps to note the selected preferences
   List<bool> selectedCards = [];
+
+  // this list holdds the clicked trending icons
+  List<bool> trendingIcons = [];
+
+  // holds the clicked quick favorite icons
+  List<bool> quickIcons = [];
+
+  // holds the clicked top picks favorite icons
+  List<bool> topIcons = [];
+
   List<String> courseList = [];
   Map<String, List<CoursesPref>> categories = {};
-  final List<CoursesPref> _courses = [];
+  List<CoursesPref> _courses = [];
   List<CoursesPref> _quickCourses = [];
   List<CoursesPref> _prefCourses = [];
   List<CoursesPref> _trendingCourses = [];
@@ -57,6 +92,7 @@ class HomeProvider extends ChangeNotifier {
   String get firstName => _firstName;
   List<CoursesPref> get searchResult => _searchResult;
   List<CoursesPref> get quickCourses => _quickCourses;
+  List<CoursesPref> get courses => _courses;
   List<CoursesPref> get trendingCourses => _trendingCourses;
   List<CoursesPref> get prefCourses => _prefCourses;
 
@@ -72,6 +108,21 @@ class HomeProvider extends ChangeNotifier {
 
   void setValue(index) {
     selectedCards[index] = !selectedCards[index];
+    notifyListeners();
+  }
+
+  void setTopValue(index) {
+    topIcons[index] = !topIcons[index];
+    notifyListeners();
+  }
+
+  void setQuickValue(index) {
+    quickIcons[index] = !quickIcons[index];
+    notifyListeners();
+  }
+
+  void setTrendingValue(index) {
+    trendingIcons[index] = !trendingIcons[index];
     notifyListeners();
   }
 
@@ -93,37 +144,36 @@ class HomeProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Future getAllCourses(context) async {
-  //   try {
-  //     GetCoursesModel response = await repo.getCompactCourse(context);
-  //     if (response.responseCode == "00") {
-  //       _courses = [];
-  //       _quickCourses = [];
-  //       _trendingCourses = [];
-  //       _prefCourses = [];
-  //       response.responseData!.toJson().forEach((key, value) {
-  //         Categories category = Categories.fromJson(value);
-  //         categories[key] = category.;
-  //         _courses.addAll(category.categories![0].courses!);
-  //         notifyListeners();
-  //         if (key == "trendingCategories") {
-  //           _trendingCourses.addAll(category.courses!);
-  //           notifyListeners();
-  //         } else if (key == "preferentialCategories") {
-  //           _prefCourses.addAll(category.courses!);
-  //           notifyListeners();
-  //         } else if (key == "quickCategories") {
-  //           _quickCourses.addAll(category.courses!);
-  //           notifyListeners();
-  //         }
-  //       });
-  //       print(categories);
-  //       notifyListeners();
-  //     } else {
-  //       showSnack(context, response.responseCode!, response.responseMessage!);
-  //     }
-  //   } catch (_) {}
-  // }
+  Future getAllCourses(context) async {
+    try {
+      var response = await repo.getCompactCourse(context);
+      if (response["responseCode"] == "00") {
+        Map<String, dynamic> data = response['responseData'];
+        _courses = [];
+        print("length======>>>> ${data.length}");
+        for (var value in data.keys) {
+          List categories_ = data[value];
+          print(("$value =====>>>> ${categories_.length}"));
+          int sum = 0;
+          categories_.forEach(
+            (element) {
+              CategoriesPref elem = CategoriesPref.fromJson(element);
+              sum += elem.courses!.length;
+              _courses.addAll(elem.courses!);
+            },
+          );
+          print("$value =======>> $sum");
+          notifyListeners();
+        }
+        notifyListeners();
+        print("_courses ===>>>>> ${_courses.length}");
+      } else {
+        showSnack(context, response.responseCode!, response.responseMessage!);
+      }
+    } catch (_) {
+      print(_);
+    }
+  }
 
   Future prefCoursesGraph(context) async {
     try {
