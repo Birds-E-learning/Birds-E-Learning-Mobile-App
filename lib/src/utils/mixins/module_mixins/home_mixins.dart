@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:birds_learning_network/src/config/routing/route.dart';
 import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
@@ -71,8 +73,8 @@ mixin HomeWidgets on Object implements HomeText, HomeStyles {
   IconButton leadingIcon(context) {
     return IconButton(
         onPressed: () => RoutingService.popRouting(context),
-        icon: const Icon(
-          Icons.arrow_back,
+        icon: Icon(
+          Platform.isAndroid ? Icons.arrow_back : Icons.arrow_back_ios,
           color: deepBlack,
         ));
   }

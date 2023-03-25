@@ -1,3 +1,4 @@
+import 'package:birds_learning_network/src/features/core/settings/view_model/filter_provider.dart';
 import 'package:birds_learning_network/src/features/modules/courses/view/course_screen.dart';
 import 'package:birds_learning_network/src/features/modules/home/model/repository/home_repository.dart';
 import 'package:birds_learning_network/src/features/modules/home/model/response_model/get_courses_pref.dart';
@@ -6,6 +7,7 @@ import 'package:birds_learning_network/src/features/modules/home/view/home_page.
 import 'package:birds_learning_network/src/features/modules/profile/view/profile_page.dart';
 import 'package:birds_learning_network/src/global_model/services/storage/shared_preferences/user_details.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HomeProvider extends ChangeNotifier {
   HomeRepository repo = HomeRepository();
@@ -31,6 +33,8 @@ class HomeProvider extends ChangeNotifier {
     selectedCards = [];
     _onSearch = false;
     getUserData();
+    await Provider.of<FilterProvider>(context, listen: false)
+        .getPreferenceList(context);
     await prefCoursesGraph(context);
     await trendingCoursesGraph(context);
     await quickCoursesGraph(context);

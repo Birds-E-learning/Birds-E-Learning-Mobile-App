@@ -20,6 +20,7 @@ class PreviewContainer extends StatelessWidget {
       children: [
         Container(
           width: size.width * 0.8,
+          height: 200,
           decoration: BoxDecoration(
               boxShadow: [
                 BoxShadow(
@@ -61,36 +62,38 @@ class PreviewContainer extends StatelessWidget {
             bottom: 30,
             left: size.width * 0.2,
             right: size.width * 0.2,
-            child: Align(
+            child: Container(
               alignment: Alignment.bottomCenter,
-              child: InkWell(
-                onTap: onTap,
-                child: Container(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: size.width * 0.05, vertical: 5),
-                  decoration: BoxDecoration(
-                      border: Border.all(color: white400),
-                      borderRadius: BorderRadius.circular(30)),
-                  child: Row(
-                    children: const [
-                      Icon(
-                        Icons.play_arrow_rounded,
-                        size: 40,
-                        color: white400,
+              child: loaded
+                  ? null
+                  : InkWell(
+                      onTap: onTap,
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: size.width * 0.05, vertical: 5),
+                        decoration: BoxDecoration(
+                            border: Border.all(color: white400),
+                            borderRadius: BorderRadius.circular(30)),
+                        child: Row(
+                          children: const [
+                            Icon(
+                              Icons.play_arrow_rounded,
+                              size: 40,
+                              color: white400,
+                            ),
+                            SizedBox(width: 10),
+                            Text(
+                              "Preview",
+                              style: TextStyle(
+                                  color: white400,
+                                  fontFamily: "Inter",
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 12),
+                            )
+                          ],
+                        ),
                       ),
-                      SizedBox(width: 10),
-                      Text(
-                        "Preview",
-                        style: TextStyle(
-                            color: white400,
-                            fontFamily: "Inter",
-                            fontWeight: FontWeight.w400,
-                            fontSize: 12),
-                      )
-                    ],
-                  ),
-                ),
-              ),
+                    ),
             ))
       ],
     );

@@ -16,7 +16,10 @@ import 'package:birds_learning_network/src/global_model/services/storage/shared_
 import 'package:birds_learning_network/src/utils/helper_widgets/response_snack.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:provider/provider.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+
+import '../../../modules/home/view_model/home_provider.dart';
 
 class OAuthProvider extends ChangeNotifier {
   bool _webviewCompleted = false;
@@ -102,6 +105,8 @@ class OAuthProvider extends ChangeNotifier {
               await storage.setToken(loginResponse.responseData!.authToken!);
               await storage.setUserData(loginResponse);
               facebookClicked ? onFacebookClick() : null;
+              Provider.of<HomeProvider>(context, listen: false)
+                  .getHomeData(context);
               RoutingService.pushAndRemoveAllRoute(
                   context, const FilterScreen());
             } else {
@@ -148,8 +153,14 @@ class OAuthProvider extends ChangeNotifier {
         url = response.responseData!.authorizationConsentUrl!;
         notifyListeners();
         checkServiceClicked(_serviceProvider);
-        RoutingService.pushRouting(context,
-            WebView(data: body, url: url, serviceProvider: _serviceProvider));
+        RoutingService.pushRouting(
+            context,
+            WebView(
+              data: body,
+              url: url,
+              serviceProvider: _serviceProvider,
+              validationType: validationType,
+            ));
       } else {
         checkServiceClicked(_serviceProvider);
         showSnack(context, response.responseCode!, response.responseMessage!);

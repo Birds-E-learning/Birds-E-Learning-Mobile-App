@@ -16,6 +16,7 @@ class BaseUrl {
 
   // filter preferences
   final String getPref = "${base}course/preference/all";
+  final String getPrefUser = "${base}course/preference/get";
   final String savePref = "${base}course/preference/save-update";
 
   // User Profile

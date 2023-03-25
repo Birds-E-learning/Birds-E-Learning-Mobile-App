@@ -6,12 +6,15 @@ import 'package:birds_learning_network/src/features/core/auth/model/response_mod
 import 'package:birds_learning_network/src/features/core/auth/view/sign_in.dart';
 import 'package:birds_learning_network/src/features/core/auth/view_model/oauth_provider.dart';
 import 'package:birds_learning_network/src/features/core/settings/view/filter/filter_screen.dart';
+import 'package:birds_learning_network/src/features/modules/home/view/home.dart';
+import 'package:birds_learning_network/src/features/modules/home/view_model/home_provider.dart';
 import 'package:birds_learning_network/src/features/modules/profile/view/profile_page.dart';
 import 'package:birds_learning_network/src/global_model/services/storage/secure_storage/user_details.dart';
 import 'package:birds_learning_network/src/global_model/services/storage/shared_preferences/user_details.dart';
 import 'package:birds_learning_network/src/utils/helper_widgets/response_snack.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:provider/provider.dart';
 
 class LoginProvider extends ChangeNotifier {
   bool _isClicked = false;
@@ -82,7 +85,8 @@ class LoginProvider extends ChangeNotifier {
         await UserPreferences.setLoginStatus(true);
         await storage.setToken(response.responseData!.authToken!);
         await storage.setUserData(response);
-        RoutingService.pushAndRemoveAllRoute(context, const FilterScreen());
+        Provider.of<HomeProvider>(context, listen: false).getHomeData(context);
+        RoutingService.pushAndRemoveAllRoute(context, const BirdsHome());
       } else {
         showSnack(context, response.responseCode!, response.responseMessage!);
       }
@@ -113,7 +117,8 @@ class LoginProvider extends ChangeNotifier {
         await UserPreferences.setUserEmail(response.responseData!.email!);
         await storage.setToken(response.responseData!.authToken!);
         await storage.setUserData(response);
-        RoutingService.pushReplacementRouting(context, const FilterScreen());
+        Provider.of<HomeProvider>(context, listen: false).getHomeData(context);
+        RoutingService.pushReplacementRouting(context, const BirdsHome());
       } else {
         RoutingService.pushReplacementRouting(
             context, const LoginScreen(firstTime: false));
@@ -150,7 +155,9 @@ class LoginProvider extends ChangeNotifier {
             await storage.setToken(loginResponse.responseData!.authToken!);
             await storage.setUserData(loginResponse);
             auth.facebookClicked ? auth.onFacebookClick() : null;
-            RoutingService.pushAndRemoveAllRoute(context, const FilterScreen());
+            Provider.of<HomeProvider>(context, listen: false)
+                .getHomeData(context);
+            RoutingService.pushAndRemoveAllRoute(context, const BirdsHome());
             notifyListeners();
           } else {
             auth.facebookClicked ? auth.onFacebookClick() : null;

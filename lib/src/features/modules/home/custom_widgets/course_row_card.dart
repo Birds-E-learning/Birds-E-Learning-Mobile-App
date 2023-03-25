@@ -7,14 +7,15 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class CourseRowCards extends StatelessWidget with HomeWidgets {
-  const CourseRowCards({super.key, required this.course});
+  const CourseRowCards({super.key, required this.course, required this.onTap});
   final CoursesPref course;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     return InkWell(
-      onTap: () {},
+      onTap: onTap,
       child: SizedBox(
         // height: 70,
         width: size.width * 0.92,

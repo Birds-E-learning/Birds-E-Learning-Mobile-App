@@ -3,7 +3,6 @@ import 'package:birds_learning_network/src/features/modules/home/model/response_
 import 'package:birds_learning_network/src/features/modules/home/view_model/course_content_provider.dart';
 import 'package:birds_learning_network/src/utils/global_constants/asset_paths/image_path.dart';
 import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
-import 'package:birds_learning_network/src/utils/helper_widgets/response_snack.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
@@ -53,19 +52,18 @@ class LessonCard extends StatelessWidget {
               child: content.selectedLesson[index]
                   ? Column(
                       children: [
-                        LessonPreview(
-                          index: index,
-                          lesson: lesson,
-                          onTap: onPlayTap,
-                        ),
-                        const SizedBox(height: 15),
+                        // LessonPreview(
+                        //   index: index,
+                        //   lesson: lesson,
+                        //   onTap: onPlayTap,
+                        // ),
+                        // const SizedBox(height: 15),
                         LessonPreview(
                           index: index,
                           lesson: lesson,
                           name: lesson.name ?? "lesson unavailable",
                           isPreview: false,
-                          onTap: () => showSnack(context, "02",
-                              "Buy the course to start the lesson"),
+                          onTap: () {},
                         ),
                       ],
                     )
@@ -74,7 +72,7 @@ class LessonCard extends StatelessWidget {
             const Padding(
               padding: EdgeInsets.symmetric(vertical: 15),
               child: Divider(
-                color: skipColor,
+                color: success400,
                 thickness: 0.7,
               ),
             )
@@ -111,6 +109,12 @@ class LessonPreview extends StatelessWidget {
         fontFamily: "Inter",
         fontWeight: FontWeight.w400,
         color: deepBlack);
+    String lessonName = name.split(" ").sublist(1).join(" ");
+    dynamic minute = (int.parse(lesson.duration.toString()) / 60).floor();
+    dynamic seconds = int.parse(lesson.duration.toString()) % 60;
+    String minText = minute > 1 ? "minutes" : "minute";
+    String secText = seconds > 1 ? "seconds" : "second";
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -120,7 +124,7 @@ class LessonPreview extends StatelessWidget {
             SizedBox(
               width: MediaQuery.of(context).size.width * 0.7,
               child: AutoSizeText(
-                name,
+                lessonName,
                 maxLines: 2,
                 style: style,
               ),
@@ -142,7 +146,7 @@ class LessonPreview extends StatelessWidget {
                   ),
                   const SizedBox(width: 5),
                   Text(
-                    "${lesson.duration} minutes",
+                    "$minute $minText $seconds $secText",
                     style: subStyle,
                   )
                 ],

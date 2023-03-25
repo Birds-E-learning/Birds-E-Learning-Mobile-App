@@ -1,6 +1,7 @@
 import 'package:birds_learning_network/src/features/core/settings/model/request_model/save_preference.dart';
 import 'package:birds_learning_network/src/features/core/settings/model/response_model/get_preference.dart';
 import 'package:birds_learning_network/src/features/core/settings/model/response_model/save_pref_response.dart';
+import 'package:birds_learning_network/src/features/core/settings/model/response_model/user_pref_response.dart';
 import 'package:birds_learning_network/src/features/core/settings/view_model/filter_provider.dart';
 import 'package:birds_learning_network/src/global_model/services/network/base_header.dart';
 import 'package:birds_learning_network/src/global_model/services/network/base_service.dart';
@@ -18,6 +19,17 @@ class FilterRepository extends NetworkService with BaseHeaders, BaseUrl {
     GetPreferenceModel responseData = GetPreferenceModel.fromJson(response);
     if (responseData.responseCode == "00") {
       return responseData.responseData!;
+    }
+  }
+
+  Future getUserFilterData(context) async {
+    Map<String, String> header_ = await authHeader();
+    var response = await getRequest(getPrefUser, header_, context);
+    print("data====>$response");
+    UserPreferenceResponse responseData =
+        UserPreferenceResponse.fromJson(response);
+    if (responseData.responseCode == "00") {
+      return responseData.responseData!.preferenceNames!;
     }
   }
 

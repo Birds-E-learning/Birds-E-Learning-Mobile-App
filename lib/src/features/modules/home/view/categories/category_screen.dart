@@ -1,5 +1,7 @@
+import 'package:birds_learning_network/src/config/routing/route.dart';
 import 'package:birds_learning_network/src/features/modules/home/custom_widgets/course_row_card.dart';
 import 'package:birds_learning_network/src/features/modules/home/model/response_model/get_courses_pref.dart';
+import 'package:birds_learning_network/src/features/modules/home/view/buy_course_screen.dart';
 import 'package:birds_learning_network/src/utils/custom_widgets/custom_bacground.dart';
 import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
 import 'package:birds_learning_network/src/utils/global_constants/texts/module_texts/home_texts.dart';
@@ -44,6 +46,8 @@ class CategoryScreen extends StatelessWidget with HomeWidgets, HomeText {
               itemBuilder: (BuildContext context, int index) {
                 return CourseRowCards(
                   course: courses[index],
+                  onTap: () => RoutingService.pushFullScreenRouting(
+                      context, BuyCourseScreen(course: courses[index])),
                 );
               }),
         ),
