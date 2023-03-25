@@ -43,8 +43,8 @@ class _BuyCourseScreenState extends State<BuyCourseScreen>
   @override
   void initState() {
     super.initState();
-    Provider.of<CourseContentProvider>(context, listen: false).reset();
     SchedulerBinding.instance.addPostFrameCallback((_) async {
+      Provider.of<CourseContentProvider>(context, listen: false).reset();
       await showVideoPlayer(context, widget.course.video!);
     });
   }

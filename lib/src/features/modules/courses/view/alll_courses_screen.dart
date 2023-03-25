@@ -10,14 +10,14 @@ import 'package:birds_learning_network/src/utils/mixins/module_mixins/home_mixin
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class TrendingCoursesScreen extends StatefulWidget {
-  const TrendingCoursesScreen({super.key});
+class AllCoursesScreen extends StatefulWidget {
+  const AllCoursesScreen({super.key});
 
   @override
-  State<TrendingCoursesScreen> createState() => _TrendingCoursesScreenState();
+  State<AllCoursesScreen> createState() => _AllCoursesScreenState();
 }
 
-class _TrendingCoursesScreenState extends State<TrendingCoursesScreen>
+class _AllCoursesScreenState extends State<AllCoursesScreen>
     with HomeWidgets, HomeText {
   @override
   void initState() {
@@ -31,46 +31,38 @@ class _TrendingCoursesScreenState extends State<TrendingCoursesScreen>
     return Consumer<HomeProvider>(
       builder: (_, home, __) => BackgroundWidget(
         appBar: SliverAppBar(
-          title: appBarTex("Trending Courses"),
+          title: appBarTex("Available Courses"),
           centerTitle: false,
           pinned: true,
           floating: true,
           backgroundColor: backgroundBlurColor,
           leading: leadingIcon(context),
           elevation: 0,
-          // actions: [
-          //   IconButton(
-          //       onPressed: () {},
-          //       icon: const Icon(
-          //         Icons.notifications,
-          //         color: greys800,
-          //       ))
-          // ],
         ),
         child: SafeArea(
           child: Padding(
             padding: EdgeInsets.symmetric(
                 horizontal: size.width * 0.04, vertical: size.height * 0.02),
-            child: home.trendingCourses.isEmpty
+            child: home.courses.isEmpty
                 ? ListView.builder(
                     scrollDirection: Axis.vertical,
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
-                    itemCount: 8,
+                    itemCount: 12,
                     itemBuilder: (context, int index) {
                       return const MoreCardsShimmer();
                     })
                 : ListView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
-                    itemCount: home.trendingCourses.length,
+                    itemCount: home.courses.length,
                     scrollDirection: Axis.vertical,
                     itemBuilder: (BuildContext context, int index) {
                       return CourseRowCards(
-                        course: home.trendingCourses[index],
+                        course: home.courses[index],
                         onTap: () => RoutingService.pushFullScreenRouting(
                             context,
-                            BuyCourseScreen(course: home.quickCourses[index])),
+                            BuyCourseScreen(course: home.courses[index])),
                       );
                     }),
           ),

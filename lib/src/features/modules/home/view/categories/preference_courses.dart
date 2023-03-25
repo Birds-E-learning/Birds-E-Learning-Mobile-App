@@ -1,6 +1,5 @@
 import 'package:birds_learning_network/src/config/routing/route.dart';
 import 'package:birds_learning_network/src/features/modules/home/custom_widgets/course_row_card.dart';
-import 'package:birds_learning_network/src/features/modules/home/model/response_model/get_courses_pref.dart';
 import 'package:birds_learning_network/src/features/modules/home/view/buy_course_screen.dart';
 import 'package:birds_learning_network/src/features/modules/home/view/widgets/more_card_shimmer.dart';
 import 'package:birds_learning_network/src/features/modules/home/view_model/home_provider.dart';
@@ -21,6 +20,12 @@ class PreferenceCoursesScreen extends StatefulWidget {
 
 class _PreferenceCoursesScreenState extends State<PreferenceCoursesScreen>
     with HomeWidgets, HomeText {
+  @override
+  void initState() {
+    Provider.of<HomeProvider>(context, listen: false).refreshData(context);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
