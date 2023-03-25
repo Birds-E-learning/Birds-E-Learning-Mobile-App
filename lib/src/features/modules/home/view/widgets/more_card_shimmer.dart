@@ -11,7 +11,7 @@ class MoreCardsShimmer extends StatelessWidget {
     return Shimmer.fromColors(
       highlightColor: Colors.white.withOpacity(0.2),
       baseColor: Colors.grey.withOpacity(0.5),
-      child: Container(
+      child: SizedBox(
         height: 100,
         child: Padding(
           padding: const EdgeInsets.only(top: 15),
@@ -29,19 +29,19 @@ class MoreCardsShimmer extends StatelessWidget {
                     children: [
                       Container(
                         height: 30,
-                        width: size.width * 0.8 - 70,
+                        width: size.width * 0.8 - 80,
                         color: Colors.black,
                       ),
                       const SizedBox(height: 5),
                       Container(
                         height: 15,
-                        width: size.width * 0.8 - 70,
+                        width: size.width * 0.8 - 80,
                         color: Colors.blueAccent,
                       ),
                       const SizedBox(height: 5),
                       Container(
                         height: 30,
-                        width: size.width * 0.8 - 70,
+                        width: size.width * 0.8 - 100,
                         color: Colors.blueGrey,
                       ),
                     ],
