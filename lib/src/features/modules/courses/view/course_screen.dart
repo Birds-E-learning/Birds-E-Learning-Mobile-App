@@ -1,3 +1,5 @@
+import 'package:birds_learning_network/src/config/routing/route.dart';
+import 'package:birds_learning_network/src/features/modules/courses/view/alll_courses_screen.dart';
 import 'package:birds_learning_network/src/utils/custom_widgets/custom_bacground.dart';
 import 'package:birds_learning_network/src/utils/global_constants/asset_paths/image_path.dart';
 import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
@@ -32,7 +34,9 @@ class MyCoursesPage extends StatelessWidget
               SizedBox(height: size.height * 0.1),
               SvgPicture.asset(ImagePath.noCourse),
               const SizedBox(height: 20),
-              noCourseText(() {}),
+              noCourseText(() {
+                RoutingService.pushRouting(context, const AllCoursesScreen());
+              }),
             ],
           ),
         ),

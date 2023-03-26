@@ -5,6 +5,7 @@ import 'package:birds_learning_network/src/features/modules/home/model/response_
 import 'package:birds_learning_network/src/features/modules/home/view/widgets/error_widget.dart';
 import 'package:birds_learning_network/src/features/modules/home/view/widgets/lesson_card.dart';
 import 'package:birds_learning_network/src/features/modules/home/view_model/course_content_provider.dart';
+import 'package:birds_learning_network/src/features/modules/payment/view/screens/payment_screen.dart';
 import 'package:birds_learning_network/src/utils/global_constants/asset_paths/image_path.dart';
 import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
 import 'package:birds_learning_network/src/utils/global_constants/styles/home_styles/home_styles.dart';
@@ -42,8 +43,8 @@ class _BuyCourseScreenState extends State<BuyCourseScreen>
   @override
   void initState() {
     super.initState();
-    Provider.of<CourseContentProvider>(context, listen: false).reset();
     SchedulerBinding.instance.addPostFrameCallback((_) async {
+      Provider.of<CourseContentProvider>(context, listen: false).reset();
       await showVideoPlayer(context, widget.course.video!);
     });
   }
@@ -251,7 +252,8 @@ class _BuyCourseScreenState extends State<BuyCourseScreen>
                     width: double.infinity,
                     height: 60,
                     child: BlackButtonWidget(
-                        onPressed: () {},
+                        onPressed: () => RoutingService.pushRouting(
+                            context, const PaymentScreen()),
                         child: buttonText("Enroll Now", nextColor)),
                   ),
                   const SizedBox(height: 10),

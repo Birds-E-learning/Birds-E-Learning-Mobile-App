@@ -35,7 +35,7 @@ class HomeRepository extends NetworkService with BaseUrl, BaseHeaders {
     // List<CoursesPref> quickCourses = [];
     // try {
     Map<String, String> header_ = await authHeader();
-    var json = await getRequest(getCourseQuick, header_, context);
+    var json = await getRequest(getCourseQuick, header_, context, time: 60);
     GetCourseCategory response = GetCourseCategory.fromJson(json);
     if (response.responseCode == "00") {
       for (var element in response.responseData!.categories!) {
@@ -56,10 +56,11 @@ class HomeRepository extends NetworkService with BaseUrl, BaseHeaders {
     // List<CoursesPref> trendingCourses = [];
     try {
       Map<String, String> header_ = await authHeader();
-      var json = await getRequest(getCoursetrending, header_, context);
+      var json =
+          await getRequest(getCoursetrending, header_, context, time: 60);
       GetCourseCategory response = GetCourseCategory.fromJson(json);
       if (response.responseCode == "00") {
-        for (Categories element in response.responseData!.categories!) {
+        for (CategoriesPref element in response.responseData!.categories!) {
           categories[element.name!] = element.courses!;
           // trendingCourses.addAll(element.courses!);
         }
@@ -73,9 +74,12 @@ class HomeRepository extends NetworkService with BaseUrl, BaseHeaders {
   }
 
   Future getCompactCourse(context) async {
-    Map<String, String> header_ = await authHeader();
-    var json = await getRequest(allCourses, header_, context);
-    GetCoursesModel response = GetCoursesModel.fromJson(json);
-    return response;
+    try {
+      Map<String, String> header_ = await authHeader();
+      var json = await getRequest(allCourses, header_, context, time: 100);
+      return json;
+    } catch (e) {
+      print(e);
+    }
   }
 }

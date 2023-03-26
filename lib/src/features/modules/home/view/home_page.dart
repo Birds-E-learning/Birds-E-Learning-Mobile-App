@@ -32,15 +32,10 @@ class _UserHomePageState extends State<UserHomePage>
     with HomeWidgets, HomeText, FilterTextWidgets {
   final TextEditingController _controller = TextEditingController();
 
-  // @override
-  // void initState() {
-  //   Provider.of<HomeProvider>(context, listen: false).getHomeData(context);
-  //   super.initState();
-  // }
-
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
+    Provider.of<HomeProvider>(context, listen: false).refreshData(context);
     FilterProvider filter = Provider.of<FilterProvider>(context, listen: false);
     FilterProvider filterWatch = Provider.of<FilterProvider>(context);
     return Consumer<HomeProvider>(

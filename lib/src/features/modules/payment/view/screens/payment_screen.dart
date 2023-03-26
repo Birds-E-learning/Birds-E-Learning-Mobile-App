@@ -1,27 +1,27 @@
+import 'package:birds_learning_network/src/features/modules/payment/view_model/payment_provider.dart';
 import 'package:birds_learning_network/src/features/modules/profile/custom_widgets/custom_text_column.dart';
-import 'package:birds_learning_network/src/features/modules/profile/view_model/card_provider.dart';
 import 'package:birds_learning_network/src/utils/formatters/card_expiration_formatter.dart';
 import 'package:birds_learning_network/src/utils/formatters/card_number_formatter.dart';
 import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
-import 'package:birds_learning_network/src/utils/global_constants/texts/module_texts/profile_texts.dart';
+import 'package:birds_learning_network/src/utils/global_constants/texts/module_texts/payment_texts.dart';
 import 'package:birds_learning_network/src/utils/helper_widgets/button_black.dart';
 import 'package:birds_learning_network/src/utils/helper_widgets/button_white.dart';
 import 'package:birds_learning_network/src/utils/helper_widgets/loading_indicator.dart';
-import 'package:birds_learning_network/src/utils/mixins/module_mixins/profile_mixins.dart';
+import 'package:birds_learning_network/src/utils/mixins/module_mixins/payment_mixins.dart';
 import 'package:birds_learning_network/src/utils/validators/card_validators.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
-class AddCardPage extends StatefulWidget {
-  const AddCardPage({super.key});
+class PaymentScreen extends StatefulWidget {
+  const PaymentScreen({super.key});
 
   @override
-  State<AddCardPage> createState() => _AddCardPageState();
+  State<PaymentScreen> createState() => _PaymentScreenState();
 }
 
-class _AddCardPageState extends State<AddCardPage>
-    with ProfileWidgets, CardValidator {
+class _PaymentScreenState extends State<PaymentScreen>
+    with PaymentWidgets, CardValidator {
   TextEditingController cardNo = TextEditingController();
   TextEditingController expiryDate = TextEditingController();
   TextEditingController ccv = TextEditingController();
@@ -43,18 +43,18 @@ class _AddCardPageState extends State<AddCardPage>
     return Scaffold(
       backgroundColor: white,
       appBar: AppBar(
-        title: appBarText(ProfileTexts.addCard),
+        title: appBarText(PaymentTexts.payment),
         centerTitle: true,
         elevation: 0,
         backgroundColor: white,
         leading: leadingIcon(context),
       ),
-      body: Consumer<CardProvider>(
-        builder: (_, card, __) => SafeArea(
+      body: Consumer<PaymentProvider>(
+        builder: (_, payment, __) => SafeArea(
             child: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.symmetric(
-                horizontal: size.width * 0.05, vertical: size.height * 0.05),
+                horizontal: size.width * 0.05, vertical: 20),
             child: Form(
               key: _formKey,
               child: Column(
@@ -62,9 +62,9 @@ class _AddCardPageState extends State<AddCardPage>
                 children: [
                   CustomTextColumn(
                     controller: cardNo,
-                    text: ProfileTexts.cardNo,
+                    text: PaymentTexts.cardNo,
                     keyboardType: TextInputType.number,
-                    hintText: ProfileTexts.cardHint,
+                    hintText: PaymentTexts.cardHint,
                     inputFormatters: [
                       LengthLimitingTextInputFormatter(19),
                       FilteringTextInputFormatter.digitsOnly,
@@ -79,9 +79,9 @@ class _AddCardPageState extends State<AddCardPage>
                       Expanded(
                         child: CustomTextColumn(
                             controller: expiryDate,
-                            text: ProfileTexts.expiryText,
+                            text: PaymentTexts.expiryText,
                             keyboardType: TextInputType.number,
-                            hintText: ProfileTexts.expiryHint,
+                            hintText: PaymentTexts.expiryHint,
                             inputFormatters: [
                               LengthLimitingTextInputFormatter(5),
                               FilteringTextInputFormatter.digitsOnly,
@@ -93,9 +93,9 @@ class _AddCardPageState extends State<AddCardPage>
                       Expanded(
                         child: CustomTextColumn(
                           controller: ccv,
-                          text: ProfileTexts.ccvText,
+                          text: PaymentTexts.ccvText,
                           keyboardType: TextInputType.number,
-                          hintText: ProfileTexts.ccvHint,
+                          hintText: PaymentTexts.ccvHint,
                           inputFormatters: [
                             LengthLimitingTextInputFormatter(3),
                             FilteringTextInputFormatter.digitsOnly,
@@ -105,18 +105,22 @@ class _AddCardPageState extends State<AddCardPage>
                       ),
                     ],
                   ),
-                  // const SizedBox(height: 25),
-                  // CustomTextColumn(
-                  //   controller: pin,
-                  //   text: ProfileTexts.pinText,
-                  //   keyboardType: TextInputType.number,
-                  //   hintText: ProfileTexts.pinHint,
-                  //   inputFormatters: [
-                  //     LengthLimitingTextInputFormatter(4),
-                  //     FilteringTextInputFormatter.digitsOnly,
-                  //   ],
-                  //   validator: (value) => pinValidator(value),
-                  // ),
+                  const SizedBox(height: 25),
+                  CustomTextColumn(
+                    controller: pin,
+                    text: PaymentTexts.pinText,
+                    keyboardType: TextInputType.number,
+                    hintText: PaymentTexts.pinHint,
+                    inputFormatters: [
+                      LengthLimitingTextInputFormatter(4),
+                      FilteringTextInputFormatter.digitsOnly,
+                    ],
+                    validator: (value) => pinValidator(value),
+                  ),
+                  const SizedBox(height: 15),
+                  saveCard(payment.isChecked, (value) {
+                    payment.onCheckClick(value);
+                  }),
                   const SizedBox(height: 50),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -124,29 +128,29 @@ class _AddCardPageState extends State<AddCardPage>
                       BlackButtonWidget(
                           onPressed: () async {
                             FocusScope.of(context).unfocus();
-                            if (card.addClicked) {
-                              card.onAddClick();
+                            if (payment.payClicked) {
+                              payment.onPayClick();
                               return;
                             }
                             if (_formKey.currentState!.validate()) {
-                              card.onAddClick();
-                              await card.addCardRequest(
-                                  context,
-                                  cardNo.text.trim(),
-                                  expiryDate.text.trim(),
-                                  ccv.text.trim());
+                              payment.onPayClick();
+                              // await card.addCardRequest(
+                              //     context,
+                              //     cardNo.text.trim(),
+                              //     expiryDate.text.trim(),
+                              //     ccv.text.trim());
                             }
                           },
-                          child: card.addClicked
+                          child: payment.payClicked
                               ? loadingIdicator()
-                              : buttonText(ProfileTexts.addCardButton)),
+                              : buttonText()),
                       const SizedBox(height: 15),
                       WhiteButtonWidget(
                           onPressed: () {
                             FocusScope.of(context).unfocus();
                             Navigator.pop(context);
                           },
-                          child: cancelButton(ProfileTexts.cancelButton))
+                          child: cancelButton())
                     ],
                   )
                 ],
