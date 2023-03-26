@@ -1,4 +1,3 @@
-import 'package:birds_learning_network/src/features/modules/home/model/response_model/get_all_courses.dart';
 import 'package:birds_learning_network/src/features/modules/home/model/response_model/get_courses.dart';
 import 'package:birds_learning_network/src/features/modules/home/model/response_model/get_courses_pref.dart';
 import 'package:birds_learning_network/src/global_model/services/network/base_header.dart';
