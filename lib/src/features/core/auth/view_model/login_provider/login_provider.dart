@@ -86,7 +86,8 @@ class LoginProvider extends ChangeNotifier {
         await storage.setToken(response.responseData!.authToken!);
         await storage.setUserData(response);
         Provider.of<HomeProvider>(context, listen: false).getHomeData(context);
-        RoutingService.pushAndRemoveAllRoute(context, const BirdsHome());
+        RoutingService.pushAndRemoveAllRoute(
+            context, autoLogin ? const FilterScreen() : const BirdsHome());
       } else {
         showSnack(context, response.responseCode!, response.responseMessage!);
       }

@@ -3,6 +3,8 @@ import 'package:birds_learning_network/src/features/core/auth/view/auth_screen.d
 import 'package:birds_learning_network/src/features/core/settings/view/filter/get_started_screen.dart';
 import 'package:birds_learning_network/src/features/core/settings/view/widgets/card_shimmer.dart';
 import 'package:birds_learning_network/src/features/core/settings/view_model/filter_provider.dart';
+import 'package:birds_learning_network/src/features/modules/home/view/home.dart';
+import 'package:birds_learning_network/src/features/modules/home/view_model/home_provider.dart';
 import 'package:birds_learning_network/src/features/modules/profile/view/profile_page.dart';
 import 'package:birds_learning_network/src/utils/custom_widgets/text_field.dart';
 import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
@@ -181,7 +183,6 @@ class _FilterScreenState extends State<FilterScreen>
                               RoutingService.pushAndRemoveAllRoute(
                                   context, const GetStartedPage());
                             } else {
-                              print(filter.userPrefList);
                               filter.onButtonClick();
                               await filter.postPreferenceList(context);
                             }
@@ -193,8 +194,10 @@ class _FilterScreenState extends State<FilterScreen>
                   ),
                   const SizedBox(height: 10),
                   setupProfile(() {
+                    Provider.of<HomeProvider>(context, listen: false)
+                        .onItemClick = 3;
                     RoutingService.pushAndRemoveAllRoute(
-                        context, const UserProfilePage());
+                        context, const BirdsHome());
                   }),
                 ],
               ),
