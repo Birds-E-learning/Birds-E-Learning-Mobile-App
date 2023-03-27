@@ -8,7 +8,6 @@ class BaseHeaders {
 
   Future<Map<String, String>> authHeader() async {
     String auth = await UserSecureStorage().getToken();
-    print("auth=====================>>>> $auth");
     return {
       "accept": "application/json",
       "Content-Type": "application/JSON",

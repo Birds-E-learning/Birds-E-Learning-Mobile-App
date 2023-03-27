@@ -1,9 +1,10 @@
 import 'dart:io';
 
 import 'package:birds_learning_network/src/config/routing/route.dart';
+import 'package:birds_learning_network/src/features/modules/home/model/response_model/get_courses.dart';
 import 'package:birds_learning_network/src/features/modules/home/model/response_model/get_courses_pref.dart';
-import 'package:birds_learning_network/src/features/modules/home/view/widgets/error_widget.dart';
-import 'package:birds_learning_network/src/features/modules/home/view/widgets/lesson_card.dart';
+import 'package:birds_learning_network/src/features/modules/home/view/widgets/preview_container.dart';
+import 'package:birds_learning_network/src/features/modules/home/view/widgets/section_card.dart';
 import 'package:birds_learning_network/src/features/modules/home/view_model/course_content_provider.dart';
 import 'package:birds_learning_network/src/features/modules/payment/view/screens/payment_screen.dart';
 import 'package:birds_learning_network/src/utils/global_constants/asset_paths/image_path.dart';
@@ -27,7 +28,7 @@ class BuyCourseScreen extends StatefulWidget {
     super.key,
     required this.course,
   });
-  final CoursesPref course;
+  final Courses course;
 
   @override
   State<BuyCourseScreen> createState() => _BuyCourseScreenState();
@@ -82,7 +83,7 @@ class _BuyCourseScreenState extends State<BuyCourseScreen>
                                           .isInitialized
                                       ? Chewie(controller: _controller!)
                                       : PreviewContainer(
-                                          image: widget.course.imageId)
+                                          image: widget.course.imageUrl)
                                   : content.isYoutube
                                       ? YoutubePlayer(
                                           controller: _ytController,
@@ -94,9 +95,9 @@ class _BuyCourseScreenState extends State<BuyCourseScreen>
                                           ),
                                         )
                                       : PreviewContainer(
-                                          image: widget.course.imageId)
+                                          image: widget.course.imageUrl)
                               : PreviewContainer(
-                                  image: widget.course.imageId,
+                                  image: widget.course.imageUrl,
                                   loaded: false,
                                   onTap: () {
                                     content.onPreviewClick(true);
@@ -122,15 +123,21 @@ class _BuyCourseScreenState extends State<BuyCourseScreen>
                   const SizedBox(height: 10),
                   Row(
                     children: [
-                      contentOwnerText("John Doe", () {}),
+                      contentOwnerText(
+                          widget.course.facilitator!.name == ""
+                              ? "Anonymous"
+                              : widget.course.facilitator!.name!,
+                          () {}),
                       const SizedBox(width: 5),
                       Row(
                         children: getStarList(
-                            "4", ImagePath.starFill, ImagePath.starUnfill,
+                            widget.course.facilitator!.ratings ?? 0,
+                            ImagePath.starFill,
+                            ImagePath.starUnfill,
                             size: 12),
                       ),
                       const SizedBox(width: 5),
-                      ratingText("4")
+                      ratingText(widget.course.facilitator!.reviews.toString())
                     ],
                   ),
                   const SizedBox(height: 10),
@@ -161,32 +168,33 @@ class _BuyCourseScreenState extends State<BuyCourseScreen>
                       style: {
                         "body": Style(
                             margin: Margins.zero,
-                            fontSize: FontSize(12, Unit.px),
+                            fontSize: FontSize(14, Unit.px),
                             fontStyle: FontStyle.normal,
+                            fontWeight: FontWeight.w400,
                             fontFamily: "Inter"),
                         "h4": Style(
                             color: greys900,
-                            fontSize: FontSize(16),
+                            fontSize: FontSize(18),
                             fontFamily: "Inter",
-                            fontWeight: FontWeight.w500,
+                            fontWeight: FontWeight.w700,
                             margin:
                                 Margins.only(bottom: 5, top: 5, unit: Unit.px)),
                         "p": Style(
                             margin:
                                 Margins.only(top: 0, bottom: 0, unit: Unit.px),
                             lineHeight: const LineHeight(0, units: "px"),
-                            fontSize: FontSize(12),
+                            fontSize: FontSize(14),
                             color: deepBlack,
                             fontFamily: "Inter",
                             fontWeight: FontWeight.w400),
                         "ul": Style(
-                            fontSize: FontSize(12),
+                            fontSize: FontSize(14),
                             display: Display.inline,
                             fontFamily: "Inter",
                             margin: Margins.all(0, unit: Unit.px)),
                         "li": Style(
                           lineHeight: const LineHeight(0, units: "px"),
-                          fontSize: FontSize(12),
+                          fontSize: FontSize(14),
                           fontFamily: "Inter",
                           margin: Margins.all(0, unit: Unit.px),
                         ),
@@ -203,20 +211,21 @@ class _BuyCourseScreenState extends State<BuyCourseScreen>
                     ),
                   ),
                   ListView.builder(
-                    itemCount: widget.course.lessons!.length,
+                    itemCount: widget.course.sections!.length,
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     itemBuilder: (BuildContext context, int index) {
                       if (content.selectedLesson.length <
-                          widget.course.lessons!.length) {
+                          widget.course.sections![0].lessons!.length) {
                         content.selectedLesson.add(false);
                       }
-                      return LessonCard(
+                      return SectionCard(
                           index: index,
                           onPlayTap: () async {
                             await showVideoPlayer(
                                 context,
-                                widget.course.lessons![index].url ??
+                                widget.course.sections![0].lessons![index]
+                                        .url ??
                                     "https://www.youtube.com/watch?v=tO01J-M3g0U");
                             Scrollable.ensureVisible(key1.currentContext!,
                                 duration: const Duration(milliseconds: 500),
@@ -225,7 +234,7 @@ class _BuyCourseScreenState extends State<BuyCourseScreen>
                           onLessonTap: () {
                             content.setSelectedLesson(index);
                           },
-                          lesson: widget.course.lessons![index]);
+                          section: widget.course.sections![index]);
                     },
                   ),
                   // const SizedBox(height: 10),

@@ -1,3 +1,4 @@
+import 'package:birds_learning_network/src/features/modules/home/model/response_model/get_courses.dart';
 import 'package:birds_learning_network/src/features/modules/home/model/response_model/get_courses_pref.dart';
 import 'package:birds_learning_network/src/utils/global_constants/asset_paths/image_path.dart';
 import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
@@ -8,7 +9,7 @@ import 'package:flutter/material.dart';
 
 class CourseRowCards extends StatelessWidget with HomeWidgets {
   const CourseRowCards({super.key, required this.course, required this.onTap});
-  final CoursesPref course;
+  final Courses course;
   final VoidCallback onTap;
 
   @override
@@ -26,15 +27,13 @@ class CourseRowCards extends StatelessWidget with HomeWidgets {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 SizedBox(
-                  height: 50,
+                  height: 40,
                   width: 50,
                   child: CachedNetworkImage(
-                    imageUrl:
-                        course.imageId != null ? course.imageId.toString() : "",
-                    // "https://birds-e-learning.herokuapp.com/img/profile.png",
-                    // imageBuilder: (context, imageProvider) {
-                    //   return Image(image: NetworkImage(course.imageId ?? ""));
-                    // },
+                    height: 50,
+                    width: 50,
+                    fit: BoxFit.fill,
+                    imageUrl: course.imageUrl ?? "",
                     placeholder: (context, url) {
                       return Image.asset(
                         ImagePath.titlePics,

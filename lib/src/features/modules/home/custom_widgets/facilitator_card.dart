@@ -1,15 +1,17 @@
+import 'package:birds_learning_network/src/features/modules/home/model/response_model/get_courses.dart';
 import 'package:birds_learning_network/src/utils/global_constants/asset_paths/image_path.dart';
 import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
 import 'package:birds_learning_network/src/utils/mixins/module_mixins/home_mixins.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class FacilitatorCard extends StatelessWidget with HomeWidgets {
-  const FacilitatorCard({super.key});
+  const FacilitatorCard({super.key, required this.facilitator});
+  final Facilitator facilitator;
 
   @override
   Widget build(BuildContext context) {
+    print(facilitator.imageUrl);
     final Size size = MediaQuery.of(context).size;
     return Container(
       margin: EdgeInsets.only(
@@ -25,7 +27,7 @@ class FacilitatorCard extends StatelessWidget with HomeWidgets {
         children: [
           ClipOval(
               child: CachedNetworkImage(
-            imageUrl: "https://www.none.com",
+            imageUrl: facilitator.imageUrl ?? "",
             placeholder: (context, url) {
               return Image.asset(ImagePath.facilitator);
             },
@@ -40,13 +42,19 @@ class FacilitatorCard extends StatelessWidget with HomeWidgets {
             children: [
               Row(
                 children: [
-                  authorNameText("John Doe"),
+                  authorNameText(
+                      facilitator.name == "" ? "Anonymous" : facilitator.name!),
                   const SizedBox(width: 5),
                   Align(
                     alignment: Alignment.topRight,
                     child: Row(
                       children: [
-                        authorLabelText("PhD, Design"),
+                        SizedBox(
+                          width: 70,
+                          child: authorLabelText(facilitator.degree == ""
+                              ? "PhD, Design"
+                              : facilitator.degree!),
+                        ),
                         Container(
                           height: 2,
                           width: 2,
@@ -56,7 +64,12 @@ class FacilitatorCard extends StatelessWidget with HomeWidgets {
                             color: skipColor,
                           ),
                         ),
-                        authorLabelText("Graphic Designer"),
+                        SizedBox(
+                          width: 80,
+                          child: authorLabelText(facilitator.skill == ""
+                              ? "Graphic Designer"
+                              : facilitator.skill!),
+                        ),
                       ],
                     ),
                   )
@@ -66,13 +79,17 @@ class FacilitatorCard extends StatelessWidget with HomeWidgets {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  detailRowText("Ratings (4.7)", Icons.stars),
+                  detailRowText(
+                      "Ratings (${facilitator.ratings})", Icons.stars),
                   const SizedBox(width: 5),
-                  detailRowText("Courses (55)", Icons.library_books),
+                  detailRowText(
+                      "Courses (${facilitator.courses})", Icons.library_books),
                   const SizedBox(width: 5),
-                  detailRowText("Students (1k)", Icons.supervisor_account),
+                  detailRowText("Students (${facilitator.students})",
+                      Icons.supervisor_account),
                   const SizedBox(width: 5),
-                  detailRowText("Reviews (400)", Icons.reviews)
+                  detailRowText(
+                      "Reviews (${facilitator.reviews})", Icons.reviews)
                 ],
               )
             ],

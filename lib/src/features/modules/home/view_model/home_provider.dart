@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:birds_learning_network/src/features/core/settings/view_model/filter_provider.dart';
 import 'package:birds_learning_network/src/features/modules/courses/view/course_screen.dart';
 import 'package:birds_learning_network/src/features/modules/home/model/repository/home_repository.dart';
-import 'package:birds_learning_network/src/features/modules/home/model/response_model/get_courses_pref.dart';
+import 'package:birds_learning_network/src/features/modules/home/model/response_model/get_courses.dart';
 import 'package:birds_learning_network/src/features/modules/user_cart/view/cart.dart';
 import 'package:birds_learning_network/src/features/modules/home/view/home_page.dart';
 import 'package:birds_learning_network/src/features/modules/profile/view/profile_page.dart';
@@ -41,14 +41,11 @@ class HomeProvider extends ChangeNotifier {
     await prefCoursesGraph(context);
     await trendingCoursesGraph(context);
     await quickCoursesGraph(context);
-    getAllCourses(context);
+    // getAllCourses(context);
   }
 
   Future refreshData(context) async {
     Future.delayed(const Duration(seconds: 75), () async {
-      if (_courses.isEmpty) {
-        getAllCourses(context);
-      }
       if (_prefCourses.isEmpty) {
         await prefCoursesGraph(context);
       }
@@ -58,6 +55,9 @@ class HomeProvider extends ChangeNotifier {
       if (_quickCourses.isEmpty) {
         await quickCoursesGraph(context);
       }
+      if (_courses.isEmpty) {
+        // getAllCourses(context);
+      }
     });
   }
 
@@ -66,7 +66,7 @@ class HomeProvider extends ChangeNotifier {
   String _firstName = "There";
 
   // the list for the courses searched
-  List<CoursesPref> _searchResult = [];
+  List<Courses> _searchResult = [];
 
   // this list helps to note the selected preferences
   List<bool> selectedCards = [];
@@ -81,20 +81,20 @@ class HomeProvider extends ChangeNotifier {
   List<bool> topIcons = [];
 
   List<String> courseList = [];
-  Map<String, List<CoursesPref>> categories = {};
-  List<CoursesPref> _courses = [];
-  List<CoursesPref> _quickCourses = [];
-  List<CoursesPref> _prefCourses = [];
-  List<CoursesPref> _trendingCourses = [];
+  Map<String, List<Courses>> categories = {};
+  List<Courses> _courses = [];
+  List<Courses> _quickCourses = [];
+  List<Courses> _prefCourses = [];
+  List<Courses> _trendingCourses = [];
   bool _onSearch = false;
 
   bool get onSearch => _onSearch;
   String get firstName => _firstName;
-  List<CoursesPref> get searchResult => _searchResult;
-  List<CoursesPref> get quickCourses => _quickCourses;
-  List<CoursesPref> get courses => _courses;
-  List<CoursesPref> get trendingCourses => _trendingCourses;
-  List<CoursesPref> get prefCourses => _prefCourses;
+  List<Courses> get searchResult => _searchResult;
+  List<Courses> get quickCourses => _quickCourses;
+  List<Courses> get courses => _courses;
+  List<Courses> get trendingCourses => _trendingCourses;
+  List<Courses> get prefCourses => _prefCourses;
 
   void getUserData() async {
     _firstName = await UserPreferences.getUserFirstName();
@@ -129,7 +129,8 @@ class HomeProvider extends ChangeNotifier {
   void onSearchClicked(String text) {
     _searchResult = [];
     categories.forEach((key, value) {
-      if (key == text) {
+      if (key.toLowerCase() == text.toLowerCase()) {
+        print(value);
         _searchResult.addAll(value);
         notifyListeners();
       } else {
@@ -155,13 +156,11 @@ class HomeProvider extends ChangeNotifier {
           List categories_ = data[value];
           print(("$value =====>>>> ${categories_.length}"));
           int sum = 0;
-          categories_.forEach(
-            (element) {
-              CategoriesPref elem = CategoriesPref.fromJson(element);
-              sum += elem.courses!.length;
-              _courses.addAll(elem.courses!);
-            },
-          );
+          for (var element in categories_) {
+            Category elem = Category.fromJson(element);
+            sum += elem.courses!.length;
+            _courses.addAll(elem.courses!);
+          }
           print("$value =======>> $sum");
           notifyListeners();
         }
@@ -171,20 +170,30 @@ class HomeProvider extends ChangeNotifier {
         showSnack(context, response.responseCode!, response.responseMessage!);
       }
     } catch (_) {
-      print(_);
+      throw Exception(_);
     }
   }
 
   Future prefCoursesGraph(context) async {
     try {
-      _prefCourses = [];
-      Map<String, List<CoursesPref>> response =
+      Map<String, List<Courses>> response =
           await repo.getPreferenceCourses(context);
-      // categories.addAll(response);
+      _prefCourses = [];
       response.forEach((key, value) {
         _prefCourses.addAll(value);
         if (categories.keys.contains(key)) {
-          categories[key]!.addAll(value);
+          List<String> courseTitles = [];
+          for (var course in categories[key]!) {
+            courseTitles.add(course.title!);
+          }
+          for (var elem in value) {
+            if (!courseTitles.contains(elem.title)) {
+              categories[key]!.add(elem);
+            }
+          }
+          print("$key====>> $courseTitles");
+        } else {
+          categories[key] = value;
         }
       });
       notifyListeners();
@@ -196,13 +205,23 @@ class HomeProvider extends ChangeNotifier {
   Future quickCoursesGraph(context) async {
     try {
       _quickCourses = [];
-      Map<String, List<CoursesPref>> response =
-          await repo.getQuickCourses(context);
+      Map<String, List<Courses>> response = await repo.getQuickCourses(context);
       // categories.addAll(response);
       response.forEach((key, value) {
         _quickCourses.addAll(value);
         if (categories.keys.contains(key)) {
-          categories[key]!.addAll(value);
+          List<String> courseTitles = [];
+          for (var course in categories[key]!) {
+            courseTitles.add(course.title!);
+          }
+          for (var elem in value) {
+            if (!courseTitles.contains(elem.title)) {
+              categories[key]!.add(elem);
+            }
+          }
+          print("$key====>> $courseTitles");
+        } else {
+          categories[key] = value;
         }
       });
       notifyListeners();
@@ -214,13 +233,21 @@ class HomeProvider extends ChangeNotifier {
   Future trendingCoursesGraph(context) async {
     try {
       _trendingCourses = [];
-      Map<String, List<CoursesPref>> response =
-          await repo.getPreferenceCourses(context);
-      // categories.addAll(response);
+      Map<String, List<Courses>> response =
+          await repo.getTrendingCourses(context);
       response.forEach((key, value) {
         _trendingCourses.addAll(value);
         if (categories.keys.contains(key)) {
-          categories[key]!.addAll(value);
+          List<String> courseTitles = [];
+          for (var course in categories[key]!) {
+            courseTitles.add(course.title!);
+          }
+          for (var elem in value) {
+            if (courseTitles.contains(elem.title) == false) {
+              categories[key]!.add(elem);
+            }
+          }
+          print("$key====>> $courseTitles");
         } else {
           categories[key] = value;
         }
