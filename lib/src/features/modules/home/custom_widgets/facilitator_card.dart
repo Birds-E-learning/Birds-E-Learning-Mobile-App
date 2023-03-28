@@ -1,8 +1,6 @@
 import 'package:birds_learning_network/src/features/modules/home/model/response_model/get_courses.dart';
-import 'package:birds_learning_network/src/utils/global_constants/asset_paths/image_path.dart';
 import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
 import 'package:birds_learning_network/src/utils/mixins/module_mixins/home_mixins.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class FacilitatorCard extends StatelessWidget with HomeWidgets {
@@ -11,7 +9,6 @@ class FacilitatorCard extends StatelessWidget with HomeWidgets {
 
   @override
   Widget build(BuildContext context) {
-    print(facilitator.imageUrl);
     final Size size = MediaQuery.of(context).size;
     return Container(
       margin: EdgeInsets.only(
