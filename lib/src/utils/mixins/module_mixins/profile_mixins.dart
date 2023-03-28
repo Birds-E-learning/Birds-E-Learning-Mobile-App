@@ -61,15 +61,28 @@ mixin ProfileWidgets on Object implements ProfileStyles, ProfileTexts {
     );
   }
 
-  CircleAvatar profilePicture(String image, XFile? imageReceived) {
-    return CircleAvatar(
-      radius: 60,
-      backgroundColor: backgroundBlurColor,
-      backgroundImage: image != ""
-          ? NetworkImage(image)
-          : imageReceived != null
-              ? FileImage(File(imageReceived.path)) as ImageProvider
-              : const AssetImage(ImagePath.profilePics),
+  Container profilePicture(String image, XFile? imageReceived) {
+    return Container(
+      height: 100,
+      width: 100,
+      decoration: BoxDecoration(
+        color: backgroundBlurColor,
+        shape: BoxShape.circle,
+        border: Border.all(width: 1, color: success800),
+        image: DecorationImage(
+          fit: BoxFit.fill,
+          image: image != ""
+              ? NetworkImage(image)
+              : imageReceived != null
+                  ? FileImage(File(imageReceived.path)) as ImageProvider
+                  : const AssetImage(ImagePath.profilePics),
+        ),
+      ),
+      // backgroundImage: image != ""
+      //     ? NetworkImage(image)
+      //     : imageReceived != null
+      //         ? FileImage(File(imageReceived.path)) as ImageProvider
+      //         : const AssetImage(ImagePath.profilePics),
     );
   }
 

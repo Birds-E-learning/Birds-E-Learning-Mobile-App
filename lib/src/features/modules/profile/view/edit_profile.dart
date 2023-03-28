@@ -204,7 +204,10 @@ class _EditProfilePageState extends State<EditProfilePage>
           ? picUrl
           : user.responseData!.photoLink!;
       isLoaded = true;
-      gender_ = user.responseData!.gender;
+      gender_ = user.responseData!.gender!.toLowerCase() == "unknown" ||
+              user.responseData!.gender == ""
+          ? null
+          : user.responseData!.gender;
     });
   }
 
