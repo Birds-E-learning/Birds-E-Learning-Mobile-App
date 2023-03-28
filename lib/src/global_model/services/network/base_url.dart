@@ -43,6 +43,7 @@ class BaseUrl {
   final String saveCart = "${base}course/shopping/cart/save-update?courseId=";
   final String deleteCart = "${base}course/shopping/cart/unlink?courseId=";
   final String getAllCart = "${base}course/shopping/cart/all";
+  final String getSection = "${base}course/sections?courseId=";
 
   // Wishlist
   final String saveWishlist =

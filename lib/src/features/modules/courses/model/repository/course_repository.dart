@@ -1,8 +1,9 @@
+import 'package:birds_learning_network/src/features/modules/courses/model/response/courses_all_response.dart';
 import 'package:birds_learning_network/src/features/modules/home/model/response_model/get_courses.dart';
+import 'package:birds_learning_network/src/features/modules/user_cart/model/response_model/get_all_cart.dart';
 import 'package:birds_learning_network/src/global_model/services/network/base_header.dart';
 import 'package:birds_learning_network/src/global_model/services/network/base_service.dart';
 import 'package:birds_learning_network/src/global_model/services/network/base_url.dart';
-import 'package:birds_learning_network/src/utils/helper_widgets/response_snack.dart';
 
 class CourseRepository extends NetworkService with BaseUrl, BaseHeaders {
   Future getAllCourses(context) async {
@@ -11,6 +12,17 @@ class CourseRepository extends NetworkService with BaseUrl, BaseHeaders {
       Map<String, String> header_ = await authHeader();
       var json = await getRequest(getCourses, header_, context, time: 100);
       GetCoursesResponse response = GetCoursesResponse.fromJson(json);
+      return response;
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  Future getAvailableCourses(context) async {
+    try {
+      Map<String, String> header_ = await authHeader();
+      var json = await getRequest(availableCourses, header_, context);
+      GetCoursesAllResponse response = GetCoursesAllResponse.fromJson(json);
       return response;
     } catch (e) {
       throw Exception(e);

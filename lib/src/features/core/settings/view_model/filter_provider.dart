@@ -63,10 +63,12 @@ class FilterProvider extends ChangeNotifier {
           await repo.getFilterData(context);
       if (prefList != null && prefList.isNotEmpty) {
         for (PreferenceResponseData val in prefList) {
-          _myList.add(val.name!);
+          if (!_myList.contains(val.name)) {
+            _myList.add(val.name!);
+          }
+
           notifyListeners();
         }
-        // print(_myList);
       }
       notifyListeners();
     } catch (_) {

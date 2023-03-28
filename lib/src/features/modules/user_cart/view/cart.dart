@@ -42,6 +42,7 @@ class CartPage extends StatelessWidget with CartWidgets {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
+                        SizedBox(height: size.height * 0.1),
                         SvgPicture.asset(ImagePath.emptyCart),
                         const SizedBox(height: 30),
                         Align(

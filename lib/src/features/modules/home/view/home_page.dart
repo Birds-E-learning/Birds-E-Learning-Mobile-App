@@ -38,18 +38,12 @@ class _UserHomePageState extends State<UserHomePage>
   GlobalKey trendingKey = GlobalKey();
   GlobalKey quickKey = GlobalKey();
 
-  // @override
-  // void initState() {
-  //   Provider.of<CourseProvider>(context, listen: false).getCourses(context);
-  //   super.initState();
-  // }
-
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     Provider.of<HomeProvider>(context, listen: false).refreshData(context);
     FilterProvider filter = Provider.of<FilterProvider>(context, listen: false);
-    CartProvider cartw = context.watch<CartProvider>();
+    // CartProvider cartw = context.watch<CartProvider>();
     CartProvider cart = context.read<CartProvider>();
     return Consumer<HomeProvider>(
       builder: (_, home, __) => BackgroundWidget(
@@ -202,8 +196,16 @@ class _UserHomePageState extends State<UserHomePage>
                                               int index) {
                                             if (home.topIcons.length <
                                                 home.prefCourses.length) {
-                                              home.topIcons.add(false);
+                                              print(
+                                                  "${home.prefCourses[index].title} ========>>>>> ${home.prefCourses[index].wishList}");
+                                              if (home.prefCourses[index]
+                                                  .wishList!) {
+                                                home.topIcons.add(true);
+                                              } else {
+                                                home.topIcons.add(false);
+                                              }
                                             }
+
                                             return InkWell(
                                               onTap: () =>
                                                   RoutingService.pushRouting(
@@ -269,7 +271,12 @@ class _UserHomePageState extends State<UserHomePage>
                                               int index) {
                                             if (home.trendingIcons.length <
                                                 home.trendingCourses.length) {
-                                              home.trendingIcons.add(false);
+                                              if (home.trendingCourses[index]
+                                                  .wishList!) {
+                                                home.trendingIcons.add(true);
+                                              } else {
+                                                home.trendingIcons.add(false);
+                                              }
                                             }
                                             return InkWell(
                                               onTap: () => RoutingService
@@ -343,7 +350,12 @@ class _UserHomePageState extends State<UserHomePage>
                                               int index) {
                                             if (home.quickIcons.length <
                                                 home.quickCourses.length) {
-                                              home.quickIcons.add(false);
+                                              if (home.quickCourses[index]
+                                                  .wishList!) {
+                                                home.quickIcons.add(true);
+                                              } else {
+                                                home.quickIcons.add(false);
+                                              }
                                             }
                                             return InkWell(
                                               onTap: () => RoutingService

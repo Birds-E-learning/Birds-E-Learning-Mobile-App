@@ -124,6 +124,7 @@ class Courses {
   dynamic exclude;
   dynamic itinerary;
   String? imageUrl;
+  bool? wishList;
   String? imageBannerUrl;
   List<Sections>? sections;
   Facilitator? facilitator;
@@ -141,6 +142,7 @@ class Courses {
     this.gallery,
     this.video,
     this.price,
+    this.wishList,
     this.salePrice,
     this.duration,
     this.faqs,
@@ -184,6 +186,7 @@ class Courses {
     createUser = json['createUser'] as String?;
     updateUser = json['updateUser'];
     deletedAt = json['deletedAt'];
+    wishList = json["wishList"];
     views = json['views'];
     createdAt = json['createdAt'] as String?;
     updatedAt = json['updatedAt'];

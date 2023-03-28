@@ -134,7 +134,6 @@ class HomeProvider extends ChangeNotifier {
     _searchResult = [];
     categories.forEach((key, value) {
       if (key.toLowerCase() == text.toLowerCase()) {
-        print(value);
         _searchResult.addAll(value);
         notifyListeners();
       } else {
@@ -169,7 +168,6 @@ class HomeProvider extends ChangeNotifier {
       } else {
         showSnack(context, response.responseCode!, response.responseMessage!);
       }
-      print(_courses);
     } catch (_) {
       throw Exception(_);
     }
@@ -192,7 +190,6 @@ class HomeProvider extends ChangeNotifier {
               categories[key]!.add(elem);
             }
           }
-          print("$key====>> $courseTitles");
         } else {
           categories[key] = value;
         }
@@ -220,7 +217,6 @@ class HomeProvider extends ChangeNotifier {
               categories[key]!.add(elem);
             }
           }
-          print("$key====>> $courseTitles");
         } else {
           categories[key] = value;
         }
@@ -248,7 +244,6 @@ class HomeProvider extends ChangeNotifier {
               categories[key]!.add(elem);
             }
           }
-          print("$key====>> $courseTitles");
         } else {
           categories[key] = value;
         }

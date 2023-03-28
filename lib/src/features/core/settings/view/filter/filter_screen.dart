@@ -102,7 +102,6 @@ class _FilterScreenState extends State<FilterScreen>
                             }
                             return InkWell(
                               onTap: () {
-                                // print(filter.myList[index]);
                                 filter.setValue(index);
                                 if (filter.selectedCards[index] &&
                                     !textField.text
@@ -114,6 +113,8 @@ class _FilterScreenState extends State<FilterScreen>
                                       "${filter.myList[index]}, ", "");
                                   filter.removePref(filter.myList[index]);
                                 }
+
+                                print(filter.userPrefList);
                               },
                               child: topicText(
                                   filter.myList[index],

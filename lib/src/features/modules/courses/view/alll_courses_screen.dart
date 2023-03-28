@@ -1,7 +1,5 @@
-import 'package:birds_learning_network/src/config/routing/route.dart';
 import 'package:birds_learning_network/src/features/modules/courses/view_model/course_provider.dart';
 import 'package:birds_learning_network/src/features/modules/home/custom_widgets/course_row_card.dart';
-import 'package:birds_learning_network/src/features/modules/home/view/buy_course_screen.dart';
 import 'package:birds_learning_network/src/features/modules/home/view/widgets/more_card_shimmer.dart';
 import 'package:birds_learning_network/src/utils/custom_widgets/custom_bacground.dart';
 import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
@@ -54,7 +52,7 @@ class _AllCoursesScreenState extends State<AllCoursesScreen>
                     itemBuilder: (context, int index) {
                       return const MoreCardsShimmer();
                     })
-                : course.allCourses.isEmpty && !course.isLoading
+                : course.courses.isEmpty && !course.isLoading
                     ? const Center(
                         child: Text(
                         "No available course found",
@@ -63,15 +61,11 @@ class _AllCoursesScreenState extends State<AllCoursesScreen>
                     : ListView.builder(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
-                        itemCount: course.allCourses.length,
+                        itemCount: course.courses.length,
                         scrollDirection: Axis.vertical,
                         itemBuilder: (BuildContext context, int index) {
                           return CourseRowCards(
-                            course: course.allCourses[index],
-                            onTap: () => RoutingService.pushFullScreenRouting(
-                                context,
-                                BuyCourseScreen(
-                                    course: course.allCourses[index])),
+                            course: course.courses[index],
                           );
                         }),
           ),

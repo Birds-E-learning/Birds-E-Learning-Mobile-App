@@ -1,22 +1,41 @@
+import 'package:birds_learning_network/src/config/routing/route.dart';
 import 'package:birds_learning_network/src/features/modules/home/model/response_model/get_courses.dart';
-import 'package:birds_learning_network/src/features/modules/home/model/response_model/get_courses_pref.dart';
+import 'package:birds_learning_network/src/features/modules/home/view/buy_course_screen.dart';
+import 'package:birds_learning_network/src/features/modules/user_cart/view_model/cart_provider.dart';
 import 'package:birds_learning_network/src/utils/global_constants/asset_paths/image_path.dart';
 import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
 import 'package:birds_learning_network/src/utils/helper_widgets/star_widget.dart';
 import 'package:birds_learning_network/src/utils/mixins/module_mixins/home_mixins.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:provider/provider.dart';
 
-class CourseRowCards extends StatelessWidget with HomeWidgets {
-  const CourseRowCards({super.key, required this.course, required this.onTap});
+class CourseRowCards extends StatefulWidget {
+  const CourseRowCards({super.key, required this.course, this.onTap});
   final Courses course;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
+
+  @override
+  State<CourseRowCards> createState() => _CourseRowCardsState();
+}
+
+class _CourseRowCardsState extends State<CourseRowCards> with HomeWidgets {
+  @override
+  void initState() {
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      await getCourseSection(context, widget.course.id.toString());
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     return InkWell(
-      onTap: onTap,
+      onTap: widget.onTap ??
+          () => RoutingService.pushRouting(
+              context, BuyCourseScreen(course: widget.course)),
       child: SizedBox(
         // height: 70,
         width: size.width * 0.92,
@@ -33,7 +52,7 @@ class CourseRowCards extends StatelessWidget with HomeWidgets {
                     height: 50,
                     width: 50,
                     fit: BoxFit.fill,
-                    imageUrl: course.imageUrl ?? "",
+                    imageUrl: widget.course.imageUrl ?? "",
                     placeholder: (context, url) {
                       return Image.asset(
                         ImagePath.titlePics,
@@ -55,28 +74,29 @@ class CourseRowCards extends StatelessWidget with HomeWidgets {
                     SizedBox(
                       width: size.width - (size.width * 0.08) - 60,
                       child: courseTitleText(
-                          course.title ?? "Introduction to Technology"),
+                          widget.course.title ?? "Introduction to Technology"),
                     ),
                     const SizedBox(height: 2),
                     Row(
                       children: [
-                        ownerText(course.facilitator!.name ?? "Anonymous"),
+                        ownerText(
+                            widget.course.facilitator!.name ?? "Anonymous"),
                         const SizedBox(width: 5),
                         Row(
                           children: getStarList(
-                              course.facilitator!.ratings.toString(),
+                              widget.course.facilitator!.ratings.toString(),
                               ImagePath.starFill,
                               ImagePath.starUnfill),
                         ),
                         const SizedBox(width: 5),
-                        ratingText(course.facilitator!.reviews == ""
+                        ratingText(widget.course.facilitator!.reviews == ""
                             ? "4"
-                            : course.facilitator!.reviews.toString())
+                            : widget.course.facilitator!.reviews.toString())
                       ],
                     ),
                     const SizedBox(height: 3),
-                    amountText(
-                        course.salePrice ?? "5000", course.price ?? "5500")
+                    amountText(widget.course.salePrice ?? "5000",
+                        widget.course.price ?? "5500")
                   ],
                 )
               ],
@@ -92,5 +112,14 @@ class CourseRowCards extends StatelessWidget with HomeWidgets {
         ),
       ),
     );
+  }
+
+  Future getCourseSection(context, String id) async {
+    var response = await Provider.of<CartProvider>(context, listen: false)
+        .getCourseSection(context, id);
+    if (response != null) {
+      List<Sections> sections = response;
+      widget.course.sections = sections;
+    }
   }
 }

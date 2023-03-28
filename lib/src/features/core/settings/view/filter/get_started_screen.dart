@@ -45,6 +45,8 @@ class GetStartedPage extends StatelessWidget with FilterTextWidgets {
                       width: size.width * 0.4,
                       child: WhiteButtonWidget(
                           onPressed: () {
+                            Provider.of<HomeProvider>(context, listen: false)
+                                .onItemClick = 0;
                             RoutingService.pushAndRemoveAllRoute(
                                 context, const BirdsHome());
                           },
