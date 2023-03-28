@@ -3,6 +3,8 @@ import 'package:birds_learning_network/src/features/core/auth/view/auth_screen.d
 import 'package:birds_learning_network/src/features/core/settings/view/filter/get_started_screen.dart';
 import 'package:birds_learning_network/src/features/core/settings/view/widgets/card_shimmer.dart';
 import 'package:birds_learning_network/src/features/core/settings/view_model/filter_provider.dart';
+import 'package:birds_learning_network/src/features/modules/home/view/home.dart';
+import 'package:birds_learning_network/src/features/modules/home/view_model/home_provider.dart';
 import 'package:birds_learning_network/src/features/modules/profile/view/profile_page.dart';
 import 'package:birds_learning_network/src/utils/custom_widgets/text_field.dart';
 import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
@@ -121,51 +123,6 @@ class _FilterScreenState extends State<FilterScreen>
                                       : white),
                             );
                           }),
-                  // Wrap(
-                  //   spacing: 10,
-                  //   runSpacing: 10,
-                  //   direction: Axis.horizontal,
-                  //   textDirection: TextDirection.ltr,
-                  //   children: [
-                  //     SizedBox(
-                  //       width: double.infinity,
-                  //       child: ListView.builder(
-                  //         // shrinkWrap: true,
-                  //         itemExtent: size.width,
-                  //         scrollDirection: Axis.horizontal,
-                  //         itemCount: filter.myList.length,
-                  //         itemBuilder: (BuildContext context, int index) {
-                  // if (filter.selectedCards.length <
-                  //     filter.myList.length) {
-                  //   filter.selectedCards.add(false);
-                  // }
-                  // return InkWell(
-                  //   onTap: () {
-                  //     // print(filter.myList[index]);
-                  //     filter.setValue(index);
-                  //     if (filter.selectedCards[index] &&
-                  //         !textField.text
-                  //             .contains(filter.myList[index])) {
-                  //       textField.text += "${filter.myList[index]}, ";
-                  //       filter.addPref(filter.myList[index]);
-                  //     } else {
-                  //       textField.text = textField.text.replaceFirst(
-                  //           "${filter.myList[index]}, ", "");
-                  //       filter.removePref(filter.myList[index]);
-                  //     }
-                  //   },
-                  //   child: topicText(
-                  //       filter.myList[index],
-                  //       filter.selectedCards[index] ? white : grey700,
-                  //       filter.selectedCards[index]
-                  //           ? grey700
-                  //           : white),
-                  // );
-                  //         },
-                  //       ),
-                  //     ),
-                  //   ],
-                  // ),
                   const SizedBox(height: 50),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -173,6 +130,7 @@ class _FilterScreenState extends State<FilterScreen>
                       width: double.infinity,
                       child: BlackButtonWidget(
                           onPressed: () async {
+                            print(filter.userPrefList);
                             if (filter.buttonClicked) {
                               filter.onButtonClick();
                               return;
@@ -181,7 +139,6 @@ class _FilterScreenState extends State<FilterScreen>
                               RoutingService.pushAndRemoveAllRoute(
                                   context, const GetStartedPage());
                             } else {
-                              print(filter.userPrefList);
                               filter.onButtonClick();
                               await filter.postPreferenceList(context);
                             }
@@ -193,8 +150,10 @@ class _FilterScreenState extends State<FilterScreen>
                   ),
                   const SizedBox(height: 10),
                   setupProfile(() {
+                    Provider.of<HomeProvider>(context, listen: false)
+                        .onItemClick = 3;
                     RoutingService.pushAndRemoveAllRoute(
-                        context, const UserProfilePage());
+                        context, const BirdsHome());
                   }),
                 ],
               ),

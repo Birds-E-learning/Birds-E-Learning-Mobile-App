@@ -33,6 +33,7 @@ class AuthRepository extends NetworkService with BaseHeaders, BaseUrl {
     dynamic response =
         await postRequest(autoLogin, header, body.toJson(), context);
     LoginResponse responseData = LoginResponse.fromJson(response);
+    print(responseData.responseData!.authToken);
     return responseData;
   }
 

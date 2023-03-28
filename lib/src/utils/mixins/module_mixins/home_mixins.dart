@@ -99,12 +99,12 @@ mixin HomeWidgets on Object implements HomeText, HomeStyles {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Text(
-          amount,
+          "\$ $amount",
           style: HomeStyles.amountStyle,
         ),
         const SizedBox(width: 10),
         Text(
-          oldAmount,
+          "\$ $oldAmount",
           style: HomeStyles.canceledAmountStyle,
         )
       ],
@@ -136,6 +136,7 @@ mixin HomeWidgets on Object implements HomeText, HomeStyles {
   Text authorNameText(String author) {
     return Text(
       author,
+      maxLines: 2,
       style: HomeStyles.authorNameStyle,
     );
   }
@@ -155,9 +156,11 @@ mixin HomeWidgets on Object implements HomeText, HomeStyles {
     );
   }
 
-  Text authorLabelText(String label) {
-    return Text(
+  AutoSizeText authorLabelText(String label) {
+    return AutoSizeText(
       label,
+      overflow: TextOverflow.ellipsis,
+      minFontSize: 4,
       style: HomeStyles.authorHeaderStyle,
     );
   }

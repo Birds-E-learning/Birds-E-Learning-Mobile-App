@@ -62,7 +62,7 @@ class Categories {
   String? lang;
   String? createdAt;
   String? updatedAt;
-  List<Courses>? courses;
+  List<CoursesP>? courses;
 
   Categories({
     this.name,
@@ -100,7 +100,7 @@ class Categories {
     createdAt = json['createdAt'] as String?;
     updatedAt = json['updatedAt'] as String?;
     courses = (json['courses'] as List?)
-        ?.map((dynamic e) => Courses.fromJson(e as Map<String, dynamic>))
+        ?.map((dynamic e) => CoursesP.fromJson(e as Map<String, dynamic>))
         .toList();
   }
 
@@ -126,7 +126,7 @@ class Categories {
   }
 }
 
-class Courses {
+class CoursesP {
   String? title;
   String? slug;
   String? content;
@@ -156,7 +156,7 @@ class Courses {
   String? itinerary;
   List<Lessons>? lessons;
 
-  Courses({
+  CoursesP({
     this.title,
     this.slug,
     this.content,
@@ -187,7 +187,7 @@ class Courses {
     this.lessons,
   });
 
-  Courses.fromJson(Map<String, dynamic> json) {
+  CoursesP.fromJson(Map<String, dynamic> json) {
     title = json['title'] as String?;
     slug = json['slug'] as String?;
     content = json['content'] as String?;

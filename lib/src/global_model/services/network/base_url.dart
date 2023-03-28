@@ -36,4 +36,18 @@ class BaseUrl {
   final String getCoursetrending = "${base}course/trending/graph";
   final String getCourses = "${base}course/graph/all";
   final String allCourses = "${base}course/compact/graph/all";
+  final String availableCourses = "${base}course/all";
+
+  // Cart
+
+  final String saveCart = "${base}course/shopping/cart/save-update?courseId=";
+  final String deleteCart = "${base}course/shopping/cart/unlink?courseId=";
+  final String getAllCart = "${base}course/shopping/cart/all";
+
+  // Wishlist
+  final String saveWishlist =
+      "${base}course/shopping/wish-list/save-update?courseId=";
+  final String deleteWishlist =
+      "${base}course/shopping/wish-list/unlink?courseId=";
+  final String getAllWishlist = "${base}course/shopping/wish-list/all";
 }

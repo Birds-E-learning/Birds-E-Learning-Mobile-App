@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-List<Widget> getStarList(value, String icon1, String icon2, {double size = 8}) {
+List<Widget> getStarList(dynamic val, String icon1, String icon2,
+    {double size = 8}) {
   List<Widget> starList = [];
+  String value = val.toString();
   for (var i = 0; i < int.parse(value); i++) {
     starList.add(SvgPicture.asset(icon1, height: size, width: size));
   }

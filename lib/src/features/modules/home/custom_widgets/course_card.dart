@@ -1,4 +1,4 @@
-import 'package:birds_learning_network/src/features/modules/home/model/response_model/get_courses_pref.dart';
+import 'package:birds_learning_network/src/features/modules/home/model/response_model/get_courses.dart';
 import 'package:birds_learning_network/src/utils/global_constants/asset_paths/image_path.dart';
 import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
 import 'package:birds_learning_network/src/utils/helper_widgets/star_widget.dart';
@@ -15,7 +15,7 @@ class CourseCard extends StatelessWidget with ImagePath, HomeWidgets {
     this.iconColor = skipColor,
   });
   final VoidCallback onFavPressed;
-  final CoursesPref course;
+  final Courses course;
   final Color iconColor;
   final IconData iconData;
 
@@ -39,7 +39,10 @@ class CourseCard extends StatelessWidget with ImagePath, HomeWidgets {
             height: 90,
             width: 165,
             child: CachedNetworkImage(
-              imageUrl: "",
+              height: 90,
+              width: 165,
+              fit: BoxFit.fill,
+              imageUrl: course.imageUrl ?? "",
               placeholder: (context, url) {
                 return Image.asset(
                   ImagePath.thumbnail,
@@ -69,16 +72,20 @@ class CourseCard extends StatelessWidget with ImagePath, HomeWidgets {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        ownerText("John Doe"),
+                        ownerText(course.facilitator!.name == ""
+                            ? "Anonymous"
+                            : course.facilitator!.name!),
                         const SizedBox(height: 5),
                         Row(
                           children: [
                             Row(
-                              children: getStarList("2", ImagePath.starFill,
+                              children: getStarList(
+                                  course.facilitator!.ratings ?? "1",
+                                  ImagePath.starFill,
                                   ImagePath.starUnfill),
                             ),
                             const SizedBox(width: 10),
-                            ratingText(course.views ?? "4,103")
+                            ratingText(course.facilitator!.reviews.toString())
                           ],
                         )
                       ],

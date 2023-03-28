@@ -22,14 +22,14 @@ mixin ContentWidget on Object implements CourseContentStyle {
 
   Text titleAmountText(dynamic amount) {
     return Text(
-      amount.toString(),
+      "\$ ${amount.toString()}",
       style: CourseContentStyle.amountStyle,
     );
   }
 
   Text bigAmountText(String amount) {
     return Text(
-      amount,
+      "\$ $amount",
       style: CourseContentStyle.bigAmountStyle,
     );
   }

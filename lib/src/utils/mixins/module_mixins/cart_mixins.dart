@@ -79,12 +79,12 @@ mixin CartWidgets on Object implements CartStyles, CartTexts {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Text(
-          amount,
+          "\$ $amount",
           style: CartStyles.amountStyle,
         ),
         const SizedBox(width: 10),
         Text(
-          oldAmount,
+          "\$ $oldAmount",
           style: CartStyles.oldAmountStyle,
         )
       ],

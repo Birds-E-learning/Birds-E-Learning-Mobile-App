@@ -1,6 +1,5 @@
 import 'package:birds_learning_network/src/config/routing/route.dart';
 import 'package:birds_learning_network/src/features/modules/home/custom_widgets/course_row_card.dart';
-import 'package:birds_learning_network/src/features/modules/home/model/response_model/get_courses_pref.dart';
 import 'package:birds_learning_network/src/features/modules/home/view/buy_course_screen.dart';
 import 'package:birds_learning_network/src/utils/custom_widgets/custom_bacground.dart';
 import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
@@ -8,10 +7,12 @@ import 'package:birds_learning_network/src/utils/global_constants/texts/module_t
 import 'package:birds_learning_network/src/utils/mixins/module_mixins/home_mixins.dart';
 import 'package:flutter/material.dart';
 
+import '../../model/response_model/get_courses.dart';
+
 class CategoryScreen extends StatelessWidget with HomeWidgets, HomeText {
   const CategoryScreen({super.key, required this.title, required this.courses});
   final String title;
-  final List<CoursesPref> courses;
+  final List<Courses> courses;
 
   @override
   Widget build(BuildContext context) {

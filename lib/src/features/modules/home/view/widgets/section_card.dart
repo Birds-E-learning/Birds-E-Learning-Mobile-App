@@ -1,5 +1,4 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:birds_learning_network/src/features/modules/home/model/response_model/get_courses_pref.dart';
 import 'package:birds_learning_network/src/features/modules/home/view_model/course_content_provider.dart';
 import 'package:birds_learning_network/src/utils/global_constants/asset_paths/image_path.dart';
 import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
@@ -7,15 +6,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
-class LessonCard extends StatelessWidget {
-  const LessonCard(
+import '../../model/response_model/get_courses.dart';
+
+class SectionCard extends StatelessWidget {
+  const SectionCard(
       {super.key,
       required this.index,
-      required this.lesson,
+      required this.section,
       required this.onPlayTap,
       required this.onLessonTap});
   final dynamic index;
-  final LessonsPref lesson;
+  final Sections section;
   final VoidCallback onPlayTap;
   final VoidCallback onLessonTap;
   @override
@@ -37,7 +38,7 @@ class LessonCard extends StatelessWidget {
               children: [
                 SizedBox(
                   width: MediaQuery.of(context).size.width * 0.8,
-                  child: AutoSizeText(lesson.name ?? "No name",
+                  child: AutoSizeText("${index + 1}. ${section.name}",
                       maxLines: 2, style: style),
                 ),
                 SvgPicture.asset(content.selectedLesson[index]
@@ -45,34 +46,72 @@ class LessonCard extends StatelessWidget {
                     : ImagePath.arrowDownLesson),
               ],
             ),
-            Container(
-              padding: content.selectedLesson[index]
-                  ? const EdgeInsets.symmetric(horizontal: 15, vertical: 5)
-                  : EdgeInsets.zero,
-              child: content.selectedLesson[index]
-                  ? Column(
-                      children: [
-                        Container(
-                          child: index == 0
-                              ? LessonPreview(
-                                  index: index,
-                                  lesson: lesson,
-                                  onTap: onPlayTap,
-                                )
-                              : null,
-                        ),
-                        SizedBox(height: index == 0 ? 15 : 0),
-                        LessonPreview(
-                          index: index,
-                          lesson: lesson,
-                          name: lesson.name ?? "lesson unavailable",
-                          isPreview: false,
-                          onTap: () {},
-                        ),
-                      ],
-                    )
-                  : null,
-            ),
+            ListView.builder(
+                itemCount: section.lessons!.length,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemBuilder: (BuildContext context, int indexx) {
+                  return Container(
+                    padding: content.selectedLesson[index]
+                        ? const EdgeInsets.symmetric(
+                            horizontal: 15, vertical: 10)
+                        : EdgeInsets.zero,
+                    child: content.selectedLesson[index]
+                        ? Column(
+                            children: [
+                              Container(
+                                child: index == 0 && indexx == 0
+                                    ? LessonPreview(
+                                        previousIndex: index,
+                                        index: indexx,
+                                        lesson: section.lessons![indexx],
+                                        onTap: onPlayTap,
+                                      )
+                                    : null,
+                              ),
+                              SizedBox(height: index == 0 ? 15 : 0),
+                              LessonPreview(
+                                previousIndex: index,
+                                index: indexx,
+                                lesson: section.lessons![indexx],
+                                name: section.lessons![0].name!,
+                                isPreview: false,
+                                onTap: () {},
+                              ),
+                            ],
+                          )
+                        : null,
+                  );
+                }),
+            // Container(
+            // padding: content.selectedLesson[index]
+            //     ? const EdgeInsets.symmetric(horizontal: 15, vertical: 5)
+            //     : EdgeInsets.zero,
+            //   child: content.selectedLesson[index]
+            // ? Column(
+            //     children: [
+            //       Container(
+            //         child: index == 0
+            //             ? LessonPreview(
+            //                 index: index,
+            //                 lesson: section.lessons![0],
+            //                 onTap: onPlayTap,
+            //               )
+            //             : null,
+            //       ),
+            //       SizedBox(height: index == 0 ? 15 : 0),
+            //       LessonPreview(
+            //         index: index,
+            //         lesson: section.lessons![0],
+            //         name:
+            //             section.lessons![0].name ?? "lesson unavailable",
+            //         isPreview: false,
+            //         onTap: () {},
+            //       ),
+            //     ],
+            //   )
+            //       : null,
+            // ),
             const Padding(
               padding: EdgeInsets.symmetric(vertical: 15),
               child: Divider(
@@ -91,13 +130,15 @@ class LessonPreview extends StatelessWidget {
   const LessonPreview(
       {super.key,
       required this.index,
+      required this.previousIndex,
       required this.lesson,
       this.name = "Preview Preview lesson",
       required this.onTap,
       this.isPreview = true});
   final dynamic index;
+  final dynamic previousIndex;
   final String name;
-  final LessonsPref lesson;
+  final Lessons lesson;
   final bool isPreview;
   final VoidCallback onTap;
 
@@ -128,7 +169,9 @@ class LessonPreview extends StatelessWidget {
             SizedBox(
               width: MediaQuery.of(context).size.width * 0.7,
               child: AutoSizeText(
-                lessonName,
+                isPreview
+                    ? lessonName
+                    : "${previousIndex + 1}.${index + 1} $lessonName",
                 maxLines: 2,
                 style: style,
               ),

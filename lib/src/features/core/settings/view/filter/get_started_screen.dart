@@ -1,12 +1,15 @@
 import 'package:birds_learning_network/src/config/routing/route.dart';
 import 'package:birds_learning_network/src/features/core/auth/view/auth_screen.dart';
+import 'package:birds_learning_network/src/features/core/settings/view_model/filter_provider.dart';
 import 'package:birds_learning_network/src/features/modules/home/view/home.dart';
+import 'package:birds_learning_network/src/features/modules/home/view_model/home_provider.dart';
 import 'package:birds_learning_network/src/features/modules/profile/view/profile_page.dart';
 import 'package:birds_learning_network/src/utils/global_constants/asset_paths/image_path.dart';
 import 'package:birds_learning_network/src/utils/helper_widgets/button_black.dart';
 import 'package:birds_learning_network/src/utils/helper_widgets/button_white.dart';
 import 'package:birds_learning_network/src/utils/mixins/core_mixins/filter_mixins/filter_mixin.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class GetStartedPage extends StatelessWidget with FilterTextWidgets {
   const GetStartedPage({super.key});
@@ -50,8 +53,10 @@ class GetStartedPage extends StatelessWidget with FilterTextWidgets {
                     width: size.width * 0.4,
                     child: BlackButtonWidget(
                         onPressed: () {
+                          Provider.of<HomeProvider>(context, listen: false)
+                              .onItemClick = 3;
                           RoutingService.pushAndRemoveAllRoute(
-                              context, const UserProfilePage());
+                              context, const BirdsHome());
                         },
                         child: proceedButtonText()),
                   )
