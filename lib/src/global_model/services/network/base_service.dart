@@ -14,6 +14,7 @@ class NetworkService {
       http.Response response = await http
           .get(Uri.parse(url), headers: header)
           .timeout(Duration(seconds: time));
+      print("$url =====>>>> ${response.body}");
       responseJson = getReturnResponse(response, context);
     } on SocketException catch (_) {
       throw FetchDataException("No Internet Connection");
@@ -41,8 +42,23 @@ class NetworkService {
     try {
       http.Response response = await http
           .post(Uri.parse(url), headers: header, body: jsonEncode(body))
-          .timeout(const Duration(seconds: 20));
-      // print(response.body);
+          .timeout(const Duration(seconds: 60));
+      print(response.statusCode);
+      responseJson = returnResponse(response, context);
+    } on SocketException catch (_) {
+      throw FetchDataException("No Internet Connection");
+    }
+    return responseJson;
+  }
+
+  Future postCartRequest(
+      String url, Map<String, String> header, context) async {
+    dynamic responseJson;
+    try {
+      http.Response response = await http
+          .post(Uri.parse(url), headers: header)
+          .timeout(const Duration(seconds: 60));
+      print(response.statusCode);
       responseJson = returnResponse(response, context);
     } on SocketException catch (_) {
       throw FetchDataException("No Internet Connection");

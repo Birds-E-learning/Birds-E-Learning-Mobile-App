@@ -12,6 +12,7 @@ import 'package:birds_learning_network/src/features/modules/home/view/widgets/cu
 import 'package:birds_learning_network/src/features/modules/home/view/widgets/preference_row.dart';
 import 'package:birds_learning_network/src/features/modules/home/view/widgets/shimmer/facilitator_shimmer.dart';
 import 'package:birds_learning_network/src/features/modules/home/view_model/home_provider.dart';
+import 'package:birds_learning_network/src/features/modules/user_cart/view_model/cart_provider.dart';
 import 'package:birds_learning_network/src/utils/custom_widgets/custom_bacground.dart';
 import 'package:birds_learning_network/src/utils/custom_widgets/text_field.dart';
 import 'package:birds_learning_network/src/utils/global_constants/asset_paths/image_path.dart';
@@ -33,12 +34,23 @@ class UserHomePage extends StatefulWidget {
 class _UserHomePageState extends State<UserHomePage>
     with HomeWidgets, HomeText, FilterTextWidgets {
   final TextEditingController _controller = TextEditingController();
+  GlobalKey topKey = GlobalKey();
+  GlobalKey trendingKey = GlobalKey();
+  GlobalKey quickKey = GlobalKey();
+
+  // @override
+  // void initState() {
+  //   Provider.of<CourseProvider>(context, listen: false).getCourses(context);
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     Provider.of<HomeProvider>(context, listen: false).refreshData(context);
     FilterProvider filter = Provider.of<FilterProvider>(context, listen: false);
+    CartProvider cartw = context.watch<CartProvider>();
+    CartProvider cart = context.read<CartProvider>();
     return Consumer<HomeProvider>(
       builder: (_, home, __) => BackgroundWidget(
         appBar: SliverAppBar(
@@ -180,6 +192,7 @@ class _UserHomePageState extends State<UserHomePage>
                                             return const CustomHomeCardShimmer();
                                           })
                                       : ListView.builder(
+                                          key: topKey,
                                           itemCount:
                                               home.prefCourses.length > 10
                                                   ? 10
@@ -203,8 +216,21 @@ class _UserHomePageState extends State<UserHomePage>
                                                 iconData: home.topIcons[index]
                                                     ? Icons.favorite
                                                     : Icons.favorite_outline,
-                                                onFavPressed: () {
+                                                onFavPressed: () async {
                                                   home.setTopValue(index);
+                                                  if (home.topIcons[index]) {
+                                                    await cart.addWishlist(
+                                                        context,
+                                                        home.prefCourses[index]
+                                                            .id!,
+                                                        topKey);
+                                                  } else {
+                                                    await cart.deleteWishlist(
+                                                        context,
+                                                        home.prefCourses[index]
+                                                            .id!,
+                                                        topKey);
+                                                  }
                                                 },
                                                 course: home.prefCourses[index],
                                               ),
@@ -233,6 +259,7 @@ class _UserHomePageState extends State<UserHomePage>
                                             return const CustomHomeCardShimmer();
                                           })
                                       : ListView.builder(
+                                          key: trendingKey,
                                           itemCount:
                                               home.trendingCourses.length > 10
                                                   ? 10
@@ -257,8 +284,26 @@ class _UserHomePageState extends State<UserHomePage>
                                                         .trendingIcons[index]
                                                     ? Icons.favorite
                                                     : Icons.favorite_outline,
-                                                onFavPressed: () {
+                                                onFavPressed: () async {
                                                   home.setTrendingValue(index);
+                                                  if (home
+                                                      .trendingIcons[index]) {
+                                                    await cart.addWishlist(
+                                                        context,
+                                                        home
+                                                            .trendingCourses[
+                                                                index]
+                                                            .id!,
+                                                        trendingKey);
+                                                  } else {
+                                                    await cart.deleteWishlist(
+                                                        context,
+                                                        home
+                                                            .trendingCourses[
+                                                                index]
+                                                            .id!,
+                                                        trendingKey);
+                                                  }
                                                 },
                                                 course:
                                                     home.trendingCourses[index],
@@ -288,6 +333,7 @@ class _UserHomePageState extends State<UserHomePage>
                                             return const CustomHomeCardShimmer();
                                           })
                                       : ListView.builder(
+                                          key: quickKey,
                                           itemCount:
                                               home.quickCourses.length > 10
                                                   ? 10
@@ -311,8 +357,21 @@ class _UserHomePageState extends State<UserHomePage>
                                                 iconData: home.quickIcons[index]
                                                     ? Icons.favorite
                                                     : Icons.favorite_outline,
-                                                onFavPressed: () {
+                                                onFavPressed: () async {
                                                   home.setQuickValue(index);
+                                                  if (home.quickIcons[index]) {
+                                                    await cart.addWishlist(
+                                                        context,
+                                                        home.quickCourses[index]
+                                                            .id!,
+                                                        quickKey);
+                                                  } else {
+                                                    await cart.deleteWishlist(
+                                                        context,
+                                                        home.quickCourses[index]
+                                                            .id!,
+                                                        quickKey);
+                                                  }
                                                 },
                                                 course:
                                                     home.quickCourses[index],

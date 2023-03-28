@@ -2,16 +2,17 @@ import 'dart:io';
 
 import 'package:birds_learning_network/src/config/routing/route.dart';
 import 'package:birds_learning_network/src/features/modules/home/model/response_model/get_courses.dart';
-import 'package:birds_learning_network/src/features/modules/home/model/response_model/get_courses_pref.dart';
 import 'package:birds_learning_network/src/features/modules/home/view/widgets/preview_container.dart';
 import 'package:birds_learning_network/src/features/modules/home/view/widgets/section_card.dart';
 import 'package:birds_learning_network/src/features/modules/home/view_model/course_content_provider.dart';
 import 'package:birds_learning_network/src/features/modules/payment/view/screens/payment_screen.dart';
+import 'package:birds_learning_network/src/features/modules/user_cart/view_model/cart_provider.dart';
 import 'package:birds_learning_network/src/utils/global_constants/asset_paths/image_path.dart';
 import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
 import 'package:birds_learning_network/src/utils/global_constants/styles/home_styles/home_styles.dart';
 import 'package:birds_learning_network/src/utils/helper_widgets/button_black.dart';
 import 'package:birds_learning_network/src/utils/helper_widgets/button_white.dart';
+import 'package:birds_learning_network/src/utils/helper_widgets/loading_indicator.dart';
 import 'package:birds_learning_network/src/utils/helper_widgets/star_widget.dart';
 import 'package:birds_learning_network/src/utils/mixins/module_mixins/content_mixins.dart';
 import 'package:birds_learning_network/src/utils/mixins/module_mixins/home_mixins.dart';
@@ -40,6 +41,7 @@ class _BuyCourseScreenState extends State<BuyCourseScreen>
   ChewieController? _controller;
   late YoutubePlayerController _ytController;
   final key1 = GlobalKey();
+  final toastKey = GlobalKey();
 
   @override
   void initState() {
@@ -53,6 +55,8 @@ class _BuyCourseScreenState extends State<BuyCourseScreen>
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
+    CartProvider cart = context.watch<CartProvider>();
+    CartProvider cartRead = context.read<CartProvider>();
     return Scaffold(
       body: Consumer<CourseContentProvider>(
         builder: (_, content, __) => SafeArea(
@@ -216,7 +220,7 @@ class _BuyCourseScreenState extends State<BuyCourseScreen>
                     physics: const NeverScrollableScrollPhysics(),
                     itemBuilder: (BuildContext context, int index) {
                       if (content.selectedLesson.length <
-                          widget.course.sections![0].lessons!.length) {
+                          widget.course.sections!.length) {
                         content.selectedLesson.add(false);
                       }
                       return SectionCard(
@@ -273,15 +277,36 @@ class _BuyCourseScreenState extends State<BuyCourseScreen>
                         height: 60,
                         width: size.width * 0.45,
                         child: WhiteButtonWidget(
-                            onPressed: () {},
-                            child: buttonText("Add to Cart", skipColor)),
+                            onPressed: () async {
+                              if (cartRead.cartClicked) {
+                                cartRead.onCartClick();
+                                return;
+                              }
+                              cartRead.onCartClick();
+                              await cartRead.addCart(
+                                  context, widget.course.id!);
+                            },
+                            child: cart.cartClicked
+                                ? loadingIdicator()
+                                : buttonText("Add to Cart", skipColor)),
                       ),
                       SizedBox(
                         height: 60,
                         width: size.width * 0.45,
                         child: WhiteButtonWidget(
-                            onPressed: () {},
-                            child: buttonText("Add to WishList", skipColor)),
+                            onPressed: () async {
+                              if (cartRead.wishlistClicked) {
+                                cartRead.onWishlistClick();
+                                return;
+                              }
+                              cartRead.onWishlistClick();
+                              await cartRead.addWishlist(
+                                  context, widget.course.id!, toastKey,
+                                  page: "Course Screen");
+                            },
+                            child: cart.wishlistClicked
+                                ? loadingIdicator()
+                                : buttonText("Add to WishList", skipColor)),
                       )
                     ],
                   )

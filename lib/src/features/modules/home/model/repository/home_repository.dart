@@ -83,6 +83,7 @@ class HomeRepository extends NetworkService with BaseUrl, BaseHeaders {
     try {
       Map<String, String> header_ = await authHeader();
       var json = await getRequest(allCourses, header_, context, time: 100);
+      print(json);
       return json;
     } catch (e) {
       print(e);

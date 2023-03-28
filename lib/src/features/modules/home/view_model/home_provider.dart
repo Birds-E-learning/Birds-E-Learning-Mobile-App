@@ -55,9 +55,11 @@ class HomeProvider extends ChangeNotifier {
       if (_quickCourses.isEmpty) {
         await quickCoursesGraph(context);
       }
-      if (_courses.isEmpty) {
-        // getAllCourses(context);
-      }
+      // if (_courses.isEmpty) {
+      //     Future.delayed(const Duration(seconds: 30), () {
+      //       getAllCourses(context);
+      //     });
+      //   }
     });
   }
 
@@ -79,6 +81,7 @@ class HomeProvider extends ChangeNotifier {
 
   // holds the clicked top picks favorite icons
   List<bool> topIcons = [];
+  List<Courses> availableCourses = [];
 
   List<String> courseList = [];
   Map<String, List<Courses>> categories = {};
@@ -87,6 +90,7 @@ class HomeProvider extends ChangeNotifier {
   List<Courses> _prefCourses = [];
   List<Courses> _trendingCourses = [];
   bool _onSearch = false;
+  bool isCoursesLoading = false;
 
   bool get onSearch => _onSearch;
   String get firstName => _firstName;
@@ -147,28 +151,25 @@ class HomeProvider extends ChangeNotifier {
 
   Future getAllCourses(context) async {
     try {
+      isCoursesLoading = true;
       var response = await repo.getCompactCourse(context);
       if (response["responseCode"] == "00") {
         Map<String, dynamic> data = response['responseData'];
         _courses = [];
-        print("length======>>>> ${data.length}");
         for (var value in data.keys) {
           List categories_ = data[value];
-          print(("$value =====>>>> ${categories_.length}"));
-          int sum = 0;
           for (var element in categories_) {
             Category elem = Category.fromJson(element);
-            sum += elem.courses!.length;
             _courses.addAll(elem.courses!);
           }
-          print("$value =======>> $sum");
           notifyListeners();
         }
+        isCoursesLoading = false;
         notifyListeners();
-        print("_courses ===>>>>> ${_courses.length}");
       } else {
         showSnack(context, response.responseCode!, response.responseMessage!);
       }
+      print(_courses);
     } catch (_) {
       throw Exception(_);
     }

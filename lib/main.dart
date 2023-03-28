@@ -25,6 +25,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
+import 'src/features/modules/courses/view_model/course_provider.dart';
 import 'src/global_model/services/storage/shared_preferences/device_info.dart';
 
 void main() async {
@@ -55,6 +56,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => PreferenceProvider()),
         ChangeNotifierProvider(create: (context) => CartProvider()),
         ChangeNotifierProvider(create: (context) => PaymentProvider()),
+        ChangeNotifierProvider(create: (context) => CourseProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

@@ -60,19 +60,23 @@ class CourseRowCards extends StatelessWidget with HomeWidgets {
                     const SizedBox(height: 2),
                     Row(
                       children: [
-                        ownerText("John Doe"),
+                        ownerText(course.facilitator!.name ?? "Anonymous"),
                         const SizedBox(width: 5),
                         Row(
                           children: getStarList(
-                              "3", ImagePath.starFill, ImagePath.starUnfill),
+                              course.facilitator!.ratings.toString(),
+                              ImagePath.starFill,
+                              ImagePath.starUnfill),
                         ),
                         const SizedBox(width: 5),
-                        ratingText(course.reviewScore ?? "4,103")
+                        ratingText(course.facilitator!.reviews == ""
+                            ? "4"
+                            : course.facilitator!.reviews.toString())
                       ],
                     ),
                     const SizedBox(height: 3),
-                    amountText(course.salePrice ?? "NGN5000",
-                        course.price ?? "NGN5500")
+                    amountText(
+                        course.salePrice ?? "5000", course.price ?? "5500")
                   ],
                 )
               ],

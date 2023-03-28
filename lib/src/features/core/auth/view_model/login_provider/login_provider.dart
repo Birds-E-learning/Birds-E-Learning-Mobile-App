@@ -119,6 +119,7 @@ class LoginProvider extends ChangeNotifier {
         await storage.setToken(response.responseData!.authToken!);
         await storage.setUserData(response);
         Provider.of<HomeProvider>(context, listen: false).getHomeData(context);
+
         RoutingService.pushReplacementRouting(context, const BirdsHome());
       } else {
         RoutingService.pushReplacementRouting(

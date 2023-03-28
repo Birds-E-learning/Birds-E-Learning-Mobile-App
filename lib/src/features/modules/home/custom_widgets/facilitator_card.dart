@@ -25,17 +25,17 @@ class FacilitatorCard extends StatelessWidget with HomeWidgets {
         // mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          ClipOval(
-              child: CachedNetworkImage(
-            imageUrl: facilitator.imageUrl ?? "",
-            placeholder: (context, url) {
-              return Image.asset(ImagePath.facilitator);
-            },
-            errorWidget: (context, url, error) {
-              return Image.asset(ImagePath.facilitator);
-            },
-          )),
-          const SizedBox(width: 10),
+          Container(
+            height: 50,
+            width: 50,
+            decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                image: DecorationImage(
+                    image: Image.network(facilitator.imageUrl ??
+                            "https://birds-e-learning.herokuapp.com/img/profile.png")
+                        .image)),
+          ),
+          const SizedBox(width: 5),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.center,
