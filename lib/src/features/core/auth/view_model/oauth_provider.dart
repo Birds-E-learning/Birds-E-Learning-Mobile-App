@@ -167,7 +167,7 @@ class OAuthProvider extends ChangeNotifier {
       }
     } catch (e) {
       checkServiceClicked(_serviceProvider);
-      showSnack(context, "02", "Network TimedOut");
+      throw Exception(e);
     }
   }
 
