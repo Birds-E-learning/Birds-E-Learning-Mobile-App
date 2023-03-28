@@ -36,24 +36,24 @@ class HomeProvider extends ChangeNotifier {
     selectedCards = [];
     _onSearch = false;
     getUserData();
-    await Provider.of<FilterProvider>(context, listen: false)
+    Provider.of<FilterProvider>(context, listen: false)
         .getPreferenceList(context);
-    await prefCoursesGraph(context);
-    await trendingCoursesGraph(context);
-    await quickCoursesGraph(context);
+    prefCoursesGraph(context);
+    trendingCoursesGraph(context);
+    quickCoursesGraph(context);
     // getAllCourses(context);
   }
 
   Future refreshData(context) async {
     Future.delayed(const Duration(seconds: 75), () async {
       if (_prefCourses.isEmpty) {
-        await prefCoursesGraph(context);
+        prefCoursesGraph(context);
       }
       if (_trendingCourses.isEmpty) {
-        await trendingCoursesGraph(context);
+        trendingCoursesGraph(context);
       }
       if (_quickCourses.isEmpty) {
-        await quickCoursesGraph(context);
+        quickCoursesGraph(context);
       }
       // if (_courses.isEmpty) {
       //     Future.delayed(const Duration(seconds: 30), () {
@@ -91,6 +91,11 @@ class HomeProvider extends ChangeNotifier {
   List<Courses> _trendingCourses = [];
   bool _onSearch = false;
   bool isCoursesLoading = false;
+
+  // loading booleans
+  bool isPrefLoading = false;
+  bool isTrendingLoading = false;
+  bool isQuickLoading = false;
 
   bool get onSearch => _onSearch;
   String get firstName => _firstName;
@@ -148,33 +153,34 @@ class HomeProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future getAllCourses(context) async {
-    try {
-      isCoursesLoading = true;
-      var response = await repo.getCompactCourse(context);
-      if (response["responseCode"] == "00") {
-        Map<String, dynamic> data = response['responseData'];
-        _courses = [];
-        for (var value in data.keys) {
-          List categories_ = data[value];
-          for (var element in categories_) {
-            Category elem = Category.fromJson(element);
-            _courses.addAll(elem.courses!);
-          }
-          notifyListeners();
-        }
-        isCoursesLoading = false;
-        notifyListeners();
-      } else {
-        showSnack(context, response.responseCode!, response.responseMessage!);
-      }
-    } catch (_) {
-      throw Exception(_);
-    }
-  }
+  // Future getAllCourses(context) async {
+  //   try {
+  //     isCoursesLoading = true;
+  //     var response = await repo.getCompactCourse(context);
+  //     if (response["responseCode"] == "00") {
+  //       Map<String, dynamic> data = response['responseData'];
+  //       _courses = [];
+  //       for (var value in data.keys) {
+  //         List categories_ = data[value];
+  //         for (var element in categories_) {
+  //           Category elem = Category.fromJson(element);
+  //           _courses.addAll(elem.courses!);
+  //         }
+  //         notifyListeners();
+  //       }
+  //       isCoursesLoading = false;
+  //       notifyListeners();
+  //     } else {
+  //       showSnack(context, response.responseCode!, response.responseMessage!);
+  //     }
+  //   } catch (_) {
+  //     throw Exception(_);
+  //   }
+  // }
 
   Future prefCoursesGraph(context) async {
     try {
+      isPrefLoading = true;
       Map<String, List<Courses>> response =
           await repo.getPreferenceCourses(context);
       _prefCourses = [];
@@ -194,6 +200,7 @@ class HomeProvider extends ChangeNotifier {
           categories[key] = value;
         }
       });
+      isPrefLoading = false;
       notifyListeners();
     } catch (e) {
       throw Exception(e);
@@ -202,6 +209,7 @@ class HomeProvider extends ChangeNotifier {
 
   Future quickCoursesGraph(context) async {
     try {
+      isQuickLoading = true;
       _quickCourses = [];
       Map<String, List<Courses>> response = await repo.getQuickCourses(context);
       // categories.addAll(response);
@@ -221,6 +229,7 @@ class HomeProvider extends ChangeNotifier {
           categories[key] = value;
         }
       });
+      isQuickLoading = false;
       notifyListeners();
     } catch (e) {
       throw Exception(e);
@@ -229,6 +238,7 @@ class HomeProvider extends ChangeNotifier {
 
   Future trendingCoursesGraph(context) async {
     try {
+      isTrendingLoading = true;
       _trendingCourses = [];
       Map<String, List<Courses>> response =
           await repo.getTrendingCourses(context);
@@ -248,6 +258,7 @@ class HomeProvider extends ChangeNotifier {
           categories[key] = value;
         }
       });
+      isTrendingLoading = false;
       notifyListeners();
     } catch (e) {
       throw Exception(e);

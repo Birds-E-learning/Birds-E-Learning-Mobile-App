@@ -51,7 +51,7 @@ class AuthRepository extends NetworkService with BaseHeaders, BaseUrl {
   Future<OtpResponse> getResendOtpResponse(
       String service, String email, context) async {
     String url = service == "Resend" ? "$resendOtp$email" : "$resetOtp$email";
-    print(url);
+    // print(url);
     dynamic response = await getRequest(url, header, context);
     OtpResponse responseData = OtpResponse.fromJson(response);
     return responseData;

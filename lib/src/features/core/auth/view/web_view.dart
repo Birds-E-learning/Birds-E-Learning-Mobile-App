@@ -52,9 +52,12 @@ class _WebViewState extends State<WebView> {
                           widget.validationType == "LOGIN") {
                         Provider.of<HomeProvider>(context, listen: false)
                             .getHomeData(context);
+                        Provider.of<HomeProvider>(context, listen: false)
+                            .onItemClick = 0;
                         RoutingService.pushAndRemoveAllRoute(
                             context, const BirdsHome());
-                      } else if (auth.webviewCompleted) {
+                      } else if (auth.webviewCompleted &&
+                          widget.validationType == "SIGN UP") {
                         Provider.of<HomeProvider>(context, listen: false)
                             .getHomeData(context);
                         RoutingService.pushAndRemoveAllRoute(

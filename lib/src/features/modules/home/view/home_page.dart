@@ -1,18 +1,19 @@
 import 'package:birds_learning_network/src/config/routing/route.dart';
 import 'package:birds_learning_network/src/features/core/settings/view/widgets/card_shimmer.dart';
 import 'package:birds_learning_network/src/features/core/settings/view_model/filter_provider.dart';
-import 'package:birds_learning_network/src/features/modules/home/custom_widgets/course_card.dart';
+import 'package:birds_learning_network/src/features/modules/courses/view_model/course_provider.dart';
 import 'package:birds_learning_network/src/features/modules/home/custom_widgets/course_row_card.dart';
 import 'package:birds_learning_network/src/features/modules/home/custom_widgets/facilitator_card.dart';
 import 'package:birds_learning_network/src/features/modules/home/view/buy_course_screen.dart';
 import 'package:birds_learning_network/src/features/modules/home/view/categories/preference_courses.dart';
 import 'package:birds_learning_network/src/features/modules/home/view/categories/quick_courses.dart';
 import 'package:birds_learning_network/src/features/modules/home/view/categories/trending_courses.dart';
-import 'package:birds_learning_network/src/features/modules/home/view/widgets/custom_shimmer_card.dart';
 import 'package:birds_learning_network/src/features/modules/home/view/widgets/preference_row.dart';
+import 'package:birds_learning_network/src/features/modules/home/view/widgets/preferential_listview.dart';
+import 'package:birds_learning_network/src/features/modules/home/view/widgets/quick_listview.dart';
 import 'package:birds_learning_network/src/features/modules/home/view/widgets/shimmer/facilitator_shimmer.dart';
+import 'package:birds_learning_network/src/features/modules/home/view/widgets/trending_listview.dart';
 import 'package:birds_learning_network/src/features/modules/home/view_model/home_provider.dart';
-import 'package:birds_learning_network/src/features/modules/user_cart/view_model/cart_provider.dart';
 import 'package:birds_learning_network/src/utils/custom_widgets/custom_bacground.dart';
 import 'package:birds_learning_network/src/utils/custom_widgets/text_field.dart';
 import 'package:birds_learning_network/src/utils/global_constants/asset_paths/image_path.dart';
@@ -34,17 +35,18 @@ class UserHomePage extends StatefulWidget {
 class _UserHomePageState extends State<UserHomePage>
     with HomeWidgets, HomeText, FilterTextWidgets {
   final TextEditingController _controller = TextEditingController();
-  GlobalKey topKey = GlobalKey();
-  GlobalKey trendingKey = GlobalKey();
-  GlobalKey quickKey = GlobalKey();
+
+  @override
+  void initState() {
+    Provider.of<CourseProvider>(context, listen: false).getCourses(context);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     Provider.of<HomeProvider>(context, listen: false).refreshData(context);
     FilterProvider filter = Provider.of<FilterProvider>(context, listen: false);
-    // CartProvider cartw = context.watch<CartProvider>();
-    CartProvider cart = context.read<CartProvider>();
     return Consumer<HomeProvider>(
       builder: (_, home, __) => BackgroundWidget(
         appBar: SliverAppBar(
@@ -175,70 +177,7 @@ class _UserHomePageState extends State<UserHomePage>
                                       horizontal: size.width * 0.04),
                                 ),
                                 const SizedBox(height: 15),
-                                SizedBox(
-                                  height: 205,
-                                  child: home.prefCourses.isEmpty
-                                      ? ListView.builder(
-                                          itemCount: 6,
-                                          scrollDirection: Axis.horizontal,
-                                          itemBuilder: (BuildContext context,
-                                              int index) {
-                                            return const CustomHomeCardShimmer();
-                                          })
-                                      : ListView.builder(
-                                          key: topKey,
-                                          itemCount:
-                                              home.prefCourses.length > 10
-                                                  ? 10
-                                                  : home.prefCourses.length,
-                                          scrollDirection: Axis.horizontal,
-                                          itemBuilder: (BuildContext context,
-                                              int index) {
-                                            if (home.topIcons.length <
-                                                home.prefCourses.length) {
-                                              print(
-                                                  "${home.prefCourses[index].title} ========>>>>> ${home.prefCourses[index].wishList}");
-                                              if (home.prefCourses[index]
-                                                  .wishList!) {
-                                                home.topIcons.add(true);
-                                              } else {
-                                                home.topIcons.add(false);
-                                              }
-                                            }
-
-                                            return InkWell(
-                                              onTap: () =>
-                                                  RoutingService.pushRouting(
-                                                      context,
-                                                      BuyCourseScreen(
-                                                          course:
-                                                              home.prefCourses[
-                                                                  index])),
-                                              child: CourseCard(
-                                                iconData: home.topIcons[index]
-                                                    ? Icons.favorite
-                                                    : Icons.favorite_outline,
-                                                onFavPressed: () async {
-                                                  home.setTopValue(index);
-                                                  if (home.topIcons[index]) {
-                                                    await cart.addWishlist(
-                                                        context,
-                                                        home.prefCourses[index]
-                                                            .id!,
-                                                        topKey);
-                                                  } else {
-                                                    await cart.deleteWishlist(
-                                                        context,
-                                                        home.prefCourses[index]
-                                                            .id!,
-                                                        topKey);
-                                                  }
-                                                },
-                                                course: home.prefCourses[index],
-                                              ),
-                                            );
-                                          }),
-                                ),
+                                const PreferentialListView(),
                                 const SizedBox(height: 15),
                                 categoryRowText(
                                   "Trending Courses",
@@ -250,74 +189,7 @@ class _UserHomePageState extends State<UserHomePage>
                                       horizontal: size.width * 0.04),
                                 ),
                                 const SizedBox(height: 15),
-                                SizedBox(
-                                  height: 205,
-                                  child: home.trendingCourses.isEmpty
-                                      ? ListView.builder(
-                                          itemCount: 6,
-                                          scrollDirection: Axis.horizontal,
-                                          itemBuilder: (BuildContext context,
-                                              int index) {
-                                            return const CustomHomeCardShimmer();
-                                          })
-                                      : ListView.builder(
-                                          key: trendingKey,
-                                          itemCount:
-                                              home.trendingCourses.length > 10
-                                                  ? 10
-                                                  : home.trendingCourses.length,
-                                          scrollDirection: Axis.horizontal,
-                                          itemBuilder: (BuildContext context,
-                                              int index) {
-                                            if (home.trendingIcons.length <
-                                                home.trendingCourses.length) {
-                                              if (home.trendingCourses[index]
-                                                  .wishList!) {
-                                                home.trendingIcons.add(true);
-                                              } else {
-                                                home.trendingIcons.add(false);
-                                              }
-                                            }
-                                            return InkWell(
-                                              onTap: () => RoutingService
-                                                  .pushFullScreenRouting(
-                                                      context,
-                                                      BuyCourseScreen(
-                                                          course:
-                                                              home.trendingCourses[
-                                                                  index])),
-                                              child: CourseCard(
-                                                iconData: home
-                                                        .trendingIcons[index]
-                                                    ? Icons.favorite
-                                                    : Icons.favorite_outline,
-                                                onFavPressed: () async {
-                                                  home.setTrendingValue(index);
-                                                  if (home
-                                                      .trendingIcons[index]) {
-                                                    await cart.addWishlist(
-                                                        context,
-                                                        home
-                                                            .trendingCourses[
-                                                                index]
-                                                            .id!,
-                                                        trendingKey);
-                                                  } else {
-                                                    await cart.deleteWishlist(
-                                                        context,
-                                                        home
-                                                            .trendingCourses[
-                                                                index]
-                                                            .id!,
-                                                        trendingKey);
-                                                  }
-                                                },
-                                                course:
-                                                    home.trendingCourses[index],
-                                              ),
-                                            );
-                                          }),
-                                ),
+                                const TrendingListView(),
                                 const SizedBox(height: 20),
                                 categoryRowText(
                                   "Quick Courses",
@@ -329,68 +201,7 @@ class _UserHomePageState extends State<UserHomePage>
                                       horizontal: size.width * 0.04),
                                 ),
                                 const SizedBox(height: 15),
-                                SizedBox(
-                                  height: 205,
-                                  child: home.quickCourses.isEmpty
-                                      ? ListView.builder(
-                                          itemCount: 6,
-                                          scrollDirection: Axis.horizontal,
-                                          itemBuilder: (BuildContext context,
-                                              int index) {
-                                            return const CustomHomeCardShimmer();
-                                          })
-                                      : ListView.builder(
-                                          key: quickKey,
-                                          itemCount:
-                                              home.quickCourses.length > 10
-                                                  ? 10
-                                                  : home.quickCourses.length,
-                                          scrollDirection: Axis.horizontal,
-                                          itemBuilder: (BuildContext context,
-                                              int index) {
-                                            if (home.quickIcons.length <
-                                                home.quickCourses.length) {
-                                              if (home.quickCourses[index]
-                                                  .wishList!) {
-                                                home.quickIcons.add(true);
-                                              } else {
-                                                home.quickIcons.add(false);
-                                              }
-                                            }
-                                            return InkWell(
-                                              onTap: () => RoutingService
-                                                  .pushFullScreenRouting(
-                                                      context,
-                                                      BuyCourseScreen(
-                                                          course:
-                                                              home.quickCourses[
-                                                                  index])),
-                                              child: CourseCard(
-                                                iconData: home.quickIcons[index]
-                                                    ? Icons.favorite
-                                                    : Icons.favorite_outline,
-                                                onFavPressed: () async {
-                                                  home.setQuickValue(index);
-                                                  if (home.quickIcons[index]) {
-                                                    await cart.addWishlist(
-                                                        context,
-                                                        home.quickCourses[index]
-                                                            .id!,
-                                                        quickKey);
-                                                  } else {
-                                                    await cart.deleteWishlist(
-                                                        context,
-                                                        home.quickCourses[index]
-                                                            .id!,
-                                                        quickKey);
-                                                  }
-                                                },
-                                                course:
-                                                    home.quickCourses[index],
-                                              ),
-                                            );
-                                          }),
-                                ),
+                                const QuickListView(),
                                 const SizedBox(height: 15),
                                 Padding(
                                   padding: EdgeInsets.symmetric(

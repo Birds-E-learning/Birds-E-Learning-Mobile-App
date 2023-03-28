@@ -155,8 +155,8 @@ class CartProvider extends ChangeNotifier {
           await repo.deleteCartService(context, id.toString());
       _removeCartIconClicked ? onRemoveCartIconClick() : null;
       if (response.responseCode == "00") {
-        await getAllCarts(context);
         showRemoveToast(context, key);
+        await getAllCarts(context);
       } else {
         showSnack(context, response.responseCode!, response.responseMessage!);
       }
@@ -173,13 +173,14 @@ class CartProvider extends ChangeNotifier {
           await repo.deleteWishlistService(context, id.toString());
       _removewishIconClicked ? onRemoveWishIconClick() : null;
       if (response.responseCode == "00") {
-        await getAllWishlists(context);
         page == "home"
             ? showRemoveToast(context, key)
             : successDialog(context, "Success",
                 "Course successfully removed from wishlist", "OK", () {
                 Navigator.pop(context);
               });
+
+        await getAllWishlists(context);
       } else {
         showSnack(context, response.responseCode!, response.responseMessage!);
       }

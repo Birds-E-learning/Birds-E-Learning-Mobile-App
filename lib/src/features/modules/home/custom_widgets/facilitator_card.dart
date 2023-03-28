@@ -48,7 +48,8 @@ class FacilitatorCard extends StatelessWidget with HomeWidgets {
                       children: [
                         SizedBox(
                           width: 70,
-                          child: authorLabelText(facilitator.degree == ""
+                          child: authorLabelText(facilitator.degree == "" ||
+                                  facilitator.degree == null
                               ? "PhD, Design"
                               : facilitator.degree!),
                         ),
@@ -63,7 +64,8 @@ class FacilitatorCard extends StatelessWidget with HomeWidgets {
                         ),
                         SizedBox(
                           width: 80,
-                          child: authorLabelText(facilitator.skill == ""
+                          child: authorLabelText(facilitator.skill == "" ||
+                                  facilitator.degree == null
                               ? "Graphic Designer"
                               : facilitator.skill!),
                         ),
