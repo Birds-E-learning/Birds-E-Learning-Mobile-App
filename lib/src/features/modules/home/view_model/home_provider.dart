@@ -203,6 +203,7 @@ class HomeProvider extends ChangeNotifier {
       isPrefLoading = false;
       notifyListeners();
     } catch (e) {
+      isPrefLoading = false;
       throw Exception(e);
     }
   }
@@ -232,6 +233,7 @@ class HomeProvider extends ChangeNotifier {
       isQuickLoading = false;
       notifyListeners();
     } catch (e) {
+      isQuickLoading = false;
       throw Exception(e);
     }
   }
@@ -261,6 +263,7 @@ class HomeProvider extends ChangeNotifier {
       isTrendingLoading = false;
       notifyListeners();
     } catch (e) {
+      isTrendingLoading = false;
       throw Exception(e);
     }
   }
