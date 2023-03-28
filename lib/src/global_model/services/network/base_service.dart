@@ -8,13 +8,12 @@ import 'package:http/http.dart' as http;
 
 class NetworkService {
   Future getRequest(String url, Map<String, String> header, context,
-      {int time = 30}) async {
+      {int time = 60}) async {
     dynamic responseJson;
     try {
       http.Response response = await http
           .get(Uri.parse(url), headers: header)
           .timeout(Duration(seconds: time));
-      print("$url =====>>>> ${response.body}");
       responseJson = getReturnResponse(response, context);
     } on SocketException catch (_) {
       throw FetchDataException("No Internet Connection");
@@ -27,7 +26,7 @@ class NetworkService {
     try {
       http.Response response = await http
           .delete(Uri.parse(url), headers: header)
-          .timeout(const Duration(seconds: 20));
+          .timeout(const Duration(seconds: 40));
       // print(response.body);
       responseJson = getReturnResponse(response, context);
     } on SocketException catch (_) {
@@ -37,13 +36,13 @@ class NetworkService {
   }
 
   Future postRequest(
-      String url, Map<String, String> header, Object body, context) async {
+      String url, Map<String, String> header, Object body, context,
+      {seconds = 60}) async {
     dynamic responseJson;
     try {
       http.Response response = await http
           .post(Uri.parse(url), headers: header, body: jsonEncode(body))
-          .timeout(const Duration(seconds: 60));
-      print(response.statusCode);
+          .timeout(Duration(seconds: seconds));
       responseJson = returnResponse(response, context);
     } on SocketException catch (_) {
       throw FetchDataException("No Internet Connection");
@@ -51,14 +50,13 @@ class NetworkService {
     return responseJson;
   }
 
-  Future postCartRequest(
-      String url, Map<String, String> header, context) async {
+  Future postCartRequest(String url, Map<String, String> header, context,
+      {seconds = 60}) async {
     dynamic responseJson;
     try {
       http.Response response = await http
           .post(Uri.parse(url), headers: header)
-          .timeout(const Duration(seconds: 60));
-      print(response.statusCode);
+          .timeout(Duration(seconds: seconds));
       responseJson = returnResponse(response, context);
     } on SocketException catch (_) {
       throw FetchDataException("No Internet Connection");

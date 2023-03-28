@@ -2,6 +2,7 @@ import 'package:birds_learning_network/src/features/modules/home/model/response_
 import 'package:birds_learning_network/src/features/modules/user_cart/model/repository/cart_repository.dart';
 import 'package:birds_learning_network/src/features/modules/user_cart/model/response_model/general_response.dart';
 import 'package:birds_learning_network/src/features/modules/user_cart/model/response_model/get_all_cart.dart';
+import 'package:birds_learning_network/src/features/modules/user_cart/model/response_model/get_section.dart';
 import 'package:birds_learning_network/src/utils/helper_widgets/response_snack.dart';
 import 'package:birds_learning_network/src/utils/ui_utils/animations/favorite_toast.dart';
 import 'package:birds_learning_network/src/utils/ui_utils/animations/unfavorite_toast.dart';
@@ -184,6 +185,19 @@ class CartProvider extends ChangeNotifier {
       }
     } catch (e) {
       _removewishIconClicked ? onRemoveWishIconClick() : null;
+      throw Exception(e);
+    }
+  }
+
+  Future getCourseSection(context, String id) async {
+    try {
+      GetCourseSection response = await repo.getPickedSections(context, id);
+      if (response.responseCode == "00") {
+        return response.responseData;
+      } else {
+        showSnack(context, response.responseCode!, response.responseMessage!);
+      }
+    } catch (e) {
       throw Exception(e);
     }
   }

@@ -60,18 +60,14 @@ class HomeRepository extends NetworkService with BaseUrl, BaseHeaders {
           await getRequest(getCoursetrending, header_, context, time: 60);
       GetCoursesResponse response = GetCoursesResponse.fromJson(json);
       if (response.responseCode == "00") {
-        print(response.responseCode);
         if (response.responseData!.categories!.isEmpty) {
           return "no data";
         }
         for (Category element in response.responseData!.categories!) {
-          print("here first=====>> $element");
           categories[element.name!] = element.courses!;
-          print("image url -====.>>> ${element.courses![0].imageUrl}");
         }
         return categories;
       } else {
-        print(response.responseCode);
         showSnack(context, response.responseCode!, response.responseMessage!);
       }
     } catch (_) {
@@ -83,10 +79,9 @@ class HomeRepository extends NetworkService with BaseUrl, BaseHeaders {
     try {
       Map<String, String> header_ = await authHeader();
       var json = await getRequest(allCourses, header_, context, time: 100);
-      print(json);
       return json;
     } catch (e) {
-      print(e);
+      throw Exception(e);
     }
   }
 }

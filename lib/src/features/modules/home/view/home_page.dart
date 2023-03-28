@@ -38,18 +38,12 @@ class _UserHomePageState extends State<UserHomePage>
   GlobalKey trendingKey = GlobalKey();
   GlobalKey quickKey = GlobalKey();
 
-  // @override
-  // void initState() {
-  //   Provider.of<CourseProvider>(context, listen: false).getCourses(context);
-  //   super.initState();
-  // }
-
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     Provider.of<HomeProvider>(context, listen: false).refreshData(context);
     FilterProvider filter = Provider.of<FilterProvider>(context, listen: false);
-    CartProvider cartw = context.watch<CartProvider>();
+    // CartProvider cartw = context.watch<CartProvider>();
     CartProvider cart = context.read<CartProvider>();
     return Consumer<HomeProvider>(
       builder: (_, home, __) => BackgroundWidget(
@@ -202,6 +196,8 @@ class _UserHomePageState extends State<UserHomePage>
                                               int index) {
                                             if (home.topIcons.length <
                                                 home.prefCourses.length) {
+                                              print(
+                                                  "${home.prefCourses[index].title} ========>>>>> ${home.prefCourses[index].wishList}");
                                               if (home.prefCourses[index]
                                                   .wishList!) {
                                                 home.topIcons.add(true);
