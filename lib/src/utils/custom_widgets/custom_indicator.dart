@@ -17,7 +17,6 @@ class CustomIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Center(
       child: DotsIndicator(
         dotsCount: count,

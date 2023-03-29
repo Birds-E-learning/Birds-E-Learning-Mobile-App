@@ -133,7 +133,6 @@ class OAuthProvider extends ChangeNotifier {
 
       notifyListeners();
     } catch (e) {
-      print(e);
       facebookClicked ? onFacebookClick() : null;
       showSnack(context, "02", "Facebook auth failed!");
     }

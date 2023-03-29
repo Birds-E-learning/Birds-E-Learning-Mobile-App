@@ -58,7 +58,6 @@ class CardProvider extends ChangeNotifier {
       List<CardResponseData> response = await repo.getAlllDebitCard(context);
       cardList = response;
       notifyListeners();
-      print(cardList[0].cardType);
     } catch (e) {
       throw Exception(e);
     }

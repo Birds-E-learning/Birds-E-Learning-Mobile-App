@@ -33,14 +33,12 @@ class AuthRepository extends NetworkService with BaseHeaders, BaseUrl {
     dynamic response =
         await postRequest(autoLogin, header, body.toJson(), context);
     LoginResponse responseData = LoginResponse.fromJson(response);
-    print(responseData.responseData!.authToken);
     return responseData;
   }
 
   Future<OtpResponse> getOtpResponse(
       bool isRegistered, OtpModel body, context) async {
     String url = isRegistered ? verifyOtp : validateResetOtp;
-    print(url);
     dynamic response = await postRequest(url, header, body.toJson(), context);
     OtpResponse responseData = OtpResponse.fromJson(response);
     return responseData;

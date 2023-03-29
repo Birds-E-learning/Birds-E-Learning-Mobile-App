@@ -25,7 +25,6 @@ class FilterRepository extends NetworkService with BaseHeaders, BaseUrl {
   Future getUserFilterData(context) async {
     Map<String, String> header_ = await authHeader();
     var response = await getRequest(getPrefUser, header_, context);
-    print("data====>$response");
     UserPreferenceResponse responseData =
         UserPreferenceResponse.fromJson(response);
     if (responseData.responseCode == "00") {
@@ -35,7 +34,6 @@ class FilterRepository extends NetworkService with BaseHeaders, BaseUrl {
 
   Future saveUserPreference(context, SavePreferenceModel data) async {
     Map<String, String> header_ = await authHeader();
-    print(data.toJson());
     var json = await postRequest(savePref, header_, data.toJson(), context);
     SavePreferenceResponse responseData = SavePreferenceResponse.fromJson(json);
     if (responseData.responseCode.toString() == "00") {

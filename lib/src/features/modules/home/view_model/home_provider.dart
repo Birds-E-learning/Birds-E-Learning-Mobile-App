@@ -8,7 +8,6 @@ import 'package:birds_learning_network/src/features/modules/user_cart/view/cart.
 import 'package:birds_learning_network/src/features/modules/home/view/home_page.dart';
 import 'package:birds_learning_network/src/features/modules/profile/view/profile_page.dart';
 import 'package:birds_learning_network/src/global_model/services/storage/shared_preferences/user_details.dart';
-import 'package:birds_learning_network/src/utils/helper_widgets/response_snack.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -85,7 +84,7 @@ class HomeProvider extends ChangeNotifier {
 
   List<String> courseList = [];
   Map<String, List<Courses>> categories = {};
-  List<Courses> _courses = [];
+  final List<Courses> _courses = [];
   List<Courses> _quickCourses = [];
   List<Courses> _prefCourses = [];
   List<Courses> _trendingCourses = [];

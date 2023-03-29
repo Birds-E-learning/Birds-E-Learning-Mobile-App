@@ -31,7 +31,6 @@ class UrlLauncher {
     if (await canLaunchUrl(phoneLauncher)) {
       await launchUrl(phoneLauncher);
     } else {
-      print("heyyy");
       showSnack(context, "02", "Unable to launch Page");
     }
   }

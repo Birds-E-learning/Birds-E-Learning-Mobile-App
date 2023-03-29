@@ -8,7 +8,6 @@ import 'package:birds_learning_network/src/features/core/auth/view_model/oauth_p
 import 'package:birds_learning_network/src/features/core/settings/view/filter/filter_screen.dart';
 import 'package:birds_learning_network/src/features/modules/home/view/home.dart';
 import 'package:birds_learning_network/src/features/modules/home/view_model/home_provider.dart';
-import 'package:birds_learning_network/src/features/modules/profile/view/profile_page.dart';
 import 'package:birds_learning_network/src/global_model/services/storage/secure_storage/user_details.dart';
 import 'package:birds_learning_network/src/global_model/services/storage/shared_preferences/user_details.dart';
 import 'package:birds_learning_network/src/utils/helper_widgets/response_snack.dart';
@@ -175,7 +174,6 @@ class LoginProvider extends ChangeNotifier {
           break;
       }
     } catch (e) {
-      print(e);
       auth.facebookClicked ? auth.onFacebookClick() : null;
       showSnack(context, "02", "Network TimedOut");
     }

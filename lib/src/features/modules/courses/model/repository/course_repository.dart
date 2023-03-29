@@ -1,6 +1,5 @@
 import 'package:birds_learning_network/src/features/modules/courses/model/response/courses_all_response.dart';
 import 'package:birds_learning_network/src/features/modules/home/model/response_model/get_courses.dart';
-import 'package:birds_learning_network/src/features/modules/user_cart/model/response_model/get_all_cart.dart';
 import 'package:birds_learning_network/src/global_model/services/network/base_header.dart';
 import 'package:birds_learning_network/src/global_model/services/network/base_service.dart';
 import 'package:birds_learning_network/src/global_model/services/network/base_url.dart';

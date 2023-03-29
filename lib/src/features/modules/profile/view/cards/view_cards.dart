@@ -1,8 +1,5 @@
-import 'package:birds_learning_network/src/config/routing/route.dart';
 import 'package:birds_learning_network/src/features/modules/profile/custom_widgets/custom_card_container.dart';
-import 'package:birds_learning_network/src/features/modules/profile/model/debit_card.dart';
 import 'package:birds_learning_network/src/features/modules/profile/model/response_model/get_card_response.dart';
-import 'package:birds_learning_network/src/features/modules/profile/view/cards/add_card.dart';
 import 'package:birds_learning_network/src/features/modules/profile/view/cards/custom_card.dart';
 import 'package:birds_learning_network/src/features/modules/profile/view_model/card_provider.dart';
 import 'package:birds_learning_network/src/utils/custom_widgets/custom_indicator.dart';
@@ -115,7 +112,6 @@ class _ViewDebitCardPageState extends State<ViewDebitCardPage>
         context: context,
         barrierDismissible: false,
         builder: (context) {
-          bool loading = false;
           return StatefulBuilder(builder: (context, setState) {
             return AlertDialog(
               title: const Text(
@@ -138,12 +134,11 @@ class _ViewDebitCardPageState extends State<ViewDebitCardPage>
                 ),
                 TextButton(
                     onPressed: () async {
-                      // if (card.confirmClicked) {
-                      //   card.onConfirmClick();
-                      //   return;
-                      // }
+                      if (card.confirmClicked) {
+                        card.onConfirmClick();
+                        return;
+                      }
                       card.onConfirmClick();
-                      print(card.confirmClicked);
                       await card.deleteCard(
                           context, card.cardList[card.currentPosition].cardNo!);
                     },

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ImageUpload {
-  XFile? _pickedImg;
+  XFile? pickedImg_;
   final ImagePicker _picker = ImagePicker();
 
   void _pickImg(
@@ -11,7 +11,7 @@ class ImageUpload {
     final pickedImgFile =
         await _picker.pickImage(source: src, imageQuality: 50);
     if (pickedImgFile != null) {
-      _pickedImg = XFile(pickedImgFile.path);
+      pickedImg_ = XFile(pickedImgFile.path);
       imgPickFn(XFile(pickedImgFile.path));
     }
   }

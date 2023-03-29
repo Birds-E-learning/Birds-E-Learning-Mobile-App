@@ -4,7 +4,6 @@ import 'package:birds_learning_network/src/features/core/auth/view/sign_in.dart'
 import 'package:birds_learning_network/src/features/modules/profile/model/repository/profile_repository.dart';
 import 'package:birds_learning_network/src/features/modules/profile/model/request_model/update_profile_model.dart';
 import 'package:birds_learning_network/src/features/modules/profile/model/response_model/user_profile_response.dart';
-import 'package:birds_learning_network/src/features/modules/profile/view/profile_page.dart';
 import 'package:birds_learning_network/src/global_model/services/storage/secure_storage/user_details.dart';
 import 'package:birds_learning_network/src/global_model/services/storage/shared_preferences/user_details.dart';
 import 'package:birds_learning_network/src/utils/helper_widgets/response_snack.dart';

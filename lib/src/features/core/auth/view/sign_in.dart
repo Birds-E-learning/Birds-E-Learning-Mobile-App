@@ -8,7 +8,6 @@ import 'package:birds_learning_network/src/features/core/auth/view_model/login_p
 import 'package:birds_learning_network/src/features/core/auth/view_model/oauth_provider.dart';
 import 'package:birds_learning_network/src/global_model/services/storage/shared_preferences/device_info.dart';
 import 'package:birds_learning_network/src/global_model/services/storage/shared_preferences/user_details.dart';
-import 'package:birds_learning_network/src/utils/custom_widgets/o_auth.dart';
 import 'package:birds_learning_network/src/utils/custom_widgets/social_cards.dart';
 import 'package:birds_learning_network/src/utils/custom_widgets/text_field.dart';
 import 'package:birds_learning_network/src/utils/global_constants/texts/core_texts/auth_texts.dart';

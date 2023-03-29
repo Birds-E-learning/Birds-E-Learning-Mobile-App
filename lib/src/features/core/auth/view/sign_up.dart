@@ -135,7 +135,7 @@ class _SignUpScreenState extends State<SignUpScreen>
                           checkBox(register.isChecked,
                               (value) => register.onChecked(value)),
                           const SizedBox(width: 10),
-                          Expanded(child: termsText()),
+                          Expanded(child: termsText(context)),
                         ],
                       ),
                       const SizedBox(height: 15),

@@ -68,8 +68,8 @@ class PreferenceProvider extends ChangeNotifier {
       }
       notifyListeners();
     } catch (_) {
-      print(_);
       showSnack(context, "02", "Unable to get course categories");
+      throw Exception(_);
     }
   }
 

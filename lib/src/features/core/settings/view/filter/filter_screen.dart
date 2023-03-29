@@ -5,7 +5,6 @@ import 'package:birds_learning_network/src/features/core/settings/view/widgets/c
 import 'package:birds_learning_network/src/features/core/settings/view_model/filter_provider.dart';
 import 'package:birds_learning_network/src/features/modules/home/view/home.dart';
 import 'package:birds_learning_network/src/features/modules/home/view_model/home_provider.dart';
-import 'package:birds_learning_network/src/features/modules/profile/view/profile_page.dart';
 import 'package:birds_learning_network/src/utils/custom_widgets/text_field.dart';
 import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
 import 'package:birds_learning_network/src/utils/global_constants/texts/core_texts/filter_texts.dart';
@@ -113,8 +112,6 @@ class _FilterScreenState extends State<FilterScreen>
                                       "${filter.myList[index]}, ", "");
                                   filter.removePref(filter.myList[index]);
                                 }
-
-                                print(filter.userPrefList);
                               },
                               child: topicText(
                                   filter.myList[index],
@@ -131,7 +128,6 @@ class _FilterScreenState extends State<FilterScreen>
                       width: double.infinity,
                       child: BlackButtonWidget(
                           onPressed: () async {
-                            print(filter.userPrefList);
                             if (filter.buttonClicked) {
                               filter.onButtonClick();
                               return;

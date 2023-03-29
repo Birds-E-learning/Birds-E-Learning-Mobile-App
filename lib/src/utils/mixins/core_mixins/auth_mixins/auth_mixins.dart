@@ -1,3 +1,4 @@
+import 'package:birds_learning_network/src/global_model/repositories/url_launcher.dart';
 import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
 import 'package:birds_learning_network/src/utils/global_constants/styles/auth_styles/auth_style.dart';
 import 'package:birds_learning_network/src/utils/global_constants/styles/text_style.dart';
@@ -159,7 +160,7 @@ mixin AuthTextWidgets on Object implements AuthStyles, AuthTexts {
     );
   }
 
-  RichText termsText() {
+  RichText termsText(context) {
     return RichText(
         text: TextSpan(
       children: [
@@ -171,9 +172,9 @@ mixin AuthTextWidgets on Object implements AuthStyles, AuthTexts {
             text: AuthTexts.terms2,
             style: AuthStyles.termsStyle.copyWith(color: skipColor),
             recognizer: TapGestureRecognizer()
-              ..onTap = () {
-                // print("heeyy");
-              }),
+              ..onTap = () => UrlLauncher().urlLauncher(
+                  "https://blns.dgtechltd.com/public/page/term-of-service",
+                  context)),
         const TextSpan(
           text: AuthTexts.terms3,
           style: AuthStyles.termsStyle,
@@ -181,7 +182,9 @@ mixin AuthTextWidgets on Object implements AuthStyles, AuthTexts {
         TextSpan(
           text: AuthTexts.terms4,
           style: AuthStyles.termsStyle.copyWith(color: skipColor),
-          recognizer: TapGestureRecognizer()..onTap = () {},
+          recognizer: TapGestureRecognizer()
+            ..onTap = () => UrlLauncher().urlLauncher(
+                "https://blns.dgtechltd.com/page/privacy-policy", context),
         ),
       ],
     ));
