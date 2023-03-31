@@ -172,13 +172,13 @@ class _BuyCourseScreenState extends State<BuyCourseScreen>
                       style: {
                         "body": Style(
                             margin: Margins.zero,
-                            fontSize: FontSize(14, Unit.px),
+                            fontSize: FontSize(15, Unit.px),
                             fontStyle: FontStyle.normal,
                             fontWeight: FontWeight.w400,
                             fontFamily: "Inter"),
                         "h4": Style(
                             color: greys900,
-                            fontSize: FontSize(18),
+                            fontSize: FontSize(19),
                             fontFamily: "Inter",
                             fontWeight: FontWeight.w700,
                             margin:
@@ -187,18 +187,18 @@ class _BuyCourseScreenState extends State<BuyCourseScreen>
                             margin:
                                 Margins.only(top: 0, bottom: 0, unit: Unit.px),
                             lineHeight: const LineHeight(0, units: "px"),
-                            fontSize: FontSize(14),
+                            fontSize: FontSize(15),
                             color: deepBlack,
                             fontFamily: "Inter",
                             fontWeight: FontWeight.w400),
                         "ul": Style(
-                            fontSize: FontSize(14),
+                            fontSize: FontSize(15),
                             display: Display.inline,
                             fontFamily: "Inter",
                             margin: Margins.all(0, unit: Unit.px)),
                         "li": Style(
                           lineHeight: const LineHeight(0, units: "px"),
-                          fontSize: FontSize(14),
+                          fontSize: FontSize(15),
                           fontFamily: "Inter",
                           margin: Margins.all(0, unit: Unit.px),
                         ),

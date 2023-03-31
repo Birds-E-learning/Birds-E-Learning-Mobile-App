@@ -2,11 +2,13 @@ import 'package:birds_learning_network/src/config/routing/route.dart';
 import 'package:birds_learning_network/src/features/core/settings/model/repositories/filter_repository.dart';
 import 'package:birds_learning_network/src/features/core/settings/model/request_model/save_preference.dart';
 import 'package:birds_learning_network/src/features/core/settings/model/response_model/get_preference.dart';
+import 'package:birds_learning_network/src/features/modules/home/view_model/home_provider.dart';
 import 'package:birds_learning_network/src/global_model/services/storage/shared_preferences/device_info.dart';
 import 'package:birds_learning_network/src/global_model/services/storage/shared_preferences/user_details.dart';
 import 'package:birds_learning_network/src/utils/helper_widgets/response_snack.dart';
 import 'package:birds_learning_network/src/utils/ui_utils/app_dialogs/success_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class PreferenceProvider extends ChangeNotifier {
   bool _doneClicked = false;
@@ -88,6 +90,7 @@ class PreferenceProvider extends ChangeNotifier {
           RoutingService.popRouting(context);
           RoutingService.popRouting(context);
         });
+        Provider.of<HomeProvider>(context, listen: false).refreshData(context);
       }
     } catch (e) {
       doneClicked ? onDoneClick() : null;

@@ -68,7 +68,6 @@ class CartProvider extends ChangeNotifier {
 
   Future getAllCarts(context) async {
     try {
-      _myCart = [];
       selectedCart = [];
       isCartLoading = true;
       GetCartResponse response = await repo.getCartService(context);
@@ -88,7 +87,6 @@ class CartProvider extends ChangeNotifier {
 
   Future getAllWishlists(context) async {
     try {
-      _wishlist = [];
       selectedWish = [];
       isWishlistLoading = true;
       GetCartResponse response = await repo.getWishlistService(context);
@@ -140,6 +138,8 @@ class CartProvider extends ChangeNotifier {
                 Navigator.pop(context);
                 Navigator.pop(context);
               });
+        // await Provider.of<HomeProvider>(context, listen: false)
+        //     .refreshData(context, reload: false);
       } else {
         showSnack(context, response.responseCode!, response.responseMessage!);
       }
@@ -179,8 +179,9 @@ class CartProvider extends ChangeNotifier {
                 "Course successfully removed from wishlist", "OK", () {
                 Navigator.pop(context);
               });
-
         await getAllWishlists(context);
+        // Provider.of<HomeProvider>(context, listen: false)
+        //     .refreshData(context, reload: false);
       } else {
         showSnack(context, response.responseCode!, response.responseMessage!);
       }

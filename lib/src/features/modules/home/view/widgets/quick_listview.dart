@@ -59,9 +59,19 @@ class QuickListView extends StatelessWidget {
                             if (home.quickIcons[index]) {
                               await cart.addWishlist(context,
                                   home.quickCourses[index].id!, quickKey);
+                              if (context.mounted) {
+                                // Provider.of<HomeProvider>(context,
+                                //         listen: false)
+                                //     .refreshData(context, reload: false);
+                              }
                             } else {
                               await cart.deleteWishlist(context,
                                   home.quickCourses[index].id!, quickKey);
+                              if (context.mounted) {
+                                // Provider.of<HomeProvider>(context,
+                                //         listen: false)
+                                //     .refreshData(context, reload: false);
+                              }
                             }
                           },
                           course: home.quickCourses[index],

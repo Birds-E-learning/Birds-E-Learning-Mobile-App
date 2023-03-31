@@ -62,9 +62,19 @@ class PreferentialListView extends StatelessWidget {
                             if (home.topIcons[index]) {
                               await cart.addWishlist(
                                   context, home.prefCourses[index].id!, topKey);
+                              if (context.mounted) {
+                                // Provider.of<HomeProvider>(context,
+                                //         listen: false)
+                                //     .refreshData(context, reload: false);
+                              }
                             } else {
                               await cart.deleteWishlist(
                                   context, home.prefCourses[index].id!, topKey);
+                              if (context.mounted) {
+                                // Provider.of<HomeProvider>(context,
+                                //         listen: false)
+                                //     .refreshData(context, reload: false);
+                              }
                             }
                           },
                           course: home.prefCourses[index],

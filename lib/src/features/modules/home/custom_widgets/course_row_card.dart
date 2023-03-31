@@ -34,8 +34,14 @@ class _CourseRowCardsState extends State<CourseRowCards> with HomeWidgets {
     final Size size = MediaQuery.of(context).size;
     return InkWell(
       onTap: widget.onTap ??
-          () => RoutingService.pushRouting(
-              context, BuyCourseScreen(course: widget.course)),
+          () async {
+            if (widget.course.sections == null) {
+              await getCourseSection(context, widget.course.id.toString());
+            }
+            if (!mounted) return;
+            RoutingService.pushRouting(
+                context, BuyCourseScreen(course: widget.course));
+          },
       child: SizedBox(
         // height: 70,
         width: size.width * 0.92,

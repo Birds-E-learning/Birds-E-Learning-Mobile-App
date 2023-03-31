@@ -61,9 +61,19 @@ class TrendingListView extends StatelessWidget {
                             if (home.trendingIcons[index]) {
                               await cart.addWishlist(context,
                                   home.trendingCourses[index].id!, trendingKey);
+                              if (context.mounted) {
+                                // Provider.of<HomeProvider>(context,
+                                //         listen: false)
+                                //     .refreshData(context, reload: false);
+                              }
                             } else {
                               await cart.deleteWishlist(context,
                                   home.trendingCourses[index].id!, trendingKey);
+                              if (context.mounted) {
+                                // Provider.of<HomeProvider>(context,
+                                //         listen: false)
+                                //     .refreshData(context, reload: false);
+                              }
                             }
                           },
                           course: home.trendingCourses[index],

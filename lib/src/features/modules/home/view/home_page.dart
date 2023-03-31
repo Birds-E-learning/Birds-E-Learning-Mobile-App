@@ -39,6 +39,8 @@ class _UserHomePageState extends State<UserHomePage>
   @override
   void initState() {
     Provider.of<CourseProvider>(context, listen: false).getCourses(context);
+    Provider.of<HomeProvider>(context, listen: false)
+        .refreshData(context, reload: false);
     super.initState();
   }
 
@@ -177,7 +179,10 @@ class _UserHomePageState extends State<UserHomePage>
                                       horizontal: size.width * 0.04),
                                 ),
                                 const SizedBox(height: 15),
-                                const PreferentialListView(),
+                                RefreshIndicator(
+                                    onRefresh: () => home.refreshData(context,
+                                        reload: false),
+                                    child: const PreferentialListView()),
                                 const SizedBox(height: 15),
                                 categoryRowText(
                                   "Trending Courses",
@@ -189,7 +194,10 @@ class _UserHomePageState extends State<UserHomePage>
                                       horizontal: size.width * 0.04),
                                 ),
                                 const SizedBox(height: 15),
-                                const TrendingListView(),
+                                RefreshIndicator(
+                                    onRefresh: () => home.refreshData(context,
+                                        reload: false),
+                                    child: const TrendingListView()),
                                 const SizedBox(height: 20),
                                 categoryRowText(
                                   "Quick Courses",
@@ -201,7 +209,10 @@ class _UserHomePageState extends State<UserHomePage>
                                       horizontal: size.width * 0.04),
                                 ),
                                 const SizedBox(height: 15),
-                                const QuickListView(),
+                                RefreshIndicator(
+                                    onRefresh: () => home.refreshData(context,
+                                        reload: false),
+                                    child: const QuickListView()),
                                 const SizedBox(height: 15),
                                 Padding(
                                   padding: EdgeInsets.symmetric(

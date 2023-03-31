@@ -58,17 +58,17 @@ class FilterProvider extends ChangeNotifier {
 
   Future getPreferenceList(context) async {
     try {
-      _myList = [];
+      List<String> list = [];
+      // _myList = [];
       List<PreferenceResponseData>? prefList =
           await repo.getFilterData(context);
       if (prefList != null && prefList.isNotEmpty) {
         for (PreferenceResponseData val in prefList) {
           if (!_myList.contains(val.name)) {
-            _myList.add(val.name!);
+            list.add(val.name!);
           }
-
-          notifyListeners();
         }
+        _myList = list;
       }
       notifyListeners();
     } catch (_) {

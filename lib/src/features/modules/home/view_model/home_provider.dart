@@ -43,23 +43,29 @@ class HomeProvider extends ChangeNotifier {
     // getAllCourses(context);
   }
 
-  Future refreshData(context) async {
-    Future.delayed(const Duration(seconds: 75), () async {
-      if (_prefCourses.isEmpty) {
-        prefCoursesGraph(context);
-      }
-      if (_trendingCourses.isEmpty) {
-        trendingCoursesGraph(context);
-      }
-      if (_quickCourses.isEmpty) {
-        quickCoursesGraph(context);
-      }
-      // if (_courses.isEmpty) {
-      //     Future.delayed(const Duration(seconds: 30), () {
-      //       getAllCourses(context);
-      //     });
-      //   }
-    });
+  Future<void> refreshData(context, {bool reload = true}) async {
+    if (reload) {
+      Future.delayed(const Duration(seconds: 75), () async {
+        if (_prefCourses.isEmpty) {
+          prefCoursesGraph(context);
+        }
+        if (_trendingCourses.isEmpty) {
+          trendingCoursesGraph(context);
+        }
+        if (_quickCourses.isEmpty) {
+          quickCoursesGraph(context);
+        }
+        // if (_courses.isEmpty) {
+        //     Future.delayed(const Duration(seconds: 30), () {
+        //       getAllCourses(context);
+        //     });
+        //   }
+      });
+    } else {
+      prefCoursesGraph(context);
+      trendingCoursesGraph(context);
+      quickCoursesGraph(context);
+    }
   }
 
   // Home Screen Provider
@@ -179,12 +185,13 @@ class HomeProvider extends ChangeNotifier {
 
   Future prefCoursesGraph(context) async {
     try {
+      topIcons = [];
+      List<Courses> prefCourses_ = [];
       isPrefLoading = true;
       Map<String, List<Courses>> response =
           await repo.getPreferenceCourses(context);
-      _prefCourses = [];
       response.forEach((key, value) {
-        _prefCourses.addAll(value);
+        prefCourses_.addAll(value);
         if (categories.keys.contains(key)) {
           List<String> courseTitles = [];
           for (var course in categories[key]!) {
@@ -199,6 +206,7 @@ class HomeProvider extends ChangeNotifier {
           categories[key] = value;
         }
       });
+      _prefCourses = prefCourses_;
       isPrefLoading = false;
       notifyListeners();
     } catch (e) {
@@ -209,12 +217,14 @@ class HomeProvider extends ChangeNotifier {
 
   Future quickCoursesGraph(context) async {
     try {
+      quickIcons = [];
       isQuickLoading = true;
-      _quickCourses = [];
+      List<Courses> quickCourses_ = [];
+      // _quickCourses = [];
       Map<String, List<Courses>> response = await repo.getQuickCourses(context);
       // categories.addAll(response);
       response.forEach((key, value) {
-        _quickCourses.addAll(value);
+        quickCourses_.addAll(value);
         if (categories.keys.contains(key)) {
           List<String> courseTitles = [];
           for (var course in categories[key]!) {
@@ -229,6 +239,7 @@ class HomeProvider extends ChangeNotifier {
           categories[key] = value;
         }
       });
+      _quickCourses = quickCourses_;
       isQuickLoading = false;
       notifyListeners();
     } catch (e) {
@@ -239,12 +250,14 @@ class HomeProvider extends ChangeNotifier {
 
   Future trendingCoursesGraph(context) async {
     try {
+      trendingIcons = [];
       isTrendingLoading = true;
-      _trendingCourses = [];
+      List<Courses> trendingCourses_ = [];
+      // _trendingCourses = [];
       Map<String, List<Courses>> response =
           await repo.getTrendingCourses(context);
       response.forEach((key, value) {
-        _trendingCourses.addAll(value);
+        trendingCourses_.addAll(value);
         if (categories.keys.contains(key)) {
           List<String> courseTitles = [];
           for (var course in categories[key]!) {
@@ -259,6 +272,7 @@ class HomeProvider extends ChangeNotifier {
           categories[key] = value;
         }
       });
+      _trendingCourses = trendingCourses_;
       isTrendingLoading = false;
       notifyListeners();
     } catch (e) {
