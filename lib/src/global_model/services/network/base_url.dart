@@ -51,4 +51,9 @@ class BaseUrl {
   final String deleteWishlist =
       "${base}course/shopping/wish-list/unlink?courseId=";
   final String getAllWishlist = "${base}course/shopping/wish-list/all";
+
+  // Stripe Payment endpoints
+
+  final String stripePayment = "https://api.stripe.com/v1/payment_intents";
+  final String stripeKeys = "${base}payment/stripe/credentials";
 }

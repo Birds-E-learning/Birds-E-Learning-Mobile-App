@@ -20,9 +20,12 @@ import 'package:birds_learning_network/src/features/modules/user_cart/view_model
 import 'package:birds_learning_network/src/global_model/services/native_app/device_details.dart';
 import 'package:birds_learning_network/src/global_model/services/storage/shared_preferences/user_details.dart';
 import 'package:birds_learning_network/src/utils/global_constants/asset_paths/image_path.dart';
+import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:provider/provider.dart';
 
 import 'src/features/modules/courses/view_model/course_provider.dart';
@@ -30,6 +33,14 @@ import 'src/global_model/services/storage/shared_preferences/device_info.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Stripe.publishableKey =
+  //     "pk_test_51HfG9pIGQmtOoD4q1cQeOak8a9IRG6xwA1Jpr8ecacrMV8QfiqVNO2aArqWCwy0FEB7Pp3cwJ8RJuucMXJBz9I2B003JWbrs36";
+
+  await dotenv.load(fileName: "assets/.env");
+  Stripe.merchantIdentifier = 'merchant.flutter.stripe.test';
+  Stripe.urlScheme = 'flutterstripe';
+
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   // await SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
   runApp(const MyApp());
@@ -63,7 +74,7 @@ class MyApp extends StatelessWidget {
         title: 'Flutter Demo',
         theme: ThemeData(
           primarySwatch: Colors.blue,
-          scaffoldBackgroundColor: Colors.white,
+          scaffoldBackgroundColor: white,
         ),
         home: const SplashScreen(),
       ),
@@ -85,6 +96,10 @@ class _SplashScreenState extends State<SplashScreen> {
     SchedulerBinding.instance.addPostFrameCallback(
       (_) async {
         await getDeviceDetails(context);
+        if (!mounted) return;
+        String key = await Provider.of<PaymentProvider>(context, listen: false)
+            .getStripeKeys(context);
+        Stripe.publishableKey = key;
       },
     );
     Timer(const Duration(seconds: 3), () async {

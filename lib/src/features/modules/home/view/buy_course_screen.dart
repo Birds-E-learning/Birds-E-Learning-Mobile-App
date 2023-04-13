@@ -1,11 +1,10 @@
 import 'dart:io';
-
 import 'package:birds_learning_network/src/config/routing/route.dart';
 import 'package:birds_learning_network/src/features/modules/home/model/response_model/get_courses.dart';
 import 'package:birds_learning_network/src/features/modules/home/view/widgets/preview_container.dart';
 import 'package:birds_learning_network/src/features/modules/home/view/widgets/section_card.dart';
 import 'package:birds_learning_network/src/features/modules/home/view_model/course_content_provider.dart';
-import 'package:birds_learning_network/src/features/modules/payment/view/screens/payment_screen.dart';
+import 'package:birds_learning_network/src/features/modules/payment/view_model/payment_provider.dart';
 import 'package:birds_learning_network/src/features/modules/user_cart/view_model/cart_provider.dart';
 import 'package:birds_learning_network/src/utils/global_constants/asset_paths/image_path.dart';
 import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
@@ -259,15 +258,34 @@ class _BuyCourseScreenState extends State<BuyCourseScreen>
                   //   ],
                   // ),
                   const SizedBox(height: 20),
-                  bigAmountText(widget.course.salePrice ?? "5,000.00"),
+                  bigAmountText(widget.course.salePrice ?? "00.00"),
                   const SizedBox(height: 10),
                   SizedBox(
                     width: double.infinity,
                     height: 60,
                     child: BlackButtonWidget(
-                        onPressed: () => RoutingService.pushRouting(
-                            context, const PaymentScreen()),
-                        child: buttonText("Enroll Now", nextColor)),
+                        onPressed: () async {
+                          if (context.read<PaymentProvider>().paymentClicked) {
+                            context
+                                .read<PaymentProvider>()
+                                .onPaymentClicked(false);
+                            return;
+                          }
+                          widget.course.salePrice! == "0.00"
+                              ? null
+                              : await context
+                                  .read<PaymentProvider>()
+                                  .makePayment(
+                                      context: context,
+                                      amount: widget.course.salePrice!);
+                        },
+                        child: context.watch<PaymentProvider>().paymentClicked
+                            ? loadingIdicator()
+                            : buttonText(
+                                widget.course.salePrice! == "0.00"
+                                    ? "Start Course"
+                                    : "Enroll Now",
+                                nextColor)),
                   ),
                   const SizedBox(height: 10),
                   Row(
