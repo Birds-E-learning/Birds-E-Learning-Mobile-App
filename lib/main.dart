@@ -34,9 +34,6 @@ import 'src/global_model/services/storage/shared_preferences/device_info.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Stripe.publishableKey =
-  //     "pk_test_51HfG9pIGQmtOoD4q1cQeOak8a9IRG6xwA1Jpr8ecacrMV8QfiqVNO2aArqWCwy0FEB7Pp3cwJ8RJuucMXJBz9I2B003JWbrs36";
-
   await dotenv.load(fileName: "assets/.env");
   Stripe.merchantIdentifier = 'merchant.flutter.stripe.test';
   Stripe.urlScheme = 'flutterstripe';

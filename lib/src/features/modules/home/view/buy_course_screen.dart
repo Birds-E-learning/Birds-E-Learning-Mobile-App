@@ -73,13 +73,14 @@ class _BuyCourseScreenState extends State<BuyCourseScreen>
                         : Icons.arrow_back_ios),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(20),
+                    padding: const EdgeInsets.symmetric(vertical: 20),
                     child: Center(
                       child: Container(
                           key: key1,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(15)),
                           height: 200,
+                          width: double.infinity,
                           child: content.showVideo
                               ? content.isVideo && _controller != null
                                   ? _controller!.videoPlayerController.value
