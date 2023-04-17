@@ -100,7 +100,7 @@ class PaymentProvider extends ChangeNotifier {
       //   loanOrder: loanOrder,
       //   loanCharge: loanCharge,
       // );
-    } on StripeException catch (e) {
+    } on StripeException catch (_) {
       // print('Error is:---> $e');
       AlertDialog(
         content: Column(
