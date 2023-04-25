@@ -1,5 +1,6 @@
 import 'package:birds_learning_network/src/features/modules/payment/model/repository/payment_repository.dart';
 import 'package:birds_learning_network/src/features/modules/payment/model/request_model/stripe_model.dart';
+import 'package:birds_learning_network/src/features/modules/payment/model/request_model/stripe_payment.dart';
 import 'package:birds_learning_network/src/features/modules/payment/model/response_model/stripe_keys.dart';
 import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
 import 'package:flutter/material.dart';
@@ -34,6 +35,47 @@ class PaymentProvider extends ChangeNotifier {
   calculateAmount(dynamic amountt) {
     int amount = (double.parse(amountt.toString()).toInt()) * 100;
     return amount.toString();
+  }
+
+  Future getPaymentToken(context, StripePaymentRequest card) async {
+    try {
+      StripePaymentModel body = StripePaymentModel(
+          amount: calculateAmount(card.amount ?? "0"),
+          currency: "USD",
+          paymentMethodTypes: "card");
+      onPaymentClicked(true);
+      data = await repo.stripePaymentIntent(body, context);
+      notifyListeners();
+      // 2. initialize the payment sheet
+      await Stripe.instance.initPaymentSheet(
+        paymentSheetParameters: SetupPaymentSheetParameters(
+            paymentIntentClientSecret: data['client_secret'],
+            style: ThemeMode.light,
+            merchantDisplayName: "Birds Learing Network"),
+      );
+      print("here====>>>>>>>");
+      // Create a token with the card details
+      // CreateTokenParams params = CreateTokenParams.card(params:)
+      // final card = CardTokenParams()
+      List<String> expiry = card.expiryDate!.split("/");
+      CardDetails card_ = CardDetails(
+          number: card.cardNo,
+          expirationMonth: int.parse(expiry[0]),
+          expirationYear: int.parse(expiry[1]),
+          cvc: card.ccv);
+      await Stripe.instance.dangerouslyUpdateCardDetails(card_);
+      print("data =====>>> $data");
+      final token = await Stripe.instance.createToken(
+        const CreateTokenParams.card(
+            params: CardTokenParams(
+                type: TokenType.Card, name: "Birds learning", currency: "USD")),
+      );
+      print("token====>>> $token");
+      _payClicked ? onPayClick() : null;
+    } catch (e) {
+      _payClicked ? onPayClick() : null;
+      throw Exception(e);
+    }
   }
 
   Future<void> makePayment(
@@ -75,33 +117,42 @@ class PaymentProvider extends ChangeNotifier {
     // String status = PaymentStatus.success.value;
     try {
       onPaymentClicked(false);
-      await Stripe.instance.presentPaymentSheet().then((value) {
-        showDialog(
-            context: context,
-            builder: (_) => AlertDialog(
-                  content: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: const [
-                      Icon(
-                        Icons.check_circle,
-                        color: Colors.green,
-                        size: 100.0,
-                      ),
-                      SizedBox(height: 10.0),
-                      Text("Payment Successful!"),
-                    ],
-                  ),
-                ));
-        data = null;
-        notifyListeners();
+      await Stripe.instance.presentPaymentSheet().then((value) async {
+        final token = await Stripe.instance.createToken(
+            const CreateTokenParams.card(
+                params: CardTokenParams(type: TokenType.Card)));
+
+        print("token====>>> $token");
       });
+      CardDetails card = CardDetails();
+      print("hereeee=====>>> ");
+      // .then((value) {
+      //   showDialog(
+      //       context: context,
+      //       builder: (_) => AlertDialog(
+      //             content: Column(
+      //               mainAxisSize: MainAxisSize.min,
+      //               children: const [
+      //                 Icon(
+      //                   Icons.check_circle,
+      //                   color: Colors.green,
+      //                   size: 100.0,
+      //                 ),
+      //                 SizedBox(height: 10.0),
+      //                 Text("Payment Successful!"),
+      //               ],
+      //             ),
+      //           ));
+      //   data = null;
+      //   notifyListeners();
+      // });
       // await _sendTransactionToBackend(
       //   context: context,
       //   loanOrder: loanOrder,
       //   loanCharge: loanCharge,
       // );
     } on StripeException catch (_) {
-      // print('Error is:---> $e');
+      print('Error is:---> $_');
       AlertDialog(
         content: Column(
           mainAxisSize: MainAxisSize.min,

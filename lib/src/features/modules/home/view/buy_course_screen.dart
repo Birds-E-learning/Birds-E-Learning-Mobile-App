@@ -1,9 +1,11 @@
 import 'dart:io';
 import 'package:birds_learning_network/src/config/routing/route.dart';
 import 'package:birds_learning_network/src/features/modules/home/model/response_model/get_courses.dart';
+import 'package:birds_learning_network/src/features/modules/home/view/facilitator.dart';
 import 'package:birds_learning_network/src/features/modules/home/view/widgets/preview_container.dart';
 import 'package:birds_learning_network/src/features/modules/home/view/widgets/section_card.dart';
 import 'package:birds_learning_network/src/features/modules/home/view_model/course_content_provider.dart';
+import 'package:birds_learning_network/src/features/modules/payment/view/screens/payment_screen.dart';
 import 'package:birds_learning_network/src/features/modules/payment/view_model/payment_provider.dart';
 import 'package:birds_learning_network/src/features/modules/user_cart/view_model/cart_provider.dart';
 import 'package:birds_learning_network/src/utils/global_constants/asset_paths/image_path.dart';
@@ -130,8 +132,10 @@ class _BuyCourseScreenState extends State<BuyCourseScreen>
                       contentOwnerText(
                           widget.course.facilitator!.name == ""
                               ? "Anonymous"
-                              : widget.course.facilitator!.name!,
-                          () {}),
+                              : widget.course.facilitator!.name!, () {
+                        RoutingService.pushRouting(
+                            context, const FacilitatorScreen());
+                      }),
                       const SizedBox(width: 5),
                       Row(
                         children: getStarList(
@@ -266,23 +270,23 @@ class _BuyCourseScreenState extends State<BuyCourseScreen>
                     height: 60,
                     child: BlackButtonWidget(
                         onPressed: () async {
-                          if (context.read<PaymentProvider>().paymentClicked) {
-                            context
-                                .read<PaymentProvider>()
-                                .onPaymentClicked(false);
-                            return;
-                          }
+                          // if (context.read<PaymentProvider>().payClicked) {
+                          //   context.read<PaymentProvider>().onPayClick();
+                          //   return;
+                          // }
                           widget.course.salePrice! == "0.00"
                               ? null
-                              : await context
-                                  .read<PaymentProvider>()
-                                  .makePayment(
-                                      context: context,
-                                      amount: widget.course.salePrice!);
+                              :
+                              // context.read<PaymentProvider>().makePayment(
+                              //     context: context,
+                              //     amount: widget.course.salePrice!);
+                              RoutingService.pushRouting(context,
+                                  PaymentScreen(course: widget.course));
                         },
-                        child: context.watch<PaymentProvider>().paymentClicked
-                            ? loadingIdicator()
-                            : buttonText(
+                        child:
+                            //  context.watch<PaymentProvider>().paymentClicked
+                            //     ? loadingIdicator():
+                            buttonText(
                                 widget.course.salePrice! == "0.00"
                                     ? "Start Course"
                                     : "Enroll Now",

@@ -37,6 +37,7 @@ class BaseUrl {
   final String getCourses = "${base}course/graph/all";
   final String allCourses = "${base}course/compact/graph/all";
   final String availableCourses = "${base}course/all";
+  String facilitatorUrl(String id) => "${base}course/facilitator?id=$id";
 
   // Cart
 

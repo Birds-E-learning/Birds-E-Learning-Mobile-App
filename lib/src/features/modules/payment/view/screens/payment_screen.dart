@@ -1,3 +1,5 @@
+import 'package:birds_learning_network/src/features/modules/home/model/response_model/get_courses.dart';
+import 'package:birds_learning_network/src/features/modules/payment/model/request_model/stripe_payment.dart';
 import 'package:birds_learning_network/src/features/modules/payment/view_model/payment_provider.dart';
 import 'package:birds_learning_network/src/features/modules/profile/custom_widgets/custom_text_column.dart';
 import 'package:birds_learning_network/src/utils/formatters/card_expiration_formatter.dart';
@@ -14,7 +16,8 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 class PaymentScreen extends StatefulWidget {
-  const PaymentScreen({super.key});
+  const PaymentScreen({super.key, required this.course});
+  final Courses course;
 
   @override
   State<PaymentScreen> createState() => _PaymentScreenState();
@@ -134,11 +137,13 @@ class _PaymentScreenState extends State<PaymentScreen>
                             }
                             if (_formKey.currentState!.validate()) {
                               payment.onPayClick();
-                              // await card.addCardRequest(
-                              //     context,
-                              //     cardNo.text.trim(),
-                              //     expiryDate.text.trim(),
-                              //     ccv.text.trim());
+                              StripePaymentRequest data = StripePaymentRequest(
+                                  cardNo: cardNo.text.trim(),
+                                  expiryDate: expiryDate.text.trim(),
+                                  ccv: ccv.text.trim(),
+                                  amount: widget.course.salePrice,
+                                  pin: pin.text.trim());
+                              await payment.getPaymentToken(context, data);
                             }
                           },
                           child: payment.payClicked
@@ -152,6 +157,10 @@ class _PaymentScreenState extends State<PaymentScreen>
                           },
                           child: cancelButton())
                     ],
+                  ),
+                  const SizedBox(height: 5),
+                  Center(
+                    child: stripeText(),
                   )
                 ],
               ),

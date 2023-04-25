@@ -103,8 +103,8 @@ class _CourseCartCardsState extends State<CourseCartCards> with CartWidgets {
                       ],
                     ),
                     const SizedBox(height: 3),
-                    amountText(widget.course.salePrice ?? "NGN5000",
-                        widget.course.price ?? "NGN5500"),
+                    amountText(widget.course.salePrice ?? "000",
+                        widget.course.price ?? "000"),
                     const SizedBox(height: 5),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -117,8 +117,8 @@ class _CourseCartCardsState extends State<CourseCartCards> with CartWidgets {
                                   "Buy Now",
                                   skipColor,
                                   Icons.add,
-                                  () => RoutingService.pushRouting(
-                                      context, const PaymentScreen())),
+                                  () => RoutingService.pushRouting(context,
+                                      PaymentScreen(course: widget.course))),
                         ),
                         SizedBox(width: widget.isWishlist ? 0 : 15),
                         widget.removeButton,
