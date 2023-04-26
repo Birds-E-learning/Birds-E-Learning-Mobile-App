@@ -57,4 +57,5 @@ class BaseUrl {
 
   final String stripePayment = "https://api.stripe.com/v1/payment_intents";
   final String stripeKeys = "${base}payment/stripe/credentials";
+  final String stripeCharges = "${base}payment/stripe/card-debit/charge";
 }

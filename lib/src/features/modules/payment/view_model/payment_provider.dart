@@ -1,8 +1,13 @@
+import 'package:birds_learning_network/src/features/modules/home/model/response_model/get_courses.dart';
 import 'package:birds_learning_network/src/features/modules/payment/model/repository/payment_repository.dart';
+import 'package:birds_learning_network/src/features/modules/payment/model/request_model/stripe_charges.dart';
 import 'package:birds_learning_network/src/features/modules/payment/model/request_model/stripe_model.dart';
 import 'package:birds_learning_network/src/features/modules/payment/model/request_model/stripe_payment.dart';
+import 'package:birds_learning_network/src/features/modules/payment/model/response_model/stripe_charge_response.dart';
 import 'package:birds_learning_network/src/features/modules/payment/model/response_model/stripe_keys.dart';
-import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
+import 'package:birds_learning_network/src/utils/helper_widgets/response_snack.dart';
+import 'package:birds_learning_network/src/utils/ui_utils/app_dialogs/failed_dialog.dart';
+import 'package:birds_learning_network/src/utils/ui_utils/app_dialogs/payment_success.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 
@@ -10,17 +15,10 @@ class PaymentProvider extends ChangeNotifier {
   PaymentRepository repo = PaymentRepository();
   bool _payClicked = false;
   bool _isChecked = false;
-  bool _stripeLoading = false;
   dynamic data;
-
-  void onPaymentClicked(bool isLoading) {
-    _stripeLoading = isLoading;
-    notifyListeners();
-  }
 
   bool get payClicked => _payClicked;
   bool get isChecked => _isChecked;
-  bool get paymentClicked => _stripeLoading;
 
   void onPayClick() {
     _payClicked = !_payClicked;
@@ -37,13 +35,19 @@ class PaymentProvider extends ChangeNotifier {
     return amount.toString();
   }
 
-  Future getPaymentToken(context, StripePaymentRequest card) async {
+  roundAmount(dynamic price) {
+    int amount = double.parse(price).round();
+    return amount.toString();
+  }
+
+  Future getPaymentToken(context,
+      {StripePaymentRequest? card, Courses? course}) async {
     try {
+      Stripe.publishableKey = await getStripeKeys(context);
       StripePaymentModel body = StripePaymentModel(
-          amount: calculateAmount(card.amount ?? "0"),
+          amount: calculateAmount(card!.amount ?? "0"),
           currency: "USD",
           paymentMethodTypes: "card");
-      onPaymentClicked(true);
       data = await repo.stripePaymentIntent(body, context);
       notifyListeners();
       // 2. initialize the payment sheet
@@ -53,10 +57,7 @@ class PaymentProvider extends ChangeNotifier {
             style: ThemeMode.light,
             merchantDisplayName: "Birds Learing Network"),
       );
-      print("here====>>>>>>>");
       // Create a token with the card details
-      // CreateTokenParams params = CreateTokenParams.card(params:)
-      // final card = CardTokenParams()
       List<String> expiry = card.expiryDate!.split("/");
       CardDetails card_ = CardDetails(
           number: card.cardNo,
@@ -64,114 +65,27 @@ class PaymentProvider extends ChangeNotifier {
           expirationYear: int.parse(expiry[1]),
           cvc: card.ccv);
       await Stripe.instance.dangerouslyUpdateCardDetails(card_);
-      print("data =====>>> $data");
       final token = await Stripe.instance.createToken(
         const CreateTokenParams.card(
             params: CardTokenParams(
                 type: TokenType.Card, name: "Birds learning", currency: "USD")),
       );
-      print("token====>>> $token");
-      _payClicked ? onPayClick() : null;
-    } catch (e) {
-      _payClicked ? onPayClick() : null;
-      throw Exception(e);
-    }
-  }
-
-  Future<void> makePayment(
-      {required BuildContext context, required String amount}) async {
-    try {
-      StripePaymentModel body = StripePaymentModel(
-          amount: calculateAmount(amount),
+      StripeChargesRequest chargeData = StripeChargesRequest(
+          amount: roundAmount(card.amount!),
           currency: "USD",
-          paymentMethodTypes: "card");
-      onPaymentClicked(true);
-      data = await repo.stripePaymentIntent(body, context);
-      notifyListeners();
-
-      // 2. initialize the payment sheet
-      await Stripe.instance.initPaymentSheet(
-        paymentSheetParameters: SetupPaymentSheetParameters(
-            appearance: const PaymentSheetAppearance(
-                primaryButton: PaymentSheetPrimaryButtonAppearance(
-                    colors: PaymentSheetPrimaryButtonTheme(
-              dark: PaymentSheetPrimaryButtonThemeColors(
-                  background: white, text: black, border: deepGrey),
-              light: PaymentSheetPrimaryButtonThemeColors(
-                  background: deepGrey, text: Colors.white),
-            ))),
-            paymentIntentClientSecret: data['client_secret'],
-            style: ThemeMode.light,
-            merchantDisplayName: "Birds Learing Network"),
-      );
-      if (context.mounted) {
-        await displayPaymentSheet(context);
-      }
+          description: "Course payment",
+          token: token.id,
+          courseId: course!.id);
+      await makeChargePayment(context, chargeData);
+      _payClicked ? onPayClick() : null;
+    } on StripeException catch (e) {
+      _payClicked ? onPayClick() : null;
+      getFailedDialog(e.error.message!, context);
     } catch (e) {
-      _stripeLoading ? onPaymentClicked(false) : null;
-    }
-    notifyListeners();
-  }
-
-  Future<void> displayPaymentSheet(BuildContext context) async {
-    // String status = PaymentStatus.success.value;
-    try {
-      onPaymentClicked(false);
-      await Stripe.instance.presentPaymentSheet().then((value) async {
-        final token = await Stripe.instance.createToken(
-            const CreateTokenParams.card(
-                params: CardTokenParams(type: TokenType.Card)));
-
-        print("token====>>> $token");
-      });
-      CardDetails card = CardDetails();
-      print("hereeee=====>>> ");
-      // .then((value) {
-      //   showDialog(
-      //       context: context,
-      //       builder: (_) => AlertDialog(
-      //             content: Column(
-      //               mainAxisSize: MainAxisSize.min,
-      //               children: const [
-      //                 Icon(
-      //                   Icons.check_circle,
-      //                   color: Colors.green,
-      //                   size: 100.0,
-      //                 ),
-      //                 SizedBox(height: 10.0),
-      //                 Text("Payment Successful!"),
-      //               ],
-      //             ),
-      //           ));
-      //   data = null;
-      //   notifyListeners();
-      // });
-      // await _sendTransactionToBackend(
-      //   context: context,
-      //   loanOrder: loanOrder,
-      //   loanCharge: loanCharge,
-      // );
-    } on StripeException catch (_) {
-      print('Error is:---> $_');
-      AlertDialog(
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Row(
-              children: const [
-                Icon(
-                  Icons.cancel,
-                  color: Colors.red,
-                ),
-                Text("Payment Failed"),
-              ],
-            ),
-          ],
-        ),
-      );
-    } catch (e) {
-      _stripeLoading ? onPaymentClicked(false) : null;
-      // print("exception======>>:$e");
+      _payClicked ? onPayClick() : null;
+      print(e);
+      getFailedDialog("an error occured while making payment..", context);
+      throw Exception(e);
     }
   }
 
@@ -189,6 +103,24 @@ class PaymentProvider extends ChangeNotifier {
       return "";
     } catch (e) {
       return "";
+    }
+  }
+
+  Future makeChargePayment(context, StripeChargesRequest data) async {
+    var json = await repo.makePaymentRepo(context, data);
+    if (json != null) {
+      StripeChargesResponse response = StripeChargesResponse.fromJson(json);
+      if (response.responseCode == "00") {
+        if (response.responseData!.status == "succeeded") {
+          getSuccessPaymentDialog(context);
+        } else if (response.responseData!.status == "pending") {
+          getSuccessPaymentDialog(context, pending: true);
+        } else {
+          getFailedDialog("Payment failed. Try again.", context);
+        }
+      } else {
+        showSnack(context, response.responseCode!, response.responseMessage!);
+      }
     }
   }
 }

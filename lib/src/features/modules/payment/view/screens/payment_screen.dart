@@ -143,7 +143,8 @@ class _PaymentScreenState extends State<PaymentScreen>
                                   ccv: ccv.text.trim(),
                                   amount: widget.course.salePrice,
                                   pin: pin.text.trim());
-                              await payment.getPaymentToken(context, data);
+                              await payment.getPaymentToken(context,
+                                  card: data, course: widget.course);
                             }
                           },
                           child: payment.payClicked
