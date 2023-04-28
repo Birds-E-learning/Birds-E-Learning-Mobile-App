@@ -1,7 +1,7 @@
 class HomeText {
   static const String hiText = "Hi, ";
   static const String search = "Search for courses";
-  static const String seeMore = "See more";
+  static const String seeMore = "More";
   static const String trending = "Trending Courses";
   static const String topPicks = "Top Picks for you";
   static const String quickText = "Quick Courses";

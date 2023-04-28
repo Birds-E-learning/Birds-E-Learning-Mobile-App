@@ -341,34 +341,40 @@ class Lessons {
 }
 
 class Facilitator {
-  dynamic courses;
+  dynamic id;
+  String? email;
   String? name;
   String? degree;
   String? skill;
-  dynamic reviews;
   dynamic ratings;
+  dynamic courses;
   dynamic students;
+  dynamic reviews;
   String? imageUrl;
 
   Facilitator({
-    this.courses,
+    this.id,
+    this.email,
     this.name,
     this.degree,
     this.skill,
-    this.reviews,
     this.ratings,
+    this.courses,
     this.students,
+    this.reviews,
     this.imageUrl,
   });
 
   Facilitator.fromJson(Map<String, dynamic> json) {
-    courses = json['courses'] as dynamic;
+    id = json['id'] as dynamic;
+    email = json['email'] as String?;
     name = json['name'] as String?;
     degree = json['degree'] as String?;
     skill = json['skill'] as String?;
-    reviews = json['reviews'] as dynamic;
     ratings = json['ratings'] as dynamic;
+    courses = json['courses'] as dynamic;
     students = json['students'] as dynamic;
+    reviews = json['reviews'] as dynamic;
     imageUrl = json['imageUrl'] as String?;
   }
 }

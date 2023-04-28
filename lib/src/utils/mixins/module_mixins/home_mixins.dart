@@ -43,9 +43,15 @@ mixin HomeWidgets on Object implements HomeText, HomeStyles {
             ),
             InkWell(
               onTap: onPressed,
-              child: const Text(
-                HomeText.seeMore,
-                style: HomeStyles.moreStyle,
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30),
+                    border: Border.all(color: greys300, width: 0.5)),
+                child: const Text(
+                  HomeText.seeMore,
+                  style: HomeStyles.moreStyle,
+                ),
               ),
             )
           ],

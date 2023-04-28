@@ -19,7 +19,7 @@ class PreviewContainer extends StatelessWidget {
     return Stack(
       children: [
         Container(
-          width: size.width * 0.8,
+          width: double.infinity,
           height: 200,
           decoration: BoxDecoration(
               boxShadow: [
@@ -51,7 +51,7 @@ class PreviewContainer extends StatelessWidget {
               : null,
         ),
         Container(
-          width: size.width * 0.8,
+          width: double.infinity,
           decoration: BoxDecoration(
               color: Colors.black.withOpacity(0.5),
               border: Border.all(width: 1, color: borderColor),
@@ -69,12 +69,14 @@ class PreviewContainer extends StatelessWidget {
                   : InkWell(
                       onTap: onTap,
                       child: Container(
+                        alignment: Alignment.center,
                         padding: EdgeInsets.symmetric(
                             horizontal: size.width * 0.05, vertical: 5),
                         decoration: BoxDecoration(
                             border: Border.all(color: white400),
                             borderRadius: BorderRadius.circular(30)),
                         child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: const [
                             Icon(
                               Icons.play_arrow_rounded,

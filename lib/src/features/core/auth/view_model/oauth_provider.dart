@@ -209,7 +209,7 @@ class OAuthProvider extends ChangeNotifier {
       }
       notifyListeners();
     } catch (e) {
-      showSnack(context, "02", "Network TimedOut");
+      showSnack(context, "02", "Access Denied");
     }
   }
 }

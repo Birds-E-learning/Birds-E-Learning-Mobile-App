@@ -78,7 +78,7 @@ mixin FilterTextWidgets on Object implements FilterTexts, FilterStyle {
       alignment: Alignment.center,
       decoration: BoxDecoration(
           color: color,
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(4),
           border: Border.all(color: deepBlack)),
       child: Text(
         topic,

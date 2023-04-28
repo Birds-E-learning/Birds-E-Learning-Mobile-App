@@ -1,7 +1,7 @@
 import 'package:birds_learning_network/src/config/routing/route.dart';
 import 'package:birds_learning_network/src/features/modules/home/custom_widgets/course_row_card.dart';
 import 'package:birds_learning_network/src/features/modules/home/view/buy_course_screen.dart';
-import 'package:birds_learning_network/src/features/modules/home/view/widgets/more_card_shimmer.dart';
+import 'package:birds_learning_network/src/features/modules/home/view/widgets/shimmer/more_card_shimmer.dart';
 import 'package:birds_learning_network/src/features/modules/home/view_model/home_provider.dart';
 import 'package:birds_learning_network/src/utils/custom_widgets/custom_bacground.dart';
 import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';

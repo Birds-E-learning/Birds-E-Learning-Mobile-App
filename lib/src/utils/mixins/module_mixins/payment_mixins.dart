@@ -64,4 +64,14 @@ mixin PaymentWidgets on Object implements PaymentStyles, PaymentTexts {
       ],
     );
   }
+
+  RichText stripeText() {
+    return RichText(
+        text: TextSpan(
+            text: "Powered By: ",
+            style: PaymentStyles.labelStyle.copyWith(fontSize: 14),
+            children: const [
+          TextSpan(text: "Stripe", style: PaymentStyles.stripeStyle)
+        ]));
+  }
 }
