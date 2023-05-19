@@ -13,7 +13,6 @@ class NetworkService {
     try {
       http.Response response =
           await http.post(Uri.parse(url), headers: header, body: body);
-      print("response=====>>>>> $response");
       responseJson = getReturnResponse(response, context);
     } on SocketException catch (_) {
       throw FetchDataException("No Internet Connection");
@@ -24,8 +23,9 @@ class NetworkService {
   }
 
   Future getRequest(String url, Map<String, String> header, context,
-      {int time = 60}) async {
-    print("url====>>> $url");
+      {int time = 80}) async {
+    debugPrint("url====>>> $url");
+    debugPrint("header ====>> $header");
     dynamic responseJson;
     try {
       http.Response response = await http
@@ -60,7 +60,6 @@ class NetworkService {
       http.Response response = await http
           .post(Uri.parse(url), headers: header, body: jsonEncode(body))
           .timeout(Duration(seconds: seconds));
-      print(response.body);
       responseJson = returnResponse(response, context);
     } on SocketException catch (_) {
       throw FetchDataException("No Internet Connection");

@@ -25,4 +25,38 @@ mixin CourseTextWidgets on Object implements CoursesText, CourseStyles {
           )
         ]));
   }
+
+  Text headerText(String text) {
+    return Text(
+      text,
+      style: CourseStyles.assessmentHeaderStyle,
+    );
+  }
+
+  RichText quizText(String title) {
+    return RichText(
+        text: TextSpan(
+            text: "Quiz: ",
+            style: CourseStyles.assessmentHeaderStyle,
+            children: [
+          TextSpan(
+            text: title,
+            style:
+                CourseStyles.assessmentHeaderStyle.copyWith(color: skipColor),
+          )
+        ]));
+  }
+
+  RichText assessmentRow(String title, String text) {
+    return RichText(
+        text: TextSpan(
+            text: "$title:  ",
+            style: CourseStyles.assessTitleStyle,
+            children: [
+          TextSpan(
+            text: text,
+            style: CourseStyles.assessTextStyle,
+          )
+        ]));
+  }
 }

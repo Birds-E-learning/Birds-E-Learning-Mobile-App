@@ -111,6 +111,7 @@ class LoginProvider extends ChangeNotifier {
     try {
       LoginResponse response =
           await AuthRepository().getAutoLoginResponse(data, context);
+      debugPrint(data.toJson().toString());
       if (response.responseCode == "00") {
         await UserPreferences.setUserFirstName(
             response.responseData!.firstName!);

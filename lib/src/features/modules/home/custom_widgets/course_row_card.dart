@@ -3,7 +3,6 @@ import 'package:birds_learning_network/src/features/modules/home/model/response_
 import 'package:birds_learning_network/src/features/modules/home/view/buy_course_screen.dart';
 import 'package:birds_learning_network/src/features/modules/user_cart/view_model/cart_provider.dart';
 import 'package:birds_learning_network/src/utils/global_constants/asset_paths/image_path.dart';
-import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
 import 'package:birds_learning_network/src/utils/helper_widgets/star_widget.dart';
 import 'package:birds_learning_network/src/utils/mixins/module_mixins/home_mixins.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -107,13 +106,6 @@ class _CourseRowCardsState extends State<CourseRowCards> with HomeWidgets {
                 )
               ],
             ),
-            const SizedBox(
-              height: 10,
-              child: Divider(
-                thickness: 0.2,
-                color: success1000,
-              ),
-            )
           ],
         ),
       ),

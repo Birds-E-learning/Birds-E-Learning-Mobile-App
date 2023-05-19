@@ -2,26 +2,20 @@ import 'dart:io';
 import 'package:birds_learning_network/src/config/routing/route.dart';
 import 'package:birds_learning_network/src/features/modules/home/custom_widgets/html_page.dart';
 import 'package:birds_learning_network/src/features/modules/home/model/response_model/get_courses.dart';
-import 'package:birds_learning_network/src/features/modules/home/view/facilitator.dart';
+import 'package:birds_learning_network/src/features/modules/home/view/widgets/course/action_buttons.dart';
+import 'package:birds_learning_network/src/features/modules/home/view/widgets/course/course_info.dart';
 import 'package:birds_learning_network/src/features/modules/home/view/widgets/preview_container.dart';
 import 'package:birds_learning_network/src/features/modules/home/view/widgets/section_card.dart';
+import 'package:birds_learning_network/src/features/modules/home/view/widgets/shimmer/section_shimmer.dart';
 import 'package:birds_learning_network/src/features/modules/home/view_model/course_content_provider.dart';
-import 'package:birds_learning_network/src/features/modules/home/view_model/facilitator_provider.dart';
-import 'package:birds_learning_network/src/features/modules/payment/view/screens/payment_screen.dart';
-import 'package:birds_learning_network/src/features/modules/user_cart/view_model/cart_provider.dart';
-import 'package:birds_learning_network/src/utils/global_constants/asset_paths/image_path.dart';
 import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
+import 'package:birds_learning_network/src/utils/global_constants/styles/cart_styles/cart_styles.dart';
 import 'package:birds_learning_network/src/utils/global_constants/styles/home_styles/home_styles.dart';
-import 'package:birds_learning_network/src/utils/helper_widgets/button_black.dart';
-import 'package:birds_learning_network/src/utils/helper_widgets/button_white.dart';
-import 'package:birds_learning_network/src/utils/helper_widgets/loading_indicator.dart';
-import 'package:birds_learning_network/src/utils/helper_widgets/star_widget.dart';
 import 'package:birds_learning_network/src/utils/mixins/module_mixins/content_mixins.dart';
 import 'package:birds_learning_network/src/utils/mixins/module_mixins/home_mixins.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
@@ -30,8 +24,10 @@ class BuyCourseScreen extends StatefulWidget {
   const BuyCourseScreen({
     super.key,
     required this.course,
+    this.isFcilitator = false,
   });
   final Courses course;
+  final bool isFcilitator;
 
   @override
   State<BuyCourseScreen> createState() => _BuyCourseScreenState();
@@ -39,26 +35,24 @@ class BuyCourseScreen extends StatefulWidget {
 
 class _BuyCourseScreenState extends State<BuyCourseScreen>
     with HomeWidgets, ContentWidget, TickerProviderStateMixin {
-  late VideoPlayerController videoPlayerController;
+  VideoPlayerController? videoPlayerController;
   ChewieController? _controller;
   late YoutubePlayerController _ytController;
   final key1 = GlobalKey();
-  final toastKey = GlobalKey();
 
   @override
   void initState() {
-    super.initState();
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       Provider.of<CourseContentProvider>(context, listen: false).reset();
       await showVideoPlayer(context, widget.course.video!);
+      await getCourseSection();
     });
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-    CartProvider cart = context.watch<CartProvider>();
-    CartProvider cartRead = context.read<CartProvider>();
     return Scaffold(
       body: Consumer<CourseContentProvider>(
         builder: (_, content, __) => SafeArea(
@@ -112,64 +106,9 @@ class _BuyCourseScreenState extends State<BuyCourseScreen>
                                 )),
                     ),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      SizedBox(
-                          width: size.width * 0.6,
-                          child: titleText(widget.course.title ?? "")),
-                      Container(
-                        padding: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                            color: success100,
-                            borderRadius: BorderRadius.circular(20)),
-                        child: titleAmountText(widget.course.salePrice ?? ""),
-                      )
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  Row(
-                    children: [
-                      contentOwnerText(
-                          widget.course.facilitator!.name == ""
-                              ? "Anonymous"
-                              : widget.course.facilitator!.name!, () {
-                        context.read<FacilitatorProvider>().getFacilitatorData(
-                            context, widget.course.facilitator!.id!.toString());
-                        RoutingService.pushRouting(
-                            context, const FacilitatorScreen());
-                      }),
-                      const SizedBox(width: 5),
-                      Row(
-                        children: getStarList(
-                            widget.course.facilitator!.ratings ?? 0,
-                            ImagePath.starFill,
-                            ImagePath.starUnfill,
-                            size: 12),
-                      ),
-                      const SizedBox(width: 5),
-                      ratingText(widget.course.facilitator!.reviews.toString())
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  Row(
-                    children: [
-                      benefitText(
-                          "${widget.course.duration} total minutes video",
-                          Icons.play_circle),
-                      const SizedBox(width: 15),
-                      benefitText("Resource files", Icons.assessment)
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  Row(
-                    children: [
-                      benefitText(
-                          "Certificate of Completion", Icons.leaderboard),
-                      const SizedBox(width: 15),
-                      benefitText("Lifetime access", Icons.all_inclusive)
-                    ],
-                  ),
+                  CourseInfoWidget(
+                      course: widget.course,
+                      isFacilitator: widget.isFcilitator),
                   const SizedBox(height: 20),
                   HTMLPageScreen(
                     content: widget.course.content ?? "",
@@ -177,39 +116,100 @@ class _BuyCourseScreenState extends State<BuyCourseScreen>
                   const SizedBox(height: 10),
                   headerText("Course Content"),
                   const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 10),
+                    padding: EdgeInsets.symmetric(vertical: 5),
                     child: Divider(
                       color: success400,
                       thickness: 0.7,
                     ),
                   ),
-                  ListView.builder(
-                    itemCount: widget.course.sections!.length,
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemBuilder: (BuildContext context, int index) {
-                      if (content.selectedLesson.length <
-                          widget.course.sections!.length) {
-                        content.selectedLesson.add(false);
-                      }
-                      return SectionCard(
-                          index: index,
-                          onPlayTap: () async {
-                            await showVideoPlayer(
-                                context,
-                                widget.course.sections![0].lessons![index]
-                                        .url ??
-                                    "https://www.youtube.com/watch?v=tO01J-M3g0U");
-                            Scrollable.ensureVisible(key1.currentContext!,
-                                duration: const Duration(milliseconds: 500),
-                                curve: Curves.easeInOut);
-                          },
-                          onLessonTap: () {
-                            content.setSelectedLesson(index);
-                          },
-                          section: widget.course.sections![index]);
-                    },
-                  ),
+                  content.sectionLoading
+                      ? widget.course.sections!.isEmpty
+                          ? ListView.separated(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemBuilder: (context, index) {
+                                return const SectionShimmer();
+                              },
+                              separatorBuilder: (_, __) => const Divider(
+                                    color: success400,
+                                    thickness: 0.7,
+                                  ),
+                              itemCount: 5)
+                          : ListView.separated(
+                              separatorBuilder: (context, index) =>
+                                  const Divider(
+                                color: success400,
+                                thickness: 0.7,
+                              ),
+                              itemCount: widget.course.sections!.length,
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemBuilder: (BuildContext context, int index) {
+                                if (content.selectedLesson.length <
+                                    widget.course.sections!.length) {
+                                  content.selectedLesson.add(false);
+                                }
+                                return SectionCard(
+                                    index: index,
+                                    onPlayTap: () async {
+                                      await showVideoPlayer(
+                                          context,
+                                          widget.course.sections![0]
+                                                  .lessons![index].url ??
+                                              "https://www.youtube.com/watch?v=tO01J-M3g0U");
+                                      Scrollable.ensureVisible(
+                                          key1.currentContext!,
+                                          duration:
+                                              const Duration(milliseconds: 500),
+                                          curve: Curves.easeInOut);
+                                    },
+                                    onLessonTap: () {
+                                      content.setSelectedLesson(index);
+                                    },
+                                    section: widget.course.sections![index]);
+                              },
+                            )
+                      : widget.course.sections!.isEmpty
+                          ? const Center(
+                              child: Text(
+                                "No available trending courses.",
+                                style: CartStyles.richStyle1,
+                              ),
+                            )
+                          : ListView.separated(
+                              separatorBuilder: (context, index) =>
+                                  const Divider(
+                                color: success400,
+                                thickness: 0.7,
+                              ),
+                              itemCount: widget.course.sections!.length,
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemBuilder: (BuildContext context, int index) {
+                                if (content.selectedLesson.length <
+                                    widget.course.sections!.length) {
+                                  content.selectedLesson.add(false);
+                                }
+                                return SectionCard(
+                                    index: index,
+                                    onPlayTap: () async {
+                                      await showVideoPlayer(
+                                          context,
+                                          widget.course.sections![0]
+                                                  .lessons![index].url ??
+                                              "https://www.youtube.com/watch?v=tO01J-M3g0U");
+                                      Scrollable.ensureVisible(
+                                          key1.currentContext!,
+                                          duration:
+                                              const Duration(milliseconds: 500),
+                                          curve: Curves.easeInOut);
+                                    },
+                                    onLessonTap: () {
+                                      content.setSelectedLesson(index);
+                                    },
+                                    section: widget.course.sections![index]);
+                              },
+                            ),
                   // const SizedBox(height: 10),
                   // Column(
                   //   crossAxisAlignment: CrossAxisAlignment.start,
@@ -230,63 +230,7 @@ class _BuyCourseScreenState extends State<BuyCourseScreen>
                   const SizedBox(height: 20),
                   bigAmountText(widget.course.salePrice ?? "00.00"),
                   const SizedBox(height: 10),
-                  SizedBox(
-                    width: double.infinity,
-                    height: 60,
-                    child: BlackButtonWidget(
-                        onPressed: () async {
-                          widget.course.salePrice! == "0.00"
-                              ? null
-                              : RoutingService.pushRouting(context,
-                                  PaymentScreen(course: widget.course));
-                        },
-                        child: buttonText(
-                            widget.course.salePrice! == "0.00"
-                                ? "Start Course"
-                                : "Enroll Now",
-                            nextColor)),
-                  ),
-                  const SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      SizedBox(
-                        height: 60,
-                        width: size.width * 0.45,
-                        child: WhiteButtonWidget(
-                            onPressed: () async {
-                              if (cartRead.cartClicked) {
-                                cartRead.onCartClick();
-                                return;
-                              }
-                              cartRead.onCartClick();
-                              await cartRead.addCart(
-                                  context, widget.course.id!);
-                            },
-                            child: cart.cartClicked
-                                ? loadingIdicator()
-                                : buttonText("Add to Cart", skipColor)),
-                      ),
-                      SizedBox(
-                        height: 60,
-                        width: size.width * 0.45,
-                        child: WhiteButtonWidget(
-                            onPressed: () async {
-                              if (cartRead.wishlistClicked) {
-                                cartRead.onWishlistClick();
-                                return;
-                              }
-                              cartRead.onWishlistClick();
-                              await cartRead.addWishlist(
-                                  context, widget.course.id!, toastKey,
-                                  page: "Course Screen");
-                            },
-                            child: cart.wishlistClicked
-                                ? loadingIdicator()
-                                : buttonText("Add to WishList", skipColor)),
-                      )
-                    ],
-                  )
+                  CourseActionButtons(course: widget.course)
                 ],
               ),
             ),
@@ -315,9 +259,9 @@ class _BuyCourseScreenState extends State<BuyCourseScreen>
     Provider.of<CourseContentProvider>(context, listen: false)
         .onPreviewClick(false);
     videoPlayerController = VideoPlayerController.network(vidUrl);
-    await Future.wait([videoPlayerController.initialize()]);
+    await Future.wait([videoPlayerController!.initialize()]);
     _controller = ChewieController(
-      videoPlayerController: videoPlayerController,
+      videoPlayerController: videoPlayerController!,
       autoPlay: false,
       looping: false,
       errorBuilder: (context, errorMessage) {
@@ -347,8 +291,18 @@ class _BuyCourseScreenState extends State<BuyCourseScreen>
   @override
   void dispose() {
     super.dispose();
-    videoPlayerController.dispose();
-    _controller!.dispose();
+    videoPlayerController == null ? null : videoPlayerController!.dispose();
+    _controller == null ? null : _controller!.dispose();
     _ytController.dispose();
+  }
+
+  Future getCourseSection() async {
+    if (widget.course.sections == null || widget.course.sections!.isEmpty) {
+      widget.course.sections = <Sections>[];
+      widget.course.sections =
+          await Provider.of<CourseContentProvider>(context, listen: false)
+              .getCourseSection(context, widget.course.id!);
+      setState(() {});
+    }
   }
 }

@@ -3,7 +3,6 @@ import 'package:birds_learning_network/src/features/modules/home/model/response_
 import 'package:birds_learning_network/src/features/modules/home/view/buy_course_screen.dart';
 import 'package:birds_learning_network/src/features/modules/user_cart/view_model/cart_provider.dart';
 import 'package:birds_learning_network/src/utils/global_constants/asset_paths/image_path.dart';
-import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
 import 'package:birds_learning_network/src/utils/helper_widgets/star_widget.dart';
 import 'package:birds_learning_network/src/utils/mixins/module_mixins/home_mixins.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -35,7 +34,7 @@ class _FacilitatorCourseCardsState extends State<FacilitatorCourseCards>
     final Size size = MediaQuery.of(context).size;
     return InkWell(
       onTap: () => RoutingService.pushRouting(
-          context, BuyCourseScreen(course: widget.course)),
+          context, BuyCourseScreen(course: widget.course, isFcilitator: true)),
       child: SizedBox(
         // height: 70,
         width: size.width * 0.92,
@@ -84,10 +83,12 @@ class _FacilitatorCourseCardsState extends State<FacilitatorCourseCards>
                         const SizedBox(width: 5),
                         Row(
                           children: getStarList(
-                              "4", ImagePath.starFill, ImagePath.starUnfill),
+                              widget.course.facilitator!.ratings ?? "3",
+                              ImagePath.starFill,
+                              ImagePath.starUnfill),
                         ),
                         const SizedBox(width: 5),
-                        ratingText("4")
+                        ratingText(widget.course.facilitator!.ratings ?? "3")
                       ],
                     ),
                     const SizedBox(height: 3),
@@ -97,13 +98,6 @@ class _FacilitatorCourseCardsState extends State<FacilitatorCourseCards>
                 )
               ],
             ),
-            const SizedBox(
-              height: 10,
-              child: Divider(
-                thickness: 0.2,
-                color: success1000,
-              ),
-            )
           ],
         ),
       ),
@@ -117,6 +111,5 @@ class _FacilitatorCourseCardsState extends State<FacilitatorCourseCards>
       List<Sections> sections = response;
       widget.course.sections = sections;
     }
-    print("sectionss====>>> ${widget.course.sections![0].name}");
   }
 }

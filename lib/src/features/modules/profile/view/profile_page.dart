@@ -102,7 +102,7 @@ class _UserProfilePageState extends State<UserProfilePage>
                       text: ProfileTexts.myCourses,
                       onTap: () {
                         RoutingService.pushFullScreenRouting(
-                            context, const MyCoursesPage());
+                            context, const MyCoursesPage(isFullScreen: true));
                       }),
                   const SizedBox(height: 25),
                   CustomPageRow(

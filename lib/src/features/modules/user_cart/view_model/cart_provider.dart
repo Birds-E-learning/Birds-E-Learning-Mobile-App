@@ -60,8 +60,6 @@ class CartProvider extends ChangeNotifier {
   }
 
   void refreshList(context) async {
-    selectedCart = [];
-    selectedWish = [];
     await getAllCarts(context);
     await getAllWishlists(context);
   }
@@ -172,6 +170,7 @@ class CartProvider extends ChangeNotifier {
       GeneralCartResponse response =
           await repo.deleteWishlistService(context, id.toString());
       _removewishIconClicked ? onRemoveWishIconClick() : null;
+      _wishlistClicked ? onWishlistClick() : null;
       if (response.responseCode == "00") {
         page == "home"
             ? showRemoveToast(context, key)
@@ -180,8 +179,6 @@ class CartProvider extends ChangeNotifier {
                 Navigator.pop(context);
               });
         await getAllWishlists(context);
-        // Provider.of<HomeProvider>(context, listen: false)
-        //     .refreshData(context, reload: false);
       } else {
         showSnack(context, response.responseCode!, response.responseMessage!);
       }

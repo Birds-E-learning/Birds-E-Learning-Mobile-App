@@ -50,13 +50,6 @@ class PaymentProvider extends ChangeNotifier {
           paymentMethodTypes: "card");
       data = await repo.stripePaymentIntent(body, context);
       notifyListeners();
-      // 2. initialize the payment sheet
-      await Stripe.instance.initPaymentSheet(
-        paymentSheetParameters: SetupPaymentSheetParameters(
-            paymentIntentClientSecret: data['client_secret'],
-            style: ThemeMode.light,
-            merchantDisplayName: "Birds Learing Network"),
-      );
       // Create a token with the card details
       List<String> expiry = card.expiryDate!.split("/");
       CardDetails card_ = CardDetails(
@@ -71,20 +64,19 @@ class PaymentProvider extends ChangeNotifier {
                 type: TokenType.Card, name: "Birds learning", currency: "USD")),
       );
       StripeChargesRequest chargeData = StripeChargesRequest(
-          amount: roundAmount(card.amount!),
+          amount: calculateAmount(card.amount!),
           currency: "USD",
           description: "Course payment",
           token: token.id,
           courseId: course!.id);
-      await makeChargePayment(context, chargeData);
+      await makeChargePayment(context, chargeData, course);
       _payClicked ? onPayClick() : null;
     } on StripeException catch (e) {
       _payClicked ? onPayClick() : null;
       getFailedDialog(e.error.message!, context);
     } catch (e) {
       _payClicked ? onPayClick() : null;
-      print(e);
-      getFailedDialog("an error occured while making payment..", context);
+      getFailedDialog("Payment error : ${e.toString()}", context);
       throw Exception(e);
     }
   }
@@ -106,17 +98,19 @@ class PaymentProvider extends ChangeNotifier {
     }
   }
 
-  Future makeChargePayment(context, StripeChargesRequest data) async {
+  Future makeChargePayment(
+      context, StripeChargesRequest data, Courses course) async {
     var json = await repo.makePaymentRepo(context, data);
     if (json != null) {
       StripeChargesResponse response = StripeChargesResponse.fromJson(json);
-      if (response.responseCode == "00") {
+      if (response.responseCode == "00" || response.responseCode == "000") {
         if (response.responseData!.status == "succeeded") {
-          getSuccessPaymentDialog(context);
+          getSuccessPaymentDialog(context, course: course, pending: false);
         } else if (response.responseData!.status == "pending") {
           getSuccessPaymentDialog(context, pending: true);
         } else {
-          getFailedDialog("Payment failed. Try again.", context);
+          getFailedDialog(
+              "Payment failed: ${response.responseMessage}.", context);
         }
       } else {
         showSnack(context, response.responseCode!, response.responseMessage!);

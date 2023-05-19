@@ -27,4 +27,14 @@ class CourseRepository extends NetworkService with BaseUrl, BaseHeaders {
       throw Exception(e);
     }
   }
+
+  Future getPaidCourses(context) async {
+    try {
+      Map<String, String> header_ = await authHeader();
+      var json = await getRequest(coursePaid, header_, context);
+      return json;
+    } catch (e) {
+      return null;
+    }
+  }
 }

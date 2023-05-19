@@ -193,7 +193,8 @@ class HomeProvider extends ChangeNotifier {
       response.forEach((key, value) {
         prefCourses_.addAll(value);
         if (categories.keys.contains(key)) {
-          List<String> courseTitles = [];
+          List<String> courseTitles =
+              []; // This function holds the course titles in the category to avoid repitions.
           for (var course in categories[key]!) {
             courseTitles.add(course.title!);
           }

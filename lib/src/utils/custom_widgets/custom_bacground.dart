@@ -30,6 +30,7 @@ class BackgroundWidget extends StatelessWidget {
           ),
           SafeArea(
             child: CustomScrollView(
+              primary: false,
               slivers: [
                 appBar ?? Container(),
                 SliverToBoxAdapter(

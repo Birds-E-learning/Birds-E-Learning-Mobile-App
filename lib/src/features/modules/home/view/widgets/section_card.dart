@@ -30,96 +30,63 @@ class SectionCard extends StatelessWidget {
     return Consumer<CourseContentProvider>(
       builder: (_, content, __) => InkWell(
         onTap: onLessonTap,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.8,
-                  child: AutoSizeText("${index + 1}. ${section.name}",
-                      maxLines: 2, style: style),
-                ),
-                SvgPicture.asset(content.selectedLesson[index]
-                    ? ImagePath.arrowUpLesson
-                    : ImagePath.arrowDownLesson),
-              ],
-            ),
-            ListView.builder(
-                itemCount: section.lessons!.length,
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemBuilder: (BuildContext context, int indexx) {
-                  return Container(
-                    padding: content.selectedLesson[index]
-                        ? const EdgeInsets.symmetric(
-                            horizontal: 15, vertical: 10)
-                        : EdgeInsets.zero,
-                    child: content.selectedLesson[index]
-                        ? Column(
-                            children: [
-                              Container(
-                                child: index == 0 && indexx == 0
-                                    ? LessonPreview(
-                                        previousIndex: index,
-                                        index: indexx,
-                                        lesson: section.lessons![indexx],
-                                        onTap: onPlayTap,
-                                      )
-                                    : null,
-                              ),
-                              SizedBox(height: index == 0 ? 15 : 0),
-                              LessonPreview(
-                                previousIndex: index,
-                                index: indexx,
-                                lesson: section.lessons![indexx],
-                                name: section.lessons![0].name!,
-                                isPreview: false,
-                                onTap: () {},
-                              ),
-                            ],
-                          )
-                        : null,
-                  );
-                }),
-            // Container(
-            // padding: content.selectedLesson[index]
-            //     ? const EdgeInsets.symmetric(horizontal: 15, vertical: 5)
-            //     : EdgeInsets.zero,
-            //   child: content.selectedLesson[index]
-            // ? Column(
-            //     children: [
-            //       Container(
-            //         child: index == 0
-            //             ? LessonPreview(
-            //                 index: index,
-            //                 lesson: section.lessons![0],
-            //                 onTap: onPlayTap,
-            //               )
-            //             : null,
-            //       ),
-            //       SizedBox(height: index == 0 ? 15 : 0),
-            //       LessonPreview(
-            //         index: index,
-            //         lesson: section.lessons![0],
-            //         name:
-            //             section.lessons![0].name ?? "lesson unavailable",
-            //         isPreview: false,
-            //         onTap: () {},
-            //       ),
-            //     ],
-            //   )
-            //       : null,
-            // ),
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 15),
-              child: Divider(
-                color: success400,
-                thickness: 0.7,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 7.5),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    child: AutoSizeText("${index + 1}. ${section.name}",
+                        maxLines: 2, style: style),
+                  ),
+                  SvgPicture.asset(content.selectedLesson[index]
+                      ? ImagePath.arrowUpLesson
+                      : ImagePath.arrowDownLesson),
+                ],
               ),
-            )
-          ],
+              ListView.builder(
+                  itemCount: section.lessons!.length,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemBuilder: (BuildContext context, int indexx) {
+                    return Container(
+                      padding: content.selectedLesson[index]
+                          ? const EdgeInsets.symmetric(
+                              horizontal: 15, vertical: 10)
+                          : EdgeInsets.zero,
+                      child: content.selectedLesson[index]
+                          ? Column(
+                              children: [
+                                Container(
+                                  child: index == 0 && indexx == 0
+                                      ? LessonPreview(
+                                          previousIndex: index,
+                                          index: indexx,
+                                          lesson: section.lessons![indexx],
+                                          onTap: onPlayTap,
+                                        )
+                                      : null,
+                                ),
+                                SizedBox(height: index == 0 ? 15 : 0),
+                                LessonPreview(
+                                  previousIndex: index,
+                                  index: indexx,
+                                  lesson: section.lessons![indexx],
+                                  name: section.lessons![0].name!,
+                                  isPreview: false,
+                                  onTap: () {},
+                                ),
+                              ],
+                            )
+                          : null,
+                    );
+                  }),
+            ],
+          ),
         ),
       ),
     );
@@ -213,3 +180,40 @@ class LessonPreview extends StatelessWidget {
     );
   }
 }
+
+ // Container(
+              // padding: content.selectedLesson[index]
+              //     ? const EdgeInsets.symmetric(horizontal: 15, vertical: 5)
+              //     : EdgeInsets.zero,
+              //   child: content.selectedLesson[index]
+              // ? Column(
+              //     children: [
+              //       Container(
+              //         child: index == 0
+              //             ? LessonPreview(
+              //                 index: index,
+              //                 lesson: section.lessons![0],
+              //                 onTap: onPlayTap,
+              //               )
+              //             : null,
+              //       ),
+              //       SizedBox(height: index == 0 ? 15 : 0),
+              //       LessonPreview(
+              //         index: index,
+              //         lesson: section.lessons![0],
+              //         name:
+              //             section.lessons![0].name ?? "lesson unavailable",
+              //         isPreview: false,
+              //         onTap: () {},
+              //       ),
+              //     ],
+              //   )
+              //       : null,
+              // ),
+              // const Padding(
+              //   padding: EdgeInsets.symmetric(vertical: 15),
+              //   child: Divider(
+              //     color: success400,
+              //     thickness: 0.7,
+              //   ),
+              // )
