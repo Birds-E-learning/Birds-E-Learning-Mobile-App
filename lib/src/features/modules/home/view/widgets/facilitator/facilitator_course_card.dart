@@ -1,34 +1,27 @@
 import 'package:birds_learning_network/src/config/routing/route.dart';
+import 'package:birds_learning_network/src/features/modules/home/model/response_model/get_courses.dart';
 import 'package:birds_learning_network/src/features/modules/home/view/buy_course_screen.dart';
-import 'package:birds_learning_network/src/features/modules/payment/view/screens/payment_screen.dart';
 import 'package:birds_learning_network/src/features/modules/user_cart/view_model/cart_provider.dart';
+import 'package:birds_learning_network/src/utils/global_constants/asset_paths/image_path.dart';
 import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
 import 'package:birds_learning_network/src/utils/helper_widgets/star_widget.dart';
-import 'package:birds_learning_network/src/utils/mixins/module_mixins/cart_mixins.dart';
+import 'package:birds_learning_network/src/utils/mixins/module_mixins/home_mixins.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../../utils/global_constants/asset_paths/image_path.dart';
-import '../../../home/model/response_model/get_courses.dart';
-
-class CourseCartCards extends StatefulWidget {
-  const CourseCartCards({
-    super.key,
-    required this.course,
-    this.isWishlist = false,
-    required this.removeButton,
-  });
+class FacilitatorCourseCards extends StatefulWidget {
+  const FacilitatorCourseCards({super.key, required this.course, this.onTap});
   final Courses course;
-  final bool isWishlist;
-  final Widget removeButton;
+  final VoidCallback? onTap;
 
   @override
-  State<CourseCartCards> createState() => _CourseCartCardsState();
+  State<FacilitatorCourseCards> createState() => _FacilitatorCourseCardsState();
 }
 
-class _CourseCartCardsState extends State<CourseCartCards> with CartWidgets {
+class _FacilitatorCourseCardsState extends State<FacilitatorCourseCards>
+    with HomeWidgets {
   @override
   void initState() {
     SchedulerBinding.instance.addPostFrameCallback((_) async {
@@ -40,12 +33,12 @@ class _CourseCartCardsState extends State<CourseCartCards> with CartWidgets {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-    return Consumer<CartProvider>(
-      builder: (_, cart, __) => InkWell(
-        onTap: () {
-          RoutingService.pushRouting(
-              context, BuyCourseScreen(course: widget.course));
-        },
+    return InkWell(
+      onTap: () => RoutingService.pushRouting(
+          context, BuyCourseScreen(course: widget.course)),
+      child: SizedBox(
+        // height: 70,
+        width: size.width * 0.92,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -53,11 +46,13 @@ class _CourseCartCardsState extends State<CourseCartCards> with CartWidgets {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 SizedBox(
-                  height: 50,
+                  height: 40,
                   width: 50,
                   child: CachedNetworkImage(
-                    imageUrl: widget.course.imageUrl ?? "",
+                    height: 50,
+                    width: 50,
                     fit: BoxFit.fill,
+                    imageUrl: widget.course.imageUrl ?? "",
                     placeholder: (context, url) {
                       return Image.asset(
                         ImagePath.titlePics,
@@ -84,58 +79,26 @@ class _CourseCartCardsState extends State<CourseCartCards> with CartWidgets {
                     const SizedBox(height: 2),
                     Row(
                       children: [
-                        ownerNameText(widget.course.facilitator == null
-                            ? "Anonymous"
-                            : widget.course.facilitator!.name == ""
-                                ? "Anonymous"
-                                : widget.course.facilitator!.name!),
+                        ownerText(
+                            widget.course.facilitator!.name ?? "Anonymous"),
                         const SizedBox(width: 5),
                         Row(
                           children: getStarList(
-                              widget.course.facilitator!.ratings.toString(),
-                              ImagePath.starFill,
-                              ImagePath.starUnfill),
+                              "4", ImagePath.starFill, ImagePath.starUnfill),
                         ),
                         const SizedBox(width: 5),
-                        ratingText(widget.course.facilitator == null
-                            ? "4"
-                            : widget.course.facilitator!.ratings.toString())
+                        ratingText("4")
                       ],
                     ),
                     const SizedBox(height: 3),
-                    amountText(widget.course.salePrice ?? "000",
-                        widget.course.price ?? "000"),
-                    const SizedBox(height: 5),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          child: widget.isWishlist
-                              ? null
-                              : addRemoveCart(
-                                  "Buy Now",
-                                  skipColor,
-                                  Icons.add,
-                                  () => RoutingService.pushRouting(context,
-                                      PaymentScreen(course: widget.course))),
-                        ),
-                        SizedBox(width: widget.isWishlist ? 0 : 15),
-                        widget.removeButton,
-                        // isWishlist && cart.removeWishIcon
-                        //     ? loadingIdicator()
-                        //     : !isWishlist && cart.removeCartIcon
-                        //         ? loadingIdicator()
-                        // : addRemoveCart("Remove", errors500, Icons.remove,
-                        //     onRemoveTap),
-                      ],
-                    )
+                    amountText(widget.course.salePrice ?? "5000",
+                        widget.course.price ?? "5500")
                   ],
                 )
               ],
             ),
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 10),
+            const SizedBox(
+              height: 10,
               child: Divider(
                 thickness: 0.2,
                 color: success1000,
@@ -154,5 +117,6 @@ class _CourseCartCardsState extends State<CourseCartCards> with CartWidgets {
       List<Sections> sections = response;
       widget.course.sections = sections;
     }
+    print("sectionss====>>> ${widget.course.sections![0].name}");
   }
 }

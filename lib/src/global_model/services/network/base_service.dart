@@ -7,8 +7,25 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class NetworkService {
+  Future stripeRequest(String url, Map<String, String> header, context, body,
+      {int time = 100}) async {
+    dynamic responseJson;
+    try {
+      http.Response response =
+          await http.post(Uri.parse(url), headers: header, body: body);
+      print("response=====>>>>> $response");
+      responseJson = getReturnResponse(response, context);
+    } on SocketException catch (_) {
+      throw FetchDataException("No Internet Connection");
+    } catch (e) {
+      throw Exception(e);
+    }
+    return responseJson;
+  }
+
   Future getRequest(String url, Map<String, String> header, context,
       {int time = 60}) async {
+    print("url====>>> $url");
     dynamic responseJson;
     try {
       http.Response response = await http
@@ -43,6 +60,7 @@ class NetworkService {
       http.Response response = await http
           .post(Uri.parse(url), headers: header, body: jsonEncode(body))
           .timeout(Duration(seconds: seconds));
+      print(response.body);
       responseJson = returnResponse(response, context);
     } on SocketException catch (_) {
       throw FetchDataException("No Internet Connection");

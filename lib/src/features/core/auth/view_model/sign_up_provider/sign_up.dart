@@ -51,7 +51,7 @@ class SignUpProvider extends ChangeNotifier {
       }
     } catch (e) {
       onClick();
-      showSnack(context, "02", "Network TimedOut");
+      showSnack(context, "02", "Access Denied");
     }
   }
 }

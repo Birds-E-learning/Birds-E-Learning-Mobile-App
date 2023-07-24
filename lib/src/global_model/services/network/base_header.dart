@@ -1,4 +1,6 @@
+import 'package:birds_learning_network/src/features/modules/payment/view_model/payment_provider.dart';
 import 'package:birds_learning_network/src/global_model/services/storage/secure_storage/user_details.dart';
+import 'package:provider/provider.dart';
 
 class BaseHeaders {
   final Map<String, String> header = {
@@ -12,6 +14,15 @@ class BaseHeaders {
       "accept": "application/json",
       "Content-Type": "application/JSON",
       "Authorization": "Bearer $auth",
+    };
+  }
+
+  Future<Map<String, String>> stripeHeader(context) async {
+    String key = await Provider.of<PaymentProvider>(context, listen: false)
+        .getStripeKeys(context, keyToGet: "secret");
+    return {
+      'Authorization': 'Bearer $key',
+      'Content-Type': 'application/x-www-form-urlencoded'
     };
   }
 }

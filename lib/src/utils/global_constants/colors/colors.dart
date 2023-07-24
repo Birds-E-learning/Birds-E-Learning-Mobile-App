@@ -40,3 +40,4 @@ const Color success100 = Color(0XFFE0F5CF);
 const Color white400 = Color(0XFFF8FDF5);
 const Color black300 = Color(0XFF020202);
 const Color success400 = Color(0XFFB1E787);
+const Color purple = Color(0xFF635BFF);

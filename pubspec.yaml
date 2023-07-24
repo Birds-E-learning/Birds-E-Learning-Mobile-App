@@ -38,6 +38,7 @@ dependencies:
   youtube_player_flutter: ^8.1.2
   shimmer: ^2.0.0
   flash: ^2.0.5+1
+  flutter_stripe: ^9.1.1
   # flutter_login_facebook: ^1.7.0
   # flutter_facebook_auth: ^3.1.1
 
@@ -55,6 +56,7 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/
+    - assets/.env
 
 
   # To add custom fonts to your application, add a fonts section here,

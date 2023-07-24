@@ -10,6 +10,7 @@ import 'package:birds_learning_network/src/features/core/auth/view_model/sign_up
 import 'package:birds_learning_network/src/features/core/settings/view_model/filter_provider.dart';
 import 'package:birds_learning_network/src/features/core/walk_through/view/walk_through_one.dart';
 import 'package:birds_learning_network/src/features/modules/home/view_model/course_content_provider.dart';
+import 'package:birds_learning_network/src/features/modules/home/view_model/facilitator_provider.dart';
 import 'package:birds_learning_network/src/features/modules/home/view_model/home_provider.dart';
 import 'package:birds_learning_network/src/features/modules/payment/view_model/payment_provider.dart';
 import 'package:birds_learning_network/src/features/modules/profile/view_model/card_provider.dart';
@@ -20,9 +21,11 @@ import 'package:birds_learning_network/src/features/modules/user_cart/view_model
 import 'package:birds_learning_network/src/global_model/services/native_app/device_details.dart';
 import 'package:birds_learning_network/src/global_model/services/storage/shared_preferences/user_details.dart';
 import 'package:birds_learning_network/src/utils/global_constants/asset_paths/image_path.dart';
+import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:provider/provider.dart';
 
 import 'src/features/modules/courses/view_model/course_provider.dart';
@@ -30,6 +33,9 @@ import 'src/global_model/services/storage/shared_preferences/device_info.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  Stripe.merchantIdentifier = 'merchant.flutter.stripe.test';
+  Stripe.urlScheme = 'flutterstripe';
+
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   // await SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
   runApp(const MyApp());
@@ -57,13 +63,14 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => CartProvider()),
         ChangeNotifierProvider(create: (context) => PaymentProvider()),
         ChangeNotifierProvider(create: (context) => CourseProvider()),
+        ChangeNotifierProvider(create: (context) => FacilitatorProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         theme: ThemeData(
           primarySwatch: Colors.blue,
-          scaffoldBackgroundColor: Colors.white,
+          scaffoldBackgroundColor: white,
         ),
         home: const SplashScreen(),
       ),
@@ -85,6 +92,10 @@ class _SplashScreenState extends State<SplashScreen> {
     SchedulerBinding.instance.addPostFrameCallback(
       (_) async {
         await getDeviceDetails(context);
+        if (!mounted) return;
+        String key = await Provider.of<PaymentProvider>(context, listen: false)
+            .getStripeKeys(context);
+        Stripe.publishableKey = key;
       },
     );
     Timer(const Duration(seconds: 3), () async {

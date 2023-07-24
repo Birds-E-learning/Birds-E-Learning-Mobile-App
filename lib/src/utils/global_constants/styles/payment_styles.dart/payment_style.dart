@@ -37,4 +37,10 @@ class PaymentStyles {
       fontFamily: "Inter",
       fontWeight: FontWeight.w500,
       color: skipColor);
+
+  static const TextStyle stripeStyle = TextStyle(
+      fontSize: 17,
+      fontFamily: "Inter",
+      fontWeight: FontWeight.w700,
+      color: purple);
 }

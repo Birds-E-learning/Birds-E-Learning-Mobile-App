@@ -1,10 +1,12 @@
 import 'dart:io';
-
 import 'package:birds_learning_network/src/config/routing/route.dart';
+import 'package:birds_learning_network/src/features/modules/home/custom_widgets/html_page.dart';
 import 'package:birds_learning_network/src/features/modules/home/model/response_model/get_courses.dart';
+import 'package:birds_learning_network/src/features/modules/home/view/facilitator.dart';
 import 'package:birds_learning_network/src/features/modules/home/view/widgets/preview_container.dart';
 import 'package:birds_learning_network/src/features/modules/home/view/widgets/section_card.dart';
 import 'package:birds_learning_network/src/features/modules/home/view_model/course_content_provider.dart';
+import 'package:birds_learning_network/src/features/modules/home/view_model/facilitator_provider.dart';
 import 'package:birds_learning_network/src/features/modules/payment/view/screens/payment_screen.dart';
 import 'package:birds_learning_network/src/features/modules/user_cart/view_model/cart_provider.dart';
 import 'package:birds_learning_network/src/utils/global_constants/asset_paths/image_path.dart';
@@ -74,13 +76,14 @@ class _BuyCourseScreenState extends State<BuyCourseScreen>
                         : Icons.arrow_back_ios),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(20),
+                    padding: const EdgeInsets.symmetric(vertical: 20),
                     child: Center(
                       child: Container(
                           key: key1,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(15)),
                           height: 200,
+                          width: double.infinity,
                           child: content.showVideo
                               ? content.isVideo && _controller != null
                                   ? _controller!.videoPlayerController.value
@@ -130,8 +133,12 @@ class _BuyCourseScreenState extends State<BuyCourseScreen>
                       contentOwnerText(
                           widget.course.facilitator!.name == ""
                               ? "Anonymous"
-                              : widget.course.facilitator!.name!,
-                          () {}),
+                              : widget.course.facilitator!.name!, () {
+                        context.read<FacilitatorProvider>().getFacilitatorData(
+                            context, widget.course.facilitator!.id!.toString());
+                        RoutingService.pushRouting(
+                            context, const FacilitatorScreen());
+                      }),
                       const SizedBox(width: 5),
                       Row(
                         children: getStarList(
@@ -164,46 +171,8 @@ class _BuyCourseScreenState extends State<BuyCourseScreen>
                     ],
                   ),
                   const SizedBox(height: 20),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Html(
-                      data: widget.course.content,
-                      shrinkWrap: true,
-                      style: {
-                        "body": Style(
-                            margin: Margins.zero,
-                            fontSize: FontSize(14, Unit.px),
-                            fontStyle: FontStyle.normal,
-                            fontWeight: FontWeight.w400,
-                            fontFamily: "Inter"),
-                        "h4": Style(
-                            color: greys900,
-                            fontSize: FontSize(18),
-                            fontFamily: "Inter",
-                            fontWeight: FontWeight.w700,
-                            margin:
-                                Margins.only(bottom: 5, top: 5, unit: Unit.px)),
-                        "p": Style(
-                            margin:
-                                Margins.only(top: 0, bottom: 0, unit: Unit.px),
-                            lineHeight: const LineHeight(0, units: "px"),
-                            fontSize: FontSize(14),
-                            color: deepBlack,
-                            fontFamily: "Inter",
-                            fontWeight: FontWeight.w400),
-                        "ul": Style(
-                            fontSize: FontSize(14),
-                            display: Display.inline,
-                            fontFamily: "Inter",
-                            margin: Margins.all(0, unit: Unit.px)),
-                        "li": Style(
-                          lineHeight: const LineHeight(0, units: "px"),
-                          fontSize: FontSize(14),
-                          fontFamily: "Inter",
-                          margin: Margins.all(0, unit: Unit.px),
-                        ),
-                      },
-                    ),
+                  HTMLPageScreen(
+                    content: widget.course.content ?? "",
                   ),
                   const SizedBox(height: 10),
                   headerText("Course Content"),
@@ -259,15 +228,23 @@ class _BuyCourseScreenState extends State<BuyCourseScreen>
                   //   ],
                   // ),
                   const SizedBox(height: 20),
-                  bigAmountText(widget.course.salePrice ?? "5,000.00"),
+                  bigAmountText(widget.course.salePrice ?? "00.00"),
                   const SizedBox(height: 10),
                   SizedBox(
                     width: double.infinity,
                     height: 60,
                     child: BlackButtonWidget(
-                        onPressed: () => RoutingService.pushRouting(
-                            context, const PaymentScreen()),
-                        child: buttonText("Enroll Now", nextColor)),
+                        onPressed: () async {
+                          widget.course.salePrice! == "0.00"
+                              ? null
+                              : RoutingService.pushRouting(context,
+                                  PaymentScreen(course: widget.course));
+                        },
+                        child: buttonText(
+                            widget.course.salePrice! == "0.00"
+                                ? "Start Course"
+                                : "Enroll Now",
+                            nextColor)),
                   ),
                   const SizedBox(height: 10),
                   Row(

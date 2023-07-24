@@ -93,7 +93,7 @@ class LoginProvider extends ChangeNotifier {
       notifyListeners();
     } catch (e) {
       autoLogin ? onCompleteClick() : onClick();
-      showSnack(context, "02", "Network TimedOut");
+      showSnack(context, "02", "Access Denied");
     }
   }
 
@@ -175,7 +175,7 @@ class LoginProvider extends ChangeNotifier {
       }
     } catch (e) {
       auth.facebookClicked ? auth.onFacebookClick() : null;
-      showSnack(context, "02", "Network TimedOut");
+      showSnack(context, "02", "Access Denied");
     }
     notifyListeners();
   }
