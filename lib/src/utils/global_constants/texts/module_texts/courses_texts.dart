@@ -6,6 +6,7 @@ class CoursesText {
   static const String lectures = "Lectures";
   static const String files = "Files";
   static const String assessments = "Assessments";
+  static const String resources = "Resources";
   static const String review = "Course Review";
   static const String reviewHint = "Have your say about this course";
   static const String rating = "Course Rating";

@@ -95,6 +95,7 @@ class Category {
 }
 
 class Courses {
+  dynamic progress;
   String? id;
   String? title;
   String? slug;
@@ -113,23 +114,24 @@ class Courses {
   String? status;
   dynamic publishDate;
   String? createUser;
-  dynamic updateUser;
+  String? updateUser;
   dynamic deletedAt;
-  dynamic views;
+  String? views;
   String? createdAt;
-  dynamic updatedAt;
+  String? updatedAt;
   dynamic defaultState;
   dynamic reviewScore;
   dynamic include;
   dynamic exclude;
   dynamic itinerary;
   String? imageUrl;
-  bool? wishList;
   String? imageBannerUrl;
-  List<Sections>? sections;
+  bool? wishList;
   Facilitator? facilitator;
+  List<Sections>? sections;
 
   Courses({
+    this.progress,
     this.id,
     this.title,
     this.slug,
@@ -142,7 +144,6 @@ class Courses {
     this.gallery,
     this.video,
     this.price,
-    this.wishList,
     this.salePrice,
     this.duration,
     this.faqs,
@@ -161,11 +162,13 @@ class Courses {
     this.itinerary,
     this.imageUrl,
     this.imageBannerUrl,
-    this.sections,
+    this.wishList,
     this.facilitator,
+    this.sections,
   });
 
   Courses.fromJson(Map<String, dynamic> json) {
+    progress = json['progress'] as dynamic;
     id = json['id'] as String?;
     title = json['title'] as String?;
     slug = json['slug'] as String?;
@@ -184,12 +187,11 @@ class Courses {
     status = json['status'] as String?;
     publishDate = json['publishDate'];
     createUser = json['createUser'] as String?;
-    updateUser = json['updateUser'];
+    updateUser = json['updateUser'] as String?;
     deletedAt = json['deletedAt'];
-    wishList = json["wishList"];
-    views = json['views'];
+    views = json['views'] as String?;
     createdAt = json['createdAt'] as String?;
-    updatedAt = json['updatedAt'];
+    updatedAt = json['updatedAt'] as String?;
     defaultState = json['defaultState'] as dynamic;
     reviewScore = json['reviewScore'];
     include = json['include'];
@@ -197,12 +199,106 @@ class Courses {
     itinerary = json['itinerary'];
     imageUrl = json['imageUrl'] as String?;
     imageBannerUrl = json['imageBannerUrl'] as String?;
-    sections = (json['sections'] as List?)
-        ?.map((dynamic e) => Sections.fromJson(e as Map<String, dynamic>))
-        .toList();
+    wishList = json['wishList'] as bool?;
     facilitator = (json['facilitator'] as Map<String, dynamic>?) != null
         ? Facilitator.fromJson(json['facilitator'] as Map<String, dynamic>)
         : null;
+    sections = (json['sections'] as List?)
+        ?.map((dynamic e) => Sections.fromJson(e as Map<String, dynamic>))
+        .toList();
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> json = <String, dynamic>{};
+    json['progress'] = progress;
+    json['id'] = id;
+    json['title'] = title;
+    json['slug'] = slug;
+    json['content'] = content;
+    json['imageId'] = imageId;
+    json['bannerImageId'] = bannerImageId;
+    json['shortDesc'] = shortDesc;
+    json['categoryId'] = categoryId;
+    json['isFeatured'] = isFeatured;
+    json['gallery'] = gallery;
+    json['video'] = video;
+    json['price'] = price;
+    json['salePrice'] = salePrice;
+    json['duration'] = duration;
+    json['faqs'] = faqs;
+    json['status'] = status;
+    json['publishDate'] = publishDate;
+    json['createUser'] = createUser;
+    json['updateUser'] = updateUser;
+    json['deletedAt'] = deletedAt;
+    json['views'] = views;
+    json['createdAt'] = createdAt;
+    json['updatedAt'] = updatedAt;
+    json['defaultState'] = defaultState;
+    json['reviewScore'] = reviewScore;
+    json['include'] = include;
+    json['exclude'] = exclude;
+    json['itinerary'] = itinerary;
+    json['imageUrl'] = imageUrl;
+    json['imageBannerUrl'] = imageBannerUrl;
+    json['wishList'] = wishList;
+    json['facilitator'] = facilitator?.toJson();
+    json['sections'] = sections?.map((e) => e.toJson()).toList();
+    return json;
+  }
+}
+
+class Facilitator {
+  dynamic courses;
+  String? id;
+  String? email;
+  String? name;
+  String? degree;
+  String? skill;
+  dynamic reviews;
+  dynamic ratings;
+  dynamic students;
+  String? imageUrl;
+
+  Facilitator({
+    this.courses,
+    this.id,
+    this.email,
+    this.name,
+    this.degree,
+    this.skill,
+    this.reviews,
+    this.ratings,
+    this.students,
+    this.imageUrl,
+  });
+
+  Facilitator.fromJson(Map<String, dynamic> json) {
+    courses = json['courses'] as dynamic;
+    id = json['id'] as String?;
+    email = json['email'] as String?;
+    name = json['name'] as String?;
+    degree = json['degree'] as String?;
+    skill = json['skill'] as String?;
+    reviews = json['reviews'] as dynamic;
+    ratings = json['ratings'] as dynamic;
+    students = json['students'] as dynamic;
+    imageUrl = json['imageUrl'] as String?;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> json = <String, dynamic>{};
+    json['courses'] = courses;
+    json['id'] = id;
+    json['email'] = email;
+    json['name'] = name;
+    json['degree'] = degree;
+    json['skill'] = skill;
+    json['reviews'] = reviews;
+    json['ratings'] = ratings;
+    json['students'] = students;
+    json['imageUrl'] = imageUrl;
+    return json;
   }
 }
 
@@ -259,6 +355,26 @@ class Sections {
     lessons = (json['lessons'] as List?)
         ?.map((dynamic e) => Lessons.fromJson(e as Map<String, dynamic>))
         .toList();
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> json = <String, dynamic>{};
+    json['id'] = id;
+    json['courseId'] = courseId;
+    json['name'] = name;
+    json['slug'] = slug;
+    json['service'] = service;
+    json['displayType'] = displayType;
+    json['hideInSingle'] = hideInSingle;
+    json['active'] = active;
+    json['displayOrder'] = displayOrder;
+    json['createUser'] = createUser;
+    json['updateUser'] = updateUser;
+    json['createdAt'] = createdAt;
+    json['updatedAt'] = updatedAt;
+    json['deletedAt'] = deletedAt;
+    json['lessons'] = lessons?.map((e) => e.toJson()).toList();
+    return json;
   }
 }
 
@@ -338,43 +454,32 @@ class Lessons {
     imageId = json['imageId'];
     icon = json['icon'];
   }
-}
 
-class Facilitator {
-  dynamic id;
-  String? email;
-  String? name;
-  String? degree;
-  String? skill;
-  dynamic ratings;
-  dynamic courses;
-  dynamic students;
-  dynamic reviews;
-  String? imageUrl;
-
-  Facilitator({
-    this.id,
-    this.email,
-    this.name,
-    this.degree,
-    this.skill,
-    this.ratings,
-    this.courses,
-    this.students,
-    this.reviews,
-    this.imageUrl,
-  });
-
-  Facilitator.fromJson(Map<String, dynamic> json) {
-    id = json['id'] as dynamic;
-    email = json['email'] as String?;
-    name = json['name'] as String?;
-    degree = json['degree'] as String?;
-    skill = json['skill'] as String?;
-    ratings = json['ratings'] as dynamic;
-    courses = json['courses'] as dynamic;
-    students = json['students'] as dynamic;
-    reviews = json['reviews'] as dynamic;
-    imageUrl = json['imageUrl'] as String?;
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> json = <String, dynamic>{};
+    json['id'] = id;
+    json['sectionId'] = sectionId;
+    json['courseId'] = courseId;
+    json['name'] = name;
+    json['content'] = content;
+    json['shortDesc'] = shortDesc;
+    json['duration'] = duration;
+    json['slug'] = slug;
+    json['fileId'] = fileId;
+    json['type'] = type;
+    json['url'] = url;
+    json['previewUrl'] = previewUrl;
+    json['active'] = active;
+    json['displayOrder'] = displayOrder;
+    json['originId'] = originId;
+    json['language'] = language;
+    json['createUser'] = createUser;
+    json['updateUser'] = updateUser;
+    json['createdAt'] = createdAt;
+    json['updatedAt'] = updatedAt;
+    json['deletedAt'] = deletedAt;
+    json['imageId'] = imageId;
+    json['icon'] = icon;
+    return json;
   }
 }

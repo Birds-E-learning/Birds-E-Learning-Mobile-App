@@ -37,6 +37,7 @@ class CourseContentStyle {
       fontFamily: "Inter",
       fontWeight: FontWeight.w700,
       color: greys900);
+
   static const TextStyle contentStyle = TextStyle(
       fontSize: 12,
       fontFamily: "Inter",
@@ -61,4 +62,11 @@ class CourseContentStyle {
       fontSize: 12,
       fontWeight: FontWeight.w500,
       color: black300);
+
+  static const TextStyle pageHeaderStyle = TextStyle(
+      fontSize: 14,
+      fontFamily: "Inter",
+      decoration: TextDecoration.none,
+      fontWeight: FontWeight.w500,
+      color: greys900);
 }

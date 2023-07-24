@@ -9,9 +9,11 @@ import 'package:birds_learning_network/src/features/core/auth/view_model/passwor
 import 'package:birds_learning_network/src/features/core/auth/view_model/sign_up_provider/sign_up.dart';
 import 'package:birds_learning_network/src/features/core/settings/view_model/filter_provider.dart';
 import 'package:birds_learning_network/src/features/core/walk_through/view/walk_through_one.dart';
+import 'package:birds_learning_network/src/features/modules/courses/view_model/paid_courses_provider.dart';
 import 'package:birds_learning_network/src/features/modules/home/view_model/course_content_provider.dart';
 import 'package:birds_learning_network/src/features/modules/home/view_model/facilitator_provider.dart';
 import 'package:birds_learning_network/src/features/modules/home/view_model/home_provider.dart';
+import 'package:birds_learning_network/src/features/modules/home/view_model/preference_provider.dart';
 import 'package:birds_learning_network/src/features/modules/payment/view_model/payment_provider.dart';
 import 'package:birds_learning_network/src/features/modules/profile/view_model/card_provider.dart';
 import 'package:birds_learning_network/src/features/modules/profile/view_model/change_password_provider.dart';
@@ -64,6 +66,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => PaymentProvider()),
         ChangeNotifierProvider(create: (context) => CourseProvider()),
         ChangeNotifierProvider(create: (context) => FacilitatorProvider()),
+        ChangeNotifierProvider(create: (context) => PaidCoursesProvider()),
+        ChangeNotifierProvider(create: (context) => HomePreferenceProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

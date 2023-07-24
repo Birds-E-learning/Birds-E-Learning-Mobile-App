@@ -1,6 +1,4 @@
-import 'package:birds_learning_network/src/config/routing/route.dart';
 import 'package:birds_learning_network/src/features/modules/home/custom_widgets/course_card.dart';
-import 'package:birds_learning_network/src/features/modules/home/view/buy_course_screen.dart';
 import 'package:birds_learning_network/src/features/modules/home/view/widgets/shimmer/custom_shimmer_card.dart';
 import 'package:birds_learning_network/src/features/modules/home/view_model/home_provider.dart';
 import 'package:birds_learning_network/src/features/modules/user_cart/view_model/cart_provider.dart';
@@ -35,8 +33,9 @@ class PreferentialListView extends StatelessWidget {
                       ),
                     ),
                   )
-                : ListView.builder(
+                : ListView.separated(
                     key: topKey,
+                    separatorBuilder: (_, __) => const SizedBox(width: 16),
                     itemCount: home.prefCourses.length > 10
                         ? 10
                         : home.prefCourses.length,
@@ -49,26 +48,21 @@ class PreferentialListView extends StatelessWidget {
                           home.topIcons.add(false);
                         }
                       }
-
-                      return InkWell(
-                        onTap: () => RoutingService.pushRouting(context,
-                            BuyCourseScreen(course: home.prefCourses[index])),
-                        child: CourseCard(
-                          iconData: home.topIcons[index]
-                              ? Icons.favorite
-                              : Icons.favorite_outline,
-                          onFavPressed: () async {
-                            home.setTopValue(index);
-                            if (home.topIcons[index]) {
-                              await cart.addWishlist(
-                                  context, home.prefCourses[index].id!, topKey);
-                            } else {
-                              await cart.deleteWishlist(
-                                  context, home.prefCourses[index].id!, topKey);
-                            }
-                          },
-                          course: home.prefCourses[index],
-                        ),
+                      return CourseCard(
+                        iconData: home.topIcons[index]
+                            ? Icons.favorite
+                            : Icons.favorite_outline,
+                        onFavPressed: () async {
+                          home.setTopValue(index);
+                          if (home.topIcons[index]) {
+                            await cart.addWishlist(
+                                context, home.prefCourses[index].id!, topKey);
+                          } else {
+                            await cart.deleteWishlist(
+                                context, home.prefCourses[index].id!, topKey);
+                          }
+                        },
+                        course: home.prefCourses[index],
                       );
                     }),
       ),

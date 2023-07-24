@@ -15,3 +15,17 @@ List<Widget> getStarList(dynamic val, String icon1, String icon2,
   }
   return starList;
 }
+
+List<Widget> getStarListIcon(dynamic val, Color color, {double size = 12}) {
+  List<Widget> starList = [];
+  String value = val.toString();
+  for (var i = 0; i < int.parse(value); i++) {
+    starList.add(Icon(Icons.star, size: size, color: color));
+  }
+  if (5 - int.parse(value) != 0) {
+    for (var j = 0; j < (5 - int.parse(value)); j++) {
+      starList.add(Icon(Icons.star_border_sharp, size: size, color: color));
+    }
+  }
+  return starList;
+}

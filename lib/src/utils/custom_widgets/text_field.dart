@@ -24,6 +24,7 @@ class CustomTextField extends StatelessWidget with AuthStyles {
     this.maxLines = 1,
     this.minLines,
     this.width = 0.5,
+    this.bordercolor = deepGrey,
     super.key,
   });
   final TextEditingController controller;
@@ -31,6 +32,7 @@ class CustomTextField extends StatelessWidget with AuthStyles {
   final TextInputAction textInputAction;
   final FormFieldValidator<String>? validator;
   final bool obscureText;
+  final Color bordercolor;
   final bool readOnly;
   final int maxLines;
   final int? minLines;
@@ -73,7 +75,7 @@ class CustomTextField extends StatelessWidget with AuthStyles {
           borderRadius: BorderRadius.circular(filled ? 6 : 4),
           borderSide: BorderSide(
             width: width,
-            color: filled ? success500 : deepGrey,
+            color: filled ? success500 : bordercolor,
           ),
         ),
         focusedErrorBorder: OutlineInputBorder(
@@ -92,14 +94,14 @@ class CustomTextField extends StatelessWidget with AuthStyles {
           borderRadius: BorderRadius.circular(filled ? 6 : 4),
           borderSide: BorderSide(
             width: width,
-            color: filled ? success500 : deepGrey,
+            color: filled ? success500 : bordercolor,
           ),
         ),
         disabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(filled ? 6 : 4),
           borderSide: BorderSide(
             width: width,
-            color: filled ? success500 : deepGrey,
+            color: filled ? success500 : bordercolor,
           ),
         ),
       ),

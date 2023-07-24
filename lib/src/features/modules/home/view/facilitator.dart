@@ -1,3 +1,4 @@
+import 'package:birds_learning_network/src/features/modules/home/custom_widgets/html_page.dart';
 import 'package:birds_learning_network/src/features/modules/home/model/response_model/get_courses.dart';
 import 'package:birds_learning_network/src/features/modules/home/view/widgets/facilitator/facilitator_course_card.dart';
 import 'package:birds_learning_network/src/features/modules/home/view/widgets/shimmer/more_card_shimmer.dart';
@@ -54,8 +55,10 @@ class _FacilitatorScreenState extends State<FacilitatorScreen>
                   children: [
                     titleCard("About Me"),
                     const SizedBox(height: 10),
-                    labelText(
-                        "Lorem ipsum dolor sit amet consectetur. Pharetra odio at cursus nulla suspendisse vitae sit nibh. Magnis pharetra nisi nibh ornare magna potenti fames dictum. Id mauris ullamcorper cursus et ullamcorper pharetra eget ornare. Sed vitae velit consectetur tristique pellentesque quam condimentum lacus dui. Leo ut nunc sit lectus dolor volutpat leo.")
+                    // labelText(facilitator.aboutMe)
+                    HTMLPageScreen(
+                      content: facilitator.aboutMe,
+                    ),
                   ],
                 ),
                 const SizedBox(height: 15),
@@ -83,7 +86,14 @@ class _FacilitatorScreenState extends State<FacilitatorScreen>
                             itemBuilder: (context, int index) {
                               return const MoreCardsShimmer();
                             })
-                        : ListView.builder(
+                        : ListView.separated(
+                            separatorBuilder: (context, index) => const Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 7.5),
+                                  child: Divider(
+                                    color: success400,
+                                    thickness: 0.7,
+                                  ),
+                                ),
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
                             itemCount: facilitator.courseList.length,
@@ -91,10 +101,10 @@ class _FacilitatorScreenState extends State<FacilitatorScreen>
                             itemBuilder: (BuildContext context, int index) {
                               facilitator.courseList[index].facilitator =
                                   Facilitator();
-                              print(
-                                  "facilitator===>> ${facilitator.courseList[index].facilitator}");
                               facilitator.courseList[index].facilitator!.name =
                                   facilitator.name;
+                              facilitator.courseList[index].facilitator!
+                                  .ratings = facilitator.rating;
                               return FacilitatorCourseCards(
                                   course: facilitator.courseList[index]);
                             }),

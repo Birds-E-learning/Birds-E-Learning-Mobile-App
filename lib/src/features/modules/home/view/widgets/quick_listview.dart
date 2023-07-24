@@ -1,6 +1,4 @@
-import 'package:birds_learning_network/src/config/routing/route.dart';
 import 'package:birds_learning_network/src/features/modules/home/custom_widgets/course_card.dart';
-import 'package:birds_learning_network/src/features/modules/home/view/buy_course_screen.dart';
 import 'package:birds_learning_network/src/features/modules/home/view/widgets/shimmer/custom_shimmer_card.dart';
 import 'package:birds_learning_network/src/features/modules/home/view_model/home_provider.dart';
 import 'package:birds_learning_network/src/features/modules/user_cart/view_model/cart_provider.dart';
@@ -32,8 +30,9 @@ class QuickListView extends StatelessWidget {
                       style: CartStyles.richStyle1,
                     ),
                   )
-                : ListView.builder(
+                : ListView.separated(
                     key: quickKey,
+                    separatorBuilder: (_, __) => const SizedBox(width: 16),
                     itemCount: home.quickCourses.length > 10
                         ? 10
                         : home.quickCourses.length,
@@ -46,26 +45,21 @@ class QuickListView extends StatelessWidget {
                           home.quickIcons.add(false);
                         }
                       }
-                      return InkWell(
-                        onTap: () => RoutingService.pushFullScreenRouting(
-                            context,
-                            BuyCourseScreen(course: home.quickCourses[index])),
-                        child: CourseCard(
-                          iconData: home.quickIcons[index]
-                              ? Icons.favorite
-                              : Icons.favorite_outline,
-                          onFavPressed: () async {
-                            home.setQuickValue(index);
-                            if (home.quickIcons[index]) {
-                              await cart.addWishlist(context,
-                                  home.quickCourses[index].id!, quickKey);
-                            } else {
-                              await cart.deleteWishlist(context,
-                                  home.quickCourses[index].id!, quickKey);
-                            }
-                          },
-                          course: home.quickCourses[index],
-                        ),
+                      return CourseCard(
+                        iconData: home.quickIcons[index]
+                            ? Icons.favorite
+                            : Icons.favorite_outline,
+                        onFavPressed: () async {
+                          home.setQuickValue(index);
+                          if (home.quickIcons[index]) {
+                            await cart.addWishlist(context,
+                                home.quickCourses[index].id!, quickKey);
+                          } else {
+                            await cart.deleteWishlist(context,
+                                home.quickCourses[index].id!, quickKey);
+                          }
+                        },
+                        course: home.quickCourses[index],
                       );
                     }),
       ),

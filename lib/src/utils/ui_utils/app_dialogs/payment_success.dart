@@ -1,12 +1,17 @@
 import 'package:birds_learning_network/src/config/routing/route.dart';
+import 'package:birds_learning_network/src/features/modules/courses/view/view_course/view_course_screen.dart';
+import 'package:birds_learning_network/src/features/modules/home/model/response_model/get_courses.dart';
+import 'package:birds_learning_network/src/global_model/services/storage/shared_preferences/course_data.dart';
 import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
 import 'package:birds_learning_network/src/utils/global_constants/styles/profile_styles/profile_styles.dart';
+import 'package:birds_learning_network/src/utils/helper_widgets/button_black.dart';
+import 'package:birds_learning_network/src/utils/helper_widgets/button_white.dart';
 import 'package:flutter/material.dart';
 
-void getSuccessPaymentDialog(context, {pending = false}) async {
+void getSuccessPaymentDialog(context,
+    {pending = false, Courses? course}) async {
   return showDialog<void>(
     context: context,
-    barrierDismissible: false,
     builder: (_) => AlertDialog(
         content: Column(
           mainAxisSize: MainAxisSize.min,
@@ -28,25 +33,68 @@ void getSuccessPaymentDialog(context, {pending = false}) async {
         ),
         actions: [
           SizedBox(
+            height: 50,
             width: double.infinity,
-            child: TextButton(
-                onPressed: () {
-                  RoutingService.popUntilRouteIsFirstRouting(context);
-                },
-                style: TextButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(4),
+            child: pending
+                ? BlackButtonWidget(
+                    onPressed: () {
+                      RoutingService.popUntilRouteIsFirstRouting(context);
+                    },
+                    child: Text(
+                      "Go to Home",
+                      style: ProfileStyles.logoutButtonStyle
+                          .copyWith(color: nextColor, fontSize: 14),
+                    ))
+                : Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      WhiteButtonWidget(
+                          onPressed: () async {
+                            await CoursePreference.saveCourseById(course!);
+                            RoutingService.pushAndPopUntilRouteIsFirst(
+                                context, ViewCourseScreen(course: course));
+                          },
+                          child: Text(
+                            "Start Course",
+                            style: ProfileStyles.logoutButtonStyle
+                                .copyWith(color: deepBlack, fontSize: 14),
+                          )),
+                      BlackButtonWidget(
+                          onPressed: () {
+                            RoutingService.popUntilRouteIsFirstRouting(context);
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: Text(
+                              "Go to Home",
+                              style: ProfileStyles.logoutButtonStyle
+                                  .copyWith(color: nextColor, fontSize: 14),
+                            ),
+                          ))
+                    ],
                   ),
-                  backgroundColor: deepGrey,
-                  elevation: 3,
-                  shadowColor: Colors.grey[100],
-                ),
-                child: Text(
-                  "Go to Home",
-                  style: ProfileStyles.logoutButtonStyle
-                      .copyWith(color: nextColor, fontSize: 14),
-                )),
           ),
+          // SizedBox(
+          //   height: 50,
+          //   width: double.infinity,
+          //   child: TextButton(
+          //       onPressed: () {
+          //         RoutingService.popUntilRouteIsFirstRouting(context);
+          //       },
+          //       style: TextButton.styleFrom(
+          //         shape: RoundedRectangleBorder(
+          //           borderRadius: BorderRadius.circular(4),
+          //         ),
+          //         backgroundColor: deepGrey,
+          //         elevation: 3,
+          //         shadowColor: Colors.grey[100],
+          //       ),
+          // child: Text(
+          //   "Go to Home",
+          //   style: ProfileStyles.logoutButtonStyle
+          //       .copyWith(color: nextColor, fontSize: 14),
+          // )),
+          // ),
         ]),
   );
 }

@@ -32,13 +32,13 @@ class FacilitatorShimmer extends StatelessWidget {
                   children: [
                     Container(
                       height: 30,
-                      width: size.width * 0.9 - 70,
+                      width: size.width * 0.8 - 70,
                       color: Colors.black,
                     ),
                     const SizedBox(height: 5),
                     Container(
                       height: 20,
-                      width: size.width * 0.9 - 70,
+                      width: size.width * 0.8 - 70,
                       color: Colors.blueGrey,
                     ),
                   ],

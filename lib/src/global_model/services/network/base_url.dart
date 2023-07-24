@@ -39,6 +39,10 @@ class BaseUrl {
   final String availableCourses = "${base}course/all";
   String facilitatorUrl(String id) => "${base}course/facilitator?id=$id";
 
+  final String getMiniCoursePref = "${base}course/mini/preference/graph";
+  final String getMiniCourseQuick = "${base}course/mini/quick/graph";
+  final String getMiniCoursetrending = "${base}course/mini/trending/graph";
+
   // Cart
 
   final String saveCart = "${base}course/shopping/cart/save-update?courseId=";
@@ -58,4 +62,8 @@ class BaseUrl {
   final String stripePayment = "https://api.stripe.com/v1/payment_intents";
   final String stripeKeys = "${base}payment/stripe/credentials";
   final String stripeCharges = "${base}payment/stripe/card-debit/charge";
+
+  // User Paid Courses
+
+  final String coursePaid = "${base}course/user/payment/all";
 }

@@ -1,6 +1,4 @@
-import 'package:birds_learning_network/src/config/routing/route.dart';
 import 'package:birds_learning_network/src/features/modules/home/custom_widgets/course_card.dart';
-import 'package:birds_learning_network/src/features/modules/home/view/buy_course_screen.dart';
 import 'package:birds_learning_network/src/features/modules/home/view/widgets/shimmer/custom_shimmer_card.dart';
 import 'package:birds_learning_network/src/features/modules/home/view_model/home_provider.dart';
 import 'package:birds_learning_network/src/features/modules/user_cart/view_model/cart_provider.dart';
@@ -32,8 +30,9 @@ class TrendingListView extends StatelessWidget {
                       style: CartStyles.richStyle1,
                     ),
                   )
-                : ListView.builder(
+                : ListView.separated(
                     key: trendingKey,
+                    separatorBuilder: (_, __) => const SizedBox(width: 16),
                     itemCount: home.trendingCourses.length > 10
                         ? 10
                         : home.trendingCourses.length,
@@ -47,27 +46,21 @@ class TrendingListView extends StatelessWidget {
                           home.trendingIcons.add(false);
                         }
                       }
-                      return InkWell(
-                        onTap: () => RoutingService.pushFullScreenRouting(
-                            context,
-                            BuyCourseScreen(
-                                course: home.trendingCourses[index])),
-                        child: CourseCard(
-                          iconData: home.trendingIcons[index]
-                              ? Icons.favorite
-                              : Icons.favorite_outline,
-                          onFavPressed: () async {
-                            home.setTrendingValue(index);
-                            if (home.trendingIcons[index]) {
-                              await cart.addWishlist(context,
-                                  home.trendingCourses[index].id!, trendingKey);
-                            } else {
-                              await cart.deleteWishlist(context,
-                                  home.trendingCourses[index].id!, trendingKey);
-                            }
-                          },
-                          course: home.trendingCourses[index],
-                        ),
+                      return CourseCard(
+                        iconData: home.trendingIcons[index]
+                            ? Icons.favorite
+                            : Icons.favorite_outline,
+                        onFavPressed: () async {
+                          home.setTrendingValue(index);
+                          if (home.trendingIcons[index]) {
+                            await cart.addWishlist(context,
+                                home.trendingCourses[index].id!, trendingKey);
+                          } else {
+                            await cart.deleteWishlist(context,
+                                home.trendingCourses[index].id!, trendingKey);
+                          }
+                        },
+                        course: home.trendingCourses[index],
                       );
                     }),
       ),

@@ -10,7 +10,8 @@ class HomeRepository extends NetworkService with BaseUrl, BaseHeaders {
     // List<CoursesPref> prefCourses = [];
     try {
       Map<String, String> header_ = await authHeader();
-      var json = await getRequest(getCoursePref, header_, context, time: 100);
+      var json =
+          await getRequest(getMiniCoursePref, header_, context, time: 100);
       GetCoursesResponse response = GetCoursesResponse.fromJson(json);
       // GetCourseCategory response = GetCourseCategory.fromJson(json);
       if (response.responseCode == "00") {
@@ -25,7 +26,7 @@ class HomeRepository extends NetworkService with BaseUrl, BaseHeaders {
         showSnack(context, response.responseCode!, response.responseMessage!);
       }
     } catch (e) {
-      showSnack(context, "02", "Unable to load Preference Courses");
+      return null;
     }
   }
 
@@ -34,7 +35,8 @@ class HomeRepository extends NetworkService with BaseUrl, BaseHeaders {
     // List<CoursesPref> quickCourses = [];
     try {
       Map<String, String> header_ = await authHeader();
-      var json = await getRequest(getCourseQuick, header_, context, time: 60);
+      var json =
+          await getRequest(getMiniCourseQuick, header_, context, time: 60);
       GetCoursesResponse response = GetCoursesResponse.fromJson(json);
       if (response.responseCode == "00") {
         if (response.responseData!.categories!.isEmpty) {
@@ -48,7 +50,7 @@ class HomeRepository extends NetworkService with BaseUrl, BaseHeaders {
         showSnack(context, response.responseCode!, response.responseMessage!);
       }
     } catch (_) {
-      showSnack(context, "02", "Unable to load Quick Courses");
+      return null;
     }
   }
 
@@ -57,7 +59,7 @@ class HomeRepository extends NetworkService with BaseUrl, BaseHeaders {
     try {
       Map<String, String> header_ = await authHeader();
       var json =
-          await getRequest(getCoursetrending, header_, context, time: 60);
+          await getRequest(getMiniCoursetrending, header_, context, time: 60);
       GetCoursesResponse response = GetCoursesResponse.fromJson(json);
       if (response.responseCode == "00") {
         if (response.responseData!.categories!.isEmpty) {
@@ -71,7 +73,7 @@ class HomeRepository extends NetworkService with BaseUrl, BaseHeaders {
         showSnack(context, response.responseCode!, response.responseMessage!);
       }
     } catch (_) {
-      showSnack(context, "02", "Unable to load trending Courses");
+      return null;
     }
   }
 

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class CourseStyles {
   static const TextStyle appBarStyle = TextStyle(
       fontWeight: FontWeight.w500,
-      fontSize: 24,
+      fontSize: 16,
       fontFamily: "Inter",
       color: success1000);
 
@@ -121,4 +121,10 @@ class CourseStyles {
       fontSize: 12,
       fontWeight: FontWeight.w400,
       color: greys800);
+
+  static const TextStyle assessTitleStyle = TextStyle(
+      fontSize: 16,
+      fontFamily: "Inter",
+      fontWeight: FontWeight.w400,
+      color: deepBlack);
 }

@@ -61,9 +61,9 @@ mixin ContentWidget on Object implements CourseContentStyle {
         ]));
   }
 
-  Text ratingText(String rating) {
+  Text ratingText(dynamic rating) {
     return Text(
-      "($rating)",
+      "(${rating.toString()})",
       style: CourseContentStyle.richStyle1,
     );
   }
@@ -79,6 +79,37 @@ mixin ContentWidget on Object implements CourseContentStyle {
     return Text(
       "($number) Students",
       style: CourseContentStyle.style,
+    );
+  }
+
+  Widget pageHeaderText(String header, Animation<Offset> animation,
+      VoidCallback onTap, GlobalKey key,
+      {isActive = false}) {
+    return InkWell(
+      onTap: onTap,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            header,
+            style: CourseContentStyle.pageHeaderStyle,
+            key: key,
+          ),
+          const SizedBox(height: 3),
+          SlideTransition(
+            position: animation,
+            child: Container(
+              alignment: Alignment.bottomCenter,
+              margin: EdgeInsets.zero,
+              height: 3,
+              width: header.length * 8,
+              decoration: BoxDecoration(
+                  color: isActive ? skipColor : white,
+                  borderRadius: BorderRadius.circular(5)),
+            ),
+          )
+        ],
+      ),
     );
   }
 }

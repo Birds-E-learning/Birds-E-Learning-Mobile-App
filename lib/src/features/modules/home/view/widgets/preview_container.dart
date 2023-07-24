@@ -51,6 +51,7 @@ class PreviewContainer extends StatelessWidget {
               : null,
         ),
         Container(
+          height: 200,
           width: double.infinity,
           decoration: BoxDecoration(
               color: Colors.black.withOpacity(0.5),

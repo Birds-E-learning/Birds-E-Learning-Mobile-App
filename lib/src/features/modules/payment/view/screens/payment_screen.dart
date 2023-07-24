@@ -28,7 +28,6 @@ class _PaymentScreenState extends State<PaymentScreen>
   TextEditingController cardNo = TextEditingController();
   TextEditingController expiryDate = TextEditingController();
   TextEditingController ccv = TextEditingController();
-  TextEditingController pin = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -36,7 +35,6 @@ class _PaymentScreenState extends State<PaymentScreen>
     cardNo.dispose();
     expiryDate.dispose();
     ccv.dispose();
-    pin.dispose();
     super.dispose();
   }
 
@@ -108,22 +106,10 @@ class _PaymentScreenState extends State<PaymentScreen>
                       ),
                     ],
                   ),
-                  const SizedBox(height: 25),
-                  CustomTextColumn(
-                    controller: pin,
-                    text: PaymentTexts.pinText,
-                    keyboardType: TextInputType.number,
-                    hintText: PaymentTexts.pinHint,
-                    inputFormatters: [
-                      LengthLimitingTextInputFormatter(4),
-                      FilteringTextInputFormatter.digitsOnly,
-                    ],
-                    validator: (value) => pinValidator(value),
-                  ),
-                  const SizedBox(height: 15),
-                  saveCard(payment.isChecked, (value) {
-                    payment.onCheckClick(value);
-                  }),
+                  // const SizedBox(height: 15),
+                  // saveCard(payment.isChecked, (value) {
+                  //   payment.onCheckClick(value);
+                  // }),
                   const SizedBox(height: 50),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -138,11 +124,11 @@ class _PaymentScreenState extends State<PaymentScreen>
                             if (_formKey.currentState!.validate()) {
                               payment.onPayClick();
                               StripePaymentRequest data = StripePaymentRequest(
-                                  cardNo: cardNo.text.trim(),
-                                  expiryDate: expiryDate.text.trim(),
-                                  ccv: ccv.text.trim(),
-                                  amount: widget.course.salePrice,
-                                  pin: pin.text.trim());
+                                cardNo: cardNo.text.trim(),
+                                expiryDate: expiryDate.text.trim(),
+                                ccv: ccv.text.trim(),
+                                amount: widget.course.salePrice,
+                              );
                               await payment.getPaymentToken(context,
                                   card: data, course: widget.course);
                             }

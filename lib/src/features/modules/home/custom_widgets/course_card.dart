@@ -1,4 +1,6 @@
+import 'package:birds_learning_network/src/config/routing/route.dart';
 import 'package:birds_learning_network/src/features/modules/home/model/response_model/get_courses.dart';
+import 'package:birds_learning_network/src/features/modules/home/view/buy_course_screen.dart';
 import 'package:birds_learning_network/src/utils/global_constants/asset_paths/image_path.dart';
 import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
 import 'package:birds_learning_network/src/utils/helper_widgets/star_widget.dart';
@@ -22,88 +24,106 @@ class CourseCard extends StatelessWidget with ImagePath, HomeWidgets {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-    return Container(
-      margin: const EdgeInsets.only(left: 10),
-      width: 165,
-      // // height: 200,
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(
-            width: 1,
-            color: grey100,
-          )),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            height: 90,
-            width: 165,
-            child: CachedNetworkImage(
-              height: 90,
-              width: 165,
-              fit: BoxFit.fill,
-              imageUrl: course.imageUrl ?? "",
-              placeholder: (context, url) {
-                return Image.asset(
-                  ImagePath.thumbnail,
-                  fit: BoxFit.fill,
-                );
-              },
-              errorWidget: (context, url, error) {
-                return Image.asset(
-                  ImagePath.thumbnail,
-                  fit: BoxFit.fill,
-                );
-              },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 5),
-            child: Column(
-              children: [
-                SizedBox(
-                  width: size.width - (size.width * 0.08) - 60,
-                  child: courseTitleText(course.title ??
-                      "Getting Started with Adobe Figma Course"),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ownerText(course.facilitator!.name == ""
-                            ? "Anonymous"
-                            : course.facilitator!.name!),
-                        const SizedBox(height: 5),
-                        Row(
-                          children: [
-                            Row(
-                              children: getStarList(
-                                  course.facilitator!.ratings ?? "1",
-                                  ImagePath.starFill,
-                                  ImagePath.starUnfill),
-                            ),
-                            const SizedBox(width: 10),
-                            ratingText(course.facilitator!.reviews.toString())
-                          ],
-                        )
-                      ],
+    return InkWell(
+      onTap: () {
+        course.sections = <Sections>[];
+        RoutingService.pushFullScreenRouting(
+            context, BuyCourseScreen(course: course));
+      },
+      child: Container(
+        width: 165,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(
+              width: 1,
+              color: grey100,
+            )),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+                height: 90,
+                width: 165,
+                child: CachedNetworkImage(
+                  imageUrl: course.imageUrl ?? "",
+                  imageBuilder: (context, imageProvider) => Container(
+                    height: 90,
+                    width: 165,
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(10),
+                          topRight: Radius.circular(10)),
+                      color: Colors.transparent,
+                      image: DecorationImage(
+                        image: imageProvider,
+                        fit: BoxFit.fill,
+                      ),
                     ),
-                    IconButton(
-                        onPressed: onFavPressed,
-                        icon: Icon(
-                          iconData,
-                          color: iconColor,
-                        ))
-                  ],
-                ),
-                const SizedBox(height: 5),
-                amountText(course.salePrice ?? "5000", course.price ?? "5500")
-              ],
-            ),
-          )
-        ],
+                  ),
+                  placeholder: (context, url) => const Center(
+                      child: SizedBox(
+                          height: 30,
+                          width: 30,
+                          child: CircularProgressIndicator())),
+                  errorWidget: (context, url, error) => Container(
+                    height: 90,
+                    width: 165,
+                    decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      image: DecorationImage(
+                        image: Image.asset(ImagePath.thumbnail).image,
+                        fit: BoxFit.fill,
+                      ),
+                    ),
+                  ),
+                )),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 5),
+              child: Column(
+                children: [
+                  SizedBox(
+                    width: size.width - (size.width * 0.08) - 60,
+                    child: courseTitleText(course.title ?? ""),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ownerText(course.facilitator!.name == ""
+                              ? "Anonymous"
+                              : course.facilitator!.name!),
+                          const SizedBox(height: 5),
+                          Row(
+                            children: [
+                              Row(
+                                children: getStarList(
+                                    course.facilitator!.ratings ?? "1",
+                                    ImagePath.starFill,
+                                    ImagePath.starUnfill),
+                              ),
+                              const SizedBox(width: 10),
+                              ratingText(course.facilitator!.reviews.toString())
+                            ],
+                          )
+                        ],
+                      ),
+                      IconButton(
+                          onPressed: onFavPressed,
+                          icon: Icon(
+                            iconData,
+                            color: iconColor,
+                          ))
+                    ],
+                  ),
+                  const SizedBox(height: 5),
+                  amountText(course.salePrice ?? "5000", course.price ?? "5500")
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

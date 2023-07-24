@@ -1,4 +1,3 @@
-import 'package:birds_learning_network/src/utils/global_constants/asset_paths/image_path.dart';
 import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
 import 'package:birds_learning_network/src/utils/global_constants/styles/home_styles/facilitator_style.dart';
 import 'package:birds_learning_network/src/utils/global_constants/texts/module_texts/home_texts.dart';

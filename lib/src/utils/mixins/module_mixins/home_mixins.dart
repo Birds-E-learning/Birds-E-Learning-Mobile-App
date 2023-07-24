@@ -30,32 +30,29 @@ mixin HomeWidgets on Object implements HomeText, HomeStyles {
     );
   }
 
-  Padding categoryRowText(
-      String category, VoidCallback onPressed, EdgeInsets padding) {
-    return Padding(
-        padding: padding,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              category,
-              style: HomeStyles.headerStyle,
+  Widget categoryRowText(String category, VoidCallback onPressed) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          category,
+          style: HomeStyles.headerStyle,
+        ),
+        InkWell(
+          onTap: onPressed,
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(30),
+                border: Border.all(color: greys300, width: 0.5)),
+            child: const Text(
+              HomeText.seeMore,
+              style: HomeStyles.moreStyle,
             ),
-            InkWell(
-              onTap: onPressed,
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(30),
-                    border: Border.all(color: greys300, width: 0.5)),
-                child: const Text(
-                  HomeText.seeMore,
-                  style: HomeStyles.moreStyle,
-                ),
-              ),
-            )
-          ],
-        ));
+          ),
+        )
+      ],
+    );
   }
 
   Text categoryHeaderText(String category) {

@@ -1,10 +1,8 @@
 import 'package:birds_learning_network/src/config/routing/route.dart';
 import 'package:birds_learning_network/src/features/core/settings/view/widgets/card_shimmer.dart';
-import 'package:birds_learning_network/src/features/core/settings/view_model/filter_provider.dart';
 import 'package:birds_learning_network/src/features/modules/courses/view_model/course_provider.dart';
 import 'package:birds_learning_network/src/features/modules/home/custom_widgets/course_row_card.dart';
 import 'package:birds_learning_network/src/features/modules/home/custom_widgets/facilitator_card.dart';
-import 'package:birds_learning_network/src/features/modules/home/view/buy_course_screen.dart';
 import 'package:birds_learning_network/src/features/modules/home/view/categories/preference_courses.dart';
 import 'package:birds_learning_network/src/features/modules/home/view/categories/quick_courses.dart';
 import 'package:birds_learning_network/src/features/modules/home/view/categories/trending_courses.dart';
@@ -14,10 +12,12 @@ import 'package:birds_learning_network/src/features/modules/home/view/widgets/qu
 import 'package:birds_learning_network/src/features/modules/home/view/widgets/shimmer/facilitator_shimmer.dart';
 import 'package:birds_learning_network/src/features/modules/home/view/widgets/trending_listview.dart';
 import 'package:birds_learning_network/src/features/modules/home/view_model/home_provider.dart';
+import 'package:birds_learning_network/src/features/modules/home/view_model/preference_provider.dart';
 import 'package:birds_learning_network/src/utils/custom_widgets/custom_bacground.dart';
 import 'package:birds_learning_network/src/utils/custom_widgets/text_field.dart';
 import 'package:birds_learning_network/src/utils/global_constants/asset_paths/image_path.dart';
 import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
+import 'package:birds_learning_network/src/utils/global_constants/styles/cart_styles/cart_styles.dart';
 import 'package:birds_learning_network/src/utils/global_constants/texts/module_texts/home_texts.dart';
 import 'package:birds_learning_network/src/utils/mixins/core_mixins/filter_mixins/filter_mixin.dart';
 import 'package:birds_learning_network/src/utils/mixins/module_mixins/home_mixins.dart';
@@ -38,7 +38,11 @@ class _UserHomePageState extends State<UserHomePage>
 
   @override
   void initState() {
+    Provider.of<HomePreferenceProvider>(context, listen: false)
+        .getPreferenceList(context);
     Provider.of<CourseProvider>(context, listen: false).getCourses(context);
+    Provider.of<HomeProvider>(context, listen: false)
+        .refreshData(context, reload: false);
     super.initState();
   }
 
@@ -46,7 +50,8 @@ class _UserHomePageState extends State<UserHomePage>
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     Provider.of<HomeProvider>(context, listen: false).refreshData(context);
-    FilterProvider filter = Provider.of<FilterProvider>(context, listen: false);
+    HomePreferenceProvider pref =
+        Provider.of<HomePreferenceProvider>(context, listen: false);
     return Consumer<HomeProvider>(
       builder: (_, home, __) => BackgroundWidget(
         appBar: SliverAppBar(
@@ -59,83 +64,81 @@ class _UserHomePageState extends State<UserHomePage>
         child: SafeArea(
           child: Padding(
             padding: EdgeInsets.symmetric(
-                vertical: home.onSearch ? 0 : size.height * 0.02),
+                vertical: home.onSearch ? 0 : size.height * 0.02,
+                horizontal: size.width * 0.03),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: size.width * 0.04),
-                  child: CustomFieldNoLabel(
-                    hintText: HomeText.search,
-                    isHome: true,
-                    prefixIcon: IconButton(
-                        onPressed: () {},
-                        icon: const Icon(Icons.search, size: 20)),
-                    controller: _controller,
-                    onChanged: (text) {
-                      if (_controller.text.trim().isEmpty) {
-                        home.onSearchTriggered(false);
-                        home.selectedCards = [];
-                        FocusScope.of(context).unfocus();
-                      } else {
-                        home.onSearchTriggered(true);
-                        home.onSearchClicked(_controller.text.trim());
-                      }
-                    },
-                    suffixIcon: home.onSearch
-                        ? IconButton(
-                            onPressed: () {
-                              _controller.clear();
-                              setState(() {});
-                              home.selectedCards = [];
-                              home.onSearchTriggered(false);
-                              FocusScope.of(context).unfocus();
-                            },
-                            icon: const Icon(Icons.clear))
-                        : null,
-                  ),
+                CustomFieldNoLabel(
+                  hintText: HomeText.search,
+                  isHome: true,
+                  prefixIcon: IconButton(
+                      onPressed: () {},
+                      icon: const Icon(Icons.search, size: 20)),
+                  controller: _controller,
+                  onChanged: (text) {
+                    if (_controller.text.trim().isEmpty) {
+                      home.onSearchTriggered(false);
+                      home.selectedCards = [];
+                      FocusScope.of(context).unfocus();
+                    } else {
+                      home.onSearchTriggered(true);
+                      home.onSearchClicked(_controller.text.trim());
+                    }
+                  },
+                  suffixIcon: home.onSearch
+                      ? IconButton(
+                          onPressed: () {
+                            _controller.clear();
+                            setState(() {});
+                            home.selectedCards = [];
+                            home.onSearchTriggered(false);
+                            FocusScope.of(context).unfocus();
+                          },
+                          icon: const Icon(Icons.clear))
+                      : null,
                 ),
                 const SizedBox(height: 20),
                 home.onSearch
                     ? Container(child: null) //const FilterCardShimmer()
-                    : filter.myList.isEmpty
+                    : pref.prefList.isEmpty && pref.isLoading
                         ? SizedBox(
                             height: 40,
-                            child: ListView.builder(
+                            child: ListView.separated(
+                                separatorBuilder: (_, __) =>
+                                    const SizedBox(width: 12),
                                 itemCount: 10,
                                 scrollDirection: Axis.horizontal,
                                 itemBuilder: (_, __) {
                                   return const FilterCardShimmer();
                                 }))
-                        : PreferenceRowContainer(controller: _controller),
+                        : pref.prefList.isEmpty && !pref.isLoading
+                            ? const Center(
+                                child: Text("No preference list.",
+                                    style: CartStyles.richStyle1),
+                              )
+                            : PreferenceRowContainer(controller: _controller),
                 const SizedBox(height: 20),
                 context.watch<HomeProvider>().searchResult.isNotEmpty &&
                         home.onSearch
                     ? Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: size.width * 0.04),
-                            child: searchHeaderText(_controller.text),
-                          ),
+                          searchHeaderText(_controller.text),
                           const SizedBox(height: 15),
-                          ListView.builder(
+                          ListView.separated(
+                              separatorBuilder: (_, __) => const SizedBox(
+                                    height: 10,
+                                    child: Divider(
+                                        thickness: 0.2, color: success1000),
+                                  ),
                               itemCount: home.searchResult.length,
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
                               scrollDirection: Axis.vertical,
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: size.width * 0.04),
                               itemBuilder: (BuildContext context, int index) {
                                 return CourseRowCards(
                                   course: home.searchResult[index],
-                                  onTap: () =>
-                                      RoutingService.pushFullScreenRouting(
-                                          context,
-                                          BuyCourseScreen(
-                                              course:
-                                                  home.searchResult[index])),
                                 );
                               }),
                         ],
@@ -145,11 +148,7 @@ class _UserHomePageState extends State<UserHomePage>
                         ? Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: size.width * 0.04),
-                                child: searchHeaderText(_controller.text),
-                              ),
+                              searchHeaderText(_controller.text),
                               SizedBox(height: size.height * 0.1),
                               Center(
                                 child: Column(
@@ -173,11 +172,12 @@ class _UserHomePageState extends State<UserHomePage>
                                         context,
                                         const PreferenceCoursesScreen());
                                   },
-                                  EdgeInsets.symmetric(
-                                      horizontal: size.width * 0.04),
                                 ),
                                 const SizedBox(height: 15),
-                                const PreferentialListView(),
+                                RefreshIndicator(
+                                    onRefresh: () => home.refreshData(context,
+                                        reload: false),
+                                    child: const PreferentialListView()),
                                 const SizedBox(height: 15),
                                 categoryRowText(
                                   "Trending Courses",
@@ -185,11 +185,12 @@ class _UserHomePageState extends State<UserHomePage>
                                     RoutingService.pushFullScreenRouting(
                                         context, const TrendingCoursesScreen());
                                   },
-                                  EdgeInsets.symmetric(
-                                      horizontal: size.width * 0.04),
                                 ),
                                 const SizedBox(height: 15),
-                                const TrendingListView(),
+                                RefreshIndicator(
+                                    onRefresh: () => home.refreshData(context,
+                                        reload: false),
+                                    child: const TrendingListView()),
                                 const SizedBox(height: 20),
                                 categoryRowText(
                                   "Quick Courses",
@@ -197,22 +198,21 @@ class _UserHomePageState extends State<UserHomePage>
                                     RoutingService.pushFullScreenRouting(
                                         context, const QuickCoursesScreen());
                                   },
-                                  EdgeInsets.symmetric(
-                                      horizontal: size.width * 0.04),
                                 ),
                                 const SizedBox(height: 15),
-                                const QuickListView(),
+                                RefreshIndicator(
+                                    onRefresh: () => home.refreshData(context,
+                                        reload: false),
+                                    child: const QuickListView()),
                                 const SizedBox(height: 15),
-                                Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: size.width * 0.04),
-                                  child: categoryHeaderText(
-                                    HomeText.facilitators,
-                                  ),
+                                categoryHeaderText(
+                                  HomeText.facilitators,
                                 ),
-                                const SizedBox(height: 5),
+                                const SizedBox(height: 16),
                                 home.trendingCourses.isEmpty
-                                    ? ListView.builder(
+                                    ? ListView.separated(
+                                        separatorBuilder: (context, index) =>
+                                            const SizedBox(height: 16),
                                         itemCount: 4,
                                         shrinkWrap: true,
                                         physics:
@@ -222,7 +222,9 @@ class _UserHomePageState extends State<UserHomePage>
                                             (BuildContext context, int index) {
                                           return const FacilitatorShimmer();
                                         })
-                                    : ListView.builder(
+                                    : ListView.separated(
+                                        separatorBuilder: (_, __) =>
+                                            const SizedBox(height: 16),
                                         itemCount:
                                             home.trendingCourses.length > 4
                                                 ? 4
