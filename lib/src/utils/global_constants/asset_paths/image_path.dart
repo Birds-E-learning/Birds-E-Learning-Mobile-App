@@ -74,4 +74,8 @@ class ImagePath {
 
   static const String emptyCart = "assets/icons/empty_cart.svg";
   static const String cartImage = "assets/icons/cart_image.svg";
+
+  // Certificate
+
+  static const String certImage = "assets/icons/cert_pics.svg";
 }

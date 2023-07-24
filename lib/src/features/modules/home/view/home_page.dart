@@ -64,39 +64,41 @@ class _UserHomePageState extends State<UserHomePage>
         child: SafeArea(
           child: Padding(
             padding: EdgeInsets.symmetric(
-                vertical: home.onSearch ? 0 : size.height * 0.02,
-                horizontal: size.width * 0.03),
+                vertical: home.onSearch ? 0 : size.height * 0.02),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CustomFieldNoLabel(
-                  hintText: HomeText.search,
-                  isHome: true,
-                  prefixIcon: IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.search, size: 20)),
-                  controller: _controller,
-                  onChanged: (text) {
-                    if (_controller.text.trim().isEmpty) {
-                      home.onSearchTriggered(false);
-                      home.selectedCards = [];
-                      FocusScope.of(context).unfocus();
-                    } else {
-                      home.onSearchTriggered(true);
-                      home.onSearchClicked(_controller.text.trim());
-                    }
-                  },
-                  suffixIcon: home.onSearch
-                      ? IconButton(
-                          onPressed: () {
-                            _controller.clear();
-                            setState(() {});
-                            home.selectedCards = [];
-                            home.onSearchTriggered(false);
-                            FocusScope.of(context).unfocus();
-                          },
-                          icon: const Icon(Icons.clear))
-                      : null,
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: size.width * 0.03),
+                  child: CustomFieldNoLabel(
+                    hintText: HomeText.search,
+                    isHome: true,
+                    prefixIcon: IconButton(
+                        onPressed: () {},
+                        icon: const Icon(Icons.search, size: 20)),
+                    controller: _controller,
+                    onChanged: (text) {
+                      if (_controller.text.trim().isEmpty) {
+                        home.onSearchTriggered(false);
+                        home.selectedCards = [];
+                        FocusScope.of(context).unfocus();
+                      } else {
+                        home.onSearchTriggered(true);
+                        home.onSearchClicked(_controller.text.trim());
+                      }
+                    },
+                    suffixIcon: home.onSearch
+                        ? IconButton(
+                            onPressed: () {
+                              _controller.clear();
+                              setState(() {});
+                              home.selectedCards = [];
+                              home.onSearchTriggered(false);
+                              FocusScope.of(context).unfocus();
+                            },
+                            icon: const Icon(Icons.clear))
+                        : null,
+                  ),
                 ),
                 const SizedBox(height: 20),
                 home.onSearch
@@ -105,6 +107,8 @@ class _UserHomePageState extends State<UserHomePage>
                         ? SizedBox(
                             height: 40,
                             child: ListView.separated(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: size.width * 0.03),
                                 separatorBuilder: (_, __) =>
                                     const SizedBox(width: 12),
                                 itemCount: 10,
@@ -113,9 +117,13 @@ class _UserHomePageState extends State<UserHomePage>
                                   return const FilterCardShimmer();
                                 }))
                         : pref.prefList.isEmpty && !pref.isLoading
-                            ? const Center(
-                                child: Text("No preference list.",
-                                    style: CartStyles.richStyle1),
+                            ? Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: size.width * 0.03),
+                                child: const Center(
+                                  child: Text("No preference list.",
+                                      style: CartStyles.richStyle1),
+                                ),
                               )
                             : PreferenceRowContainer(controller: _controller),
                 const SizedBox(height: 20),
@@ -124,9 +132,15 @@ class _UserHomePageState extends State<UserHomePage>
                     ? Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          searchHeaderText(_controller.text),
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: size.width * 0.03),
+                            child: searchHeaderText(_controller.text),
+                          ),
                           const SizedBox(height: 15),
                           ListView.separated(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: size.width * 0.03),
                               separatorBuilder: (_, __) => const SizedBox(
                                     height: 10,
                                     child: Divider(
@@ -148,7 +162,11 @@ class _UserHomePageState extends State<UserHomePage>
                         ? Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              searchHeaderText(_controller.text),
+                              Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: size.width * 0.03),
+                                child: searchHeaderText(_controller.text),
+                              ),
                               SizedBox(height: size.height * 0.1),
                               Center(
                                 child: Column(
@@ -165,13 +183,17 @@ class _UserHomePageState extends State<UserHomePage>
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                categoryRowText(
-                                  "Top Picks for you",
-                                  () {
-                                    RoutingService.pushFullScreenRouting(
-                                        context,
-                                        const PreferenceCoursesScreen());
-                                  },
+                                Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: size.width * 0.03),
+                                  child: categoryRowText(
+                                    "Top Picks for you",
+                                    () {
+                                      RoutingService.pushFullScreenRouting(
+                                          context,
+                                          const PreferenceCoursesScreen());
+                                    },
+                                  ),
                                 ),
                                 const SizedBox(height: 15),
                                 RefreshIndicator(
@@ -179,12 +201,17 @@ class _UserHomePageState extends State<UserHomePage>
                                         reload: false),
                                     child: const PreferentialListView()),
                                 const SizedBox(height: 15),
-                                categoryRowText(
-                                  "Trending Courses",
-                                  () {
-                                    RoutingService.pushFullScreenRouting(
-                                        context, const TrendingCoursesScreen());
-                                  },
+                                Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: size.width * 0.03),
+                                  child: categoryRowText(
+                                    "Trending Courses",
+                                    () {
+                                      RoutingService.pushFullScreenRouting(
+                                          context,
+                                          const TrendingCoursesScreen());
+                                    },
+                                  ),
                                 ),
                                 const SizedBox(height: 15),
                                 RefreshIndicator(
@@ -192,12 +219,16 @@ class _UserHomePageState extends State<UserHomePage>
                                         reload: false),
                                     child: const TrendingListView()),
                                 const SizedBox(height: 20),
-                                categoryRowText(
-                                  "Quick Courses",
-                                  () {
-                                    RoutingService.pushFullScreenRouting(
-                                        context, const QuickCoursesScreen());
-                                  },
+                                Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: size.width * 0.03),
+                                  child: categoryRowText(
+                                    "Quick Courses",
+                                    () {
+                                      RoutingService.pushFullScreenRouting(
+                                          context, const QuickCoursesScreen());
+                                    },
+                                  ),
                                 ),
                                 const SizedBox(height: 15),
                                 RefreshIndicator(
@@ -205,12 +236,18 @@ class _UserHomePageState extends State<UserHomePage>
                                         reload: false),
                                     child: const QuickListView()),
                                 const SizedBox(height: 15),
-                                categoryHeaderText(
-                                  HomeText.facilitators,
+                                Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: size.width * 0.03),
+                                  child: categoryHeaderText(
+                                    HomeText.facilitators,
+                                  ),
                                 ),
                                 const SizedBox(height: 16),
                                 home.trendingCourses.isEmpty
                                     ? ListView.separated(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: size.width * 0.03),
                                         separatorBuilder: (context, index) =>
                                             const SizedBox(height: 16),
                                         itemCount: 4,
@@ -223,6 +260,8 @@ class _UserHomePageState extends State<UserHomePage>
                                           return const FacilitatorShimmer();
                                         })
                                     : ListView.separated(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: size.width * 0.03),
                                         separatorBuilder: (_, __) =>
                                             const SizedBox(height: 16),
                                         itemCount:

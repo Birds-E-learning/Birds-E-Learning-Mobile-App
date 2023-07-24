@@ -13,11 +13,13 @@ class PreferentialListView extends StatelessWidget {
   Widget build(BuildContext context) {
     GlobalKey topKey = GlobalKey();
     CartProvider cart = context.read<CartProvider>();
+    Size size = MediaQuery.of(context).size;
     return Consumer<HomeProvider>(
       builder: (_, home, __) => SizedBox(
         height: 205,
         child: home.prefCourses.isEmpty && home.isPrefLoading
             ? ListView.builder(
+                padding: EdgeInsets.symmetric(horizontal: size.width * 0.03),
                 itemCount: 6,
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (BuildContext context, int index) {
@@ -35,6 +37,8 @@ class PreferentialListView extends StatelessWidget {
                   )
                 : ListView.separated(
                     key: topKey,
+                    padding:
+                        EdgeInsets.symmetric(horizontal: size.width * 0.03),
                     separatorBuilder: (_, __) => const SizedBox(width: 16),
                     itemCount: home.prefCourses.length > 10
                         ? 10

@@ -20,7 +20,7 @@ Future getDeviceDetails(context) async {
         deviceName: "ANDROID",
         name: build.device,
       );
-      debugPrint("new =======>>>> ${build.data['display']}");
+      // debugPrint("new =======>>>> ${build.data['display']}");
       await DevicePreference.saveDeviceDetails(android);
     } else if (Platform.isIOS) {
       var data = await deviceInfoPlugin.iosInfo;

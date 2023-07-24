@@ -1,6 +1,4 @@
-import 'package:birds_learning_network/src/config/routing/route.dart';
 import 'package:birds_learning_network/src/features/modules/home/custom_widgets/course_row_card.dart';
-import 'package:birds_learning_network/src/features/modules/home/view/buy_course_screen.dart';
 import 'package:birds_learning_network/src/features/modules/home/view/widgets/shimmer/more_card_shimmer.dart';
 import 'package:birds_learning_network/src/features/modules/home/view_model/home_provider.dart';
 import 'package:birds_learning_network/src/utils/custom_widgets/custom_bacground.dart';
@@ -38,21 +36,17 @@ class _QuickCoursesScreenState extends State<QuickCoursesScreen>
           backgroundColor: backgroundBlurColor,
           leading: leadingIcon(context),
           elevation: 0,
-          // actions: [
-          //   IconButton(
-          //       onPressed: () {},
-          //       icon: const Icon(
-          //         Icons.notifications,
-          //         color: greys800,
-          //       ))
-          // ],
         ),
         child: SafeArea(
           child: Padding(
             padding: EdgeInsets.symmetric(
                 horizontal: size.width * 0.04, vertical: size.height * 0.02),
             child: home.quickCourses.isEmpty
-                ? ListView.builder(
+                ? ListView.separated(
+                    separatorBuilder: (_, __) => const SizedBox(
+                          height: 10,
+                          child: Divider(thickness: 0.2, color: success1000),
+                        ),
                     scrollDirection: Axis.vertical,
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
@@ -60,7 +54,11 @@ class _QuickCoursesScreenState extends State<QuickCoursesScreen>
                     itemBuilder: (context, int index) {
                       return const MoreCardsShimmer();
                     })
-                : ListView.builder(
+                : ListView.separated(
+                    separatorBuilder: (_, __) => const SizedBox(
+                          height: 10,
+                          child: Divider(thickness: 0.2, color: success1000),
+                        ),
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     itemCount: home.quickCourses.length,
@@ -68,9 +66,6 @@ class _QuickCoursesScreenState extends State<QuickCoursesScreen>
                     itemBuilder: (BuildContext context, int index) {
                       return CourseRowCards(
                         course: home.quickCourses[index],
-                        onTap: () => RoutingService.pushFullScreenRouting(
-                            context,
-                            BuyCourseScreen(course: home.quickCourses[index])),
                       );
                     }),
           ),

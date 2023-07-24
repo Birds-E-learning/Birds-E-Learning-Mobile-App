@@ -13,6 +13,7 @@ class PreferenceRowContainer extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     HomePreferenceProvider filter =
         Provider.of<HomePreferenceProvider>(context, listen: false);
     HomePreferenceProvider filterWatch =
@@ -21,6 +22,7 @@ class PreferenceRowContainer extends StatelessWidget
       builder: (_, home, __) => SizedBox(
         height: 40,
         child: ListView.separated(
+          padding: EdgeInsets.symmetric(horizontal: size.width * 0.03),
           separatorBuilder: (_, __) => const SizedBox(width: 12),
           scrollDirection: Axis.horizontal,
           itemCount: filter.prefList.length,

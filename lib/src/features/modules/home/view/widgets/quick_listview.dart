@@ -13,11 +13,13 @@ class QuickListView extends StatelessWidget {
   Widget build(BuildContext context) {
     GlobalKey quickKey = GlobalKey();
     CartProvider cart = context.read<CartProvider>();
+    Size size = MediaQuery.of(context).size;
     return Consumer<HomeProvider>(
       builder: (_, home, __) => SizedBox(
         height: 205,
         child: home.quickCourses.isEmpty && home.isQuickLoading
             ? ListView.builder(
+                padding: EdgeInsets.symmetric(horizontal: size.width * 0.03),
                 itemCount: 6,
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (BuildContext context, int index) {
@@ -32,6 +34,8 @@ class QuickListView extends StatelessWidget {
                   )
                 : ListView.separated(
                     key: quickKey,
+                    padding:
+                        EdgeInsets.symmetric(horizontal: size.width * 0.03),
                     separatorBuilder: (_, __) => const SizedBox(width: 16),
                     itemCount: home.quickCourses.length > 10
                         ? 10

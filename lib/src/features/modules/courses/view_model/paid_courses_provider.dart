@@ -5,15 +5,17 @@ import 'package:birds_learning_network/src/features/modules/courses/view/widgets
 import 'package:birds_learning_network/src/features/modules/courses/view/widgets/resource_tab.dart';
 import 'package:birds_learning_network/src/features/modules/home/model/response_model/get_courses.dart';
 import 'package:flutter/material.dart';
+import 'package:pod_player/pod_player.dart';
 
 class PaidCoursesProvider extends ChangeNotifier {
   CourseRepository repo = CourseRepository();
+  String currentlyPlayingVideo = "";
+  late final PodPlayerController controller;
+  bool isLessonPlayed = false;
   bool _isLoading = false;
+  bool _isPrivate = false;
   List<Courses> _courses = [];
   List<bool> selectedSection = [];
-  double lecturePosition = 0;
-  double resourcePosition = 0;
-  double assessPosition = 0;
   int _selectedIndex = 0;
 
   bool get isLoading => _isLoading;
@@ -49,16 +51,88 @@ class PaidCoursesProvider extends ChangeNotifier {
     }
   }
 
+  void onPlayButtonClick(String vidUrl) {
+    isLessonPlayed = true;
+    currentlyPlayingVideo = vidUrl;
+    notifyListeners();
+  }
+
+  void refreshValues({isInit = false}) {
+    currentlyPlayingVideo = "";
+    isLessonPlayed = false;
+    isInit ? null : notifyListeners();
+  }
+
   Map<int, Widget> getTabWidget(
-    Courses course,
-  ) {
+      Courses course, ValueChanged<String> updateController) {
     final Map<int, Widget> tabContent = {
       0: LectureTabWidget(
         course: course,
+        updateController: updateController,
       ),
       1: const ResourcesTabWidget(),
       2: AssessmentTabWidget(course: course),
     };
     return tabContent;
+  }
+
+  void updatePodController() {
+    if (currentlyPlayingVideo.isNotEmpty) {
+      controller = PodPlayerController(
+        playVideoFrom: podPlayerService(),
+        podPlayerConfig: const PodPlayerConfig(
+            autoPlay: true, isLooping: false, videoQualityPriority: [720, 360]),
+      )..initialise();
+    }
+  }
+
+  PlayVideoFrom podPlayerService() {
+    if (currentlyPlayingVideo.toLowerCase().contains("youtu") ||
+        currentlyPlayingVideo.toLowerCase().contains("youtube.com")) {
+      return youtubePlayer(currentlyPlayingVideo);
+    } else if (currentlyPlayingVideo.toLowerCase().contains("vimeo")) {
+      return vimeoPlayer(currentlyPlayingVideo, _isPrivate);
+    } else {
+      return videoPlayer(currentlyPlayingVideo);
+    }
+  }
+
+  PlayVideoFrom youtubePlayer(String vidUrl) {
+    List vidId =
+        vidUrl.contains("?v=") ? vidUrl.split("?v=") : vidUrl.split("/");
+    return PlayVideoFrom.youtube(vidId[vidId.length - 1],
+        videoPlayerOptions: VideoPlayerOptions());
+  }
+
+  PlayVideoFrom vimeoPlayer(String vidUrl, bool isPrivate) {
+    String vimeoId = extractVimeoId(vidUrl);
+    if (isPrivate) {
+      final Map<String, String> headers = <String, String>{'Authorization': ''};
+      return PlayVideoFrom.vimeoPrivateVideos(vimeoId, httpHeaders: headers);
+    } else {
+      return PlayVideoFrom.vimeo(vimeoId);
+    }
+  }
+
+  PlayVideoFrom videoPlayer(String vidUrl) {
+    return PlayVideoFrom.network(vidUrl);
+  }
+
+  extractVimeoId(String videoUrl) {
+    RegExp regExp =
+        RegExp(r'vimeo\.com\/(\d+)|player\.vimeo\.com\/video\/(\w+)');
+    Match? match1 = regExp.firstMatch(videoUrl);
+    if (match1 != null) {
+      String vimeoId1 = match1.group(1) ?? match1.group(2)!;
+      return vimeoId1;
+    } else {
+      return "";
+    }
+  }
+
+  @override
+  void dispose() {
+    controller.isInitialised ? controller.dispose : null;
+    super.dispose();
   }
 }

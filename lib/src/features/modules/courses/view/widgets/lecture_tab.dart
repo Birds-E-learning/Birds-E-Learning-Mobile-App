@@ -8,8 +8,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
 class LectureTabWidget extends StatelessWidget {
-  const LectureTabWidget({super.key, required this.course});
+  const LectureTabWidget(
+      {super.key, required this.course, required this.updateController});
   final Courses course;
+  final Function(String) updateController;
 
   @override
   Widget build(BuildContext context) {
@@ -77,9 +79,14 @@ class LectureTabWidget extends StatelessWidget {
                                           lesson: course.sections![index]
                                               .lessons![indexx],
                                           name: course.sections![index]
-                                              .lessons![0].name!,
+                                              .lessons![indexx].name!,
                                           isPreview: false,
-                                          onTap: () {},
+                                          onTap: () => updateController(course
+                                                  .sections![index]
+                                                  .lessons![indexx]
+                                                  .url ??
+                                              ""),
+                                          // "https://www.youtube.com/watch?v=ZtC7-OpjzOc"
                                         ),
                                       ],
                                     )
@@ -132,56 +139,62 @@ class LectureLessonPreview extends StatelessWidget {
     String minText = minute > 1 ? "minutes" : "minute";
     String secText = seconds > 1 ? "seconds" : "second";
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.7,
-              child: AutoSizeText(
-                isPreview
-                    ? lessonName
-                    : "${previousIndex + 1}.${index + 1} $lessonName",
-                maxLines: 2,
-                style: style,
+    return Container(
+      color: Provider.of<PaidCoursesProvider>(context).currentlyPlayingVideo ==
+              lesson.url
+          ? success300
+          : white,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.7,
+                child: AutoSizeText(
+                  isPreview
+                      ? lessonName
+                      : "${previousIndex + 1}.${index + 1} $lessonName",
+                  maxLines: 2,
+                  style: style,
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 5, left: 10),
-              child: Row(
-                children: [
-                  const Text(
-                    "video",
-                    style: subStyle,
-                  ),
-                  const SizedBox(width: 5),
-                  Container(
-                    height: 6,
-                    width: 6,
-                    decoration: const BoxDecoration(
-                        shape: BoxShape.circle, color: greys300),
-                  ),
-                  const SizedBox(width: 5),
-                  Text(
-                    "$minute $minText $seconds $secText",
-                    style: subStyle,
-                  )
-                ],
-              ),
-            )
-          ],
-        ),
-        IconButton(
-          onPressed: onTap,
-          icon: const Icon(
-            Icons.play_circle,
-            size: 20,
-            color: deepBlack,
+              Padding(
+                padding: const EdgeInsets.only(top: 5, left: 10),
+                child: Row(
+                  children: [
+                    const Text(
+                      "video",
+                      style: subStyle,
+                    ),
+                    const SizedBox(width: 5),
+                    Container(
+                      height: 6,
+                      width: 6,
+                      decoration: const BoxDecoration(
+                          shape: BoxShape.circle, color: greys300),
+                    ),
+                    const SizedBox(width: 5),
+                    Text(
+                      "$minute $minText $seconds $secText",
+                      style: subStyle,
+                    )
+                  ],
+                ),
+              )
+            ],
           ),
-        )
-      ],
+          IconButton(
+            onPressed: onTap,
+            icon: const Icon(
+              Icons.play_circle,
+              size: 20,
+              color: deepBlack,
+            ),
+          )
+        ],
+      ),
     );
   }
 }

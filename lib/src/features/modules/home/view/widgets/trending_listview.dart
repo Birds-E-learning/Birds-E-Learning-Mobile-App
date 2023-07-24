@@ -13,11 +13,13 @@ class TrendingListView extends StatelessWidget {
   Widget build(BuildContext context) {
     GlobalKey trendingKey = GlobalKey();
     CartProvider cart = context.read<CartProvider>();
+    Size size = MediaQuery.of(context).size;
     return Consumer<HomeProvider>(
       builder: (_, home, __) => SizedBox(
         height: 205,
         child: home.trendingCourses.isEmpty && home.isTrendingLoading
             ? ListView.builder(
+                padding: EdgeInsets.symmetric(horizontal: size.width * 0.03),
                 itemCount: 6,
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (BuildContext context, int index) {
@@ -32,6 +34,8 @@ class TrendingListView extends StatelessWidget {
                   )
                 : ListView.separated(
                     key: trendingKey,
+                    padding:
+                        EdgeInsets.symmetric(horizontal: size.width * 0.03),
                     separatorBuilder: (_, __) => const SizedBox(width: 16),
                     itemCount: home.trendingCourses.length > 10
                         ? 10
