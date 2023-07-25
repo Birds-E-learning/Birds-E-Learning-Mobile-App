@@ -9,6 +9,8 @@ void getFailedDialog(String text, context) async {
               children: [
                 const Row(
                   children:  [
+                 Row(
+                  children: [
                     Icon(
                       Icons.cancel,
                       color: Colors.red,
@@ -18,9 +20,12 @@ void getFailedDialog(String text, context) async {
                     Text("Payment Failed"),
                   ],
                 ),
+              ],
+            ),
                 const SizedBox(height: 20),
                 Text(text)
               ],
-            ),
-          ));
+          )
+  )
+  );
 }
