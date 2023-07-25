@@ -76,9 +76,9 @@ class PreviewContainer extends StatelessWidget {
                         decoration: BoxDecoration(
                             border: Border.all(color: white400),
                             borderRadius: BorderRadius.circular(30)),
-                        child: Row(
+                        child: const Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
+                          children:  [
                             Icon(
                               Icons.play_arrow_rounded,
                               size: 40,

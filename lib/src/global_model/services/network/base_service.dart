@@ -24,8 +24,8 @@ class NetworkService {
 
   Future getRequest(String url, Map<String, String> header, context,
       {int time = 80}) async {
-    debugPrint("url====>>> $url");
-    debugPrint("header ====>> $header");
+    // debugPrint("url====>>> $url");
+    // debugPrint("header ====>> $header");
     dynamic responseJson;
     try {
       http.Response response = await http

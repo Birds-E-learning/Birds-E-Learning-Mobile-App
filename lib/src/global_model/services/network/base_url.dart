@@ -1,5 +1,5 @@
 class BaseUrl {
-  static const String base = "https://birds-e-learning.herokuapp.com/";
+  static const String base = "https://birds-e-learning-dev-e42eb6d4692a.herokuapp.com/";
 
   // USER CORE ENDPOINTS
   final String signUp = "${base}user/basic/signup";
