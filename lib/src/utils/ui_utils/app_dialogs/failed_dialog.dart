@@ -7,8 +7,8 @@ void getFailedDialog(String text, context) async {
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Row(
-                  children: const [
+                const Row(
+                  children:  [
                     Icon(
                       Icons.cancel,
                       color: Colors.red,
