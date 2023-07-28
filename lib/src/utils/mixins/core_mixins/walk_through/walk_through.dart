@@ -52,4 +52,11 @@ mixin WalkThroughTextWidget on Object implements WalkThroughTexts, TextStyles {
       style: TextStyles.buttonStyle.copyWith(color: nextColor),
     );
   }
+
+  Text browseCourseButtonText() {
+    return Text(
+      WalkThroughTexts.browseCourse,
+      style: TextStyles.buttonStyle.copyWith(color: skipColor),
+    );
+  }
 }

@@ -6,4 +6,5 @@ class WalkThroughTexts {
   static const skip = "Skip";
   static const next = "Next";
   static const getStarted = "Get Started";
+  static const browseCourse = "Browse Courses";
 }

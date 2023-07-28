@@ -181,18 +181,20 @@ class _UserProfilePageState extends State<UserProfilePage>
 
   void getUserDetails() async {
     LoginResponse user = await UserSecureStorage().getUserData();
-    String picUrl = await UserPreferences.getUserPhoto();
-    setState(() {
-      fullName = user.responseData!.fullName ??
-          "${user.responseData!.firstName} ${user.responseData!.lastName}";
-      email = user.responseData!.email ?? "john.doe@gmail.com";
-      photoLink = user.responseData!.photoLink ==
-                  "https://birds-e-learning.herokuapp.com/img/profile.png" &&
-              picUrl != ""
-          ? picUrl
-          : user.responseData!.photoLink!;
-      isLoading = false;
-      received = photoLink == "" ? false : true;
-    });
+    if(user.responseCode != null){
+      String picUrl = await UserPreferences.getUserPhoto();
+      setState(() {
+        fullName = user.responseData!.fullName ??
+            "${user.responseData!.firstName} ${user.responseData!.lastName}";
+        email = user.responseData!.email ?? "john.doe@gmail.com";
+        photoLink = user.responseData!.photoLink ==
+            "https://birds-e-learning.herokuapp.com/img/profile.png" &&
+            picUrl != ""
+            ? picUrl
+            : user.responseData!.photoLink!;
+        isLoading = false;
+        received = photoLink == "" ? false : true;
+      });
+    }
   }
 }

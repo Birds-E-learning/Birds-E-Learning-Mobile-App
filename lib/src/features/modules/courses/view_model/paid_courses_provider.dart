@@ -13,7 +13,7 @@ class PaidCoursesProvider extends ChangeNotifier {
   late final PodPlayerController controller;
   bool isLessonPlayed = false;
   bool _isLoading = false;
-  bool _isPrivate = false;
+  final bool _isPrivate = false;
   List<Courses> _courses = [];
   List<bool> selectedSection = [];
   int _selectedIndex = 0;
@@ -120,7 +120,7 @@ class PaidCoursesProvider extends ChangeNotifier {
 
   extractVimeoId(String videoUrl) {
     RegExp regExp =
-        RegExp(r'vimeo\.com\/(\d+)|player\.vimeo\.com\/video\/(\w+)');
+        RegExp(r'vimeo\.com/(\d+)|player\.vimeo\.com/video/(\w+)');
     Match? match1 = regExp.firstMatch(videoUrl);
     if (match1 != null) {
       String vimeoId1 = match1.group(1) ?? match1.group(2)!;

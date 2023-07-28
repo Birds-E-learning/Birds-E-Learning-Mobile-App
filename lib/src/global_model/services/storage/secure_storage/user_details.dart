@@ -43,8 +43,7 @@ class UserSecureStorage {
 
   Future<LoginResponse> getUserData() async {
     String? value = await storage.read(key: _userDataKey);
-    LoginResponse response = LoginResponse.fromJson(jsonDecode(value!));
 
-    return response;
+    return value == null ? LoginResponse(): LoginResponse.fromJson(jsonDecode(value));
   }
 }

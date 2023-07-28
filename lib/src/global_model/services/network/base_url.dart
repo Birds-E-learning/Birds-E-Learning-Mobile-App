@@ -66,4 +66,10 @@ class BaseUrl {
   // User Paid Courses
 
   final String coursePaid = "${base}course/user/payment/all";
+
+  // Social Content
+
+   String newsCategoryUrl({String limit = "34"}) => "${base}social-content/news/categories?limit=$limit";
+   String  newsByCategoryUrl(String categoryId) => "${base}social-content/news/categories/single?categoryId=$categoryId";
+   String newsUrl(String categoryId, {String limit = "30"}) => "${base}social-content/news?categoryId=$categoryId&limit=$limit";
 }

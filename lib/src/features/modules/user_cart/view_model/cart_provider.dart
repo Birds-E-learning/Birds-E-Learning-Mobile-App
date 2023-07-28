@@ -78,6 +78,7 @@ class CartProvider extends ChangeNotifier {
       isCartLoading = false;
     } catch (e) {
       isCartLoading = false;
+      notifyListeners();
       throw Exception(e);
     }
     notifyListeners();
@@ -97,6 +98,7 @@ class CartProvider extends ChangeNotifier {
       isWishlistLoading = false;
     } catch (e) {
       isWishlistLoading = false;
+      notifyListeners();
       throw Exception(e);
     }
     notifyListeners();

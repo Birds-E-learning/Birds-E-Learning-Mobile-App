@@ -4,7 +4,6 @@ import 'package:birds_learning_network/src/global_model/apis/app_exception.dart'
 import 'package:birds_learning_network/src/global_model/model/device_details.dart';
 import 'package:birds_learning_network/src/global_model/services/storage/shared_preferences/device_info.dart';
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 Future getDeviceDetails(context) async {

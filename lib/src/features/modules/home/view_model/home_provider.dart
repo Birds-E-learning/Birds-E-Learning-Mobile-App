@@ -78,7 +78,7 @@ class HomeProvider extends ChangeNotifier {
   // this list helps to note the selected preferences
   List<bool> selectedCards = [];
 
-  // this list holdds the clicked trending icons
+  // this list holds the clicked trending icons
   List<bool> trendingIcons = [];
 
   // holds the clicked quick favorite icons
@@ -278,6 +278,7 @@ class HomeProvider extends ChangeNotifier {
       notifyListeners();
     } catch (e) {
       isTrendingLoading = false;
+      notifyListeners();
       throw Exception(e);
     }
   }

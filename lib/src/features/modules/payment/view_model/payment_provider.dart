@@ -61,7 +61,7 @@ class PaymentProvider extends ChangeNotifier {
       final token = await Stripe.instance.createToken(
         const CreateTokenParams.card(
             params: CardTokenParams(
-                type: TokenType.Card, name: "Birds learning", currency: "USD")),
+                type: TokenType.Card, name: "Birds learning network", currency: "USD"), ),
       );
       StripeChargesRequest chargeData = StripeChargesRequest(
           amount: calculateAmount(card.amount!),
