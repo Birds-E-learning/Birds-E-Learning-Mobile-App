@@ -258,7 +258,7 @@ class _BuyCourseScreenState extends State<BuyCourseScreen>
   Future<void> loadVideoPlayer(String vidUrl) async {
     Provider.of<CourseContentProvider>(context, listen: false)
         .onPreviewClick(false);
-    videoPlayerController = VideoPlayerController.network(vidUrl);
+    videoPlayerController = VideoPlayerController.networkUrl(Uri.parse(vidUrl));
     await Future.wait([videoPlayerController!.initialize()]);
     _controller = ChewieController(
       videoPlayerController: videoPlayerController!,
