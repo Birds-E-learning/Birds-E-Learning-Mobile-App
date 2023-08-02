@@ -1,4 +1,5 @@
 import 'package:birds_learning_network/src/features/modules/home/custom_widgets/course_row_card.dart';
+import 'package:birds_learning_network/src/features/modules/home/view/widgets/course/no_course_widget.dart';
 import 'package:birds_learning_network/src/features/modules/home/view/widgets/shimmer/more_card_shimmer.dart';
 import 'package:birds_learning_network/src/features/modules/home/view_model/home_provider.dart';
 import 'package:birds_learning_network/src/utils/custom_widgets/custom_bacground.dart';
@@ -50,18 +51,20 @@ class _TrendingCoursesScreenState extends State<TrendingCoursesScreen>
             padding: EdgeInsets.symmetric(
                 horizontal: size.width * 0.04, vertical: size.height * 0.02),
             child: home.trendingCourses.isEmpty
-                ? ListView.separated(
-                    separatorBuilder: (_, __) => const SizedBox(
-                          height: 10,
-                          child: Divider(thickness: 0.2, color: success1000),
-                        ),
-                    scrollDirection: Axis.vertical,
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: 8,
-                    itemBuilder: (context, int index) {
-                      return const MoreCardsShimmer();
-                    })
+                ? home.isTrendingLoading
+                  ?  ListView.separated(
+                      separatorBuilder: (_, __) => const SizedBox(
+                            height: 10,
+                            child: Divider(thickness: 0.2, color: success1000),
+                          ),
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: 8,
+                      itemBuilder: (context, int index) {
+                        return const MoreCardsShimmer();
+                      })
+                  : const EmptyCategoryWidget(category: "Trending")
                 : ListView.separated(
                     separatorBuilder: (_, __) => const SizedBox(
                           height: 10,

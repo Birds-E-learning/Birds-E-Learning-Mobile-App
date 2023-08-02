@@ -4,6 +4,7 @@ import 'package:birds_learning_network/src/features/modules/home/view/widgets/fa
 import 'package:birds_learning_network/src/features/modules/home/view/widgets/shimmer/more_card_shimmer.dart';
 import 'package:birds_learning_network/src/features/modules/home/view_model/facilitator_provider.dart';
 import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
+import 'package:birds_learning_network/src/utils/global_constants/styles/cart_styles/cart_styles.dart';
 import 'package:birds_learning_network/src/utils/helper_widgets/leading_icon.dart';
 import 'package:birds_learning_network/src/utils/mixins/module_mixins/facilitator_mixins.dart';
 import 'package:flutter/material.dart';
@@ -78,14 +79,24 @@ class _FacilitatorScreenState extends State<FacilitatorScreen>
                     titleCard("Courses"),
                     const SizedBox(height: 15),
                     facilitator.courseList.isEmpty
-                        ? ListView.builder(
-                            scrollDirection: Axis.vertical,
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: 8,
-                            itemBuilder: (context, int index) {
-                              return const MoreCardsShimmer();
-                            })
+                        ? facilitator.isLoading
+                          ?  ListView.builder(
+                              scrollDirection: Axis.vertical,
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: 8,
+                              itemBuilder: (context, int index) {
+                                return const MoreCardsShimmer();
+                              })
+                          : const Center(
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 15),
+                                child: Text(
+                                  "No course available for this facilitator.",
+                                  style: CartStyles.richStyle1,
+                                ),
+                              ),
+                            )
                         : ListView.separated(
                             separatorBuilder: (context, index) => const Padding(
                                   padding: EdgeInsets.symmetric(vertical: 7.5),
@@ -109,7 +120,8 @@ class _FacilitatorScreenState extends State<FacilitatorScreen>
                                   course: facilitator.courseList[index]);
                             }),
                   ],
-                )
+                ),
+                const SizedBox(height: 20)
               ],
             ),
           ),

@@ -3,7 +3,9 @@ import 'package:birds_learning_network/src/features/modules/home/view/widgets/sh
 import 'package:birds_learning_network/src/features/unregistered_user_flow/home/custom_widgets/html_page.dart';
 import 'package:birds_learning_network/src/features/unregistered_user_flow/home/view/widgets/facilitator/facilitator_course_card.dart';
 import 'package:birds_learning_network/src/features/unregistered_user_flow/home/view_model/home_provider.dart';
+import 'package:birds_learning_network/src/global_model/apis/api_response.dart';
 import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
+import 'package:birds_learning_network/src/utils/global_constants/styles/cart_styles/cart_styles.dart';
 import 'package:birds_learning_network/src/utils/helper_widgets/leading_icon.dart';
 import 'package:birds_learning_network/src/utils/mixins/module_mixins/facilitator_mixins.dart';
 import 'package:flutter/material.dart';
@@ -63,14 +65,24 @@ class UnregisteredFacilitatorScreen extends StatelessWidget with FacilitatorMixi
                     titleCard("Courses"),
                     const SizedBox(height: 15),
                     facilitator.courseList.isEmpty
-                        ? ListView.builder(
-                            scrollDirection: Axis.vertical,
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: 8,
-                            itemBuilder: (context, int index) {
-                              return const MoreCardsShimmer();
-                            })
+                        ? facilitator.loadingStatus == Status.loading
+                          ?  ListView.builder(
+                              scrollDirection: Axis.vertical,
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: 8,
+                              itemBuilder: (context, int index) {
+                                return const MoreCardsShimmer();
+                              })
+                          : const Center(
+                              child: Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 15),
+                              child: Text(
+                                "No course available for this facilitator.",
+                                style: CartStyles.richStyle1,
+                              ),
+                            ),
+                          )
                         : ListView.separated(
                             separatorBuilder: (context, index) => const Padding(
                                   padding: EdgeInsets.symmetric(vertical: 7.5),

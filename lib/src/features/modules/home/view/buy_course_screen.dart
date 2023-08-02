@@ -37,7 +37,7 @@ class _BuyCourseScreenState extends State<BuyCourseScreen>
     with HomeWidgets, ContentWidget, TickerProviderStateMixin {
   VideoPlayerController? videoPlayerController;
   ChewieController? _controller;
-  late YoutubePlayerController _ytController;
+  YoutubePlayerController? _ytController;
   final key1 = GlobalKey();
 
   @override
@@ -85,9 +85,9 @@ class _BuyCourseScreenState extends State<BuyCourseScreen>
                                       ? Chewie(controller: _controller!)
                                       : PreviewContainer(
                                           image: widget.course.imageUrl)
-                                  : content.isYoutube
+                                  : content.isYoutube && _ytController != null
                                       ? YoutubePlayer(
-                                          controller: _ytController,
+                                          controller: _ytController!,
                                           showVideoProgressIndicator: true,
                                           progressColors:
                                               const ProgressBarColors(
@@ -290,10 +290,10 @@ class _BuyCourseScreenState extends State<BuyCourseScreen>
 
   @override
   void dispose() {
-    super.dispose();
+    _ytController == null ? null : _ytController!.dispose();
     videoPlayerController == null ? null : videoPlayerController!.dispose();
     _controller == null ? null : _controller!.dispose();
-    _ytController.dispose();
+    super.dispose();
   }
 
   Future getCourseSection() async {

@@ -22,6 +22,7 @@ import 'package:birds_learning_network/src/utils/global_constants/texts/module_t
 import 'package:birds_learning_network/src/utils/mixins/core_mixins/filter_mixins/filter_mixin.dart';
 import 'package:birds_learning_network/src/utils/mixins/module_mixins/home_mixins.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
@@ -38,12 +39,15 @@ class _UserHomePageState extends State<UserHomePage>
 
   @override
   void initState() {
-    Provider.of<HomePreferenceProvider>(context, listen: false)
-        .getPreferenceList(context);
-    Provider.of<CourseProvider>(context, listen: false).getCourses(context);
-    Provider.of<HomeProvider>(context, listen: false)
-        .refreshData(context, reload: false);
+    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+      Provider.of<HomePreferenceProvider>(context, listen: false)
+          .getPreferenceList(context);
+      Provider.of<CourseProvider>(context, listen: false).getCourses(context);
+      Provider.of<HomeProvider>(context, listen: false)
+          .refreshData(context, reload: false);
+    });
     super.initState();
+
   }
 
   @override
@@ -245,20 +249,30 @@ class _UserHomePageState extends State<UserHomePage>
                                 ),
                                 const SizedBox(height: 16),
                                 home.trendingCourses.isEmpty
-                                    ? ListView.separated(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: size.width * 0.03),
-                                        separatorBuilder: (context, index) =>
-                                            const SizedBox(height: 16),
-                                        itemCount: 4,
-                                        shrinkWrap: true,
-                                        physics:
-                                            const NeverScrollableScrollPhysics(),
-                                        scrollDirection: Axis.vertical,
-                                        itemBuilder:
-                                            (BuildContext context, int index) {
-                                          return const FacilitatorShimmer();
-                                        })
+                                    ? home.isTrendingLoading
+                                       ? ListView.separated(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: size.width * 0.03),
+                                          separatorBuilder: (context, index) =>
+                                              const SizedBox(height: 16),
+                                          itemCount: 4,
+                                          shrinkWrap: true,
+                                          physics:
+                                              const NeverScrollableScrollPhysics(),
+                                          scrollDirection: Axis.vertical,
+                                          itemBuilder:
+                                              (BuildContext context, int index) {
+                                            return const FacilitatorShimmer();
+                                          })
+                                      : const Center(
+                                          child: Padding(
+                                            padding: EdgeInsets.symmetric(horizontal: 15),
+                                            child: Text(
+                                              "No top facilitator available.", // note that we are using the facilitators in the trending courses.
+                                              style: CartStyles.richStyle1,
+                                            ),
+                                          ),
+                                        )
                                     : ListView.separated(
                                         padding: EdgeInsets.symmetric(
                                             horizontal: size.width * 0.03),

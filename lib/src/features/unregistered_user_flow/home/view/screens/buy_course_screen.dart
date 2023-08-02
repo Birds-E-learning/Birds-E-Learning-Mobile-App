@@ -1,13 +1,13 @@
 import 'dart:io';
 import 'package:birds_learning_network/src/config/routing/route.dart';
 import 'package:birds_learning_network/src/features/modules/home/model/response_model/get_courses.dart';
+import 'package:birds_learning_network/src/features/modules/home/view/widgets/shimmer/section_shimmer.dart';
 import 'package:birds_learning_network/src/features/unregistered_user_flow/course/view_model/course_content_provider.dart';
 import 'package:birds_learning_network/src/features/unregistered_user_flow/home/custom_widgets/html_page.dart';
 import 'package:birds_learning_network/src/features/unregistered_user_flow/home/view/widgets/course/action_buttons.dart';
 import 'package:birds_learning_network/src/features/unregistered_user_flow/home/view/widgets/course/course_info.dart';
 import 'package:birds_learning_network/src/features/unregistered_user_flow/home/view/widgets/course/preview_container.dart';
 import 'package:birds_learning_network/src/features/unregistered_user_flow/home/view/widgets/course/section_card.dart';
-import 'package:birds_learning_network/src/features/unregistered_user_flow/home/view/widgets/shimmer/section_shimmer.dart';
 import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
 import 'package:birds_learning_network/src/utils/global_constants/styles/cart_styles/cart_styles.dart';
 import 'package:birds_learning_network/src/utils/global_constants/styles/home_styles/home_styles.dart';
