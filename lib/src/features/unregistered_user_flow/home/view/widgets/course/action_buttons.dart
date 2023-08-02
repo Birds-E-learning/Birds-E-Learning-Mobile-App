@@ -29,11 +29,15 @@ class CourseActionButtons extends StatelessWidget
                   nextColor)),
         ),
         const SizedBox(height: 10),
-        WhiteButtonWidget(
-            onPressed: () => RoutingService.pushAndRemoveAllRoute(context, const SignUpScreen()),
-            child: buttonText(
-                    "Sign Up",
-                    skipColor))
+        SizedBox(
+          width: double.infinity,
+          height: 60,
+          child: WhiteButtonWidget(
+              onPressed: () => RoutingService.pushAndRemoveAllRoute(context, const SignUpScreen()),
+              child: buttonText(
+                      "Sign Up",
+                      skipColor)),
+        )
       ],
     );
   }

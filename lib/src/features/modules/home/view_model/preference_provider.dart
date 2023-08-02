@@ -15,6 +15,7 @@ class HomePreferenceProvider extends ChangeNotifier {
     try {
       List<String> list = [];
       _isLoading = true;
+      notifyListeners();
       List<PreferenceResponseData>? prefList_ =
           await repo.getFilterData(context);
       if (prefList_ != null && prefList_.isNotEmpty) {
@@ -31,4 +32,5 @@ class HomePreferenceProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
+
 }

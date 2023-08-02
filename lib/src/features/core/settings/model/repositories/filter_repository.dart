@@ -8,17 +8,24 @@ import 'package:birds_learning_network/src/global_model/services/network/base_se
 import 'package:birds_learning_network/src/global_model/services/network/base_url.dart';
 import 'package:birds_learning_network/src/global_model/services/storage/secure_storage/user_details.dart';
 import 'package:birds_learning_network/src/utils/helper_widgets/response_snack.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class FilterRepository extends NetworkService with BaseHeaders, BaseUrl {
   UserSecureStorage storage = UserSecureStorage();
 
   Future getFilterData(context) async {
-    Map<String, String> header_ = await authHeader();
-    var response = await getRequest(getPref, header_, context);
-    GetPreferenceModel responseData = GetPreferenceModel.fromJson(response);
-    if (responseData.responseCode == "00") {
-      return responseData.responseData!;
+    try{
+      Map<String, String> header_ = await authHeader();
+      var response = await getRequest(getPref, header_, context);
+      GetPreferenceModel responseData = GetPreferenceModel.fromJson(response);
+      if (responseData.responseCode == "00") {
+        return responseData.responseData!;
+      }
+      return null;
+    }catch(e){
+      debugPrint(e.toString());
+      return null;
     }
   }
 

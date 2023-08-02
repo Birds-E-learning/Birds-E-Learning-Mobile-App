@@ -19,6 +19,7 @@ class ThirdWalkThroughPage extends StatelessWidget with WalkThroughTextWidget {
         RoutingService.pushAndRemoveAllRoute(context, const SignUpScreen());
       },
       onPressed2: (){
+        print("something here");
         RoutingService.pushAndRemoveAllRoute(context, const UnregisteredHome());
       },
     );

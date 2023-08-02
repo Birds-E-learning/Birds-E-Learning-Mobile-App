@@ -1,14 +1,14 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:birds_learning_network/src/features/modules/home/model/response_model/get_courses.dart';
-import 'package:birds_learning_network/src/features/modules/home/view_model/course_content_provider.dart';
+import 'package:birds_learning_network/src/features/unregistered_user_flow/course/view_model/course_content_provider.dart';
 import 'package:birds_learning_network/src/utils/global_constants/asset_paths/image_path.dart';
 import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
-class SectionCard extends StatelessWidget {
-  const SectionCard(
+class UnregisteredSectionCard extends StatelessWidget {
+  const UnregisteredSectionCard(
       {super.key,
       required this.index,
       required this.section,
@@ -26,7 +26,7 @@ class SectionCard extends StatelessWidget {
         fontWeight: FontWeight.w400,
         color: deepBlack);
 
-    return Consumer<CourseContentProvider>(
+    return Consumer<UnregisteredCourseContentProvider>(
       builder: (_, content, __) => InkWell(
         onTap: onLessonTap,
         child: Padding(
@@ -44,7 +44,7 @@ class SectionCard extends StatelessWidget {
                   ),
                   SvgPicture.asset(content.selectedLesson[index]
                       ? ImagePath.arrowUpLesson
-                      : ImagePath.arrowDownLesson),
+                      : ImagePath.arrowDownLesson, height: 12, width: 15),
                 ],
               ),
               ListView.builder(
@@ -53,7 +53,7 @@ class SectionCard extends StatelessWidget {
                   physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (BuildContext context, int indexx) {
                     return Container(
-                      padding: content.selectedLesson[index]
+                      padding: content.selectedLesson[index] // This is to check if the course section is selected so as to display the lessons
                           ? const EdgeInsets.symmetric(
                               horizontal: 15, vertical: 10)
                           : EdgeInsets.zero,
@@ -81,7 +81,7 @@ class SectionCard extends StatelessWidget {
                                 ),
                               ],
                             )
-                          : null,
+                          : null, // This displays nothing
                     );
                   }),
             ],

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class CourseStyles {
   static const TextStyle appBarStyle = TextStyle(
       fontWeight: FontWeight.w500,
-      fontSize: 16,
+      fontSize: 24,
       fontFamily: "Inter",
       color: success1000);
 

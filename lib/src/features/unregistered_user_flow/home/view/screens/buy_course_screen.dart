@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'package:birds_learning_network/src/config/routing/route.dart';
-import 'package:birds_learning_network/src/features/modules/home/custom_widgets/html_page.dart';
 import 'package:birds_learning_network/src/features/modules/home/model/response_model/get_courses.dart';
-import 'package:birds_learning_network/src/features/modules/home/view_model/course_content_provider.dart';
+import 'package:birds_learning_network/src/features/unregistered_user_flow/course/view_model/course_content_provider.dart';
+import 'package:birds_learning_network/src/features/unregistered_user_flow/home/custom_widgets/html_page.dart';
 import 'package:birds_learning_network/src/features/unregistered_user_flow/home/view/widgets/course/action_buttons.dart';
 import 'package:birds_learning_network/src/features/unregistered_user_flow/home/view/widgets/course/course_info.dart';
 import 'package:birds_learning_network/src/features/unregistered_user_flow/home/view/widgets/course/preview_container.dart';
@@ -20,30 +20,30 @@ import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
-class BuyCourseScreen extends StatefulWidget {
-  const BuyCourseScreen({
+class UnregisteredBuyCourseScreen extends StatefulWidget {
+  const UnregisteredBuyCourseScreen({
     super.key,
     required this.course,
     this.isFcilitator = false,
   });
   final Courses course;
-  final bool isFcilitator;
+  final bool isFcilitator; // to check if the routing is coming from the facilitator screen
 
   @override
-  State<BuyCourseScreen> createState() => _BuyCourseScreenState();
+  State<UnregisteredBuyCourseScreen> createState() => _UnregisteredBuyCourseScreenState();
 }
 
-class _BuyCourseScreenState extends State<BuyCourseScreen>
+class _UnregisteredBuyCourseScreenState extends State<UnregisteredBuyCourseScreen>
     with HomeWidgets, ContentWidget, TickerProviderStateMixin {
   VideoPlayerController? videoPlayerController;
   ChewieController? _controller;
-  late YoutubePlayerController _ytController;
+  YoutubePlayerController? _ytController;
   final key1 = GlobalKey();
 
   @override
   void initState() {
     SchedulerBinding.instance.addPostFrameCallback((_) async {
-      Provider.of<CourseContentProvider>(context, listen: false).reset();
+      context.read<UnregisteredCourseContentProvider>().reset();
       await showVideoPlayer(context, widget.course.video!);
       await getCourseSection();
     });
@@ -54,7 +54,7 @@ class _BuyCourseScreenState extends State<BuyCourseScreen>
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
-      body: Consumer<CourseContentProvider>(
+      body: Consumer<UnregisteredCourseContentProvider>(
         builder: (_, content, __) => SafeArea(
           child: SingleChildScrollView(
             child: Padding(
@@ -85,9 +85,9 @@ class _BuyCourseScreenState extends State<BuyCourseScreen>
                                       ? Chewie(controller: _controller!)
                                       : PreviewContainer(
                                           image: widget.course.imageUrl)
-                                  : content.isYoutube
+                                  : content.isYoutube && _ytController != null
                                       ? YoutubePlayer(
-                                          controller: _ytController,
+                                          controller: _ytController!,
                                           showVideoProgressIndicator: true,
                                           progressColors:
                                               const ProgressBarColors(
@@ -149,7 +149,7 @@ class _BuyCourseScreenState extends State<BuyCourseScreen>
                                     widget.course.sections!.length) {
                                   content.selectedLesson.add(false);
                                 }
-                                return SectionCard(
+                                return UnregisteredSectionCard(
                                     index: index,
                                     onPlayTap: () async {
                                       await showVideoPlayer(
@@ -172,7 +172,7 @@ class _BuyCourseScreenState extends State<BuyCourseScreen>
                       : widget.course.sections!.isEmpty
                           ? const Center(
                               child: Text(
-                                "No available trending courses.",
+                                "oops!.. No available lessons for this course.",
                                 style: CartStyles.richStyle1,
                               ),
                             )
@@ -190,7 +190,7 @@ class _BuyCourseScreenState extends State<BuyCourseScreen>
                                     widget.course.sections!.length) {
                                   content.selectedLesson.add(false);
                                 }
-                                return SectionCard(
+                                return UnregisteredSectionCard(
                                     index: index,
                                     onPlayTap: () async {
                                       await showVideoPlayer(
@@ -241,7 +241,7 @@ class _BuyCourseScreenState extends State<BuyCourseScreen>
   }
 
   Future<void> youtubePlayer(String vidUrl) async {
-    Provider.of<CourseContentProvider>(context, listen: false)
+    Provider.of<UnregisteredCourseContentProvider>(context, listen: false)
         .onPreviewClick(false);
     List vidId =
         vidUrl.contains("?v=") ? vidUrl.split("?v=") : vidUrl.split("/");
@@ -256,7 +256,7 @@ class _BuyCourseScreenState extends State<BuyCourseScreen>
   }
 
   Future<void> loadVideoPlayer(String vidUrl) async {
-    Provider.of<CourseContentProvider>(context, listen: false)
+    Provider.of<UnregisteredCourseContentProvider>(context, listen: false)
         .onPreviewClick(false);
     videoPlayerController = VideoPlayerController.networkUrl(Uri.parse(vidUrl));
     await Future.wait([videoPlayerController!.initialize()]);
@@ -276,13 +276,15 @@ class _BuyCourseScreenState extends State<BuyCourseScreen>
   }
 
   Future showVideoPlayer(context, String vidUrl) async {
+    final content = Provider.of<UnregisteredCourseContentProvider>(context, listen: false);
     if (vidUrl.toLowerCase().contains("youtube.com")) {
-      Provider.of<CourseContentProvider>(context, listen: false).youtubeVid =
-          true;
+      content.video(false);
+     content.youtubeVid(true);
       await youtubePlayer(vidUrl);
       if (mounted) setState(() {});
     } else if (vidUrl.toLowerCase().contains(".mp4")) {
-      Provider.of<CourseContentProvider>(context, listen: false).video = true;
+      content.youtubeVid(false);
+      content.video(true);
       await loadVideoPlayer(vidUrl);
       if (mounted) setState(() {});
     }
@@ -290,17 +292,17 @@ class _BuyCourseScreenState extends State<BuyCourseScreen>
 
   @override
   void dispose() {
-    super.dispose();
+    _ytController == null ? null : _ytController!.dispose();
     videoPlayerController == null ? null : videoPlayerController!.dispose();
     _controller == null ? null : _controller!.dispose();
-    _ytController.dispose();
+    super.dispose();
   }
 
   Future getCourseSection() async {
     if (widget.course.sections == null || widget.course.sections!.isEmpty) {
       widget.course.sections = <Sections>[];
       widget.course.sections =
-          await Provider.of<CourseContentProvider>(context, listen: false)
+          await Provider.of<UnregisteredCourseContentProvider>(context, listen: false)
               .getCourseSection(context, widget.course.id!);
       setState(() {});
     }

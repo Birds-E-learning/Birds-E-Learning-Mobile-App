@@ -12,6 +12,7 @@ class BaseUrl {
   final String validateResetOtp =
       "${base}user/credentials/reset/verification/otp";
   final String resetPassword = "${base}user/credentials/new/submit";
+  final String anonUserUrl = "${base}user/anonymous/credential";
   final String autoLogin = "${base}user/basic/remember/login";
 
   // filter preferences

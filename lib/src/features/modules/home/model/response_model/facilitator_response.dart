@@ -3,7 +3,7 @@ import 'package:birds_learning_network/src/features/modules/home/model/response_
 class FacilitatorResponse {
   String? responseCode;
   String? responseMessage;
-  ResponseData? responseData;
+  FacilitatorData? responseData;
 
   FacilitatorResponse({
     this.responseCode,
@@ -15,12 +15,12 @@ class FacilitatorResponse {
     responseCode = json['responseCode'] as String?;
     responseMessage = json['responseMessage'] as String?;
     responseData = (json['responseData'] as Map<String, dynamic>?) != null
-        ? ResponseData.fromJson(json['responseData'] as Map<String, dynamic>)
+        ? FacilitatorData.fromJson(json['responseData'] as Map<String, dynamic>)
         : null;
   }
 }
 
-class ResponseData {
+class FacilitatorData {
   String? imageUrl;
   String? firstName;
   String? middleName;
@@ -32,7 +32,7 @@ class ResponseData {
   int? averageRating;
   int? numberOfStudents;
 
-  ResponseData({
+  FacilitatorData({
     this.imageUrl,
     this.firstName,
     this.middleName,
@@ -45,7 +45,7 @@ class ResponseData {
     this.numberOfStudents,
   });
 
-  ResponseData.fromJson(Map<String, dynamic> json) {
+  FacilitatorData.fromJson(Map<String, dynamic> json) {
     imageUrl = json['imageUrl'] as String?;
     firstName = json['firstName'] as String?;
     middleName = json['middleName'] as String?;

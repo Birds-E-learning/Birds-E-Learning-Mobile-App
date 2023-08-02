@@ -1,4 +1,5 @@
 import 'package:birds_learning_network/src/features/modules/payment/view_model/payment_provider.dart';
+import 'package:birds_learning_network/src/features/unregistered_user_flow/home/view_model/home_provider.dart';
 import 'package:birds_learning_network/src/global_model/services/storage/secure_storage/user_details.dart';
 import 'package:provider/provider.dart';
 
@@ -23,6 +24,19 @@ class BaseHeaders {
     return {
       'Authorization': 'Bearer $key',
       'Content-Type': 'application/x-www-form-urlencoded'
+    };
+  }
+
+  Future<Map<String, String>> anonymousHeader(context)async{
+    String? token = await UserSecureStorage().getAnonToken();
+    if(token == null){
+     String? token1 =  await context.read<UnregisteredHomeProvider>().getAnonymousToken(context);
+     token = token1 ?? "";
+    }
+    return {
+      "accept": "application/json",
+      "Content-Type": "application/JSON",
+      "Authorization": "Bearer $token",
     };
   }
 }

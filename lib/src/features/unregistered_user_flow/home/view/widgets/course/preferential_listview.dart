@@ -1,7 +1,7 @@
-import 'package:birds_learning_network/src/features/modules/home/custom_widgets/course_card.dart';
-import 'package:birds_learning_network/src/features/modules/home/view/widgets/shimmer/custom_shimmer_card.dart';
-import 'package:birds_learning_network/src/features/modules/home/view_model/home_provider.dart';
-import 'package:birds_learning_network/src/features/modules/user_cart/view_model/cart_provider.dart';
+import 'package:birds_learning_network/src/features/unregistered_user_flow/course/view/widgets/custom_shimmer_card.dart';
+import 'package:birds_learning_network/src/features/unregistered_user_flow/course/view_model/course_provider.dart';
+import 'package:birds_learning_network/src/features/unregistered_user_flow/home/custom_widgets/course_card.dart';
+import 'package:birds_learning_network/src/global_model/apis/api_response.dart';
 import 'package:birds_learning_network/src/utils/global_constants/styles/cart_styles/cart_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -12,25 +12,24 @@ class PreferentialListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     GlobalKey topKey = GlobalKey();
-    CartProvider cart = context.read<CartProvider>();
     Size size = MediaQuery.of(context).size;
-    return Consumer<HomeProvider>(
-      builder: (_, home, __) => SizedBox(
-        height: 205,
-        child: home.prefCourses.isEmpty && home.isPrefLoading
+    return Consumer<UnregisteredCourseProvider>(
+      builder: (_, course, __) => SizedBox(
+        height: 190,
+        child: course.prefCourses.isEmpty && course.prefStatus == Status.loading
             ? ListView.builder(
                 padding: EdgeInsets.symmetric(horizontal: size.width * 0.03),
                 itemCount: 6,
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (BuildContext context, int index) {
-                  return const CustomHomeCardShimmer();
+                  return const UnregisteredCustomHomeCardShimmer();
                 })
-            : home.prefCourses.isEmpty && !home.isPrefLoading
+            : course.prefCourses.isEmpty && course.prefStatus != Status.loading
                 ? const Center(
                     child: Padding(
                       padding: EdgeInsets.symmetric(horizontal: 15),
                       child: Text(
-                        "No Preferential Course available for you, kindly edit your preferences.",
+                        "No Preferential Course available for you, ",
                         style: CartStyles.richStyle1,
                       ),
                     ),
@@ -40,33 +39,13 @@ class PreferentialListView extends StatelessWidget {
                     padding:
                         EdgeInsets.symmetric(horizontal: size.width * 0.03),
                     separatorBuilder: (_, __) => const SizedBox(width: 16),
-                    itemCount: home.prefCourses.length > 10
+                    itemCount: course.prefCourses.length > 10
                         ? 10
-                        : home.prefCourses.length,
+                        : course.prefCourses.length,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (BuildContext context, int index) {
-                      if (home.topIcons.length < home.prefCourses.length) {
-                        if (home.prefCourses[index].wishList!) {
-                          home.topIcons.add(true);
-                        } else {
-                          home.topIcons.add(false);
-                        }
-                      }
-                      return CourseCard(
-                        iconData: home.topIcons[index]
-                            ? Icons.favorite
-                            : Icons.favorite_outline,
-                        onFavPressed: () async {
-                          home.setTopValue(index);
-                          if (home.topIcons[index]) {
-                            await cart.addWishlist(
-                                context, home.prefCourses[index].id!, topKey);
-                          } else {
-                            await cart.deleteWishlist(
-                                context, home.prefCourses[index].id!, topKey);
-                          }
-                        },
-                        course: home.prefCourses[index],
+                      return UnregisteredCourseCard(
+                        course: course.prefCourses[index],
                       );
                     }),
       ),

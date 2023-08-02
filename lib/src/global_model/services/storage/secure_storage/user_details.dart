@@ -9,11 +9,16 @@ class UserSecureStorage {
   final String _tokenKey = "token";
   final String _passwordKey = "password";
   final String _usernameKey = "username";
-  // final String _isCheckKey = "isCheck";
+  final String _anonTokenKey = "isCheck";
   final String _userDataKey = "userData";
 
   Future setToken(String token) async {
     await storage.write(key: _tokenKey, value: token);
+  }
+
+  Future setAnonToken(String? token) async {
+    print(token);
+    await storage.write(key: _anonTokenKey, value: token);
   }
 
   Future setPassword(String password) async {
@@ -31,6 +36,10 @@ class UserSecureStorage {
 
   Future<String> getToken() async {
     return await storage.read(key: _tokenKey) ?? "";
+  }
+
+  Future<String?> getAnonToken() async {
+    return await storage.read(key: _anonTokenKey);
   }
 
   Future<String?> getPassword() async {

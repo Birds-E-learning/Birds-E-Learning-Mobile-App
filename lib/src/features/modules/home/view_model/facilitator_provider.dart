@@ -11,8 +11,7 @@ class FacilitatorProvider extends ChangeNotifier {
   int totalCourse = 0;
   String imageUrl = "";
   String email = "";
-  String aboutMe =
-      "Lorem ipsum dolor sit amet consectetur. Pharetra odio at cursus nulla suspendisse vitae sit nibh. Magnis pharetra nisi nibh ornare magna potenti fames dictum. Id mauris ullamcorper cursus et ullamcorper pharetra eget ornare. Sed vitae velit consectetur tristique pellentesque quam condimentum lacus dui. Leo ut nunc sit lectus dolor volutpat leo.";
+  String aboutMe = "";
   String rating = "";
   String studentNo = "";
 
@@ -55,7 +54,7 @@ class FacilitatorProvider extends ChangeNotifier {
     } catch (e) {
       _isLoading = false;
       notifyListeners();
-      showSnack(context, "04", "Error in connectin... Try again Later");
+      showSnack(context, "04", "Error in connection... Try again Later");
     }
   }
 }

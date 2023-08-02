@@ -38,6 +38,7 @@ class ImagePath {
   static const String phoneCall = "assets/icons/phone_call.svg";
   static const String outgoingMail = "assets/icons/outgoing_mail.svg";
   static const String preferences = "assets/icons/preferences.svg";
+  static const String noProfile = "assets/icons/no_profile.svg";
 
   // Courses
   static const String noCourse = "assets/icons/no_course.svg";

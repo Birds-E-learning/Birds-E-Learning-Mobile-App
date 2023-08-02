@@ -99,7 +99,7 @@ class NetworkService {
       case 500:
       default:
         throw FetchDataException(
-            'Error occured while communicating with server with status code : ${response.statusCode}');
+            'Error occurred while communicating with server with status code : ${response.statusCode}');
     }
   }
 
@@ -122,7 +122,7 @@ class NetworkService {
       case 500:
       default:
         throw FetchDataException(
-            'Error occured while communicating with server with status code : ${response.statusCode}');
+            'Error occurred while communicating with server with status code : ${response.statusCode}');
     }
   }
 }

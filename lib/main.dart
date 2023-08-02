@@ -20,6 +20,9 @@ import 'package:birds_learning_network/src/features/modules/profile/view_model/c
 import 'package:birds_learning_network/src/features/modules/profile/view_model/edit_preference.dart';
 import 'package:birds_learning_network/src/features/modules/profile/view_model/profile_provider.dart';
 import 'package:birds_learning_network/src/features/modules/user_cart/view_model/cart_provider.dart';
+import 'package:birds_learning_network/src/features/unregistered_user_flow/course/view_model/course_content_provider.dart';
+import 'package:birds_learning_network/src/features/unregistered_user_flow/course/view_model/course_provider.dart';
+import 'package:birds_learning_network/src/features/unregistered_user_flow/home/view_model/home_provider.dart';
 import 'package:birds_learning_network/src/global_model/services/native_app/device_details.dart';
 import 'package:birds_learning_network/src/global_model/services/storage/shared_preferences/user_details.dart';
 import 'package:birds_learning_network/src/utils/global_constants/asset_paths/image_path.dart';
@@ -68,6 +71,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => FacilitatorProvider()),
         ChangeNotifierProvider(create: (context) => PaidCoursesProvider()),
         ChangeNotifierProvider(create: (context) => HomePreferenceProvider()),
+        ChangeNotifierProvider(create: (context) => UnregisteredHomeProvider()),
+        ChangeNotifierProvider(create: (context) => UnregisteredCourseContentProvider()),
+        ChangeNotifierProvider(create: (context) => UnregisteredCourseProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -107,12 +113,13 @@ class _SplashScreenState extends State<SplashScreen> {
       if (!mounted) return;
       if (isLoggedIn) {
         try {
-          Provider.of<LoginProvider>(context, listen: false)
-              .autoLogin(await getData(), context);
+          Provider.of<LoginProvider>(context, listen: false).autoLogin(await getData(), context);
         } catch (e) {
           RoutingService.pushReplacementRouting(context, const LoginScreen());
         }
       } else {
+        await context.read<UnregisteredHomeProvider>().getAnonymousToken(context);
+        if(!mounted) return;
         RoutingService.pushReplacementRouting(
             context, const FirstWalkThroughPage());
       }
