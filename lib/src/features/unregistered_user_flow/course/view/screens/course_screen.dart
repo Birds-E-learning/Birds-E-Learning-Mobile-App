@@ -1,4 +1,4 @@
-import 'package:birds_learning_network/src/features/core/auth/view/sign_up.dart';
+import 'package:birds_learning_network/src/features/core/auth/view/auth_prompt.dart';
 import 'package:birds_learning_network/src/utils/custom_widgets/custom_bacground.dart';
 import 'package:birds_learning_network/src/utils/global_constants/asset_paths/image_path.dart';
 import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
@@ -47,7 +47,7 @@ class UnregisteredCourseScreen extends StatelessWidget with CourseTextWidgets, C
                   style: AuthStyles.termsStyle.copyWith(fontSize: 16, color: skipColor),
                   recognizer: TapGestureRecognizer()
                       ..onTap = () => Navigator.pushAndRemoveUntil(context,
-                      MaterialPageRoute(builder: (context)=> const SignUpScreen()),
+                      MaterialPageRoute(builder: (context)=> const AuthPromptScreen()),
                         (route) => false),
                   ),
                 ],

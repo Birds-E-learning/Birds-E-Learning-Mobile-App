@@ -1,6 +1,7 @@
 class ImagePath {
   // ------GENERAL IMAGES------
-  static const String birds = "assets/images/birds.png";
+  static const String birds = "assets/images/appLogo.svg";
+  static const String authPrompt = "assets/images/authImage.svg";
   static const String started = "assets/images/started.png";
   static const String walkImage1 = "assets/images/walk_image.png";
   static const String walkImage2 = "assets/images/walk_image1.png";

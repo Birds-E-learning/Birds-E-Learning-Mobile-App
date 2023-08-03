@@ -3,8 +3,8 @@ import 'package:birds_learning_network/src/features/core/auth/model/repositories
 import 'package:birds_learning_network/src/features/core/auth/model/request_model/reset_model.dart';
 import 'package:birds_learning_network/src/features/core/auth/model/response_model/otp_response.dart';
 import 'package:birds_learning_network/src/features/core/auth/model/response_model/reset_response.dart';
-import 'package:birds_learning_network/src/features/core/auth/view/enter_otp.dart';
-import 'package:birds_learning_network/src/features/core/auth/view/sign_in.dart';
+import 'package:birds_learning_network/src/features/core/auth/view/onboarding/enter_otp.dart';
+import 'package:birds_learning_network/src/features/core/auth/view/login/sign_in.dart';
 import 'package:birds_learning_network/src/utils/helper_widgets/response_snack.dart';
 import 'package:birds_learning_network/src/utils/ui_utils/app_dialogs/success_dialog.dart';
 import 'package:flutter/material.dart';

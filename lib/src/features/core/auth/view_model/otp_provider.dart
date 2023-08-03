@@ -2,8 +2,8 @@ import 'package:birds_learning_network/src/config/routing/route.dart';
 import 'package:birds_learning_network/src/features/core/auth/model/repositories/auth_repository.dart';
 import 'package:birds_learning_network/src/features/core/auth/model/request_model/otp_model.dart';
 import 'package:birds_learning_network/src/features/core/auth/model/response_model/otp_response.dart';
-import 'package:birds_learning_network/src/features/core/auth/view/otp_success.dart';
-import 'package:birds_learning_network/src/features/core/auth/view/reset_password.dart';
+import 'package:birds_learning_network/src/features/core/auth/view/onboarding/otp_success.dart';
+import 'package:birds_learning_network/src/features/core/auth/view/forgot_password/reset_password.dart';
 import 'package:birds_learning_network/src/utils/helper_widgets/response_snack.dart';
 import 'package:flutter/material.dart';
 

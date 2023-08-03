@@ -1,5 +1,5 @@
 import 'package:birds_learning_network/src/config/routing/route.dart';
-import 'package:birds_learning_network/src/features/core/auth/view/sign_up.dart';
+import 'package:birds_learning_network/src/features/core/auth/view/auth_prompt.dart';
 import 'package:birds_learning_network/src/features/core/walk_through/view/walk_through.dart';
 import 'package:birds_learning_network/src/features/unregistered_user_flow/home/view/screens/home.dart';
 import 'package:birds_learning_network/src/utils/global_constants/asset_paths/image_path.dart';
@@ -16,10 +16,9 @@ class ThirdWalkThroughPage extends StatelessWidget with WalkThroughTextWidget {
       position: 2,
       child: walkText3(),
       onPressed: () {
-        RoutingService.pushAndRemoveAllRoute(context, const SignUpScreen());
+        RoutingService.pushAndRemoveAllRoute(context, const AuthPromptScreen());
       },
       onPressed2: (){
-        print("something here");
         RoutingService.pushAndRemoveAllRoute(context, const UnregisteredHome());
       },
     );

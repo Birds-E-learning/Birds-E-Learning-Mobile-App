@@ -2,7 +2,7 @@ import 'package:birds_learning_network/src/config/routing/route.dart';
 import 'package:birds_learning_network/src/features/core/auth/model/repositories/auth_repository.dart';
 import 'package:birds_learning_network/src/features/core/auth/model/request_model/sign_up_model.dart';
 import 'package:birds_learning_network/src/features/core/auth/model/response_model/sign_up_response.dart';
-import 'package:birds_learning_network/src/features/core/auth/view/enter_otp.dart';
+import 'package:birds_learning_network/src/features/core/auth/view/onboarding/enter_otp.dart';
 import 'package:birds_learning_network/src/utils/helper_widgets/response_snack.dart';
 import 'package:flutter/material.dart';
 

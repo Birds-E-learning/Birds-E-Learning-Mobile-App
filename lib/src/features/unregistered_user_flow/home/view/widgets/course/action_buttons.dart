@@ -1,6 +1,6 @@
 import 'package:birds_learning_network/src/config/routing/route.dart';
-import 'package:birds_learning_network/src/features/core/auth/view/sign_in.dart';
-import 'package:birds_learning_network/src/features/core/auth/view/sign_up.dart';
+import 'package:birds_learning_network/src/features/core/auth/view/login/sign_in.dart';
+import 'package:birds_learning_network/src/features/core/auth/view/onboarding/sign_up.dart';
 import 'package:birds_learning_network/src/features/modules/home/model/response_model/get_courses.dart';
 import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
 import 'package:birds_learning_network/src/utils/helper_widgets/button_black.dart';

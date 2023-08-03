@@ -3,7 +3,7 @@ import 'package:birds_learning_network/src/features/core/auth/model/request_mode
 import 'package:birds_learning_network/src/features/core/auth/model/request_model/login_model.dart';
 import 'package:birds_learning_network/src/features/core/auth/model/request_model/sign_up_model.dart';
 import 'package:birds_learning_network/src/features/core/auth/view/auth_screen.dart';
-import 'package:birds_learning_network/src/features/core/auth/view/sign_in.dart';
+import 'package:birds_learning_network/src/features/core/auth/view/login/sign_in.dart';
 import 'package:birds_learning_network/src/features/core/auth/view_model/login_provider/login_provider.dart';
 import 'package:birds_learning_network/src/features/core/auth/view_model/oauth_provider.dart';
 import 'package:birds_learning_network/src/features/core/auth/view_model/sign_up_provider/sign_up.dart';

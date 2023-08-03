@@ -1,6 +1,6 @@
 import 'dart:ui';
 import 'package:birds_learning_network/src/config/routing/route.dart';
-import 'package:birds_learning_network/src/features/core/auth/view/sign_up.dart';
+import 'package:birds_learning_network/src/features/core/auth/view/auth_prompt.dart';
 import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
 import 'package:birds_learning_network/src/utils/helper_widgets/button_black.dart';
 import 'package:birds_learning_network/src/utils/helper_widgets/button_white.dart';
@@ -108,7 +108,7 @@ class WalkThroughScreen extends StatelessWidget with WalkThroughTextWidget {
                               child: WhiteButtonWidget(
                                   onPressed: () {
                                     RoutingService.pushReplacementRouting(
-                                        context, const SignUpScreen());
+                                        context, const AuthPromptScreen());
                                   },
                                   child: skipButtonText()),
                             ),
