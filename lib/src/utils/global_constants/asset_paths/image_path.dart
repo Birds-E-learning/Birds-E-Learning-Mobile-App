@@ -80,4 +80,8 @@ class ImagePath {
   // Certificate
 
   static const String certImage = "assets/icons/cert_pics.svg";
+
+  // Payment Icons
+
+  static const String paymentSuccess = "assets/icons/payment_success.svg";
 }

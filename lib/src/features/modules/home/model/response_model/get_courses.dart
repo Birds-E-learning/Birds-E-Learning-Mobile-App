@@ -127,6 +127,7 @@ class Courses {
   String? imageUrl;
   String? imageBannerUrl;
   bool? wishList;
+  bool? subscriptionBased;
   Facilitator? facilitator;
   List<Sections>? sections;
 
@@ -163,6 +164,7 @@ class Courses {
     this.imageUrl,
     this.imageBannerUrl,
     this.wishList,
+    this.subscriptionBased,
     this.facilitator,
     this.sections,
   });
@@ -200,6 +202,7 @@ class Courses {
     imageUrl = json['imageUrl'] as String?;
     imageBannerUrl = json['imageBannerUrl'] as String?;
     wishList = json['wishList'] as bool?;
+    subscriptionBased = json['subscriptionBased'] as bool? ?? true;
     facilitator = (json['facilitator'] as Map<String, dynamic>?) != null
         ? Facilitator.fromJson(json['facilitator'] as Map<String, dynamic>)
         : null;
@@ -242,6 +245,7 @@ class Courses {
     json['imageUrl'] = imageUrl;
     json['imageBannerUrl'] = imageBannerUrl;
     json['wishList'] = wishList;
+    json['subscriptionBased'] = subscriptionBased;
     json['facilitator'] = facilitator?.toJson();
     json['sections'] = sections?.map((e) => e.toJson()).toList();
     return json;

@@ -76,7 +76,7 @@ class PaymentProvider extends ChangeNotifier {
       getFailedDialog(e.error.message!, context);
     } catch (e) {
       _payClicked ? onPayClick() : null;
-      getFailedDialog("Payment error : ${e.toString()}", context);
+      getFailedDialog("Payment error : Unable to successfully make payment", context);
       throw Exception(e);
     }
   }
@@ -105,7 +105,7 @@ class PaymentProvider extends ChangeNotifier {
       StripeChargesResponse response = StripeChargesResponse.fromJson(json);
       if (response.responseCode == "00" || response.responseCode == "000") {
         if (response.responseData!.status == "succeeded") {
-          getSuccessPaymentDialog(context, course: course, pending: false);
+          paymentSuccessDialog(context, course: course);
         } else if (response.responseData!.status == "pending") {
           getSuccessPaymentDialog(context, pending: true);
         } else {

@@ -35,7 +35,7 @@ class CourseContainer extends StatelessWidget {
                 ),
               ],
               image: DecorationImage(
-                  image: course.imageUrl!.toString().contains(".com")
+                  image: course.imageUrl.toString().contains(".com")
                       ? Image.network(
                           course.imageUrl.toString(),
                         ).image

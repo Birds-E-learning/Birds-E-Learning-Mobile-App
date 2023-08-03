@@ -29,7 +29,7 @@ class LectureTabWidget extends StatelessWidget {
               color: success400,
               thickness: 0.7,
             ),
-            itemCount: course.sections!.length,
+            itemCount: course.sections == null ? 0 : course.sections!.length,
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             itemBuilder: (BuildContext context, int index) {

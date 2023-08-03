@@ -8,6 +8,7 @@ class PaymentRepository extends NetworkService with BaseUrl, BaseHeaders {
   Future stripePaymentIntent(StripePaymentModel body, context) async {
     try {
       Map<String, String> header_ = await stripeHeader(context);
+      print(header_);
       var response =
           await stripeRequest(stripePayment, header_, context, body.toJson());
       return response;
