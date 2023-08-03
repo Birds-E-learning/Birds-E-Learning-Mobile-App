@@ -33,6 +33,7 @@ const Color success200 = Color(0XFFCBEFAF);
 const Color success600 = Color(0XFF63CF0F);
 const Color white200 = Color(0XFFFBFFF9);
 const Color white300 = Color(0XFFFEFEFE);
+const Color white500 = Color(0XFFFBF4FB);
 const Color greys900 = Color(0XFF040404);
 const Color lightGreen = Color(0XFF8D898A);
 const Color black200 = Color(0XFF090707);

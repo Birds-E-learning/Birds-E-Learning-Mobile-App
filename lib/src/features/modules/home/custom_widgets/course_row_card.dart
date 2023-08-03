@@ -1,11 +1,12 @@
 import 'package:birds_learning_network/src/config/routing/route.dart';
+import 'package:birds_learning_network/src/features/modules/home/custom_widgets/course_image.dart';
+import 'package:birds_learning_network/src/features/modules/subscription/view/widget/subscription_tag.dart';
 import 'package:birds_learning_network/src/features/modules/home/model/response_model/get_courses.dart';
 import 'package:birds_learning_network/src/features/modules/home/view/buy_course_screen.dart';
 import 'package:birds_learning_network/src/features/modules/user_cart/view_model/cart_provider.dart';
 import 'package:birds_learning_network/src/utils/global_constants/asset_paths/image_path.dart';
 import 'package:birds_learning_network/src/utils/helper_widgets/star_widget.dart';
 import 'package:birds_learning_network/src/utils/mixins/module_mixins/home_mixins.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -27,67 +28,51 @@ class CourseRowCards extends StatelessWidget with HomeWidgets {
       child: SizedBox(
         // height: 70,
         width: size.width * 0.92,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
+            SizedBox(
+              height: 50,
+              width: 55,
+              child: CourseImageWidget(course: course,
+                  isMore: true,
+                  height: 50, width: 50)
+            ),
+            const SizedBox(width: 10),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
-                  height: 40,
-                  width: 50,
-                  child: CachedNetworkImage(
-                    height: 50,
-                    width: 50,
-                    fit: BoxFit.fill,
-                    imageUrl: course.imageUrl ?? "",
-                    placeholder: (context, url) {
-                      return Image.asset(
-                        ImagePath.titlePics,
-                        fit: BoxFit.fill,
-                      );
-                    },
-                    errorWidget: (context, url, error) {
-                      return Image.asset(
-                        ImagePath.titlePics,
-                        fit: BoxFit.fill,
-                      );
-                    },
-                  ),
+                  width: size.width - (size.width * 0.08) - 70,
+                  child: courseTitleText(
+                      course.title ?? "Introduction to Technology"),
                 ),
-                const SizedBox(width: 10),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                const SizedBox(height: 2),
+                Row(
                   children: [
-                    SizedBox(
-                      width: size.width - (size.width * 0.08) - 60,
-                      child: courseTitleText(
-                          course.title ?? "Introduction to Technology"),
-                    ),
-                    const SizedBox(height: 2),
+                    ownerText(course.facilitator!.name ?? "Anonymous"),
+                    const SizedBox(width: 5),
                     Row(
-                      children: [
-                        ownerText(course.facilitator!.name ?? "Anonymous"),
-                        const SizedBox(width: 5),
-                        Row(
-                          children: getStarList(
-                              course.facilitator!.ratings.toString(),
-                              ImagePath.starFill,
-                              ImagePath.starUnfill),
-                        ),
-                        const SizedBox(width: 5),
-                        ratingText(course.facilitator!.reviews == ""
-                            ? "4"
-                            : course.facilitator!.reviews.toString())
-                      ],
+                      children: getStarList(
+                          course.facilitator!.ratings.toString(),
+                          ImagePath.starFill,
+                          ImagePath.starUnfill),
                     ),
-                    const SizedBox(height: 3),
-                    amountText(
-                        course.salePrice ?? "5000", course.price ?? "5500")
+                    const SizedBox(width: 5),
+                    ratingText(course.facilitator!.reviews == ""
+                        ? "4"
+                        : course.facilitator!.reviews.toString())
                   ],
+                ),
+                const SizedBox(height: 3),
+                Container(
+                  child: course.subscriptionBased ?? true
+                  ? const SubscriptionTagWidget()
+                  : amountText(
+                      course.salePrice ?? "5000", course.price ?? "5500"),
                 )
               ],
-            ),
+            )
           ],
         ),
       ),

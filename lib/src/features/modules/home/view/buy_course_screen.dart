@@ -8,9 +8,12 @@ import 'package:birds_learning_network/src/features/modules/home/view/widgets/pr
 import 'package:birds_learning_network/src/features/modules/home/view/widgets/section_card.dart';
 import 'package:birds_learning_network/src/features/modules/home/view/widgets/shimmer/section_shimmer.dart';
 import 'package:birds_learning_network/src/features/modules/home/view_model/course_content_provider.dart';
+import 'package:birds_learning_network/src/features/modules/subscription/view/screens/subscription_screen.dart';
 import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
 import 'package:birds_learning_network/src/utils/global_constants/styles/cart_styles/cart_styles.dart';
 import 'package:birds_learning_network/src/utils/global_constants/styles/home_styles/home_styles.dart';
+import 'package:birds_learning_network/src/utils/global_constants/styles/text_style.dart';
+import 'package:birds_learning_network/src/utils/helper_widgets/button_black.dart';
 import 'package:birds_learning_network/src/utils/mixins/module_mixins/content_mixins.dart';
 import 'package:birds_learning_network/src/utils/mixins/module_mixins/home_mixins.dart';
 import 'package:chewie/chewie.dart';
@@ -228,9 +231,25 @@ class _BuyCourseScreenState extends State<BuyCourseScreen>
                   //   ],
                   // ),
                   const SizedBox(height: 20),
-                  bigAmountText(widget.course.salePrice ?? "00.00"),
+                  Container(
+                      child: widget.course.subscriptionBased ?? true
+                      ? null
+                      : bigAmountText(widget.course.salePrice ?? "00.00"),
+                  ),
                   const SizedBox(height: 10),
-                  CourseActionButtons(course: widget.course)
+                  Container(
+                      child: widget.course.subscriptionBased ?? true
+                      ? SizedBox(
+                        width: double.infinity,
+                        child: BlackButtonWidget(
+                            onPressed: () => RoutingService.pushRouting(context,const SubscriptionScreen()),
+                            child: Text(
+                              "Subscribe",
+                              style: TextStyles.buttonStyle.copyWith(color: nextColor),
+                            )),
+                      )
+                      : CourseActionButtons(course: widget.course),
+                  )
                 ],
               ),
             ),
@@ -302,7 +321,7 @@ class _BuyCourseScreenState extends State<BuyCourseScreen>
       widget.course.sections =
           await Provider.of<CourseContentProvider>(context, listen: false)
               .getCourseSection(context, widget.course.id!);
-      setState(() {});
+      // setState(() {});
     }
   }
 }

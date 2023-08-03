@@ -1,11 +1,12 @@
 import 'package:birds_learning_network/src/config/routing/route.dart';
+import 'package:birds_learning_network/src/features/modules/home/custom_widgets/course_image.dart';
+import 'package:birds_learning_network/src/features/modules/subscription/view/widget/subscription_tag.dart';
 import 'package:birds_learning_network/src/features/modules/home/model/response_model/get_courses.dart';
 import 'package:birds_learning_network/src/features/modules/home/view/buy_course_screen.dart';
 import 'package:birds_learning_network/src/utils/global_constants/asset_paths/image_path.dart';
 import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
 import 'package:birds_learning_network/src/utils/helper_widgets/star_widget.dart';
 import 'package:birds_learning_network/src/utils/mixins/module_mixins/home_mixins.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class CourseCard extends StatelessWidget with ImagePath, HomeWidgets {
@@ -44,42 +45,11 @@ class CourseCard extends StatelessWidget with ImagePath, HomeWidgets {
             SizedBox(
                 height: 90,
                 width: 165,
-                child: CachedNetworkImage(
-                  imageUrl: course.imageUrl ?? "",
-                  imageBuilder: (context, imageProvider) => Container(
-                    height: 90,
-                    width: 165,
-                    decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(10),
-                          topRight: Radius.circular(10)),
-                      color: Colors.transparent,
-                      image: DecorationImage(
-                        image: imageProvider,
-                        fit: BoxFit.fill,
-                      ),
-                    ),
-                  ),
-                  placeholder: (context, url) => const Center(
-                      child: SizedBox(
-                          height: 30,
-                          width: 30,
-                          child: CircularProgressIndicator())),
-                  errorWidget: (context, url, error) => Container(
-                    height: 90,
-                    width: 165,
-                    decoration: BoxDecoration(
-                      color: Colors.transparent,
-                      image: DecorationImage(
-                        image: Image.asset(ImagePath.thumbnail).image,
-                        fit: BoxFit.fill,
-                      ),
-                    ),
-                  ),
-                )),
+                child: CourseImageWidget(course: course)),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 5),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(
                     width: size.width - (size.width * 0.08) - 60,
@@ -94,7 +64,7 @@ class CourseCard extends StatelessWidget with ImagePath, HomeWidgets {
                           ownerText(course.facilitator!.name == ""
                               ? "Anonymous"
                               : course.facilitator!.name!),
-                          const SizedBox(height: 5),
+                          SizedBox(height: course.subscriptionBased ?? true ? 8 : 5),
                           Row(
                             children: [
                               Row(
@@ -109,16 +79,23 @@ class CourseCard extends StatelessWidget with ImagePath, HomeWidgets {
                           )
                         ],
                       ),
-                      IconButton(
-                          onPressed: onFavPressed,
-                          icon: Icon(
-                            iconData,
-                            color: iconColor,
-                          ))
+                      SizedBox(height: course.subscriptionBased ?? true ? 8 : 5),
+                      Container(
+                        child: course.subscriptionBased ?? true ? null : IconButton(
+                            onPressed: onFavPressed,
+                            icon: Icon(
+                              iconData,
+                              color: iconColor,
+                            )),
+                      )
                     ],
                   ),
-                  const SizedBox(height: 5),
-                  amountText(course.salePrice ?? "5000", course.price ?? "5500")
+                  SizedBox(height: course.subscriptionBased ?? true ? 8 : 5),
+                  Container(
+                      child: course.subscriptionBased ?? true
+                      ? const SubscriptionTagWidget()
+                      :amountText(course.salePrice ?? "5000", course.price ?? "5500"),
+                  )
                 ],
               ),
             )

@@ -12,4 +12,9 @@ class PaymentTexts {
   static const String cancelButton = "Cancel";
   static const String richText1 = "Powered by:";
   static const String saveCardText = "Save Card";
+
+  // SUBSCRIPTION TEXTS
+
+  static const String subscription = "Subscription";
+
 }
