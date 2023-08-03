@@ -1,16 +1,16 @@
 import 'package:birds_learning_network/src/config/routing/route.dart';
+import 'package:birds_learning_network/src/features/modules/home/custom_widgets/course_image.dart';
+import 'package:birds_learning_network/src/features/modules/home/model/response_model/get_courses.dart';
 import 'package:birds_learning_network/src/features/modules/home/view/buy_course_screen.dart';
 import 'package:birds_learning_network/src/features/modules/payment/view/screens/payment_screen.dart';
+import 'package:birds_learning_network/src/features/modules/subscription/view/widget/subscription_tag.dart';
 import 'package:birds_learning_network/src/features/modules/user_cart/view_model/cart_provider.dart';
+import 'package:birds_learning_network/src/utils/global_constants/asset_paths/image_path.dart';
 import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
 import 'package:birds_learning_network/src/utils/helper_widgets/star_widget.dart';
 import 'package:birds_learning_network/src/utils/mixins/module_mixins/cart_mixins.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import '../../../../../utils/global_constants/asset_paths/image_path.dart';
-import '../../../home/model/response_model/get_courses.dart';
 
 class CourseCartCards extends StatelessWidget with CartWidgets {
   const CourseCartCards({
@@ -39,24 +39,9 @@ class CourseCartCards extends StatelessWidget with CartWidgets {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 SizedBox(
-                  height: 50,
+                  height: 55,
                   width: 50,
-                  child: CachedNetworkImage(
-                    imageUrl: course.imageUrl ?? "",
-                    fit: BoxFit.fill,
-                    placeholder: (context, url) {
-                      return Image.asset(
-                        ImagePath.titlePics,
-                        fit: BoxFit.fill,
-                      );
-                    },
-                    errorWidget: (context, url, error) {
-                      return Image.asset(
-                        ImagePath.titlePics,
-                        fit: BoxFit.fill,
-                      );
-                    },
-                  ),
+                  child: CourseImageWidget(course: course, height: 50, width: 60, isMore: true,)
                 ),
                 const SizedBox(width: 10),
                 Column(
@@ -89,8 +74,12 @@ class CourseCartCards extends StatelessWidget with CartWidgets {
                       ],
                     ),
                     const SizedBox(height: 3),
-                    amountText(
-                        course.salePrice ?? "000", course.price ?? "000"),
+                    Container(
+                      child: course.subscriptionBased ?? true
+                          ? const SubscriptionTagWidget()
+                          : amountText(
+                          course.salePrice ?? "5000", course.price ?? "5500"),
+                    ),
                     const SizedBox(height: 5),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
