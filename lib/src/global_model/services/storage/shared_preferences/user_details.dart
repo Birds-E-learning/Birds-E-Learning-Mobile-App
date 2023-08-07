@@ -69,4 +69,16 @@ class UserPreferences {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getBool("isCheck") ?? false;
   }
+
+  static Future<bool> setReminderDate() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String now = DateTime.now().toIso8601String();
+    return await prefs.setString("reminderDate", now);
+  }
+
+  static Future<DateTime?> getReminderDate() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? date = prefs.getString("reminderDate");
+    return date != null ? DateTime.parse(date) : null;
+  }
 }

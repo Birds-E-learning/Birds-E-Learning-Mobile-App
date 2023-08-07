@@ -15,6 +15,7 @@ import 'package:birds_learning_network/src/features/modules/profile/view_model/c
 import 'package:birds_learning_network/src/features/modules/profile/view_model/change_password_provider.dart';
 import 'package:birds_learning_network/src/features/modules/profile/view_model/edit_preference.dart';
 import 'package:birds_learning_network/src/features/modules/profile/view_model/profile_provider.dart';
+import 'package:birds_learning_network/src/features/modules/subscription/view_model/subscription_provider.dart';
 import 'package:birds_learning_network/src/features/modules/user_cart/view_model/cart_provider.dart';
 import 'package:birds_learning_network/src/features/unregistered_user_flow/course/view_model/course_content_provider.dart';
 import 'package:birds_learning_network/src/features/unregistered_user_flow/course/view_model/course_provider.dart';
@@ -44,27 +45,28 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => LoginProvider()),
-        ChangeNotifierProvider(create: (context) => SignUpProvider()),
-        ChangeNotifierProvider(create: (context) => OtpProvider()),
-        ChangeNotifierProvider(create: (context) => OAuthProvider()),
-        ChangeNotifierProvider(create: (context) => ResetPasswordProvider()),
-        ChangeNotifierProvider(create: (context) => FilterProvider()),
-        ChangeNotifierProvider(create: (context) => ProfileProvider()),
-        ChangeNotifierProvider(create: (context) => ChangePasswordProvider()),
-        ChangeNotifierProvider(create: (context) => CardProvider()),
-        ChangeNotifierProvider(create: (context) => HomeProvider()),
-        ChangeNotifierProvider(create: (context) => CourseContentProvider()),
-        ChangeNotifierProvider(create: (context) => PreferenceProvider()),
-        ChangeNotifierProvider(create: (context) => CartProvider()),
-        ChangeNotifierProvider(create: (context) => PaymentProvider()),
-        ChangeNotifierProvider(create: (context) => CourseProvider()),
-        ChangeNotifierProvider(create: (context) => FacilitatorProvider()),
-        ChangeNotifierProvider(create: (context) => PaidCoursesProvider()),
-        ChangeNotifierProvider(create: (context) => HomePreferenceProvider()),
-        ChangeNotifierProvider(create: (context) => UnregisteredHomeProvider()),
-        ChangeNotifierProvider(create: (context) => UnregisteredCourseContentProvider()),
-        ChangeNotifierProvider(create: (context) => UnregisteredCourseProvider()),
+        ChangeNotifierProvider(create: (_) => LoginProvider()),
+        ChangeNotifierProvider(create: (_) => SignUpProvider()),
+        ChangeNotifierProvider(create: (_) => OtpProvider()),
+        ChangeNotifierProvider(create: (_) => OAuthProvider()),
+        ChangeNotifierProvider(create: (_) => ResetPasswordProvider()),
+        ChangeNotifierProvider(create: (_) => FilterProvider()),
+        ChangeNotifierProvider(create: (_) => ProfileProvider()),
+        ChangeNotifierProvider(create: (_) => ChangePasswordProvider()),
+        ChangeNotifierProvider(create: (_) => CardProvider()),
+        ChangeNotifierProvider(create: (_) => HomeProvider()),
+        ChangeNotifierProvider(create: (_) => CourseContentProvider()),
+        ChangeNotifierProvider(create: (_) => PreferenceProvider()),
+        ChangeNotifierProvider(create: (_) => CartProvider()),
+        ChangeNotifierProvider(create: (_) => PaymentProvider()),
+        ChangeNotifierProvider(create: (_) => CourseProvider()),
+        ChangeNotifierProvider(create: (_) => FacilitatorProvider()),
+        ChangeNotifierProvider(create: (_) => PaidCoursesProvider()),
+        ChangeNotifierProvider(create: (_) => HomePreferenceProvider()),
+        ChangeNotifierProvider(create: (_) => UnregisteredHomeProvider()),
+        ChangeNotifierProvider(create: (_) => UnregisteredCourseContentProvider()),
+        ChangeNotifierProvider(create: (_) => UnregisteredCourseProvider()),
+        ChangeNotifierProvider(create: (_) => SubscriptionProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

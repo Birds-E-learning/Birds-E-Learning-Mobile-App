@@ -16,7 +16,7 @@ class QuickListView extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     return Consumer<HomeProvider>(
       builder: (_, home, __) => SizedBox(
-        height: 205,
+        height: 195,
         child: home.quickCourses.isEmpty && home.isQuickLoading
             ? ListView.builder(
                 padding: EdgeInsets.symmetric(horizontal: size.width * 0.03),

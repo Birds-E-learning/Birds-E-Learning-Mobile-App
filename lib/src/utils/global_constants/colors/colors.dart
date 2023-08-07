@@ -45,3 +45,4 @@ const Color purple = Color(0xFF635BFF);
 const Color gradient = Color(0XFF0C1A02);
 const Color warning300 = Color(0XFFF1D283);
 const Color success300 = Color(0XFFF6FFEF);
+const Color white900 = Color.fromRGBO(248, 255, 243, 1);

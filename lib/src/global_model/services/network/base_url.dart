@@ -73,4 +73,10 @@ class BaseUrl {
    String newsCategoryUrl({String limit = "34"}) => "${base}social-content/news/categories?limit=$limit";
    String  newsByCategoryUrl(String categoryId) => "${base}social-content/news/categories/single?categoryId=$categoryId";
    String newsUrl(String categoryId, {String limit = "30"}) => "${base}social-content/news?categoryId=$categoryId&limit=$limit";
+
+   // Subscription Plans
+
+   final String subscriptionPlanUrl = "${base}subscription/durations";
+   final String subscriptionPaymentUrl = "${base}subscription/subscribe";
+   final String subscriptionLatestUrl = "${base}subscription/latest";
 }

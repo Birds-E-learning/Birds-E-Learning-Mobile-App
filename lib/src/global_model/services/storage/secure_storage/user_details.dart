@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:birds_learning_network/src/features/core/auth/model/response_model/login_response.dart';
+import 'package:birds_learning_network/src/global_model/services/storage/secure_storage/subscription_plan.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class UserSecureStorage {
@@ -17,7 +18,6 @@ class UserSecureStorage {
   }
 
   Future setAnonToken(String? token) async {
-    print(token);
     await storage.write(key: _anonTokenKey, value: token);
   }
 
@@ -26,7 +26,9 @@ class UserSecureStorage {
   }
 
   Future setUserData(LoginResponse userData) async {
+    print(userData.responseData!.toJson());
     await setToken(userData.responseData!.authToken ?? "");
+    await SubscriptionStorage().setSubscriptionData(userData.responseData!.subscription);
     await storage.write(key: _userDataKey, value: jsonEncode(userData));
   }
 

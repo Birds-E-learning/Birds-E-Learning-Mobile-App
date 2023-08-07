@@ -64,7 +64,7 @@ class CourseCard extends StatelessWidget with ImagePath, HomeWidgets {
                           ownerText(course.facilitator!.name == ""
                               ? "Anonymous"
                               : course.facilitator!.name!),
-                          SizedBox(height: course.subscriptionBased ?? true ? 8 : 5),
+                          SizedBox(height: course.subscriptionBased != null &&  course.subscriptionBased! ? 8 : 5),
                           Row(
                             children: [
                               Row(
@@ -79,7 +79,7 @@ class CourseCard extends StatelessWidget with ImagePath, HomeWidgets {
                           )
                         ],
                       ),
-                      SizedBox(height: course.subscriptionBased ?? true ? 8 : 5),
+                      SizedBox(height: course.subscriptionBased != null &&  course.subscriptionBased! ? 8 : 5),
                       Container(
                         child: course.subscriptionBased ?? true ? null : IconButton(
                             onPressed: onFavPressed,
@@ -90,10 +90,10 @@ class CourseCard extends StatelessWidget with ImagePath, HomeWidgets {
                       )
                     ],
                   ),
-                  SizedBox(height: course.subscriptionBased ?? true ? 8 : 5),
+                  SizedBox(height: course.subscriptionBased != null &&  course.subscriptionBased! ? 8 : 5),
                   Container(
-                      child: course.subscriptionBased ?? true
-                      ? const SubscriptionTagWidget()
+                      child: course.subscriptionBased != null &&  course.subscriptionBased!
+                      ?  SubscriptionTagWidget(course: course)
                       :amountText(course.salePrice ?? "5000", course.price ?? "5500"),
                   )
                 ],

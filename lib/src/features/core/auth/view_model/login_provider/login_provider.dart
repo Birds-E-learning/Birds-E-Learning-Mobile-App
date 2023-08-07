@@ -75,9 +75,10 @@ class LoginProvider extends ChangeNotifier {
 
   Future userLogin(context, LoginModel data, bool autoLogin) async {
     try {
-      LoginResponse response = await repository.getLoginResponse(data, context);
-      onClick();
-      if (response.responseCode == "00") {
+      LoginResponse? response = await repository.getLoginResponse(data, context);
+      _isClicked ? onClick() : null;
+      notifyListeners();
+      if (response != null && response.responseCode == "00") {
         await UserPreferences.setUserFirstName(
             response.responseData!.firstName!);
         await UserPreferences.setUserEmail(response.responseData!.email!);
@@ -88,12 +89,13 @@ class LoginProvider extends ChangeNotifier {
         RoutingService.pushAndRemoveAllRoute(
             context, autoLogin ? const FilterScreen() : const BirdsHome());
       } else {
-        showSnack(context, response.responseCode!, response.responseMessage!);
+        showSnack(context, response?.responseCode ?? "03", response?.responseMessage ?? "");
       }
-      notifyListeners();
     } catch (e) {
-      autoLogin ? onCompleteClick() : onClick();
-      showSnack(context, "02", "Access Denied");
+      _isClicked ? onClick() : null;
+      autoLogin ? onCompleteClick() : null;
+      notifyListeners();
+      showSnack(context, "02", e.toString());
     }
   }
 
@@ -109,22 +111,24 @@ class LoginProvider extends ChangeNotifier {
 
   Future autoLogin(AutomaticLoginModel data, context) async {
     try {
-      LoginResponse response =
+      LoginResponse? response =
           await AuthRepository().getAutoLoginResponse(data, context);
       debugPrint(data.toJson().toString());
-      if (response.responseCode == "00") {
-        await UserPreferences.setUserFirstName(
-            response.responseData!.firstName!);
-        await UserPreferences.setUserEmail(response.responseData!.email!);
-        await storage.setToken(response.responseData!.authToken!);
-        await storage.setUserData(response);
-        Provider.of<HomeProvider>(context, listen: false).getHomeData(context);
+     if(response != null){
+       if (response.responseCode == "00") {
+         await UserPreferences.setUserFirstName(
+             response.responseData!.firstName!);
+         await UserPreferences.setUserEmail(response.responseData!.email!);
+         await storage.setToken(response.responseData!.authToken!);
+         await storage.setUserData(response);
+         Provider.of<HomeProvider>(context, listen: false).getHomeData(context);
 
-        RoutingService.pushReplacementRouting(context, const BirdsHome());
-      } else {
-        RoutingService.pushReplacementRouting(
-            context, const LoginScreen(firstTime: false));
-      }
+         RoutingService.pushReplacementRouting(context, const BirdsHome());
+       } else {
+         RoutingService.pushReplacementRouting(
+             context, const LoginScreen(firstTime: false));
+       }
+     }
       notifyListeners();
     } catch (e) {
       RoutingService.pushReplacementRouting(context, const LoginScreen());
@@ -146,9 +150,9 @@ class LoginProvider extends ChangeNotifier {
               email: userData["email"],
               deviceId: deviceId);
 
-          LoginResponse loginResponse =
+          LoginResponse? loginResponse =
               await repository.getLoginResponse(body, context);
-          if (loginResponse.responseCode == "00") {
+          if (loginResponse != null && loginResponse.responseCode == "00") {
             await UserPreferences.setUserFirstName(
                 loginResponse.responseData!.firstName!);
             await UserPreferences.setUserEmail(
@@ -161,7 +165,7 @@ class LoginProvider extends ChangeNotifier {
                 .getHomeData(context);
             RoutingService.pushAndRemoveAllRoute(context, const BirdsHome());
             notifyListeners();
-          } else {
+          } else if(loginResponse != null) {
             auth.facebookClicked ? auth.onFacebookClick() : null;
             showSnack(context, loginResponse.responseCode!,
                 loginResponse.responseMessage!);

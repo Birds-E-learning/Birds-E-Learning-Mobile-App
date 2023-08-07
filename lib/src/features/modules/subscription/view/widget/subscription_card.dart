@@ -1,12 +1,14 @@
 import 'package:birds_learning_network/src/features/modules/subscription/model/response_model/subscription_type.dart';
 import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
+import 'package:birds_learning_network/src/utils/shared_functions/convert_currency.dart';
 import 'package:flutter/material.dart';
 
 class SubscriptionCardWidget extends StatelessWidget {
   const SubscriptionCardWidget({super.key,
-  required this.duration, this.selectedValue, this.onChanged});
+  required this.duration, this.selectedValue, this.onChanged, this.isSelected = false});
   final DurationData duration;
   final String? selectedValue;
+  final bool isSelected;
   final ValueChanged<dynamic>? onChanged;
 
   @override
@@ -14,8 +16,9 @@ class SubscriptionCardWidget extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(6),
       decoration:  BoxDecoration(
+          color: isSelected ? white900 : white,
           borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: const Color.fromRGBO(0, 0, 0, 0.3))
+          border: Border.all(color: isSelected ? success600 : const Color.fromRGBO(0, 0, 0, 0.3))
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -30,14 +33,18 @@ class SubscriptionCardWidget extends StatelessWidget {
                    Column(
                      crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(duration.duration ?? "", style: const TextStyle(
+                      Text(
+                        duration.duration != null ?
+                          "${duration.duration![0].toUpperCase()}${duration.duration!.substring(1).toLowerCase()}" : "",
+                        style: const TextStyle(
                         fontFamily: "Inter",
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
                         color: black,
                       ),),
                       const SizedBox(height: 6),
-                      Text("Pay for a ${duration.duration ?? ""}", style: const TextStyle(
+                      Text("Pay for a ${duration.duration != null ?
+                            duration.duration!.toLowerCase().replaceAll("ly", "") : ""}", style: const TextStyle(
                           fontSize: 10,
                           fontWeight: FontWeight.w400,
                           color: greys200,
@@ -77,14 +84,3 @@ class SubscriptionCardWidget extends StatelessWidget {
   }
 }
 
-
-String convertCurrency(String? currency){
-  if(currency == "USD"){
-    return "\$";
-  }else if(currency == "GBP" || currency == "GB"){
-    return "£";
-  }else if(currency == "NGN"){
-    return "₦";
-  }
-  return "\$";
-}

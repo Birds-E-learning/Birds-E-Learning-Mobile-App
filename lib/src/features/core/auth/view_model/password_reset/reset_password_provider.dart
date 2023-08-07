@@ -42,15 +42,17 @@ class ResetPasswordProvider extends ChangeNotifier {
 
   Future getOtpCall(context, String email) async {
     try {
-      OtpResponse response =
+      OtpResponse? response =
           await AuthRepository().getResendOtpResponse("reset", email, context);
       onGetOtpClick();
-      if (response.responseCode == "00") {
-        RoutingService.pushReplacementRouting(
-            context, EnterOTPScreen(email: email));
-      } else {
-        showSnack(context, response.responseCode!, response.responseMessage!);
-      }
+     if(response != null){
+       if (response.responseCode == "00") {
+         RoutingService.pushReplacementRouting(
+             context, EnterOTPScreen(email: email));
+       } else {
+         showSnack(context, response.responseCode!, response.responseMessage!);
+       }
+     }
     } catch (e) {
       onGetOtpClick();
       showSnack(context, "02", "Network TimedOut");

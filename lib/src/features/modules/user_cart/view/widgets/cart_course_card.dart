@@ -76,7 +76,7 @@ class CourseCartCards extends StatelessWidget with CartWidgets {
                     const SizedBox(height: 3),
                     Container(
                       child: course.subscriptionBased ?? true
-                          ? const SubscriptionTagWidget()
+                          ? SubscriptionTagWidget(course: course)
                           : amountText(
                           course.salePrice ?? "5000", course.price ?? "5500"),
                     ),

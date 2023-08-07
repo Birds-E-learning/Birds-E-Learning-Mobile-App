@@ -202,7 +202,7 @@ class Courses {
     imageUrl = json['imageUrl'] as String?;
     imageBannerUrl = json['imageBannerUrl'] as String?;
     wishList = json['wishList'] as bool?;
-    subscriptionBased = json['subscriptionBased'] as bool? ?? true;
+    subscriptionBased = json['subscriptionBased'] as bool?;
     facilitator = (json['facilitator'] as Map<String, dynamic>?) != null
         ? Facilitator.fromJson(json['facilitator'] as Map<String, dynamic>)
         : null;

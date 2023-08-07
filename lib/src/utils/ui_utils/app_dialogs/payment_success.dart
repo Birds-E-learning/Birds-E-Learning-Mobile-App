@@ -125,27 +125,21 @@ void paymentSuccessDialog(context, {Courses? course})async{
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(
-                  width: double.infinity,
-                  child: BlackButtonWidget(
-                      onPressed: ()async{
-                        await CoursePreference.saveCourseById(course ?? Courses(
-                          id: "0", categoryId: "0",
-                            facilitator: Facilitator(),
-                            sections: <Sections>[]
-                        )); // Saves the course in shared preference
-                        RoutingService.pushAndPopUntilRouteIsFirst(
-                            context, ViewCourseScreen(course: course ?? Courses(
-                            id: "0", categoryId: "0",
-                            facilitator: Facilitator(),
-                            sections: <Sections>[]
-                        )));
-                      }, child: Text(
-                    "Start Course",
-                    style: TextStyles.buttonStyle.copyWith(color: nextColor),
-                  )),
+                Container(
+                  child: course != null ? SizedBox(
+                    width: double.infinity,
+                    child: BlackButtonWidget(
+                        onPressed: ()async{
+                          await CoursePreference.saveCourseById(course); // Saves the course in shared preference
+                          RoutingService.pushAndPopUntilRouteIsFirst(
+                              context, ViewCourseScreen(course: course));
+                        }, child: Text(
+                      "Start Course",
+                      style: TextStyles.buttonStyle.copyWith(color: nextColor),
+                    )),
+                  ) : null,
                 ),
-                const SizedBox(height: 16),
+                 SizedBox(height: course != null ? 16 : 0),
                 SizedBox(
                   width: double.infinity,
                   child: WhiteButtonWidget(

@@ -1,7 +1,9 @@
+import 'package:birds_learning_network/src/features/modules/home/model/response_model/get_courses.dart';
 import 'package:birds_learning_network/src/features/modules/payment/model/request_model/stripe_payment.dart';
-import 'package:birds_learning_network/src/features/modules/payment/view_model/payment_provider.dart';
 import 'package:birds_learning_network/src/features/modules/profile/custom_widgets/custom_text_column.dart';
 import 'package:birds_learning_network/src/features/modules/subscription/model/response_model/subscription_type.dart';
+import 'package:birds_learning_network/src/features/modules/subscription/view_model/subscription_provider.dart';
+import 'package:birds_learning_network/src/global_model/apis/api_response.dart';
 import 'package:birds_learning_network/src/utils/formatters/card_expiration_formatter.dart';
 import 'package:birds_learning_network/src/utils/formatters/card_number_formatter.dart';
 import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
@@ -16,8 +18,11 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 class SubscriptionPaymentScreen extends StatefulWidget {
-  const SubscriptionPaymentScreen({super.key, required this.data});
+  const SubscriptionPaymentScreen({super.key,
+    required this.data,
+    this.course});
   final DurationData data;
+  final Courses? course;
 
   @override
   State<SubscriptionPaymentScreen> createState() => _SubscriptionPaymentScreenState();
@@ -50,8 +55,8 @@ class _SubscriptionPaymentScreenState extends State<SubscriptionPaymentScreen>
         backgroundColor: white,
         leading: leadingIcon(context),
       ),
-      body: Consumer<PaymentProvider>(
-        builder: (_, payment, __) => SafeArea(
+      body: Consumer<SubscriptionProvider>(
+        builder: (_, sub, __) => SafeArea(
             child: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.symmetric(
@@ -106,10 +111,6 @@ class _SubscriptionPaymentScreenState extends State<SubscriptionPaymentScreen>
                       ),
                     ],
                   ),
-                  // const SizedBox(height: 15),
-                  // saveCard(payment.isChecked, (value) {
-                  //   payment.onCheckClick(value);
-                  // }),
                   const SizedBox(height: 50),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -117,23 +118,19 @@ class _SubscriptionPaymentScreenState extends State<SubscriptionPaymentScreen>
                       BlackButtonWidget(
                           onPressed: () async {
                             FocusScope.of(context).unfocus();
-                            if (payment.payClicked) {
-                              payment.onPayClick();
-                              return;
-                            }
                             if (_formKey.currentState!.validate()) {
-                              payment.onPayClick();
                               StripePaymentRequest data = StripePaymentRequest(
                                 cardNo: cardNo.text.trim(),
                                 expiryDate: expiryDate.text.trim(),
                                 ccv: ccv.text.trim(),
                                 amount: "${widget.data.amount ?? 0}",
                               );
-                              await payment.getPaymentToken(context,
-                                  card: data);
+                              await sub.getPaymentToken(context,
+                                  card: data, plan: widget.data,
+                                  course: widget.course);
                             }
                           },
-                          child: payment.payClicked
+                          child: sub.paymentStatus == Status.loading
                               ? loadingIdicator()
                               : buttonText()),
                       const SizedBox(height: 15),

@@ -87,37 +87,39 @@ class OAuthProvider extends ChangeNotifier {
             emailAddress: _userData["email"] ?? "",
             signupBy: "FACEBOOK",
           );
-          SignUpResponse response =
+          SignUpResponse? response =
               await repository.getSignUpResponse(data, context);
-          if (response.responseCode == "00") {
-            LoginModel body = LoginModel(
-                loginBy: "FACEBOOK",
-                email: _userData["email"],
-                deviceId: deviceId);
-            LoginResponse loginResponse =
-                await repository.getLoginResponse(body, context);
-            if (loginResponse.responseCode == "00") {
-              await UserPreferences.setUserFirstName(
-                  loginResponse.responseData!.firstName!);
-              await UserPreferences.setUserEmail(
-                  loginResponse.responseData!.email!);
-              await UserPreferences.setLoginStatus(true);
-              await storage.setToken(loginResponse.responseData!.authToken!);
-              await storage.setUserData(loginResponse);
-              facebookClicked ? onFacebookClick() : null;
-              Provider.of<HomeProvider>(context, listen: false)
-                  .getHomeData(context);
-              RoutingService.pushAndRemoveAllRoute(
-                  context, const FilterScreen());
+          if(response != null){
+            if (response.responseCode == "00") {
+              LoginModel body = LoginModel(
+                  loginBy: "FACEBOOK",
+                  email: _userData["email"],
+                  deviceId: deviceId);
+              LoginResponse? loginResponse =
+              await repository.getLoginResponse(body, context);
+              if (loginResponse != null && loginResponse.responseCode == "00") {
+                await UserPreferences.setUserFirstName(
+                    loginResponse.responseData!.firstName!);
+                await UserPreferences.setUserEmail(
+                    loginResponse.responseData!.email!);
+                await UserPreferences.setLoginStatus(true);
+                await storage.setToken(loginResponse.responseData!.authToken!);
+                await storage.setUserData(loginResponse);
+                facebookClicked ? onFacebookClick() : null;
+                Provider.of<HomeProvider>(context, listen: false)
+                    .getHomeData(context);
+                RoutingService.pushAndRemoveAllRoute(
+                    context, const FilterScreen());
+              } else if(loginResponse != null) {
+                facebookClicked ? onFacebookClick() : null;
+                showSnack(context, loginResponse.responseCode!,
+                    loginResponse.responseMessage!);
+              }
             } else {
               facebookClicked ? onFacebookClick() : null;
-              showSnack(context, loginResponse.responseCode!,
-                  loginResponse.responseMessage!);
+              showSnack(
+                  context, response.responseCode!, response.responseMessage!);
             }
-          } else {
-            facebookClicked ? onFacebookClick() : null;
-            showSnack(
-                context, response.responseCode!, response.responseMessage!);
           }
           break;
         case LoginStatus.cancelled:
@@ -145,24 +147,26 @@ class OAuthProvider extends ChangeNotifier {
       _validationType = validationType;
       _deviceId = body.deviceId!;
       notifyListeners();
-      OAuthResponse response =
+      OAuthResponse? response =
           await AuthRepository().getOauthResponse(body, context);
-      if (response.responseCode == "00") {
-        isDone = true;
-        url = response.responseData!.authorizationConsentUrl!;
-        notifyListeners();
-        checkServiceClicked(_serviceProvider);
-        RoutingService.pushRouting(
-            context,
-            WebView(
-              data: body,
-              url: url,
-              serviceProvider: _serviceProvider,
-              validationType: validationType,
-            ));
-      } else {
-        checkServiceClicked(_serviceProvider);
-        showSnack(context, response.responseCode!, response.responseMessage!);
+      if(response != null){
+        if (response.responseCode == "00") {
+          isDone = true;
+          url = response.responseData!.authorizationConsentUrl!;
+          notifyListeners();
+          checkServiceClicked(_serviceProvider);
+          RoutingService.pushRouting(
+              context,
+              WebView(
+                data: body,
+                url: url,
+                serviceProvider: _serviceProvider,
+                validationType: validationType,
+              ));
+        } else {
+          checkServiceClicked(_serviceProvider);
+          showSnack(context, response.responseCode!, response.responseMessage!);
+        }
       }
     } catch (e) {
       checkServiceClicked(_serviceProvider);
@@ -184,8 +188,12 @@ class OAuthProvider extends ChangeNotifier {
     try {
       _webviewCompleted = false;
       notifyListeners();
+      print("here ===============>>>> first");
+      print("url =====>>>>>> $url");
       dynamic stateResponse =
-          await NetworkService().getRequest(url, {}, context);
+          await NetworkService().getRequest(url,
+              { "accept": "application/json", "Content-Type": "application/JSON",}, context);
+      print("state response ====>>>> $stateResponse");
       AuthJsonModel json = AuthJsonModel.fromJson(stateResponse);
       AuthConsentModel data = AuthConsentModel(
           consentCode: json.code,
@@ -193,23 +201,26 @@ class OAuthProvider extends ChangeNotifier {
           authServiceProvider: _serviceProvider,
           deviceId: _deviceId,
           oauthValidationType: validationType);
-      LoginResponse response =
+      LoginResponse? response =
           await AuthRepository().getConsentResponse(data, context);
-
-      if (response.responseCode == "00") {
-        await UserPreferences.setUserFirstName(
-            response.responseData!.firstName!);
-        await UserPreferences.setUserEmail(response.responseData!.email!);
-        await UserPreferences.setLoginStatus(true);
-        await storage.setToken(response.responseData!.authToken!);
-        await storage.setUserData(response);
-        onWebviewCompleted();
-      } else {
-        showSnack(context, response.responseCode!, response.responseMessage!);
+      print("response =======>>>>>>>>> $response");
+      if(response != null){
+        if (response.responseCode == "00") {
+          await UserPreferences.setUserFirstName(
+              response.responseData!.firstName!);
+          await UserPreferences.setUserEmail(response.responseData!.email!);
+          await UserPreferences.setLoginStatus(true);
+          await storage.setToken(response.responseData!.authToken!);
+          await storage.setUserData(response);
+          onWebviewCompleted();
+        } else {
+          showSnack(context, response.responseCode!, response.responseMessage!);
+        }
       }
       notifyListeners();
     } catch (e) {
-      showSnack(context, "02", "Access Denied");
+      debugPrint("google auth error =====>>> ${e.toString()}");
+      showSnack(context, "02", e.toString());
     }
   }
 }

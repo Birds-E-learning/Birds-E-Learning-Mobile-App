@@ -64,7 +64,7 @@ class FacilitatorCourseCards extends StatelessWidget with HomeWidgets {
                     const SizedBox(height: 3),
                     Container(
                       child: course.subscriptionBased ?? true
-                          ? const SubscriptionTagWidget()
+                          ? SubscriptionTagWidget(course: course)
                           : amountText(
                           course.salePrice ?? "5000", course.price ?? "5500"),
                     )

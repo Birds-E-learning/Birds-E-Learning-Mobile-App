@@ -31,7 +31,7 @@ class CourseInfoWidget extends StatelessWidget with HomeWidgets, ContentWidget {
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
                   color: success100, borderRadius: BorderRadius.circular(20)),
-              child: course.subscriptionBased ?? true
+              child: course.subscriptionBased != null &&  course.subscriptionBased!
                 ? const Icon(Icons.lock, size: 20, color: skipColor,)
                 : titleAmountText(course.salePrice ?? ""),
             )

@@ -175,7 +175,7 @@ class _BuyCourseScreenState extends State<BuyCourseScreen>
                       : widget.course.sections!.isEmpty
                           ? const Center(
                               child: Text(
-                                "No available trending courses.",
+                                "No available course content for preview. Buy now!",
                                 style: CartStyles.richStyle1,
                               ),
                             )
@@ -232,13 +232,13 @@ class _BuyCourseScreenState extends State<BuyCourseScreen>
                   // ),
                   const SizedBox(height: 20),
                   Container(
-                      child: widget.course.subscriptionBased ?? true
+                      child: widget.course.subscriptionBased != null && widget.course.subscriptionBased!
                       ? null
                       : bigAmountText(widget.course.salePrice ?? "00.00"),
                   ),
                   const SizedBox(height: 10),
                   Container(
-                      child: widget.course.subscriptionBased ?? true
+                      child: widget.course.subscriptionBased != null &&  widget.course.subscriptionBased!
                       ? SizedBox(
                         width: double.infinity,
                         child: BlackButtonWidget(

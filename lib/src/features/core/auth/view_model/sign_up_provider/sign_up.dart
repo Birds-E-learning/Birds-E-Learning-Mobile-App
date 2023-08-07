@@ -34,24 +34,26 @@ class SignUpProvider extends ChangeNotifier {
 
   Future userSignUp(context, SignUpModel data) async {
     try {
-      SignUpResponse response =
+      SignUpResponse? response =
           await AuthRepository().getSignUpResponse(data, context);
-      if (response.responseCode == "00") {
-        onClick();
-        RoutingService.pushReplacementRouting(
-            context,
-            EnterOTPScreen(
-              email: data.emailAddress!,
-              isRegister: true,
-            ));
-        return response;
-      } else {
-        onClick();
-        showSnack(context, response.responseCode!, response.responseMessage!);
+      if(response != null){
+        if (response.responseCode == "00") {
+          onClick();
+          RoutingService.pushReplacementRouting(
+              context,
+              EnterOTPScreen(
+                email: data.emailAddress!,
+                isRegister: true,
+              ));
+          return response;
+        } else {
+          onClick();
+          showSnack(context, response.responseCode!, response.responseMessage!);
+        }
       }
     } catch (e) {
       onClick();
-      showSnack(context, "02", "Access Denied");
+      showSnack(context, "02", e.toString());
     }
   }
 }

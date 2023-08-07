@@ -13,6 +13,7 @@ import 'package:birds_learning_network/src/features/modules/home/view/widgets/sh
 import 'package:birds_learning_network/src/features/modules/home/view/widgets/trending_listview.dart';
 import 'package:birds_learning_network/src/features/modules/home/view_model/home_provider.dart';
 import 'package:birds_learning_network/src/features/modules/home/view_model/preference_provider.dart';
+import 'package:birds_learning_network/src/features/modules/subscription/view_model/subscription_provider.dart';
 import 'package:birds_learning_network/src/utils/custom_widgets/custom_bacground.dart';
 import 'package:birds_learning_network/src/utils/custom_widgets/text_field.dart';
 import 'package:birds_learning_network/src/utils/global_constants/asset_paths/image_path.dart';
@@ -21,6 +22,7 @@ import 'package:birds_learning_network/src/utils/global_constants/styles/cart_st
 import 'package:birds_learning_network/src/utils/global_constants/texts/module_texts/home_texts.dart';
 import 'package:birds_learning_network/src/utils/mixins/core_mixins/filter_mixins/filter_mixin.dart';
 import 'package:birds_learning_network/src/utils/mixins/module_mixins/home_mixins.dart';
+import 'package:birds_learning_network/src/utils/shared_functions/active_subscription.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -36,15 +38,13 @@ class UserHomePage extends StatefulWidget {
 class _UserHomePageState extends State<UserHomePage>
     with HomeWidgets, HomeText, FilterTextWidgets {
   final TextEditingController _controller = TextEditingController();
+  bool isSubscriptionActive = false;
 
   @override
   void initState() {
-    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
-      Provider.of<HomePreferenceProvider>(context, listen: false)
-          .getPreferenceList(context);
-      Provider.of<CourseProvider>(context, listen: false).getCourses(context);
-      Provider.of<HomeProvider>(context, listen: false)
-          .refreshData(context, reload: false);
+    SchedulerBinding.instance.addPostFrameCallback((timeStamp) async{
+      getAppData();
+      isSubscriptionActive = await checkActiveSubscription(context);
     });
     super.initState();
 
@@ -309,5 +309,14 @@ class _UserHomePageState extends State<UserHomePage>
   void dispose() {
     _controller.dispose();
     super.dispose();
+  }
+
+  void getAppData(){
+    Provider.of<HomePreferenceProvider>(context, listen: false)
+        .getPreferenceList(context);
+    Provider.of<CourseProvider>(context, listen: false).getCourses(context);
+    Provider.of<HomeProvider>(context, listen: false)
+        .refreshData(context, reload: false);
+    Provider.of<SubscriptionProvider>(context, listen: false).subscriptionPlanMethod(context);
   }
 }

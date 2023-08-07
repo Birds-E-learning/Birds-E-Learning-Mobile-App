@@ -1,7 +1,7 @@
 class LoginResponse {
-  String? responseCode;
-  String? responseMessage;
-  ResponseData? responseData;
+  final String? responseCode;
+  final String? responseMessage;
+  final ResponseData? responseData;
 
   LoginResponse({
     this.responseCode,
@@ -9,46 +9,42 @@ class LoginResponse {
     this.responseData,
   });
 
-  LoginResponse.fromJson(Map<String, dynamic> json) {
-    responseCode = json['responseCode'] as String?;
-    responseMessage = json['responseMessage'] as String?;
-    responseData = (json['responseData'] as Map<String, dynamic>?) != null
-        ? ResponseData.fromJson(json['responseData'] as Map<String, dynamic>)
-        : null;
-  }
+  LoginResponse.fromJson(Map<String, dynamic> json)
+      : responseCode = json['responseCode'] as String?,
+        responseMessage = json['responseMessage'] as String?,
+        responseData = (json['responseData'] as Map<String,dynamic>?) != null ? ResponseData.fromJson(json['responseData'] as Map<String,dynamic>) : null;
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> json = <String, dynamic>{};
-    json['responseCode'] = responseCode;
-    json['responseMessage'] = responseMessage;
-    json['responseData'] = responseData?.toJson();
-    return json;
-  }
+  Map<String, dynamic> toJson() => {
+    'responseCode' : responseCode,
+    'responseMessage' : responseMessage,
+    'responseData' : responseData?.toJson()
+  };
 }
 
 class ResponseData {
-  String? userId;
-  String? username;
-  String? email;
-  String? firstName;
-  String? lastName;
-  String? middleName;
-  String? fullName;
-  String? address;
-  String? mobileNumber;
-  String? status;
-  dynamic dateOfBirth;
-  dynamic lastLoginDate;
-  String? photoLink;
-  dynamic createdDate;
-  dynamic modifiedDate;
-  String? deviceId;
-  String? geoLocation;
-  String? gender;
-  String? language;
-  String? city;
-  String? country;
-  String? authToken;
+  final String? userId;
+  final String? username;
+  final String? email;
+  final String? firstName;
+  final String? lastName;
+  final String? middleName;
+  final String? fullName;
+  final String? address;
+  final dynamic mobileNumber;
+  final String? status;
+  final dynamic dateOfBirth;
+  final dynamic lastLoginDate;
+  final String? photoLink;
+  final dynamic createdDate;
+  final dynamic modifiedDate;
+  final String? deviceId;
+  final String? geoLocation;
+  final String? gender;
+  final String? language;
+  final String? city;
+  final String? country;
+  final String? authToken;
+  final SubscriptionModel? subscription;
 
   ResponseData({
     this.userId,
@@ -73,209 +69,106 @@ class ResponseData {
     this.city,
     this.country,
     this.authToken,
+    this.subscription,
   });
 
-  ResponseData.fromJson(Map<String, dynamic> json) {
-    userId = json['userId'] as String?;
-    username = json['username'] as String?;
-    email = json['email'] as String?;
-    firstName = json['firstName'] as String?;
-    lastName = json['lastName'] as String?;
-    middleName = json['middleName'] as String?;
-    fullName = json['fullName'] as String?;
-    address = json['address'] as String?;
-    mobileNumber = json['mobileNumber'] as String?;
-    status = json['status'] as String?;
-    dateOfBirth = json['dateOfBirth'] as dynamic;
-    lastLoginDate = json['lastLoginDate'] as dynamic;
-    photoLink = json['photoLink'] as String?;
-    createdDate = json['createdDate'] as dynamic;
-    modifiedDate = json['modifiedDate'] as dynamic;
-    deviceId = json['deviceId'] as String?;
-    geoLocation = json['geoLocation'] as String?;
-    gender = json['gender'] as String?;
-    language = json['language'] as String?;
-    city = json['city'] as String?;
-    country = json['country'] as String?;
-    authToken = json['authToken'] as String?;
-  }
+  ResponseData.fromJson(Map<String, dynamic> json)
+      : userId = json['userId'] as String?,
+        username = json['username'] as String?,
+        email = json['email'] as String?,
+        firstName = json['firstName'] as String?,
+        lastName = json['lastName'] as String?,
+        middleName = json['middleName'] as String?,
+        fullName = json['fullName'] as String?,
+        address = json['address'] as String?,
+        mobileNumber = json['mobileNumber'] as dynamic,
+        status = json['status'] as String?,
+        dateOfBirth = json['dateOfBirth'] as dynamic,
+        lastLoginDate = json['lastLoginDate'] as dynamic,
+        photoLink = json['photoLink'] as String?,
+        createdDate = json['createdDate'] as dynamic,
+        modifiedDate = json['modifiedDate'] as dynamic,
+        deviceId = json['deviceId'] as String?,
+        geoLocation = json['geoLocation'] as String?,
+        gender = json['gender'] as String?,
+        language = json['language'] as String?,
+        city = json['city'] as String?,
+        country = json['country'] as String?,
+        authToken = json['authToken'] as String?,
+        subscription = (json['subscription'] as Map<String,dynamic>?) != null ? SubscriptionModel.fromJson(json['subscription'] as Map<String,dynamic>) : null;
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> json = <String, dynamic>{};
-    json['userId'] = userId;
-    json['username'] = username;
-    json['email'] = email;
-    json['firstName'] = firstName;
-    json['lastName'] = lastName;
-    json['middleName'] = middleName;
-    json['fullName'] = fullName;
-    json['address'] = address;
-    json['mobileNumber'] = mobileNumber;
-    json['status'] = status;
-    json['dateOfBirth'] = dateOfBirth;
-    json['lastLoginDate'] = lastLoginDate;
-    json['photoLink'] = photoLink;
-    json['createdDate'] = createdDate;
-    json['modifiedDate'] = modifiedDate;
-    json['deviceId'] = deviceId;
-    json['geoLocation'] = geoLocation;
-    json['gender'] = gender;
-    json['language'] = language;
-    json['city'] = city;
-    json['country'] = country;
-    json['authToken'] = authToken;
-    return json;
-  }
+  Map<String, dynamic> toJson() => {
+    'userId' : userId,
+    'username' : username,
+    'email' : email,
+    'firstName' : firstName,
+    'lastName' : lastName,
+    'middleName' : middleName,
+    'fullName' : fullName,
+    'address' : address,
+    'mobileNumber' : mobileNumber,
+    'status' : status,
+    'dateOfBirth' : dateOfBirth,
+    'lastLoginDate' : lastLoginDate,
+    'photoLink' : photoLink,
+    'createdDate' : createdDate,
+    'modifiedDate' : modifiedDate,
+    'deviceId' : deviceId,
+    'geoLocation' : geoLocation,
+    'gender' : gender,
+    'language' : language,
+    'city' : city,
+    'country' : country,
+    'authToken' : authToken,
+    'subscription' : subscription?.toJson()
+  };
 }
 
-// class DateOfBirth {
-//   int? year;
-//   int? month;
-//   int? day;
-//   int? hours;
-//   int? minutes;
-//   int? seconds;
 
-//   DateOfBirth({
-//     this.year,
-//     this.month,
-//     this.day,
-//     this.hours,
-//     this.minutes,
-//     this.seconds,
-//   });
+class SubscriptionModel {
+final String? userId;
+final String? userEmail;
+final dynamic subscriptionId;
+final String? subscriptionSlug;
+final String? createdAt;
+final dynamic updatedAt;
+final String? subscribedAt;
+final String? expirationAt;
+final String? status;
 
-//   DateOfBirth.fromJson(Map<String, dynamic> json) {
-//     year = json['year'] as int?;
-//     month = json['month'] as int?;
-//     day = json['day'] as int?;
-//     hours = json['hours'] as int?;
-//     minutes = json['minutes'] as int?;
-//     seconds = json['seconds'] as int?;
-//   }
+SubscriptionModel({
+this.userId,
+this.userEmail,
+this.subscriptionId,
+this.subscriptionSlug,
+this.createdAt,
+this.updatedAt,
+this.subscribedAt,
+this.expirationAt,
+this.status,
+});
 
-//   Map<String, dynamic> toJson() {
-//     final Map<String, dynamic> json = <String, dynamic>{};
-//     json['year'] = year;
-//     json['month'] = month;
-//     json['day'] = day;
-//     json['hours'] = hours;
-//     json['minutes'] = minutes;
-//     json['seconds'] = seconds;
-//     return json;
-//   }
-// }
+SubscriptionModel.fromJson(Map<String, dynamic> json)
+    : userId = json['userId'] as String?,
+userEmail = json['userEmail'] as String?,
+subscriptionId = json['subscriptionId'] as dynamic,
+subscriptionSlug = json['subscriptionSlug'] as String?,
+createdAt = json['createdAt'] as String?,
+updatedAt = json['updatedAt'] as dynamic,
+subscribedAt = json['subscribedAt'] as String?,
+expirationAt = json['expirationAt'] as String?,
+status = json['status'] as String?;
 
-class LastLoginDate {
-  int? year;
-  int? month;
-  int? day;
-  int? hours;
-  int? minutes;
-  int? seconds;
-
-  LastLoginDate({
-    this.year,
-    this.month,
-    this.day,
-    this.hours,
-    this.minutes,
-    this.seconds,
-  });
-
-  LastLoginDate.fromJson(Map<String, dynamic> json) {
-    year = json['year'] as int?;
-    month = json['month'] as int?;
-    day = json['day'] as int?;
-    hours = json['hours'] as int?;
-    minutes = json['minutes'] as int?;
-    seconds = json['seconds'] as int?;
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> json = <String, dynamic>{};
-    json['year'] = year;
-    json['month'] = month;
-    json['day'] = day;
-    json['hours'] = hours;
-    json['minutes'] = minutes;
-    json['seconds'] = seconds;
-    return json;
-  }
+Map<String, dynamic> toJson() => {
+'userId' : userId,
+'userEmail' : userEmail,
+'subscriptionId' : subscriptionId,
+'subscriptionSlug' : subscriptionSlug,
+'createdAt' : createdAt,
+'updatedAt' : updatedAt,
+'subscribedAt' : subscribedAt,
+'expirationAt' : expirationAt,
+'status' : status
+};
 }
 
-class CreatedDate {
-  int? year;
-  int? month;
-  int? day;
-  int? hours;
-  int? minutes;
-  int? seconds;
-
-  CreatedDate({
-    this.year,
-    this.month,
-    this.day,
-    this.hours,
-    this.minutes,
-    this.seconds,
-  });
-
-  CreatedDate.fromJson(Map<String, dynamic> json) {
-    year = json['year'] as int?;
-    month = json['month'] as int?;
-    day = json['day'] as int?;
-    hours = json['hours'] as int?;
-    minutes = json['minutes'] as int?;
-    seconds = json['seconds'] as int?;
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> json = <String, dynamic>{};
-    json['year'] = year;
-    json['month'] = month;
-    json['day'] = day;
-    json['hours'] = hours;
-    json['minutes'] = minutes;
-    json['seconds'] = seconds;
-    return json;
-  }
-}
-
-class ModifiedDate {
-  int? year;
-  int? month;
-  int? day;
-  int? hours;
-  int? minutes;
-  int? seconds;
-
-  ModifiedDate({
-    this.year,
-    this.month,
-    this.day,
-    this.hours,
-    this.minutes,
-    this.seconds,
-  });
-
-  ModifiedDate.fromJson(Map<String, dynamic> json) {
-    year = json['year'] as int?;
-    month = json['month'] as int?;
-    day = json['day'] as int?;
-    hours = json['hours'] as int?;
-    minutes = json['minutes'] as int?;
-    seconds = json['seconds'] as int?;
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> json = <String, dynamic>{};
-    json['year'] = year;
-    json['month'] = month;
-    json['day'] = day;
-    json['hours'] = hours;
-    json['minutes'] = minutes;
-    json['seconds'] = seconds;
-    return json;
-  }
-}

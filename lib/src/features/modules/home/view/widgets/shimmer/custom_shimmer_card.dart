@@ -12,7 +12,7 @@ class CustomHomeCardShimmer extends StatelessWidget {
       baseColor: Colors.grey.withOpacity(0.5),
       child: Container(
         margin: const EdgeInsets.only(right: 10),
-        height: 205,
+        height: 195,
         width: 165,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
@@ -47,7 +47,7 @@ class CustomHomeCardShimmer extends StatelessWidget {
                 ),
                 const SizedBox(width: 10),
                 Container(
-                  height: 30,
+                  height: 20,
                   width: 60,
                   decoration: BoxDecoration(
                     color: Colors.grey[300],
@@ -58,7 +58,7 @@ class CustomHomeCardShimmer extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             Container(
-              height: 30,
+              height: 20,
               padding: const EdgeInsets.all(5),
               decoration: BoxDecoration(
                 color: Colors.black.withOpacity(0.6),
@@ -67,7 +67,7 @@ class CustomHomeCardShimmer extends StatelessWidget {
             ),
             const SizedBox(height: 5),
             Container(
-              height: 20,
+              height: 10,
               decoration: BoxDecoration(
                 color: Colors.black.withOpacity(0.6),
                 borderRadius: BorderRadius.circular(5),

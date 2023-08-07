@@ -29,19 +29,21 @@ class OtpProvider extends ChangeNotifier {
   Future verifyOTP(
       context, OtpModel data, bool isRegistered, String email) async {
     try {
-      OtpResponse response =
+      OtpResponse? response =
           await AuthRepository().getOtpResponse(isRegistered, data, context);
-      if (response.responseCode == "00") {
-        onClick();
-        isRegistered
-            ? RoutingService.pushReplacementRouting(
-                context, const OtpSuccessPage())
-            : RoutingService.pushReplacementRouting(
-                context, ResetPassword(email: email));
-        return response;
-      } else {
-        showSnack(context, response.responseCode!, response.responseMessage!);
-        onClick();
+      if(response != null){
+        if (response.responseCode == "00") {
+          onClick();
+          isRegistered
+              ? RoutingService.pushReplacementRouting(
+              context, const OtpSuccessPage())
+              : RoutingService.pushReplacementRouting(
+              context, ResetPassword(email: email));
+          return response;
+        } else {
+          showSnack(context, response.responseCode!, response.responseMessage!);
+          onClick();
+        }
       }
     } catch (e) {
       onClick();
@@ -50,12 +52,17 @@ class OtpProvider extends ChangeNotifier {
   }
 
   Future resendOtp(context, String email, String mode) async {
-    OtpResponse response =
-        await AuthRepository().getResendOtpResponse(mode, email, context);
-    if (response.responseCode == "00") {
-      showSnack(context, response.responseCode!, response.responseMessage!);
-    } else {
-      showSnack(context, response.responseCode!, response.responseMessage!);
+    try{
+      OtpResponse? response = await AuthRepository().getResendOtpResponse(mode, email, context);
+      if(response != null){
+        if (response.responseCode == "00") {
+          showSnack(context, response.responseCode!, response.responseMessage!);
+        } else {
+            showSnack(context, response.responseCode!, response.responseMessage!);
+        }
+      }
+    }catch(e){
+      showSnack(context, "03", "Error: ${e.toString()}");
     }
   }
 }
