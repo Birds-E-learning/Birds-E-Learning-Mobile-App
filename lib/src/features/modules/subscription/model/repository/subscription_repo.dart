@@ -53,7 +53,6 @@ class SubscriptionRepo extends NetworkService with BaseUrl, BaseHeaders{
     try{
       Map<String, String> header_ = await authHeader();
       var json = await postRequest(subscriptionPaymentUrl, header_, data.toJson(), context);
-      print("json ===> $json");
       if(json != null){
         SubscriptionPaymentResponse response = SubscriptionPaymentResponse.fromJson(json);
         return response;
