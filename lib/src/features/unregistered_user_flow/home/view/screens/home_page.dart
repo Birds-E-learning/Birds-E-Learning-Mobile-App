@@ -1,6 +1,8 @@
 import 'package:birds_learning_network/src/config/routing/route.dart';
 import 'package:birds_learning_network/src/features/core/settings/view/widgets/card_shimmer.dart';
 import 'package:birds_learning_network/src/features/modules/home/view/widgets/shimmer/facilitator_shimmer.dart';
+import 'package:birds_learning_network/src/features/unregistered_user_flow/blog/view/widget/news_card_full.dart';
+import 'package:birds_learning_network/src/features/unregistered_user_flow/blog/view_model/blog_provider.dart';
 import 'package:birds_learning_network/src/features/unregistered_user_flow/course/view/screens/categories/preference_courses.dart';
 import 'package:birds_learning_network/src/features/unregistered_user_flow/course/view/screens/categories/quick_courses.dart';
 import 'package:birds_learning_network/src/features/unregistered_user_flow/course/view/screens/categories/trending_courses.dart';
@@ -41,6 +43,7 @@ class _UnregisteredUserHomePageState extends State<UnregisteredUserHomePage>
   void initState() {
    SchedulerBinding.instance.addPostFrameCallback((_) {
      Provider.of<UnregisteredHomeProvider>(context, listen: false).getPreferenceList(context);
+     Provider.of<UnregisteredBlogProvider>(context, listen: false).getNewsCategoryMethod(context);
      Provider.of<UnregisteredCourseProvider>(context, listen: false).refreshData(context, reload: false);
    });
     super.initState();
@@ -286,6 +289,11 @@ class _UnregisteredUserHomePageState extends State<UnregisteredUserHomePage>
                                                 .facilitator!,
                                           );
                                         }),
+                                const SizedBox(height: 40),
+                                Padding(
+                                  padding:  EdgeInsets.symmetric(horizontal: size.width * 0.03),
+                                  child: const  UnregisteredBlogNewsSection(),
+                                ),
                               ],
                             ),
                           )

@@ -1,4 +1,6 @@
 import 'package:birds_learning_network/src/config/routing/route.dart';
+import 'package:birds_learning_network/src/features/core/blog/view/widget/news_card_full.dart';
+import 'package:birds_learning_network/src/features/core/blog/view_model/blog_provider.dart';
 import 'package:birds_learning_network/src/features/core/settings/view/widgets/card_shimmer.dart';
 import 'package:birds_learning_network/src/features/modules/courses/view_model/course_provider.dart';
 import 'package:birds_learning_network/src/features/modules/home/custom_widgets/course_row_card.dart';
@@ -294,6 +296,11 @@ class _UserHomePageState extends State<UserHomePage>
                                                 .facilitator!,
                                           );
                                         }),
+                                const SizedBox(height: 40),
+                                 Padding(
+                                   padding:  EdgeInsets.symmetric(horizontal: size.width * 0.03),
+                                   child:const  BlogNewsSection(),
+                                 ),
                               ],
                             ),
                           )
@@ -317,6 +324,7 @@ class _UserHomePageState extends State<UserHomePage>
     Provider.of<CourseProvider>(context, listen: false).getCourses(context);
     Provider.of<HomeProvider>(context, listen: false)
         .refreshData(context, reload: false);
+    Provider.of<BlogProvider>(context, listen: false).getNewsCategoryMethod(context);
     Provider.of<SubscriptionProvider>(context, listen: false).subscriptionPlanMethod(context);
   }
 }

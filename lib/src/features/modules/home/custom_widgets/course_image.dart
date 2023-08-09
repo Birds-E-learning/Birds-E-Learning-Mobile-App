@@ -1,15 +1,14 @@
-import 'package:birds_learning_network/src/features/modules/home/model/response_model/get_courses.dart';
 import 'package:birds_learning_network/src/utils/global_constants/asset_paths/image_path.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class CourseImageWidget extends StatelessWidget {
-  const CourseImageWidget({super.key, required this.course,
+  const CourseImageWidget({super.key, required this.imageUrl,
     this.height = 90,
     this.width = 165,
     this.isMore = false
   });
-  final Courses course;
+  final String imageUrl;
   final double height;
   final double width;
   final bool isMore;
@@ -17,7 +16,7 @@ class CourseImageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CachedNetworkImage(
-      imageUrl: course.imageUrl ?? "",
+      imageUrl: imageUrl,
       imageBuilder: (context, imageProvider) => Container(
         height: height,
         width: width,

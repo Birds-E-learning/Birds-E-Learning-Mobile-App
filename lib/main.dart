@@ -3,6 +3,7 @@ import 'package:birds_learning_network/src/features/core/auth/view_model/oauth_p
 import 'package:birds_learning_network/src/features/core/auth/view_model/otp_provider.dart';
 import 'package:birds_learning_network/src/features/core/auth/view_model/password_reset/reset_password_provider.dart';
 import 'package:birds_learning_network/src/features/core/auth/view_model/sign_up_provider/sign_up.dart';
+import 'package:birds_learning_network/src/features/core/blog/view_model/blog_provider.dart';
 import 'package:birds_learning_network/src/features/core/settings/view_model/filter_provider.dart';
 import 'package:birds_learning_network/src/features/core/splash/view/splash_screen.dart';
 import 'package:birds_learning_network/src/features/modules/courses/view_model/paid_courses_provider.dart';
@@ -17,6 +18,7 @@ import 'package:birds_learning_network/src/features/modules/profile/view_model/e
 import 'package:birds_learning_network/src/features/modules/profile/view_model/profile_provider.dart';
 import 'package:birds_learning_network/src/features/modules/subscription/view_model/subscription_provider.dart';
 import 'package:birds_learning_network/src/features/modules/user_cart/view_model/cart_provider.dart';
+import 'package:birds_learning_network/src/features/unregistered_user_flow/blog/view_model/blog_provider.dart';
 import 'package:birds_learning_network/src/features/unregistered_user_flow/course/view_model/course_content_provider.dart';
 import 'package:birds_learning_network/src/features/unregistered_user_flow/course/view_model/course_provider.dart';
 import 'package:birds_learning_network/src/features/unregistered_user_flow/home/view_model/home_provider.dart';
@@ -66,7 +68,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => UnregisteredHomeProvider()),
         ChangeNotifierProvider(create: (_) => UnregisteredCourseContentProvider()),
         ChangeNotifierProvider(create: (_) => UnregisteredCourseProvider()),
+        ChangeNotifierProvider(create: (_) => UnregisteredBlogProvider()),
         ChangeNotifierProvider(create: (_) => SubscriptionProvider()),
+        ChangeNotifierProvider(create: (_) => BlogProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

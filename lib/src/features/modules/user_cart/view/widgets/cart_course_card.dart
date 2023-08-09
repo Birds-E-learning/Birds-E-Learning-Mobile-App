@@ -41,7 +41,8 @@ class CourseCartCards extends StatelessWidget with CartWidgets {
                 SizedBox(
                   height: 55,
                   width: 50,
-                  child: CourseImageWidget(course: course, height: 50, width: 60, isMore: true,)
+                  child: CourseImageWidget(imageUrl: course.imageUrl ?? "",
+                    height: 50, width: 60, isMore: true,)
                 ),
                 const SizedBox(width: 10),
                 Column(

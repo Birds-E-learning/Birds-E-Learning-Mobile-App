@@ -34,7 +34,7 @@ class FacilitatorCourseCards extends StatelessWidget with HomeWidgets {
                 SizedBox(
                   height: 55,
                   width: 50,
-                  child: CourseImageWidget(course: course, isMore: true,)
+                  child: CourseImageWidget(imageUrl: course.imageUrl ?? "", isMore: true,)
                 ),
                 const SizedBox(width: 10),
                 Column(

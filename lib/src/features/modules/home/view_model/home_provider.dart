@@ -188,30 +188,33 @@ class HomeProvider extends ChangeNotifier {
       topIcons = [];
       List<Courses> prefCourses_ = [];
       isPrefLoading = true;
-      Map<String, List<Courses>> response =
+      Map<String, List<Courses>>? response =
           await repo.getPreferenceCourses(context);
-      response.forEach((key, value) {
-        prefCourses_.addAll(value);
-        if (categories.keys.contains(key)) {
-          List<String> courseTitles =
-              []; // This function holds the course titles in the category to avoid repitions.
-          for (var course in categories[key]!) {
-            courseTitles.add(course.title!);
-          }
-          for (var elem in value) {
-            if (!courseTitles.contains(elem.title)) {
-              categories[key]!.add(elem);
+      if(response != null){
+        response.forEach((key, value) {
+          prefCourses_.addAll(value);
+          if (categories.keys.contains(key)) {
+            List<String> courseTitles =
+            []; // This function holds the course titles in the category to avoid repitions.
+            for (var course in categories[key]!) {
+              courseTitles.add(course.title!);
             }
+            for (var elem in value) {
+              if (!courseTitles.contains(elem.title)) {
+                categories[key]!.add(elem);
+              }
+            }
+          } else {
+            categories[key] = value;
           }
-        } else {
-          categories[key] = value;
-        }
-      });
-      _prefCourses = prefCourses_;
+        });
+        _prefCourses = prefCourses_;
+      }
       isPrefLoading = false;
       notifyListeners();
     } catch (e) {
       isPrefLoading = false;
+      print(e);
       throw Exception(e);
     }
   }

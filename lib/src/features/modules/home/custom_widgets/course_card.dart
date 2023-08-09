@@ -45,7 +45,7 @@ class CourseCard extends StatelessWidget with ImagePath, HomeWidgets {
             SizedBox(
                 height: 90,
                 width: 165,
-                child: CourseImageWidget(course: course)),
+                child: CourseImageWidget(imageUrl: course.imageUrl ?? "",)),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 5),
               child: Column(

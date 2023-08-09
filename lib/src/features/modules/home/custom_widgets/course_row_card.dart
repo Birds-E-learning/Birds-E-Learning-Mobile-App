@@ -34,7 +34,7 @@ class CourseRowCards extends StatelessWidget with HomeWidgets {
             SizedBox(
               height: 50,
               width: 55,
-              child: CourseImageWidget(course: course,
+              child: CourseImageWidget(imageUrl: course.imageUrl ?? "",
                   isMore: true,
                   height: 50, width: 50)
             ),

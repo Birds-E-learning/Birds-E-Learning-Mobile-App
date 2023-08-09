@@ -5,10 +5,10 @@ import 'package:birds_learning_network/src/global_model/services/network/base_se
 import 'package:birds_learning_network/src/global_model/services/network/base_url.dart';
 import 'package:flutter/material.dart';
 
-class BlogRepository extends NetworkService with BaseHeaders, BaseUrl{
+class UnregisteredBlogRepository extends NetworkService with BaseHeaders, BaseUrl{
   Future getNewsRepo(context, String categoryId)async{
     try{
-      Map<String, String> header_ = await authHeader();
+      Map<String, String> header_ = await anonymousHeader(context);
       var json = await getRequest(newsUrl(categoryId), header_, context);
       print("json ====>>>> $json");
       BlogNewsResponse response = BlogNewsResponse.fromJson(json);
@@ -25,7 +25,7 @@ class BlogRepository extends NetworkService with BaseHeaders, BaseUrl{
 
   Future getCategoryRepo(context)async{
     try{
-      Map<String, String> header_ = await authHeader();
+      Map<String, String> header_ = await anonymousHeader(context);
       var json = await getRequest(newsCategoryUrl(limit: "20"), header_, context);
       BlogCategoryResponse response = BlogCategoryResponse.fromJson(json);
       if(response.responseCode == "00" || response.responseCode == "000"){

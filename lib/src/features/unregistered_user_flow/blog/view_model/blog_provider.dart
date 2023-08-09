@@ -1,10 +1,10 @@
-import 'package:birds_learning_network/src/features/core/blog/model/repository/new_blog_repo.dart';
 import 'package:birds_learning_network/src/features/core/blog/model/response_model/blog_category_response.dart';
 import 'package:birds_learning_network/src/features/core/blog/model/response_model/blog_news_response.dart';
+import 'package:birds_learning_network/src/features/unregistered_user_flow/blog/model/repository/new_blog_repo.dart';
 import 'package:birds_learning_network/src/global_model/apis/api_response.dart';
 import 'package:flutter/material.dart';
 
-class BlogProvider extends BlogRepository with ChangeNotifier{
+class UnregisteredBlogProvider extends UnregisteredBlogRepository with ChangeNotifier{
   Status newsStatus = Status.initial;
   Status categoryStatus = Status.initial;
   List<CategoryData> newsCategories = [];
