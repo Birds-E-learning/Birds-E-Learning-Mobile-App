@@ -14,7 +14,7 @@ class PreferenceProvider extends ChangeNotifier {
   bool _doneClicked = false;
   List<String> _myList = [];
   List<String> _prefList = [];
-  final List<String> _userPrefList = [];
+   List<String> _userPrefList = [];
   List<bool> selectedCards = [];
   FilterRepository repo = FilterRepository();
 
@@ -64,9 +64,11 @@ class PreferenceProvider extends ChangeNotifier {
   Future getUserPreferenceList(context) async {
     try {
       _prefList = [];
+      _userPrefList = [];
       List<String>? prefList = await repo.getUserFilterData(context);
       if (prefList != null && prefList.isNotEmpty) {
         _prefList = prefList;
+        _userPrefList.addAll(_prefList);
       }
       notifyListeners();
     } catch (_) {

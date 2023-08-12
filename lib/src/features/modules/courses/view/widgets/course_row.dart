@@ -1,8 +1,7 @@
 import 'package:birds_learning_network/src/config/routing/route.dart';
-import 'package:birds_learning_network/src/features/modules/courses/view/view_course/view_course_screen.dart';
+import 'package:birds_learning_network/src/features/modules/courses/view/screens/view_course/view_course_screen.dart';
 import 'package:birds_learning_network/src/features/modules/home/model/response_model/get_courses.dart';
-import 'package:birds_learning_network/src/features/modules/home/view/facilitator.dart';
-import 'package:birds_learning_network/src/features/modules/home/view_model/facilitator_provider.dart';
+import 'package:birds_learning_network/src/features/modules/home/view/screens/facilitator.dart';
 import 'package:birds_learning_network/src/features/modules/user_cart/view_model/cart_provider.dart';
 import 'package:birds_learning_network/src/global_model/services/storage/shared_preferences/course_data.dart';
 import 'package:birds_learning_network/src/utils/global_constants/asset_paths/image_path.dart';
@@ -75,10 +74,10 @@ class _CourseRowWidgetState extends State<CourseRowWidget> {
                 ),
                 InkWell(
                   onTap: () {
-                    context.read<FacilitatorProvider>().getFacilitatorData(
-                        context, widget.course.facilitator!.id!.toString());
                     RoutingService.pushRouting(
-                        context, const FacilitatorScreen());
+                        context,  FacilitatorScreen(
+                      facilitatorId: widget.course.facilitator!.id ?? "0",
+                    ));
                   },
                   child: Text(
                     widget.course.facilitator!.name ?? "",

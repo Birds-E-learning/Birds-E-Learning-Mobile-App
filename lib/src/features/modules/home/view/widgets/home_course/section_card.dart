@@ -1,12 +1,11 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:birds_learning_network/src/features/modules/home/model/response_model/get_courses.dart';
 import 'package:birds_learning_network/src/features/modules/home/view_model/course_content_provider.dart';
 import 'package:birds_learning_network/src/utils/global_constants/asset_paths/image_path.dart';
 import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-
-import '../../model/response_model/get_courses.dart';
 
 class SectionCard extends StatelessWidget {
   const SectionCard(

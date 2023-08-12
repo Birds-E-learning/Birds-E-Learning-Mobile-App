@@ -1,14 +1,12 @@
 import 'package:birds_learning_network/src/config/routing/route.dart';
 import 'package:birds_learning_network/src/features/modules/home/model/response_model/get_courses.dart';
-import 'package:birds_learning_network/src/features/modules/home/view/facilitator.dart';
-import 'package:birds_learning_network/src/features/modules/home/view_model/facilitator_provider.dart';
+import 'package:birds_learning_network/src/features/modules/home/view/screens/facilitator.dart';
 import 'package:birds_learning_network/src/utils/global_constants/asset_paths/image_path.dart';
 import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
 import 'package:birds_learning_network/src/utils/global_constants/styles/home_styles/course_style.dart';
 import 'package:birds_learning_network/src/utils/helper_widgets/star_widget.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class CourseContainer extends StatelessWidget {
   const CourseContainer({
@@ -105,12 +103,10 @@ class CourseContainer extends StatelessWidget {
                                     color: success200),
                                 recognizer: TapGestureRecognizer()
                                   ..onTap = () {
-                                    context
-                                        .read<FacilitatorProvider>()
-                                        .getFacilitatorData(context,
-                                            course.facilitator!.id!.toString());
                                     RoutingService.pushRouting(
-                                        context, const FacilitatorScreen());
+                                        context,  FacilitatorScreen(
+                                      facilitatorId: course.facilitator!.id ?? "0",
+                                    ));
                                   }),
                           ])),
                       const SizedBox(width: 5),

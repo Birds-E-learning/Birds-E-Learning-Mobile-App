@@ -1,14 +1,12 @@
 import 'package:birds_learning_network/src/config/routing/route.dart';
 import 'package:birds_learning_network/src/features/modules/home/model/response_model/get_courses.dart';
-import 'package:birds_learning_network/src/features/modules/home/view/facilitator.dart';
-import 'package:birds_learning_network/src/features/modules/home/view_model/facilitator_provider.dart';
+import 'package:birds_learning_network/src/features/modules/home/view/screens/facilitator.dart';
 import 'package:birds_learning_network/src/utils/global_constants/asset_paths/image_path.dart';
 import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
 import 'package:birds_learning_network/src/utils/helper_widgets/star_widget.dart';
 import 'package:birds_learning_network/src/utils/mixins/module_mixins/content_mixins.dart';
 import 'package:birds_learning_network/src/utils/mixins/module_mixins/home_mixins.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class CourseInfoWidget extends StatelessWidget with HomeWidgets, ContentWidget {
   const CourseInfoWidget(
@@ -45,9 +43,9 @@ class CourseInfoWidget extends StatelessWidget with HomeWidgets, ContentWidget {
               if (isFacilitator) {
                 RoutingService.popRouting(context);
               } else {
-                context.read<FacilitatorProvider>().getFacilitatorData(
-                    context, course.facilitator!.id!.toString());
-                RoutingService.pushRouting(context, const FacilitatorScreen());
+                RoutingService.pushRouting(context, FacilitatorScreen(
+                  facilitatorId: course.facilitator!.id ?? "",
+                ));
               }
             }),
             const SizedBox(width: 5),

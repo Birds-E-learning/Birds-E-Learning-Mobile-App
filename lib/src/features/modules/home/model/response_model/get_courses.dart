@@ -390,6 +390,7 @@ class Lessons {
   dynamic content;
   dynamic shortDesc;
   dynamic duration;
+  dynamic progress;
   String? slug;
   dynamic fileId;
   String? type;
@@ -423,6 +424,7 @@ class Lessons {
     this.active,
     this.displayOrder,
     this.originId,
+    this.progress,
     this.language,
     this.createUser,
     this.updateUser,
@@ -441,6 +443,7 @@ class Lessons {
     content = json['content'];
     shortDesc = json['shortDesc'];
     duration = json['duration'] as dynamic;
+    progress = json['progress'] as dynamic;
     slug = json['slug'] as String?;
     fileId = json['fileId'];
     type = json['type'] as String?;
@@ -468,6 +471,7 @@ class Lessons {
     json['content'] = content;
     json['shortDesc'] = shortDesc;
     json['duration'] = duration;
+    json['progress'] = progress;
     json['slug'] = slug;
     json['fileId'] = fileId;
     json['type'] = type;

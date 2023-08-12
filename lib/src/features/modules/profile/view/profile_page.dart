@@ -1,6 +1,6 @@
 import 'package:birds_learning_network/src/config/routing/route.dart';
 import 'package:birds_learning_network/src/features/core/auth/model/response_model/login_response.dart';
-import 'package:birds_learning_network/src/features/modules/courses/view/course_screen.dart';
+import 'package:birds_learning_network/src/features/modules/courses/view/screens/course_screen.dart';
 import 'package:birds_learning_network/src/features/modules/profile/custom_widgets/pages_row.dart';
 import 'package:birds_learning_network/src/features/modules/profile/view/certificate.dart';
 import 'package:birds_learning_network/src/features/modules/profile/view/change_password.dart';

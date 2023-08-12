@@ -1,60 +1,41 @@
 import 'package:birds_learning_network/src/features/modules/home/model/repository/facilitator_repository.dart';
 import 'package:birds_learning_network/src/features/modules/home/model/response_model/facilitator_response.dart';
 import 'package:birds_learning_network/src/features/modules/home/model/response_model/get_courses.dart';
+import 'package:birds_learning_network/src/global_model/apis/api_response.dart';
 import 'package:birds_learning_network/src/utils/helper_widgets/response_snack.dart';
 import 'package:flutter/material.dart';
 
 class FacilitatorProvider extends ChangeNotifier {
-  bool _isLoading = false;
+  Status loadingStatus = Status.initial;
   List<Courses> courseList = [];
-  String name = "";
-  int totalCourse = 0;
-  String imageUrl = "";
-  String email = "";
-  String aboutMe = "";
-  String rating = "";
-  String studentNo = "";
-
-  bool get isLoading => _isLoading;
+  FacilitatorData? facilitator;
 
   void refreshData() {
-    _isLoading = false;
+    facilitator = null;
     courseList = [];
-    name = "";
-    totalCourse = 0;
-    imageUrl = "";
-    email = "";
-    aboutMe = "";
-    rating = "";
-    studentNo = "";
+    notifyListeners();
+  }
+
+  void setLoadingStatus({Status status = Status.initial}){
+    loadingStatus = status;
     notifyListeners();
   }
 
   Future getFacilitatorData(context, String id) async {
     try {
-      _isLoading = true;
+      setLoadingStatus(status: Status.loading);
       var json = await FacilitatorRepository().getFacilitatorInfo(context, id);
+      setLoadingStatus(status: Status.completed);
       if (json != null) {
         FacilitatorResponse response = FacilitatorResponse.fromJson(json);
-        name =
-            "${response.responseData!.firstName} ${response.responseData!.lastName}";
-        aboutMe = response.responseData!.aboutMe!;
-        imageUrl = response.responseData!.imageUrl!;
-        rating = response.responseData!.averageRating!.toString();
-        totalCourse = response.responseData!.numberOfCourses ?? 0;
-        email = response.responseData!.emailAddress ?? "";
-        studentNo = response.responseData!.numberOfStudents!.toString();
+        facilitator = response.responseData;
         courseList = response.responseData!.courses!;
         notifyListeners();
-        _isLoading = false;
       } else {
-        _isLoading = false;
         showSnack(context, "03", "Unable to get Facilitator details");
       }
     } catch (e) {
-      _isLoading = false;
-      notifyListeners();
-      showSnack(context, "04", "Error in connection... Try again Later");
+      setLoadingStatus(status: Status.error);
     }
   }
 }

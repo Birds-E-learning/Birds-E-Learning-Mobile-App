@@ -2,7 +2,7 @@ import 'package:birds_learning_network/src/config/routing/route.dart';
 import 'package:birds_learning_network/src/features/modules/home/custom_widgets/course_image.dart';
 import 'package:birds_learning_network/src/features/modules/subscription/view/widget/subscription_tag.dart';
 import 'package:birds_learning_network/src/features/modules/home/model/response_model/get_courses.dart';
-import 'package:birds_learning_network/src/features/modules/home/view/buy_course_screen.dart';
+import 'package:birds_learning_network/src/features/modules/home/view/screens/buy_course_screen.dart';
 import 'package:birds_learning_network/src/utils/global_constants/asset_paths/image_path.dart';
 import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
 import 'package:birds_learning_network/src/utils/helper_widgets/star_widget.dart';
@@ -81,7 +81,8 @@ class CourseCard extends StatelessWidget with ImagePath, HomeWidgets {
                       ),
                       SizedBox(height: course.subscriptionBased != null &&  course.subscriptionBased! ? 8 : 5),
                       Container(
-                        child: course.subscriptionBased ?? true ? null : IconButton(
+                        child: course.subscriptionBased != null && course.subscriptionBased!
+                            ? null : IconButton(
                             onPressed: onFavPressed,
                             icon: Icon(
                               iconData,

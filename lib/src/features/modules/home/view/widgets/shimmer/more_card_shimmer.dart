@@ -1,4 +1,3 @@
-import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -18,41 +17,38 @@ class MoreCardsShimmer extends StatelessWidget {
             Row(
               children: [
                 Container(
-                  color: Colors.grey,
-                  height: 80,
+                  height: 60,
                   width: 60,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.grey,
+                  ),
                 ),
-                const SizedBox(width: 15),
+                const SizedBox(width: 10),
                 Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      height: 30,
-                      width: size.width * 0.8 - 70,
+                      height: 20,
+                      width: size.width * 0.8 - 50,
                       color: Colors.black,
                     ),
                     const SizedBox(height: 5),
                     Container(
                       height: 15,
-                      width: size.width * 0.8 - 70,
+                      width: size.width * 0.8 - 80,
                       color: Colors.blueAccent,
                     ),
                     const SizedBox(height: 5),
                     Container(
-                      height: 30,
-                      width: size.width * 0.8 - 70,
+                      height: 10,
+                      width: size.width * 0.8 - 120,
                       color: Colors.blueGrey,
                     ),
                   ],
                 ),
               ],
             ),
-            const SizedBox(
-              height: 10,
-              child: Divider(
-                thickness: 0.2,
-                color: success1000,
-              ),
-            )
           ],
         ),
       ),

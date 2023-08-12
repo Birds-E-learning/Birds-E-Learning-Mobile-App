@@ -102,10 +102,8 @@ class _EditPreferenceScreenState extends State<EditPreferenceScreen>
                                   crossAxisSpacing: 10,
                                   childAspectRatio: 21 / 9),
                           itemBuilder: (BuildContext context, int index) {
-                            if (filter.selectedCards.length <
-                                    filter.myList.length &&
-                                filter.prefList
-                                    .contains(filter.myList[index])) {
+                            if (filter.selectedCards.length < filter.myList.length &&
+                                filter.prefList.contains(filter.myList[index])) {
                               filter.selectedCards.add(true);
                             } else if (filter.selectedCards.length <
                                 filter.myList.length) {
@@ -115,8 +113,7 @@ class _EditPreferenceScreenState extends State<EditPreferenceScreen>
                               onTap: () {
                                 filter.setValue(index);
                                 if (filter.selectedCards[index] &&
-                                    !textField.text
-                                        .contains(filter.myList[index])) {
+                                    !textField.text.contains(filter.myList[index])) {
                                   textField.text += "${filter.myList[index]}, ";
                                   filter.addPref(filter.myList[index]);
                                 } else {
@@ -140,6 +137,7 @@ class _EditPreferenceScreenState extends State<EditPreferenceScreen>
                       width: double.infinity,
                       child: BlackButtonWidget(
                           onPressed: () async {
+                            print(filter.userPrefList);
                             if (filter.doneClicked) {
                               filter.onDoneClick();
                               return;

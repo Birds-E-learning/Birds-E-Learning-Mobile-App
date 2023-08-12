@@ -8,11 +8,11 @@ import 'package:birds_learning_network/src/features/modules/home/custom_widgets/
 import 'package:birds_learning_network/src/features/modules/home/view/categories/preference_courses.dart';
 import 'package:birds_learning_network/src/features/modules/home/view/categories/quick_courses.dart';
 import 'package:birds_learning_network/src/features/modules/home/view/categories/trending_courses.dart';
-import 'package:birds_learning_network/src/features/modules/home/view/widgets/preference_row.dart';
-import 'package:birds_learning_network/src/features/modules/home/view/widgets/preferential_listview.dart';
-import 'package:birds_learning_network/src/features/modules/home/view/widgets/quick_listview.dart';
+import 'package:birds_learning_network/src/features/modules/home/view/widgets/home_course/preference_row.dart';
+import 'package:birds_learning_network/src/features/modules/home/view/widgets/home_course/preferential_listview.dart';
+import 'package:birds_learning_network/src/features/modules/home/view/widgets/home_course/quick_listview.dart';
 import 'package:birds_learning_network/src/features/modules/home/view/widgets/shimmer/facilitator_shimmer.dart';
-import 'package:birds_learning_network/src/features/modules/home/view/widgets/trending_listview.dart';
+import 'package:birds_learning_network/src/features/modules/home/view/widgets/home_course/trending_listview.dart';
 import 'package:birds_learning_network/src/features/modules/home/view_model/home_provider.dart';
 import 'package:birds_learning_network/src/features/modules/home/view_model/preference_provider.dart';
 import 'package:birds_learning_network/src/features/modules/subscription/view_model/subscription_provider.dart';
@@ -24,7 +24,6 @@ import 'package:birds_learning_network/src/utils/global_constants/styles/cart_st
 import 'package:birds_learning_network/src/utils/global_constants/texts/module_texts/home_texts.dart';
 import 'package:birds_learning_network/src/utils/mixins/core_mixins/filter_mixins/filter_mixin.dart';
 import 'package:birds_learning_network/src/utils/mixins/module_mixins/home_mixins.dart';
-import 'package:birds_learning_network/src/utils/shared_functions/active_subscription.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -40,13 +39,11 @@ class UserHomePage extends StatefulWidget {
 class _UserHomePageState extends State<UserHomePage>
     with HomeWidgets, HomeText, FilterTextWidgets {
   final TextEditingController _controller = TextEditingController();
-  bool isSubscriptionActive = false;
 
   @override
   void initState() {
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) async{
       getAppData();
-      isSubscriptionActive = await checkActiveSubscription(context);
     });
     super.initState();
 

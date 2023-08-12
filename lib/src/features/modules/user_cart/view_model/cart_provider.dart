@@ -72,8 +72,6 @@ class CartProvider extends ChangeNotifier {
       if (response.responseCode == "00") {
         _myCart = response.responseData!;
         notifyListeners();
-      } else {
-        showSnack(context, response.responseCode!, response.responseMessage!);
       }
       isCartLoading = false;
     } catch (e) {
@@ -92,8 +90,6 @@ class CartProvider extends ChangeNotifier {
       if (response.responseCode == "00") {
         _wishlist = response.responseData!;
         notifyListeners();
-      } else {
-        showSnack(context, response.responseCode!, response.responseMessage!);
       }
       isWishlistLoading = false;
     } catch (e) {

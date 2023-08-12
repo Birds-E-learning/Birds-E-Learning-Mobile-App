@@ -1,5 +1,5 @@
 import 'package:birds_learning_network/src/config/routing/route.dart';
-import 'package:birds_learning_network/src/features/modules/courses/view/alll_courses_screen.dart';
+import 'package:birds_learning_network/src/features/modules/courses/view/screens/alll_courses_screen.dart';
 import 'package:birds_learning_network/src/features/modules/home/view/widgets/shimmer/more_card_shimmer.dart';
 import 'package:birds_learning_network/src/features/modules/user_cart/view/widgets/cart_course_card.dart';
 import 'package:birds_learning_network/src/features/modules/user_cart/view_model/cart_provider.dart';

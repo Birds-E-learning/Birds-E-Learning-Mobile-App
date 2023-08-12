@@ -41,7 +41,8 @@ class HomeRepository extends NetworkService with BaseUrl, BaseHeaders {
       GetCoursesResponse response = GetCoursesResponse.fromJson(json);
       if (response.responseCode == "00") {
         if (response.responseData!.categories!.isEmpty) {
-          return "no data";
+          return null;
+
         }
         for (Category element in response.responseData!.categories!) {
           categories[element.name!] = element.courses!;
@@ -64,7 +65,7 @@ class HomeRepository extends NetworkService with BaseUrl, BaseHeaders {
       GetCoursesResponse response = GetCoursesResponse.fromJson(json);
       if (response.responseCode == "00") {
         if (response.responseData!.categories!.isEmpty) {
-          return "no data";
+          return null;
         }
         for (Category element in response.responseData!.categories!) {
           categories[element.name!] = element.courses!;
@@ -73,6 +74,7 @@ class HomeRepository extends NetworkService with BaseUrl, BaseHeaders {
       } else {
         showSnack(context, response.responseCode!, response.responseMessage!);
       }
+      return null;
     } catch (_) {
       return null;
     }

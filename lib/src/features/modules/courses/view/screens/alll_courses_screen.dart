@@ -44,7 +44,8 @@ class _AllCoursesScreenState extends State<AllCoursesScreen>
             padding: EdgeInsets.symmetric(
                 horizontal: size.width * 0.04, vertical: size.height * 0.02),
             child: course.allCourses.isEmpty && course.isLoading
-                ? ListView.builder(
+                ? ListView.separated(
+                    separatorBuilder: (_,__)=> const SizedBox(height: 5),
                     scrollDirection: Axis.vertical,
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
@@ -58,7 +59,8 @@ class _AllCoursesScreenState extends State<AllCoursesScreen>
                         "No available course found",
                         style: CourseStyles.noCourseLabelStyle,
                       ))
-                    : ListView.builder(
+                    : ListView.separated(
+                        separatorBuilder: (_,__) => const SizedBox(height: 15),
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
                         itemCount: course.courses.length,

@@ -1,20 +1,19 @@
 import 'package:birds_learning_network/src/config/routing/route.dart';
 import 'package:birds_learning_network/src/features/modules/home/model/response_model/get_courses.dart';
-import 'package:birds_learning_network/src/features/modules/home/view/facilitator.dart';
-import 'package:birds_learning_network/src/features/modules/home/view_model/facilitator_provider.dart';
+import 'package:birds_learning_network/src/features/modules/home/view/screens/facilitator.dart';
 import 'package:birds_learning_network/src/utils/global_constants/asset_paths/image_path.dart';
 import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
 import 'package:birds_learning_network/src/utils/helper_widgets/star_widget.dart';
 import 'package:birds_learning_network/src/utils/mixins/module_mixins/content_mixins.dart';
 import 'package:birds_learning_network/src/utils/mixins/module_mixins/home_mixins.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class CourseInfoWidget extends StatelessWidget with HomeWidgets, ContentWidget {
   const CourseInfoWidget(
-      {super.key, required this.course, this.isFacilitator = false});
+      {super.key, required this.course, this.isFacilitator = false, required this.isSubscriptionActive});
   final Courses course;
   final bool isFacilitator;
+  final bool isSubscriptionActive;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +31,9 @@ class CourseInfoWidget extends StatelessWidget with HomeWidgets, ContentWidget {
               decoration: BoxDecoration(
                   color: success100, borderRadius: BorderRadius.circular(20)),
               child: course.subscriptionBased != null &&  course.subscriptionBased!
-                ? const Icon(Icons.lock, size: 20, color: skipColor,)
+                ? !isSubscriptionActive
+                  ? const Icon(Icons.lock, size: 20, color: skipColor,)
+                  : const Icon(Icons.lock_open, size: 20, color: skipColor,)
                 : titleAmountText(course.salePrice ?? ""),
             )
           ],
@@ -47,9 +48,9 @@ class CourseInfoWidget extends StatelessWidget with HomeWidgets, ContentWidget {
               if (isFacilitator) {
                 RoutingService.popRouting(context);
               } else {
-                context.read<FacilitatorProvider>().getFacilitatorData(
-                    context, course.facilitator!.id!.toString());
-                RoutingService.pushRouting(context, const FacilitatorScreen());
+                RoutingService.pushRouting(context, FacilitatorScreen(
+                  facilitatorId: course.facilitator!.id ?? "0",
+                ));
               }
             }),
             const SizedBox(width: 5),

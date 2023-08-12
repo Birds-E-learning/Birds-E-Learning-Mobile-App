@@ -1,11 +1,11 @@
 import 'dart:async';
 
 import 'package:birds_learning_network/src/features/core/settings/view_model/filter_provider.dart';
-import 'package:birds_learning_network/src/features/modules/courses/view/course_screen.dart';
+import 'package:birds_learning_network/src/features/modules/courses/view/screens/course_screen.dart';
 import 'package:birds_learning_network/src/features/modules/home/model/repository/home_repository.dart';
 import 'package:birds_learning_network/src/features/modules/home/model/response_model/get_courses.dart';
 import 'package:birds_learning_network/src/features/modules/user_cart/view/cart.dart';
-import 'package:birds_learning_network/src/features/modules/home/view/home_page.dart';
+import 'package:birds_learning_network/src/features/modules/home/view/screens/home_page.dart';
 import 'package:birds_learning_network/src/features/modules/profile/view/profile_page.dart';
 import 'package:birds_learning_network/src/global_model/services/storage/shared_preferences/user_details.dart';
 import 'package:flutter/material.dart';
@@ -186,29 +186,11 @@ class HomeProvider extends ChangeNotifier {
   Future prefCoursesGraph(context) async {
     try {
       topIcons = [];
-      List<Courses> prefCourses_ = [];
       isPrefLoading = true;
       Map<String, List<Courses>>? response =
           await repo.getPreferenceCourses(context);
       if(response != null){
-        response.forEach((key, value) {
-          prefCourses_.addAll(value);
-          if (categories.keys.contains(key)) {
-            List<String> courseTitles =
-            []; // This function holds the course titles in the category to avoid repitions.
-            for (var course in categories[key]!) {
-              courseTitles.add(course.title!);
-            }
-            for (var elem in value) {
-              if (!courseTitles.contains(elem.title)) {
-                categories[key]!.add(elem);
-              }
-            }
-          } else {
-            categories[key] = value;
-          }
-        });
-        _prefCourses = prefCourses_;
+        _prefCourses = extractCoursesFunc(response);
       }
       isPrefLoading = false;
       notifyListeners();
@@ -223,27 +205,10 @@ class HomeProvider extends ChangeNotifier {
     try {
       quickIcons = [];
       isQuickLoading = true;
-      List<Courses> quickCourses_ = [];
-      // _quickCourses = [];
-      Map<String, List<Courses>> response = await repo.getQuickCourses(context);
-      // categories.addAll(response);
-      response.forEach((key, value) {
-        quickCourses_.addAll(value);
-        if (categories.keys.contains(key)) {
-          List<String> courseTitles = [];
-          for (var course in categories[key]!) {
-            courseTitles.add(course.title!);
-          }
-          for (var elem in value) {
-            if (!courseTitles.contains(elem.title)) {
-              categories[key]!.add(elem);
-            }
-          }
-        } else {
-          categories[key] = value;
-        }
-      });
-      _quickCourses = quickCourses_;
+      Map<String, List<Courses>>? response = await repo.getQuickCourses(context);
+      if(response != null){
+        _quickCourses = extractCoursesFunc(response);
+      }
       isQuickLoading = false;
       notifyListeners();
     } catch (e) {
@@ -256,27 +221,12 @@ class HomeProvider extends ChangeNotifier {
     try {
       trendingIcons = [];
       isTrendingLoading = true;
-      List<Courses> trendingCourses_ = [];
-      // _trendingCourses = [];
-      Map<String, List<Courses>> response =
+      notifyListeners();
+      Map<String, List<Courses>>? response =
           await repo.getTrendingCourses(context);
-      response.forEach((key, value) {
-        trendingCourses_.addAll(value);
-        if (categories.keys.contains(key)) {
-          List<String> courseTitles = [];
-          for (var course in categories[key]!) {
-            courseTitles.add(course.title!);
-          }
-          for (var elem in value) {
-            if (courseTitles.contains(elem.title) == false) {
-              categories[key]!.add(elem);
-            }
-          }
-        } else {
-          categories[key] = value;
-        }
-      });
-      _trendingCourses = trendingCourses_;
+      if(response != null){
+        _trendingCourses = extractCoursesFunc(response);
+      }
       isTrendingLoading = false;
       notifyListeners();
     } catch (e) {
@@ -285,4 +235,26 @@ class HomeProvider extends ChangeNotifier {
       throw Exception(e);
     }
   }
+
+  List<Courses> extractCoursesFunc(Map<String, List<Courses>> response){
+    List<Courses> categoryCourses = [];
+    response.forEach((key, value) {
+      categoryCourses.addAll(value);
+      if (categories.keys.contains(key)) {
+        List<String> courseTitles = []; // This function holds the course titles in the category to avoid repetitions.
+        for (var course in categories[key]!) {
+          courseTitles.add(course.title!);
+        }
+        for (var elem in value) {
+          if (!courseTitles.contains(elem.title)) {
+            categories[key]!.add(elem);
+          }
+        }
+      } else {
+        categories[key] = value;
+      }
+    });
+    return categoryCourses;
+  }
+
 }
