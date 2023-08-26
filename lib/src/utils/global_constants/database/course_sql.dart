@@ -13,7 +13,7 @@ class CourseSql{
     if (sanitizedName.isNotEmpty && !RegExp(r'^[a-zA-Z_]').hasMatch(sanitizedName)) {
       sanitizedName = '_$sanitizedName';
     }
-    print("Table name  =======>>> $sanitizedName");
+    // print("Table name  =======>>> $sanitizedName");
     return sanitizedName;
   }
 

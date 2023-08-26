@@ -32,10 +32,11 @@ class CourseActionButtons extends StatelessWidget
           child: BlackButtonWidget(
               onPressed: () async {
                 course.salePrice! == "0.00"
-                    ? RoutingService.pushAndPopUntilRouteIsFirst(
+                    ? RoutingService.pushRouting(
                         context, ViewCourseScreen(course: course))
                     : RoutingService.pushRouting(
-                        context, PaymentScreen(course: course));
+                        context, PaymentScreen(course: course),
+                );
               },
               child: buttonText(
                   course.salePrice! == "0.00" ? "Start Course" : "Enroll Now",

@@ -35,7 +35,6 @@ class _UnregisteredTrendingCoursesScreenState extends State<UnregisteredTrending
           centerTitle: false,
           pinned: true,
           floating: true,
-          backgroundColor: backgroundBlurColor,
           leading: leadingIcon(context),
           elevation: 0,
           // actions: [

@@ -95,7 +95,9 @@ class CourseCard extends StatelessWidget with ImagePath, HomeWidgets {
                   Container(
                       child: course.subscriptionBased != null &&  course.subscriptionBased!
                       ?  SubscriptionTagWidget(course: course)
-                      :amountText(course.salePrice ?? "5000", course.price ?? "5500"),
+                      : course.salePrice == "0.00"
+                      ? freeText()
+                      : amountText(course.salePrice ?? "5000", course.price ?? "5500"),
                   )
                 ],
               ),

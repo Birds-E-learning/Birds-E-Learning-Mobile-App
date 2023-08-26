@@ -23,12 +23,13 @@ dependencies:
   device_info_plus: ^8.1.0
   shared_preferences: ^2.0.18
   country_picker: ^2.0.19
+  path: ^1.8.3
   flutter_otp_text_field: ^1.1.0+2
   flutter_secure_storage: ^8.0.0
   webview_flutter: ^4.0.6
   flutter_facebook_auth: ^5.0.8
   dropdown_button2: ^1.9.2
-  url_launcher: ^6.1.10
+  url_launcher: ^6.1.12
   image_picker: ^0.8.7
   carousel_slider: ^4.2.1
   cached_network_image: ^3.2.3

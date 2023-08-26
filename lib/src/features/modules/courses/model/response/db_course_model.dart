@@ -5,8 +5,9 @@ class CourseModel {
   final String? lessonUrl;
   final dynamic lessonDuration;
   final String? lessonTitle;
-  final dynamic lessonLastPlayedDuration;
-  final double? progress;
+   dynamic lessonLastPlayedDuration;
+   double? progress;
+   bool? pauseVideo;
 
   CourseModel({
      this.id,
@@ -17,6 +18,7 @@ class CourseModel {
      this.lessonTitle,
      this.lessonLastPlayedDuration,
      this.progress,
+     this.pauseVideo,
   });
 
   Map<String, dynamic> toMap() {

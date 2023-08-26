@@ -35,65 +35,69 @@ class LectureLessonPreview extends StatelessWidget {
     String minText = minute > 1 ? "minutes" : "minute";
     String secText = seconds > 1 ? "seconds" : "second";
 
-    return Container(
-      padding: const EdgeInsets.only(
-        left: 8, top: 8, bottom: 8
-      ),
-      // change this to current playing ID  which has the concatenation of the "video id, section id and lesson id"
-      decoration: BoxDecoration(
-        color: Provider.of<PaidCoursesProvider>(context).currentlyPlayingVideo ==
-            lesson.lessonUrl ? success300 : white,
-        borderRadius: BorderRadius.circular(8)
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.65,
-                child: AutoSizeText(
-                      "${previousIndex + 1}.${index + 1} $lessonName",
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: style,
+    return Consumer<PaidCoursesProvider>(
+      builder: (_, provider, __) => Container(
+        padding: const EdgeInsets.only(
+          left: 8, top: 8, bottom: 8
+        ),
+        // change this to current playing ID  which has the concatenation of the "video id, section id and lesson id"
+        decoration: BoxDecoration(
+          color: provider.currentlyPlayingLesson != null &&
+              provider.currentlyPlayingLesson!.sectionId == lesson.sectionId &&
+              provider.currentlyPlayingLesson!.lessonId == lesson.lessonId
+              ? success300 : white,
+          borderRadius: BorderRadius.circular(8)
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.65,
+                  child: AutoSizeText(
+                        "${previousIndex + 1}.${index + 1} $lessonName",
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: style,
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 5, left: 10),
-                child: Row(
-                  children: [
-                    const Text(
-                      "video",
-                      style: subStyle,
-                    ),
-                    const SizedBox(width: 5),
-                    Container(
-                      height: 6,
-                      width: 6,
-                      decoration: const BoxDecoration(
-                          shape: BoxShape.circle, color: greys300),
-                    ),
-                    const SizedBox(width: 5),
-                    Text(
-                      "$minute $minText $seconds $secText",
-                      style: subStyle,
-                    )
-                  ],
-                ),
-              )
-            ],
-          ),
-          IconButton(
-            onPressed: onTap,
-            icon: const Icon(
-              Icons.play_circle,
-              size: 20,
-              color: deepBlack,
+                Padding(
+                  padding: const EdgeInsets.only(top: 5, left: 10),
+                  child: Row(
+                    children: [
+                      const Text(
+                        "video",
+                        style: subStyle,
+                      ),
+                      const SizedBox(width: 5),
+                      Container(
+                        height: 6,
+                        width: 6,
+                        decoration: const BoxDecoration(
+                            shape: BoxShape.circle, color: greys300),
+                      ),
+                      const SizedBox(width: 5),
+                      Text(
+                        "$minute $minText $seconds $secText",
+                        style: subStyle,
+                      )
+                    ],
+                  ),
+                )
+              ],
             ),
-          )
-        ],
+            IconButton(
+              onPressed: onTap,
+              icon: const Icon(
+                Icons.play_circle,
+                size: 20,
+                color: deepBlack,
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

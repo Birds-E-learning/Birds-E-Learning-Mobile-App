@@ -34,7 +34,6 @@ class _QuickCoursesScreenState extends State<QuickCoursesScreen>
           centerTitle: false,
           pinned: true,
           floating: true,
-          backgroundColor: backgroundBlurColor,
           leading: leadingIcon(context),
           elevation: 0,
         ),
@@ -46,7 +45,7 @@ class _QuickCoursesScreenState extends State<QuickCoursesScreen>
                 ? home.isQuickLoading
                   ?  ListView.separated(
                       separatorBuilder: (_, __) => const SizedBox(
-                            height: 10,
+                            height: 20,
                             child: Divider(thickness: 0.2, color: success1000),
                           ),
                       scrollDirection: Axis.vertical,
@@ -59,7 +58,7 @@ class _QuickCoursesScreenState extends State<QuickCoursesScreen>
                   : const EmptyCategoryWidget(category: "Quick")
                 : ListView.separated(
                     separatorBuilder: (_, __) => const SizedBox(
-                          height: 10,
+                          height: 30,
                           child: Divider(thickness: 0.2, color: success1000),
                         ),
                     shrinkWrap: true,

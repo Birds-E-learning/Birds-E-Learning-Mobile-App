@@ -62,7 +62,6 @@ class _UnregisteredUserHomePageState extends State<UnregisteredUserHomePage>
           pinned: courseWatch.onSearch ? false : true,
           floating: courseWatch.onSearch ? false : true,
           elevation: 0,
-          backgroundColor: backgroundBlurColor,
         ),
         child: SafeArea(
           child: Padding(

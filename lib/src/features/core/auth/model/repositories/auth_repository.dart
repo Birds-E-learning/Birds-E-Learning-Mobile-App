@@ -122,10 +122,8 @@ class AuthRepository extends NetworkService with BaseHeaders, BaseUrl {
   Future<LoginResponse?> getConsentResponse(
       AuthConsentModel data, context) async {
     try{
-      print("here in the repo trying to get the consent response");
       dynamic response =
       await postRequest(oAuthValidation, header, data.toJson(), context);
-      print("consent response =====>>>> $response");
       if(response != null){
         LoginResponse responseData = LoginResponse.fromJson(response);
         return responseData;

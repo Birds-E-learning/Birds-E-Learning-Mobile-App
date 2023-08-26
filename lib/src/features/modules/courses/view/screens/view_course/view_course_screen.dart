@@ -1,3 +1,5 @@
+import 'package:birds_learning_network/src/config/routing/route.dart';
+import 'package:birds_learning_network/src/features/modules/courses/model/response/db_course_model.dart';
 import 'package:birds_learning_network/src/features/modules/courses/view/widgets/course_container.dart';
 import 'package:birds_learning_network/src/features/modules/courses/view/widgets/video_container.dart';
 import 'package:birds_learning_network/src/features/modules/courses/view_model/paid_courses_provider.dart';
@@ -20,7 +22,6 @@ class ViewCourseScreen extends StatefulWidget {
   final Courses course;
 
   @override
-  // ignore: no_logic_in_create_state
   State<ViewCourseScreen> createState() => _ViewCourseScreenState();
 }
 
@@ -29,15 +30,15 @@ class _ViewCourseScreenState extends State<ViewCourseScreen>
   TabController? _tabController;
   YoutubePlayerController? _controller;
   final List<String> _tabs = ['Lectures', 'Resources', 'Assessment'];
-  // bool _isDisposed = true;
+  String title = "";
 
   @override
   void initState() {
     _tabController = _tabController = TabController(length: 3, vsync: this);
     SchedulerBinding.instance.addPostFrameCallback((_) async {
-      Provider.of<PaidCoursesProvider>(context, listen: false).refreshValues();
-    Provider.of<PaidCoursesProvider>(context, listen: false)
-        .getCourseSection(context, widget.course);
+      print(widget.course.toJson());
+      context.read<PaidCoursesProvider>().refreshValues();
+      context.read<PaidCoursesProvider>().getCourseSection(context, widget.course);
     });
     super.initState();
   }
@@ -48,8 +49,20 @@ class _ViewCourseScreenState extends State<ViewCourseScreen>
     return Scaffold(
       backgroundColor: white,
       appBar: AppBar(
-        leading: leadingIcon(context),
+        leading: leadingIcon(
+          context,
+          onTap: (){
+            context.read<PaidCoursesProvider>().onDisposed(context, widget.course.id ?? "0");
+            RoutingService.popRouting(context);
+          }
+        ),
         elevation: 0,
+        title: Text(
+            context.watch<PaidCoursesProvider>().currentlyPlayingLesson != null ?
+            context.watch<PaidCoursesProvider>().currentlyPlayingLesson!.lessonTitle ?? "" : "",
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(
+            fontSize: 16, fontWeight: FontWeight.w600)),
         backgroundColor: white,
       ),
       body: Consumer<PaidCoursesProvider>(
@@ -58,23 +71,23 @@ class _ViewCourseScreenState extends State<ViewCourseScreen>
           padding: EdgeInsets.symmetric(horizontal: size.width * 0.04),
           child: CustomScrollView(
             slivers: <Widget>[
-              course.isLessonPlayed ||
-                      (_controller != null )
-                  ? SliverPersistentHeader(
-                      delegate: _SliverTitleBarDelegate(
-                        "The current Lesson title should be here"
-                      ),
-                      pinned: true,
-                      floating: true,
-                    )
-                  : const SliverPadding(padding: EdgeInsets.zero),
+              // course.isLessonPlayed || (_controller != null )
+              //     ? SliverPersistentHeader(
+              //         delegate: _SliverTitleBarDelegate(
+              //           title
+              //         ),
+              //         pinned: true,
+              //         floating: true,
+              //       )
+              //     : const SliverPadding(padding: EdgeInsets.zero),
               SliverToBoxAdapter(
                 child: Padding(
                     padding: const EdgeInsets.only(bottom: 15),
-                    child: !course.isLessonPlayed
+                    child: !course.isLessonPlayed || _controller == null
                         ? CourseContainer(course: widget.course)
                         : VideoPlayerContainer(
                             controller: _controller!,
+                            courseId: widget.course.id ?? "0",
                           )),
               ),
               SliverPersistentHeader(
@@ -120,8 +133,35 @@ class _ViewCourseScreenState extends State<ViewCourseScreen>
     );
   }
 
-  _updateController(String url){
-
+  _updateController(CourseModel lesson){
+    if(lesson.pauseVideo == true && _controller != null){
+      _controller!.pause();
+      return;
+    }
+    String? videoId = YoutubePlayer.convertUrlToId(lesson.lessonUrl ?? "");
+    final course = context.read<PaidCoursesProvider>();
+    course.onPlayButtonClick(context, lesson, widget.course.id ?? "0");
+    setState(() {
+      title = lesson.lessonTitle ?? "";
+    });
+    if (videoId != null){
+      if(_controller != null){
+        _controller!.pause();
+        _controller!.load(videoId, startAt: lesson.lessonLastPlayedDuration);
+      }else{
+        setState(() {
+          _controller = YoutubePlayerController(
+              initialVideoId: videoId, flags:  YoutubePlayerFlags(
+              autoPlay: false,
+              controlsVisibleAtStart: true,
+              forceHD: true,
+              startAt: lesson.lessonLastPlayedDuration != null ?
+              int.parse(lesson.lessonLastPlayedDuration!.toString()) : 0
+          )
+          );
+        });
+      }
+    }
   }
 
 
@@ -129,6 +169,12 @@ class _ViewCourseScreenState extends State<ViewCourseScreen>
   void dispose() {
     _controller != null ? _controller!.dispose() : null;
     super.dispose();
+  }
+
+  @override
+  void deactivate() {
+    _controller != null ? _controller!.pause() : null;
+    super.deactivate();
   }
 }
 
@@ -172,28 +218,31 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   }
 }
 
-class _SliverTitleBarDelegate extends SliverPersistentHeaderDelegate {
-  _SliverTitleBarDelegate(this.title);
-  final String title;
-
-  @override
-  double get minExtent => 25;
-  @override
-  double get maxExtent => 25;
-
-  @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return Container(
-      color: Colors.white,
-      child:  Text(title, style: const TextStyle(
-          fontSize: 16, fontWeight: FontWeight.w600
-      ),),
-    );
-  }
-
-  @override
-  bool shouldRebuild(_SliverTitleBarDelegate oldDelegate) {
-    return false;
-  }
-}
+// class _SliverTitleBarDelegate extends SliverPersistentHeaderDelegate {
+//   _SliverTitleBarDelegate(this.title);
+//   final String title;
+//
+//   @override
+//   double get minExtent => 25;
+//   @override
+//   double get maxExtent => 25;
+//
+//   @override
+//   Widget build(
+//       BuildContext context, double shrinkOffset, bool overlapsContent) {
+//     return Container(
+//       color: Colors.white,
+//       child:  Text(
+//         context.watch<PaidCoursesProvider>().currentlyPlayingLesson != null ?
+//         context.watch<PaidCoursesProvider>().currentlyPlayingLesson!.lessonTitle ?? "" : "",
+//         style: const TextStyle(
+//           fontSize: 16, fontWeight: FontWeight.w600
+//       ),),
+//     );
+//   }
+//
+//   @override
+//   bool shouldRebuild(_SliverTitleBarDelegate oldDelegate) {
+//     return false;
+//   }
+// }

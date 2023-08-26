@@ -1,4 +1,5 @@
 import 'package:birds_learning_network/src/config/routing/route.dart';
+import 'package:birds_learning_network/src/features/modules/courses/model/response/db_course_model.dart';
 import 'package:birds_learning_network/src/features/modules/courses/view/screens/assessment/assessment_summary.dart';
 import 'package:birds_learning_network/src/features/modules/courses/view_model/paid_courses_provider.dart';
 import 'package:birds_learning_network/src/features/modules/home/model/response_model/get_courses.dart';
@@ -12,8 +13,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class AssessmentTabWidget extends StatefulWidget {
-  const AssessmentTabWidget({super.key, required this.course});
+  const AssessmentTabWidget({super.key, required this.course, this.updateController});
   final Courses course;
+  final Function(CourseModel)? updateController;
 
   @override
   State<AssessmentTabWidget> createState() => _AssessmentTabWidgetState();
@@ -64,6 +66,16 @@ class _AssessmentTabWidgetState extends State<AssessmentTabWidget>
                      return Padding(
                        padding: const EdgeInsets.only(bottom: 20),
                        child: AssessmentRow(
+                            onTap: (){
+                              if(widget.updateController != null){
+                                widget.updateController!(CourseModel(
+                                  pauseVideo: true,
+                                ));
+                              }
+                              RoutingService.pushRouting(
+                                  context,
+                                  AssessmentSummary(title: content.currentSections[index].name ?? ""));
+                            },
                            index: index + 1,
                            section: content.currentSections[index].name ?? ""),
                      );
@@ -126,9 +138,11 @@ class AssessmentRow extends StatelessWidget {
     super.key,
     required this.index,
     required this.section,
+    this.onTap,
   });
   final dynamic index;
   final String section;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -138,7 +152,7 @@ class AssessmentRow extends StatelessWidget {
         fontWeight: FontWeight.w400,
         fontFamily: "Inter");
     return InkWell(
-      onTap: () => RoutingService.pushRouting(
+      onTap: onTap ?? () => RoutingService.pushRouting(
           context, AssessmentSummary(title: section)),
       child: Row(
         children: [

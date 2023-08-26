@@ -10,7 +10,6 @@ class UnregisteredBlogRepository extends NetworkService with BaseHeaders, BaseUr
     try{
       Map<String, String> header_ = await anonymousHeader(context);
       var json = await getRequest(newsUrl(categoryId), header_, context);
-      print("json ====>>>> $json");
       BlogNewsResponse response = BlogNewsResponse.fromJson(json);
       if (response.responseCode == "00") {
         return response;

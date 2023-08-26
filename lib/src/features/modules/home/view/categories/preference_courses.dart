@@ -35,7 +35,6 @@ class _PreferenceCoursesScreenState extends State<PreferenceCoursesScreen>
           centerTitle: false,
           pinned: true,
           floating: true,
-          backgroundColor: backgroundBlurColor,
           leading: leadingIcon(context),
           elevation: 0,
         ),
@@ -47,7 +46,7 @@ class _PreferenceCoursesScreenState extends State<PreferenceCoursesScreen>
                 ? home.isPrefLoading
                   ?  ListView.separated(
                       separatorBuilder: (_, __) => const SizedBox(
-                            height: 10,
+                            height: 20,
                             child: Divider(thickness: 0.2, color: success1000),
                           ),
                       scrollDirection: Axis.vertical,
@@ -60,7 +59,7 @@ class _PreferenceCoursesScreenState extends State<PreferenceCoursesScreen>
                   : const EmptyCategoryWidget(category: "Preference")
                 : ListView.separated(
                     separatorBuilder: (_, __) => const SizedBox(
-                          height: 10,
+                          height: 30,
                           child: Divider(thickness: 0.2, color: success1000),
                         ),
                     shrinkWrap: true,

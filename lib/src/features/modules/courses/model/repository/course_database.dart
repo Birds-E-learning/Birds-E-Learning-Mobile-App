@@ -1,5 +1,6 @@
 import 'package:birds_learning_network/src/features/modules/courses/model/response/db_course_model.dart';
 import 'package:birds_learning_network/src/utils/global_constants/database/course_sql.dart';
+import 'package:path/path.dart' as p;
 import 'package:sqflite/sqflite.dart';
 
 class CourseDatabase{
@@ -12,12 +13,13 @@ class CourseDatabase{
   Future<Database> get database async {
     if (_database != null) return _database!;
 
-    _database = await _initDB("product.db");
+    _database = await _initDB("course.db");
     return _database!;
   }
 
   Future<Database> _initDB(String filePath) async {
-    String path = '${await getDatabasesPath()}$filePath';
+    var directory = await getDatabasesPath();
+    String path = p.join(directory.toString(), filePath);
 
     return await openDatabase(path, version: _version, onCreate: _createDB);
   }
@@ -50,12 +52,16 @@ class CourseDatabase{
 
   Future<void> insertCourse(String tableName, CourseModel course) async {
     final db = await instance.database;
-    await db.insert(
-      tableName,
-      course.toMap(), // Convert your CourseModel to a map of values
-      conflictAlgorithm: ConflictAlgorithm.ignore, // or use other conflict algorithms
-
-    );
+    bool courseExists = await doesCourseExist(tableName, course);
+    if(courseExists){
+      // updateLessonProgress(tableName, course );
+    }else{
+      await db.insert(
+        tableName,
+        course.toMap(), // Convert your CourseModel to a map of values
+        conflictAlgorithm: ConflictAlgorithm.ignore, // or use other conflict algorithms
+      );
+    }
   }
 
   Future<void> updateLessonProgress(String tableName, CourseModel course) async {
@@ -69,6 +75,18 @@ class CourseDatabase{
       where: 'sectionId = ? AND lessonId = ?', // Specify the condition
       whereArgs: [course.sectionId, course.lessonId],
     );
+  }
+
+  Future<bool> doesCourseExist(String table, CourseModel lesson) async {
+    final db = await database;
+
+    final List<Map<String, dynamic>> maps = await db.query(
+      table,
+      where: 'sectionId = ? AND lessonId = ?',
+      whereArgs: [lesson.sectionId, lesson.lessonId],
+    );
+
+    return maps.isNotEmpty; // If the query result is not empty, the record exists
   }
 
   Future<List<CourseModel>> getCourseLessons(String tableName) async {

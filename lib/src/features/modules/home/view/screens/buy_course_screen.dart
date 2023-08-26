@@ -239,7 +239,9 @@ class _BuyCourseScreenState extends State<BuyCourseScreen>
                   Container(
                       child: widget.course.subscriptionBased != null && widget.course.subscriptionBased!
                       ? null
-                      : bigAmountText(widget.course.salePrice ?? "00.00"),
+                      :  widget.course.salePrice == "0.00"
+                          ? freeText()
+                          : bigAmountText(widget.course.salePrice ?? "00.00"),
                   ),
                   const SizedBox(height: 10),
                   Container(
@@ -248,7 +250,7 @@ class _BuyCourseScreenState extends State<BuyCourseScreen>
                          ? SizedBox(
                             width: double.infinity,
                             child: BlackButtonWidget(
-                                onPressed: () => RoutingService.pushRouting(context,const SubscriptionScreen()),
+                                onPressed: () => RoutingService.pushRouting(context, const SubscriptionScreen()),
                                 child: Text(
                                   "Subscribe",
                                   style: TextStyles.buttonStyle.copyWith(color: nextColor),

@@ -34,6 +34,10 @@ class CourseInfoWidget extends StatelessWidget with HomeWidgets, ContentWidget {
                 ? !isSubscriptionActive
                   ? const Icon(Icons.lock, size: 20, color: skipColor,)
                   : const Icon(Icons.lock_open, size: 20, color: skipColor,)
+                : course.salePrice == "0.00"
+                ? const Text("Free", style: TextStyle(
+                fontSize: 12, fontWeight: FontWeight.w600, color: skipColor
+              ),)
                 : titleAmountText(course.salePrice ?? ""),
             )
           ],

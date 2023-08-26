@@ -60,7 +60,6 @@ class UnregisteredHomeRepository extends NetworkService with BaseHeaders, BaseUr
     try{
       Map<String, String> header_ = await anonymousHeader(context);
       var response = await getRequest(getPref, header_, context);
-      print("filter details ===>>> $response");
       GetPreferenceModel responseData = GetPreferenceModel.fromJson(response);
       if (responseData.responseCode == "00") {
         return responseData.responseData!;

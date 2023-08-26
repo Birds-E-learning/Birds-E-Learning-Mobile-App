@@ -52,7 +52,6 @@ class _UserProfilePageState extends State<UserProfilePage>
         pinned: true,
         floating: true,
         elevation: 0,
-        backgroundColor: backgroundBlurColor,
       ),
       child: Consumer<ProfileProvider>(
         builder: (_, profile, __) => Padding(

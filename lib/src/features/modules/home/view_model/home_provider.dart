@@ -196,7 +196,6 @@ class HomeProvider extends ChangeNotifier {
       notifyListeners();
     } catch (e) {
       isPrefLoading = false;
-      print(e);
       throw Exception(e);
     }
   }

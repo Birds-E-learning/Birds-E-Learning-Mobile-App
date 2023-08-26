@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:birds_learning_network/src/features/modules/courses/model/response/db_course_model.dart';
 import 'package:birds_learning_network/src/features/modules/courses/view/screens/view_course/widget/lecture_tab_shimmer.dart';
 import 'package:birds_learning_network/src/features/modules/courses/view/widgets/lesson_preview.dart';
 import 'package:birds_learning_network/src/features/modules/courses/view_model/paid_courses_provider.dart';
@@ -17,7 +18,7 @@ class LectureTabWidget extends StatelessWidget {
     required this.updateController});
 
   final Courses course;
-  final Function(String) updateController;
+  final Function(CourseModel) updateController;
 
   @override
   Widget build(BuildContext context) {
@@ -96,12 +97,7 @@ class LectureTabWidget extends StatelessWidget {
                                           onTap: content.courseLessons[index][indexx].lessonUrl == null ? (){
                                             showSnack(context, "02", "No video for this course");
                                           }
-                                            : (){
-                                            showSnack(context, "02", "WIP: Video will load in next release");
-                                            updateController(
-                                                content.courseLessons[index][indexx].lessonUrl!
-                                            );
-                                          }
+                                            : () => updateController(content.courseLessons[index][indexx])
                                           // "https://www.youtube.com/watch?v=ZtC7-OpjzOc"
                                         ),
                                       ],

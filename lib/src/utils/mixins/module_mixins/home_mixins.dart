@@ -114,6 +114,13 @@ mixin HomeWidgets on Object implements HomeText, HomeStyles {
     );
   }
 
+  Text freeText(){
+    return  Text(
+        "FREE",
+        style: HomeStyles.amountStyle.copyWith(fontSize: 18)
+    );
+  }
+
   Text labelText(String label) {
     return Text(
       label,

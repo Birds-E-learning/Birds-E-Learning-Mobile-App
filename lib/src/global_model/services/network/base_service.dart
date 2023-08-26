@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:birds_learning_network/src/global_model/apis/app_exception.dart';
-import 'package:birds_learning_network/src/utils/helper_widgets/response_snack.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -112,7 +111,6 @@ class NetworkService {
         dynamic responseJson = jsonDecode(response.body);
         return responseJson;
       case 400:
-        showSnack(context, "08", responseData["responseMessage"]);
         throw BadRequestException(response.body.toString());
       case 401:
       case 403:

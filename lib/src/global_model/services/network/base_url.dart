@@ -39,10 +39,13 @@ class BaseUrl {
   final String allCourses = "${base}course/compact/graph/all";
   final String availableCourses = "${base}course/all";
   String facilitatorUrl(String id) => "${base}course/facilitator?id=$id";
-
   final String getMiniCoursePref = "${base}course/mini/preference/graph";
   final String getMiniCourseQuick = "${base}course/mini/quick/graph";
   final String getMiniCoursetrending = "${base}course/mini/trending/graph";
+
+  // Course Analysis
+
+  final String courseAnalysisUrl = "${base}course-analysis/course-lesson";
 
   // Cart
 
@@ -67,6 +70,7 @@ class BaseUrl {
   // User Paid Courses
 
   final String coursePaid = "${base}course/user/payment/all";
+
 
   // Social Content
 

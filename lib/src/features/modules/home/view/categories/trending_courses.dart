@@ -34,7 +34,6 @@ class _TrendingCoursesScreenState extends State<TrendingCoursesScreen>
           centerTitle: false,
           pinned: true,
           floating: true,
-          backgroundColor: backgroundBlurColor,
           leading: leadingIcon(context),
           elevation: 0,
           // actions: [
@@ -54,7 +53,7 @@ class _TrendingCoursesScreenState extends State<TrendingCoursesScreen>
                 ? home.isTrendingLoading
                   ?  ListView.separated(
                       separatorBuilder: (_, __) => const SizedBox(
-                            height: 10,
+                            height: 20,
                             child: Divider(thickness: 0.2, color: success1000),
                           ),
                       scrollDirection: Axis.vertical,
@@ -67,7 +66,7 @@ class _TrendingCoursesScreenState extends State<TrendingCoursesScreen>
                   : const EmptyCategoryWidget(category: "Trending")
                 : ListView.separated(
                     separatorBuilder: (_, __) => const SizedBox(
-                          height: 10,
+                          height: 30,
                           child: Divider(thickness: 0.2, color: success1000),
                         ),
                     shrinkWrap: true,

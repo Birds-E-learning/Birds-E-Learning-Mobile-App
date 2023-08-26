@@ -1,4 +1,5 @@
 import 'package:birds_learning_network/src/config/routing/route.dart';
+import 'package:birds_learning_network/src/features/modules/home/model/response_model/get_courses.dart';
 import 'package:birds_learning_network/src/features/modules/subscription/view/screens/payment_screen.dart';
 import 'package:birds_learning_network/src/features/modules/subscription/view/widget/card_shimmer.dart';
 import 'package:birds_learning_network/src/features/modules/subscription/view/widget/subscription_card.dart';
@@ -17,7 +18,8 @@ import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 
 class SubscriptionScreen extends StatefulWidget{
-  const SubscriptionScreen({super.key});
+  const SubscriptionScreen({super.key, this.course});
+  final Courses? course;
 
   @override
   State<SubscriptionScreen> createState() => _SubscriptionScreenState();
@@ -114,7 +116,9 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> with PaymentWid
                             showSnack(context, "03", "Choose a subscription plan before proceeding to payment");
                           }else{
                             RoutingService.pushRouting(context,
-                                SubscriptionPaymentScreen(data: getSubscriptionPlan(selectedValue!, sub.subscriptionPlans)));
+                                SubscriptionPaymentScreen(data: getSubscriptionPlan(selectedValue!, sub.subscriptionPlans),
+                                  course: widget.course,
+                                ));
                           }
                         }, child: Text(
                       "Proceed to Payment",

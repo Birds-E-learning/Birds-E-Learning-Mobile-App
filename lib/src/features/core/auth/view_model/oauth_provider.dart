@@ -188,12 +188,9 @@ class OAuthProvider extends ChangeNotifier {
     try {
       _webviewCompleted = false;
       notifyListeners();
-      print("here ===============>>>> first");
-      print("url =====>>>>>> $url");
       dynamic stateResponse =
           await NetworkService().getRequest(url,
               { "accept": "application/json", "Content-Type": "application/JSON",}, context);
-      print("state response ====>>>> $stateResponse");
       AuthJsonModel json = AuthJsonModel.fromJson(stateResponse);
       AuthConsentModel data = AuthConsentModel(
           consentCode: json.code,
@@ -203,7 +200,6 @@ class OAuthProvider extends ChangeNotifier {
           oauthValidationType: validationType);
       LoginResponse? response =
           await AuthRepository().getConsentResponse(data, context);
-      print("response =======>>>>>>>>> $response");
       if(response != null){
         if (response.responseCode == "00") {
           await UserPreferences.setUserFirstName(
@@ -219,7 +215,6 @@ class OAuthProvider extends ChangeNotifier {
       }
       notifyListeners();
     } catch (e) {
-      debugPrint("google auth error =====>>> ${e.toString()}");
       showSnack(context, "02", e.toString());
     }
   }

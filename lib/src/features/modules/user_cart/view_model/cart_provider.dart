@@ -109,7 +109,6 @@ class CartProvider extends ChangeNotifier {
         successDialog(context, response.responseMessage!,
             "Course successfully added to cart", "OK", () {
           Navigator.pop(context);
-          Navigator.pop(context);
         });
       } else {
         showSnack(context, response.responseCode!, response.responseMessage!);
@@ -131,7 +130,6 @@ class CartProvider extends ChangeNotifier {
             ? showToast(context, key)
             : successDialog(context, "Success",
                 "Course successfully added to wishlist", "OK", () {
-                Navigator.pop(context);
                 Navigator.pop(context);
               });
         // await Provider.of<HomeProvider>(context, listen: false)

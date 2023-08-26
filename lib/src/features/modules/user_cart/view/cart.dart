@@ -24,7 +24,6 @@ class CartPage extends StatelessWidget with CartWidgets {
     GlobalKey cartKey = GlobalKey();
     return BackgroundWidget(
       appBar: SliverAppBar(
-        backgroundColor: backgroundBlurColor,
         title: appBarText(),
         elevation: 0,
         pinned: true,
@@ -76,7 +75,13 @@ class CartPage extends StatelessWidget with CartWidgets {
                                   style: CartStyles.richStyle1,
                                 ),
                               )
-                            : ListView.builder(
+                            : ListView.separated(
+                                separatorBuilder: (_,__) => const Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 10),
+                                  child: Divider(
+                                    thickness: 0.2,
+                                    color: success1000,
+                                  ),),
                                 key: cartKey,
                                 itemCount: cart.myCartList.length,
                                 shrinkWrap: true,
@@ -131,7 +136,13 @@ class CartPage extends StatelessWidget with CartWidgets {
                                   style: CartStyles.richStyle1,
                                 ),
                               )
-                            : ListView.builder(
+                            : ListView.separated(
+                                separatorBuilder: (_,__) => const Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 10),
+                                  child: Divider(
+                                    thickness: 0.2,
+                                    color: success1000,
+                                  ),),
                                 key: wishKey,
                                 itemCount: cart.wishlist.length,
                                 shrinkWrap: true,

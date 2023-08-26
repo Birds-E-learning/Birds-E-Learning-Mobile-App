@@ -137,7 +137,6 @@ class _EditPreferenceScreenState extends State<EditPreferenceScreen>
                       width: double.infinity,
                       child: BlackButtonWidget(
                           onPressed: () async {
-                            print(filter.userPrefList);
                             if (filter.doneClicked) {
                               filter.onDoneClick();
                               return;

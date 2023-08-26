@@ -36,7 +36,6 @@ class _UnregisteredPreferenceCoursesScreenState extends State<UnregisteredPrefer
           centerTitle: false,
           pinned: true,
           floating: true,
-          backgroundColor: backgroundBlurColor,
           leading: leadingIcon(context),
           elevation: 0,
         ),

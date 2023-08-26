@@ -207,7 +207,7 @@ class _EditProfilePageState extends State<EditProfilePage>
       gender_ = user.responseData!.gender!.toLowerCase() == "unknown" ||
               user.responseData!.gender == ""
           ? null
-          : user.responseData!.gender;
+          : "${user.responseData!.gender!.toUpperCase()[0]}${user.responseData!.gender!.toLowerCase().substring(1)}";
     });
   }
 

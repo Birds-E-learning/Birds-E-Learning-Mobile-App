@@ -10,7 +10,6 @@ class BlogRepository extends NetworkService with BaseHeaders, BaseUrl{
     try{
       Map<String, String> header_ = await authHeader();
       var json = await getRequest(newsUrl(categoryId), header_, context);
-      print("json ====>>>> $json");
       BlogNewsResponse response = BlogNewsResponse.fromJson(json);
       if (response.responseCode == "00") {
         return response;

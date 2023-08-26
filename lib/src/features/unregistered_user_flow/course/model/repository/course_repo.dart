@@ -20,7 +20,6 @@ class UnregisteredCourseRepo extends NetworkService with BaseHeaders, BaseUrl{
     try {
       Map<String, String> header_ = await anonymousHeader(context);
       var json = await getRequest(getMiniCoursePref, header_, context, time: 100);
-      print("preference courses ===>> $json");
       GetCoursesResponse response = GetCoursesResponse.fromJson(json);
       var value = getCategories(response, categories, context);
       return value;
@@ -34,7 +33,6 @@ class UnregisteredCourseRepo extends NetworkService with BaseHeaders, BaseUrl{
     try {
       Map<String, String> header_ = await anonymousHeader(context);
       var json = await getRequest(getMiniCourseQuick, header_, context, time: 60);
-      print("quick courses ===>> $json");
       GetCoursesResponse response = GetCoursesResponse.fromJson(json);
       var value = getCategories(response, categories, context);
       return value;
@@ -48,7 +46,6 @@ class UnregisteredCourseRepo extends NetworkService with BaseHeaders, BaseUrl{
     try {
       Map<String, String> header_ = await anonymousHeader(context);
       var json = await getRequest(getMiniCoursetrending, header_, context, time: 60);
-      print("trending courses ===>> $json");
       GetCoursesResponse response = GetCoursesResponse.fromJson(json);
       var value = getCategories(response, categories, context);
       return value;

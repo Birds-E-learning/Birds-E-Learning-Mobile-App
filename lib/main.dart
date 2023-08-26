@@ -1,3 +1,4 @@
+import 'package:birds_learning_network/src/config/themes/light_theme.dart';
 import 'package:birds_learning_network/src/features/core/auth/view_model/login_provider/login_provider.dart';
 import 'package:birds_learning_network/src/features/core/auth/view_model/oauth_provider.dart';
 import 'package:birds_learning_network/src/features/core/auth/view_model/otp_provider.dart';
@@ -22,7 +23,6 @@ import 'package:birds_learning_network/src/features/unregistered_user_flow/blog/
 import 'package:birds_learning_network/src/features/unregistered_user_flow/course/view_model/course_content_provider.dart';
 import 'package:birds_learning_network/src/features/unregistered_user_flow/course/view_model/course_provider.dart';
 import 'package:birds_learning_network/src/features/unregistered_user_flow/home/view_model/home_provider.dart';
-import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
@@ -75,10 +75,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-          scaffoldBackgroundColor: white,
-        ),
+        theme: lightTheme,
         home: const SplashScreen(),
       ),
     );

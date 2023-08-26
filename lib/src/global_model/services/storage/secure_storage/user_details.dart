@@ -26,7 +26,6 @@ class UserSecureStorage {
   }
 
   Future setUserData(LoginResponse userData) async {
-    print(userData.responseData!.toJson());
     await setToken(userData.responseData!.authToken ?? "");
     await SubscriptionStorage().setSubscriptionData(userData.responseData!.subscription);
     await storage.write(key: _userDataKey, value: jsonEncode(userData));

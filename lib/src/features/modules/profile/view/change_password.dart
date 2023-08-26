@@ -1,7 +1,6 @@
 import 'package:birds_learning_network/src/features/modules/profile/view_model/change_password_provider.dart';
 import 'package:birds_learning_network/src/utils/custom_widgets/custom_bacground.dart';
 import 'package:birds_learning_network/src/utils/custom_widgets/text_field.dart';
-import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
 import 'package:birds_learning_network/src/utils/global_constants/texts/module_texts/profile_texts.dart';
 import 'package:birds_learning_network/src/utils/helper_widgets/button_black.dart';
 import 'package:birds_learning_network/src/utils/helper_widgets/loading_indicator.dart';
@@ -42,7 +41,6 @@ class _ChangePasswordPageState extends State<ChangePasswordPage>
             pinned: true,
             floating: true,
             elevation: 0,
-            backgroundColor: backgroundBlurColor,
             title: appBarText(ProfileTexts.changePassword),
             leading: leadingIcon(context)),
         child: Padding(
@@ -59,7 +57,6 @@ class _ChangePasswordPageState extends State<ChangePasswordPage>
                   maxLines: 1,
                   filled: true,
                   obscureText: !password.showOldPassword,
-                  keyboardType: TextInputType.number,
                   validator: (value) => passwordValidator(value),
                   suffixIcon: passwordVisibility(
                       () => password.onOldPasswordClick(),
@@ -72,7 +69,6 @@ class _ChangePasswordPageState extends State<ChangePasswordPage>
                   maxLines: 1,
                   obscureText: !password.showNewPassword,
                   filled: true,
-                  keyboardType: TextInputType.number,
                   validator: (value) =>
                       newPasswordValidator(value, oldPassword.text.trim()),
                   suffixIcon: passwordVisibility(
@@ -86,7 +82,6 @@ class _ChangePasswordPageState extends State<ChangePasswordPage>
                   maxLines: 1,
                   obscureText: !password.showConfirmPassword,
                   filled: true,
-                  keyboardType: TextInputType.number,
                   validator: (value) =>
                       confirmPasswordValidator(value, newPassword.text.trim()),
                   suffixIcon: passwordVisibility(

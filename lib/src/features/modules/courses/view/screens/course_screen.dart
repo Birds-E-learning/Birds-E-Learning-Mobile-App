@@ -7,7 +7,6 @@ import 'package:birds_learning_network/src/features/modules/home/view/widgets/sh
 import 'package:birds_learning_network/src/global_model/apis/api_response.dart';
 import 'package:birds_learning_network/src/utils/custom_widgets/custom_bacground.dart';
 import 'package:birds_learning_network/src/utils/global_constants/asset_paths/image_path.dart';
-import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
 import 'package:birds_learning_network/src/utils/global_constants/texts/module_texts/courses_texts.dart';
 import 'package:birds_learning_network/src/utils/helper_widgets/leading_icon.dart';
 import 'package:birds_learning_network/src/utils/mixins/module_mixins/courses_mixins.dart';
@@ -47,7 +46,6 @@ class _MyCoursesPageState extends State<MyCoursesPage>
           floating: true,
           leading: widget.isFullScreen ? leadingIcon(context) : null,
           elevation: 0,
-          backgroundColor: backgroundBlurColor,
         ),
         child: SafeArea(
           child: Padding(

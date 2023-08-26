@@ -1,3 +1,5 @@
+import 'package:birds_learning_network/src/features/modules/courses/model/request/course_analysis.dart';
+import 'package:birds_learning_network/src/features/modules/courses/model/response/course_analysis.dart';
 import 'package:birds_learning_network/src/features/modules/courses/model/response/courses_all_response.dart';
 import 'package:birds_learning_network/src/features/modules/home/model/response_model/get_courses.dart';
 import 'package:birds_learning_network/src/features/modules/user_cart/model/response_model/get_section.dart';
@@ -40,10 +42,27 @@ class CourseRepository extends NetworkService with BaseUrl, BaseHeaders {
   }
 
   Future getPickedSections(context, String id) async {
-    Map<String, String> header_ = await authHeader();
-    var json =
-    await getRequest("$getSection${int.parse(id)}", header_, context);
-    GetCourseSection response = GetCourseSection.fromJson(json);
-    return response;
+    try{
+      Map<String, String> header_ = await authHeader();
+      var json = await getRequest("$getSection${int.parse(id)}", header_, context);
+      if(json != null){
+        GetCourseSection response = GetCourseSection.fromJson(json);
+        return response;
+      }return null;
+    }catch(e){
+      return null;
+    }
+  }
+
+  Future postCourseAnalysis(context, CourseAnalysisRequest body) async{
+    try{
+      Map<String, String> header_ = await authHeader();
+      var json = await postRequest(courseAnalysisUrl, header_, body.toJson(), context);
+      if(json != null){
+        return CourseAnalysisResponse.fromJson(json);
+      } return null;
+    }catch(e){
+      return null;
+    }
   }
 }

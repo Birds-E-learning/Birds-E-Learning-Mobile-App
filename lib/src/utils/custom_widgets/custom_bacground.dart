@@ -12,10 +12,11 @@ class BackgroundWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
+      backgroundColor: white,
       body: Stack(
         children: [
           Container(
-            color: backgroundBlurColor,
+            color: white,
             width: double.infinity,
             height: size.height / 3,
           ),

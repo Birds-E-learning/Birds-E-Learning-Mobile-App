@@ -24,7 +24,6 @@ class UnregisteredProfileScreen extends StatelessWidget with CourseTextWidgets{
         floating: true,
         leading: isFullScreen ? leadingIcon(context) : null,
         elevation: 0,
-        backgroundColor: backgroundBlurColor,
       ),
       child: SafeArea(
         child: Padding(
