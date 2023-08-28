@@ -12,7 +12,6 @@ import 'package:birds_learning_network/src/global_model/services/storage/secure_
 import 'package:birds_learning_network/src/global_model/services/storage/shared_preferences/user_details.dart';
 import 'package:birds_learning_network/src/utils/helper_widgets/response_snack.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:provider/provider.dart';
 
 class LoginProvider extends ChangeNotifier {
@@ -135,53 +134,53 @@ class LoginProvider extends ChangeNotifier {
     }
   }
 
-  Future facebookAuthLogin(String deviceId, context) async {
-    try {
-      LoginResult res = await FacebookAuth.instance
-          .login(permissions: ["email", "public_profile"]);
-      switch (res.status) {
-        case LoginStatus.success:
-          final userData = await FacebookAuth.instance.getUserData();
-          List<String> names = userData["name"].toString().split(" ");
-          userData["firstName"] = names[0];
-          userData["lastName"] = names[names.length - 1];
-          LoginModel body = LoginModel(
-              loginBy: "FACEBOOK",
-              email: userData["email"],
-              deviceId: deviceId);
-
-          LoginResponse? loginResponse =
-              await repository.getLoginResponse(body, context);
-          if (loginResponse != null && loginResponse.responseCode == "00") {
-            await UserPreferences.setUserFirstName(
-                loginResponse.responseData!.firstName!);
-            await UserPreferences.setUserEmail(
-                loginResponse.responseData!.email!);
-            await UserPreferences.setLoginStatus(true);
-            await storage.setToken(loginResponse.responseData!.authToken!);
-            await storage.setUserData(loginResponse);
-            auth.facebookClicked ? auth.onFacebookClick() : null;
-            Provider.of<HomeProvider>(context, listen: false)
-                .getHomeData(context);
-            RoutingService.pushAndRemoveAllRoute(context, const BirdsHome());
-            notifyListeners();
-          } else if(loginResponse != null) {
-            auth.facebookClicked ? auth.onFacebookClick() : null;
-            showSnack(context, loginResponse.responseCode!,
-                loginResponse.responseMessage!);
-          }
-          break;
-        case LoginStatus.cancelled:
-          break;
-        case LoginStatus.failed:
-          break;
-        default:
-          break;
-      }
-    } catch (e) {
-      auth.facebookClicked ? auth.onFacebookClick() : null;
-      showSnack(context, "02", "Access Denied");
-    }
-    notifyListeners();
-  }
+  // Future facebookAuthLogin(String deviceId, context) async {
+  //   try {
+  //     LoginResult res = await FacebookAuth.instance
+  //         .login(permissions: ["email", "public_profile"]);
+  //     switch (res.status) {
+  //       case LoginStatus.success:
+  //         final userData = await FacebookAuth.instance.getUserData();
+  //         List<String> names = userData["name"].toString().split(" ");
+  //         userData["firstName"] = names[0];
+  //         userData["lastName"] = names[names.length - 1];
+  //         LoginModel body = LoginModel(
+  //             loginBy: "FACEBOOK",
+  //             email: userData["email"],
+  //             deviceId: deviceId);
+  //
+  //         LoginResponse? loginResponse =
+  //             await repository.getLoginResponse(body, context);
+  //         if (loginResponse != null && loginResponse.responseCode == "00") {
+  //           await UserPreferences.setUserFirstName(
+  //               loginResponse.responseData!.firstName!);
+  //           await UserPreferences.setUserEmail(
+  //               loginResponse.responseData!.email!);
+  //           await UserPreferences.setLoginStatus(true);
+  //           await storage.setToken(loginResponse.responseData!.authToken!);
+  //           await storage.setUserData(loginResponse);
+  //           auth.facebookClicked ? auth.onFacebookClick() : null;
+  //           Provider.of<HomeProvider>(context, listen: false)
+  //               .getHomeData(context);
+  //           RoutingService.pushAndRemoveAllRoute(context, const BirdsHome());
+  //           notifyListeners();
+  //         } else if(loginResponse != null) {
+  //           auth.facebookClicked ? auth.onFacebookClick() : null;
+  //           showSnack(context, loginResponse.responseCode!,
+  //               loginResponse.responseMessage!);
+  //         }
+  //         break;
+  //       case LoginStatus.cancelled:
+  //         break;
+  //       case LoginStatus.failed:
+  //         break;
+  //       default:
+  //         break;
+  //     }
+  //   } catch (e) {
+  //     auth.facebookClicked ? auth.onFacebookClick() : null;
+  //     showSnack(context, "02", "Access Denied");
+  //   }
+  //   notifyListeners();
+  // }
 }

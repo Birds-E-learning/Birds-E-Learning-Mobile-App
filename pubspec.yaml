@@ -27,7 +27,7 @@ dependencies:
   flutter_otp_text_field: ^1.1.0+2
   flutter_secure_storage: ^8.0.0
   webview_flutter: ^4.0.6
-  flutter_facebook_auth: ^5.0.8
+#  flutter_facebook_auth: ^5.0.8
   dropdown_button2: ^1.9.2
   url_launcher: ^6.1.12
   image_picker: ^0.8.7
@@ -41,9 +41,8 @@ dependencies:
   shimmer: ^2.0.0
   flash: ^2.0.5+1
   flutter_stripe: ^9.2.1
-  pod_player: ^0.1.4
-  # flutter_login_facebook: ^1.7.0
-  # flutter_facebook_auth: ^3.1.1
+  flutter_share_me: ^1.4.0
+#  pod_player: ^0.1.4
 
 dev_dependencies:
   flutter_test:

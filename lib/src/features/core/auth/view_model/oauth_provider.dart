@@ -2,24 +2,16 @@ import 'package:birds_learning_network/src/config/routing/route.dart';
 import 'package:birds_learning_network/src/features/core/auth/model/repositories/auth_repository.dart';
 import 'package:birds_learning_network/src/features/core/auth/model/request_model/auth_consent_model.dart';
 import 'package:birds_learning_network/src/features/core/auth/model/request_model/auth_model.dart';
-import 'package:birds_learning_network/src/features/core/auth/model/request_model/login_model.dart';
-import 'package:birds_learning_network/src/features/core/auth/model/request_model/sign_up_model.dart';
 import 'package:birds_learning_network/src/features/core/auth/model/response_model/auth_response.dart';
 import 'package:birds_learning_network/src/features/core/auth/model/response_model/json_response.dart';
 import 'package:birds_learning_network/src/features/core/auth/model/response_model/login_response.dart';
-import 'package:birds_learning_network/src/features/core/auth/model/response_model/sign_up_response.dart';
 import 'package:birds_learning_network/src/features/core/auth/view/web_view.dart';
-import 'package:birds_learning_network/src/features/core/settings/view/filter/filter_screen.dart';
 import 'package:birds_learning_network/src/global_model/services/network/base_service.dart';
 import 'package:birds_learning_network/src/global_model/services/storage/secure_storage/user_details.dart';
 import 'package:birds_learning_network/src/global_model/services/storage/shared_preferences/user_details.dart';
 import 'package:birds_learning_network/src/utils/helper_widgets/response_snack.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
-import 'package:provider/provider.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-
-import '../../../modules/home/view_model/home_provider.dart';
 
 class OAuthProvider extends ChangeNotifier {
   bool _webviewCompleted = false;
@@ -28,7 +20,7 @@ class OAuthProvider extends ChangeNotifier {
   bool _appleClicked = false;
   String _serviceProvider = "FACEBOOK";
   final WebViewController controller = WebViewController();
-  Map _userData = {};
+  // Map _userData = {};
   bool isDone = false;
   String url = "";
   String _deviceId = "";
@@ -63,83 +55,83 @@ class OAuthProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future facebookAuth(String deviceId, context) async {
-    try {
-      LoginResult res = await FacebookAuth.instance
-          .login(permissions: ["email", "public_profile"]);
-      // print(res.accessToken!.token);
-      // print("status === > ${res.status}");
-      // print(res);
-      switch (res.status) {
-        case LoginStatus.success:
-          _userData = await FacebookAuth.instance.getUserData();
-          List<String> names = _userData["name"].toString().split(" ");
-          _userData["firstName"] = names[0];
-          _userData["lastName"] = names[names.length - 1];
-          notifyListeners();
-          SignUpModel data = SignUpModel(
-            firstName: _userData["firstName"],
-            lastName: _userData["lastName"],
-            deviceId: deviceId,
-            userRoles: [],
-            photo: _userData["picture"]["data"]["url"],
-            username: _userData["email"] ?? "",
-            emailAddress: _userData["email"] ?? "",
-            signupBy: "FACEBOOK",
-          );
-          SignUpResponse? response =
-              await repository.getSignUpResponse(data, context);
-          if(response != null){
-            if (response.responseCode == "00") {
-              LoginModel body = LoginModel(
-                  loginBy: "FACEBOOK",
-                  email: _userData["email"],
-                  deviceId: deviceId);
-              LoginResponse? loginResponse =
-              await repository.getLoginResponse(body, context);
-              if (loginResponse != null && loginResponse.responseCode == "00") {
-                await UserPreferences.setUserFirstName(
-                    loginResponse.responseData!.firstName!);
-                await UserPreferences.setUserEmail(
-                    loginResponse.responseData!.email!);
-                await UserPreferences.setLoginStatus(true);
-                await storage.setToken(loginResponse.responseData!.authToken!);
-                await storage.setUserData(loginResponse);
-                facebookClicked ? onFacebookClick() : null;
-                Provider.of<HomeProvider>(context, listen: false)
-                    .getHomeData(context);
-                RoutingService.pushAndRemoveAllRoute(
-                    context, const FilterScreen());
-              } else if(loginResponse != null) {
-                facebookClicked ? onFacebookClick() : null;
-                showSnack(context, loginResponse.responseCode!,
-                    loginResponse.responseMessage!);
-              }
-            } else {
-              facebookClicked ? onFacebookClick() : null;
-              showSnack(
-                  context, response.responseCode!, response.responseMessage!);
-            }
-          }
-          break;
-        case LoginStatus.cancelled:
-          break;
-        case LoginStatus.failed:
-          showSnack(context, "02", res.message!);
-          break;
-        default:
-          break;
-      }
-
-      facebookClicked ? onFacebookClick() : null;
-
-      notifyListeners();
-    } catch (e) {
-      facebookClicked ? onFacebookClick() : null;
-      showSnack(context, "02", "Facebook auth failed!");
-    }
-    notifyListeners();
-  }
+  // Future facebookAuth(String deviceId, context) async {
+  //   try {
+  //     LoginResult res = await FacebookAuth.instance
+  //         .login(permissions: ["email", "public_profile"]);
+  //     // print(res.accessToken!.token);
+  //     // print("status === > ${res.status}");
+  //     // print(res);
+  //     switch (res.status) {
+  //       case LoginStatus.success:
+  //         _userData = await FacebookAuth.instance.getUserData();
+  //         List<String> names = _userData["name"].toString().split(" ");
+  //         _userData["firstName"] = names[0];
+  //         _userData["lastName"] = names[names.length - 1];
+  //         notifyListeners();
+  //         SignUpModel data = SignUpModel(
+  //           firstName: _userData["firstName"],
+  //           lastName: _userData["lastName"],
+  //           deviceId: deviceId,
+  //           userRoles: [],
+  //           photo: _userData["picture"]["data"]["url"],
+  //           username: _userData["email"] ?? "",
+  //           emailAddress: _userData["email"] ?? "",
+  //           signupBy: "FACEBOOK",
+  //         );
+  //         SignUpResponse? response =
+  //             await repository.getSignUpResponse(data, context);
+  //         if(response != null){
+  //           if (response.responseCode == "00") {
+  //             LoginModel body = LoginModel(
+  //                 loginBy: "FACEBOOK",
+  //                 email: _userData["email"],
+  //                 deviceId: deviceId);
+  //             LoginResponse? loginResponse =
+  //             await repository.getLoginResponse(body, context);
+  //             if (loginResponse != null && loginResponse.responseCode == "00") {
+  //               await UserPreferences.setUserFirstName(
+  //                   loginResponse.responseData!.firstName!);
+  //               await UserPreferences.setUserEmail(
+  //                   loginResponse.responseData!.email!);
+  //               await UserPreferences.setLoginStatus(true);
+  //               await storage.setToken(loginResponse.responseData!.authToken!);
+  //               await storage.setUserData(loginResponse);
+  //               facebookClicked ? onFacebookClick() : null;
+  //               Provider.of<HomeProvider>(context, listen: false)
+  //                   .getHomeData(context);
+  //               RoutingService.pushAndRemoveAllRoute(
+  //                   context, const FilterScreen());
+  //             } else if(loginResponse != null) {
+  //               facebookClicked ? onFacebookClick() : null;
+  //               showSnack(context, loginResponse.responseCode!,
+  //                   loginResponse.responseMessage!);
+  //             }
+  //           } else {
+  //             facebookClicked ? onFacebookClick() : null;
+  //             showSnack(
+  //                 context, response.responseCode!, response.responseMessage!);
+  //           }
+  //         }
+  //         break;
+  //       case LoginStatus.cancelled:
+  //         break;
+  //       case LoginStatus.failed:
+  //         showSnack(context, "02", res.message!);
+  //         break;
+  //       default:
+  //         break;
+  //     }
+  //
+  //     facebookClicked ? onFacebookClick() : null;
+  //
+  //     notifyListeners();
+  //   } catch (e) {
+  //     facebookClicked ? onFacebookClick() : null;
+  //     showSnack(context, "02", "Facebook auth failed!");
+  //   }
+  //   notifyListeners();
+  // }
 
   Future oAuthCall(AuthModel body, String validationType, context) async {
     try {

@@ -9,8 +9,8 @@ class FacilitatorScreenShimmer extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Shimmer.fromColors(
-      highlightColor: Colors.white.withOpacity(0.2),
-      baseColor: Colors.grey.withOpacity(0.5),
+      highlightColor: Colors.white.withOpacity(0.7),
+      baseColor: Colors.grey.withOpacity(0.4),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [

@@ -85,4 +85,12 @@ class ImagePath {
   // Payment Icons
 
   static const String paymentSuccess = "assets/icons/payment_success.svg";
+
+  // Share Icons
+
+  static const String instagram = "assets/icons/insta.svg";
+  static const String facebookk = "assets/icons/facebookk.svg";
+  static const String linkedin = "assets/icons/linkedin.svg";
+  static const String link = "assets/icons/link.svg";
+  static const String x = "assets/icons/x.svg";
 }
