@@ -6,7 +6,7 @@ class CourseModel {
   final dynamic lessonDuration;
   final String? lessonTitle;
    dynamic lessonLastPlayedDuration;
-   double? progress;
+   dynamic progress;
    bool? pauseVideo;
 
   CourseModel({
