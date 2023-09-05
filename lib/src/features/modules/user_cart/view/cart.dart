@@ -77,7 +77,7 @@ class CartPage extends StatelessWidget with CartWidgets {
                               )
                             : ListView.separated(
                                 separatorBuilder: (_,__) => const Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 10),
+                                  padding: EdgeInsets.symmetric(vertical: 5),
                                   child: Divider(
                                     thickness: 0.2,
                                     color: success1000,
@@ -96,7 +96,10 @@ class CartPage extends StatelessWidget with CartWidgets {
                                     course: cart.myCartList[index],
                                     removeButton: cart.removeCartIcon &&
                                             cart.selectedCart[index]
-                                        ? loadingIdicator(stroke: 0.4)
+                                        ? SizedBox(
+                                          height: 20,
+                                          width: 20,
+                                        child: loadingIdicator(stroke: 2))
                                         : addRemoveCart(
                                             "Remove", errors500, Icons.remove,
                                             () async {
@@ -113,7 +116,12 @@ class CartPage extends StatelessWidget with CartWidgets {
                                   );
                                 },
                               ),
-                    const SizedBox(height: 15),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 5),
+                      child: Divider(
+                        thickness: 0.2,
+                        color: success1000,
+                      ),),
                     wishlistText(),
                     const SizedBox(height: 20),
                     cart.wishlist.isEmpty &&
@@ -156,7 +164,10 @@ class CartPage extends StatelessWidget with CartWidgets {
                                   return CourseCartCards(
                                     removeButton: cart.removeWishIcon &&
                                             cart.selectedWish[index]
-                                        ? loadingIdicator(stroke: 1)
+                                        ? SizedBox(
+                                        height: 20,
+                                        width: 20,
+                                        child: loadingIdicator(stroke: 2))
                                         : addRemoveCart(
                                             "Remove",
                                             errors500,
@@ -179,6 +190,12 @@ class CartPage extends StatelessWidget with CartWidgets {
                                   );
                                 },
                               ),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 5),
+                      child: Divider(
+                        thickness: 0.2,
+                        color: success1000,
+                      ),),
                   ],
                 ),
         )),

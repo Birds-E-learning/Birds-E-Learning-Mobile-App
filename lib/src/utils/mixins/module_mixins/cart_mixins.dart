@@ -64,7 +64,7 @@ mixin CartWidgets on Object implements CartStyles, CartTexts {
       child: Row(
         children: [
           Icon(icon, size: 17, color: color),
-          const SizedBox(width: 10),
+          const SizedBox(width: 5),
           Text(
             task,
             style: CartStyles.buyStyle.copyWith(color: color),
