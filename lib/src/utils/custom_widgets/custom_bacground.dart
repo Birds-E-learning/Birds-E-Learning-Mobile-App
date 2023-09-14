@@ -4,9 +4,13 @@ import 'package:birds_learning_network/src/utils/global_constants/colors/colors.
 import 'package:flutter/material.dart';
 
 class BackgroundWidget extends StatelessWidget {
-  const BackgroundWidget({super.key, required this.child, this.appBar});
+  const BackgroundWidget({super.key,
+    required this.child, this.appBar,
+    this.isHome = false
+  });
   final Widget child;
   final SliverAppBar? appBar;
+  final bool isHome;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +40,7 @@ class BackgroundWidget extends StatelessWidget {
                 appBar ?? Container(),
                 SliverToBoxAdapter(
                   child: child,
-                )
+                ),
               ],
             ),
           )

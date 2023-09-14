@@ -148,7 +148,7 @@ class HomeProvider extends ChangeNotifier {
         notifyListeners();
       } else {
         for (var element in value) {
-          if (element.title!.toLowerCase().startsWith(text.toLowerCase())) {
+          if (element.title!.toLowerCase().contains(text.toLowerCase())) {
             _searchResult.add(element);
             notifyListeners();
           }

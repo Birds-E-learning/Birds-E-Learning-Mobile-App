@@ -41,63 +41,73 @@ class CourseCard extends StatelessWidget with ImagePath, HomeWidgets {
             )),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             SizedBox(
                 height: 90,
                 width: 165,
                 child: CourseImageWidget(imageUrl: course.imageUrl ?? "",)),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 5),
+              padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 4),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   SizedBox(
+                    height: 28,
                     width: size.width - (size.width * 0.08) - 60,
                     child: courseTitleText(course.title ?? ""),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ownerText(course.facilitator!.name == ""
-                              ? "Anonymous"
-                              : course.facilitator!.name!),
-                          SizedBox(height: course.subscriptionBased != null &&  course.subscriptionBased! ? 8 : 5),
-                          Row(
-                            children: [
-                              Row(
-                                children: getStarList(
-                                    course.facilitator!.ratings ?? "1",
-                                    ImagePath.starFill,
-                                    ImagePath.starUnfill),
-                              ),
-                              const SizedBox(width: 10),
-                              ratingText(course.facilitator!.reviews.toString())
-                            ],
-                          )
-                        ],
-                      ),
-                      SizedBox(height: course.subscriptionBased != null &&  course.subscriptionBased! ? 8 : 5),
-                      Container(
-                        child: course.subscriptionBased != null && course.subscriptionBased!
-                            ? null : IconButton(
-                            onPressed: onFavPressed,
-                            icon: Icon(
-                              iconData,
-                              color: iconColor,
-                            )),
-                      )
-                    ],
+                  SizedBox(
+                    height: 36,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            ownerText(course.facilitator!.name == ""
+                                ? "Anonymous"
+                                : course.facilitator!.name!),
+                            SizedBox(height: course.subscriptionBased != null &&  course.subscriptionBased! ? 8 : 5),
+                            Row(
+                              children: [
+                                Row(
+                                  children: getStarList(
+                                      course.facilitator!.ratings ?? "1",
+                                      ImagePath.starFill,
+                                      ImagePath.starUnfill),
+                                ),
+                                // const SizedBox(width: 10),
+                                ratingText(course.facilitator!.reviews.toString())
+                              ],
+                            )
+                          ],
+                        ),
+                        Container(
+                          child: course.subscriptionBased != null && course.subscriptionBased!
+                              ? null : IconButton(
+                              onPressed: onFavPressed,
+                              icon: Icon(
+                                iconData,
+                                color: iconColor,
+                              )),
+                        )
+                      ],
+                    ),
                   ),
                   SizedBox(height: course.subscriptionBased != null &&  course.subscriptionBased! ? 8 : 5),
-                  Container(
-                      child: course.subscriptionBased != null &&  course.subscriptionBased!
-                      ?  SubscriptionTagWidget(course: course)
-                      : course.salePrice == "0.00"
-                      ? freeText()
-                      : amountText(course.salePrice ?? "5000", course.price ?? "5500"),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: SizedBox(
+                      height: 20,
+                        child: course.subscriptionBased != null &&  course.subscriptionBased!
+                        ?  SubscriptionTagWidget(course: course)
+                        : course.salePrice == "0.00"
+                        ? freeText()
+                        : amountText(course.salePrice ?? "5000", course.price ?? "5500"),
+                    ),
                   )
                 ],
               ),
