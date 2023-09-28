@@ -8,7 +8,7 @@ Future<bool> checkActiveSubscription(context)async{
   try{
     SubscriptionModel? subscription = await SubscriptionStorage().getSubscriptionData();
     if(subscription != null){
-      if(subscription.status != null  && subscription.status!.toLowerCase() == "active"){
+      if((subscription.status != null  && subscription.status!.toLowerCase() == "active") && checkDateDifference(subscription)){
         showAppropriateDialog(context, subscription.expirationAt ?? "");
         return true;
       }else{
@@ -28,11 +28,11 @@ showAppropriateDialog(context, String date)async{
     int dayDifference = newDate.difference(currentDate).inDays;
     DateTime? lastDisplayedDate = await UserPreferences.getReminderDate();
     if(lastDisplayedDate != null ){
-      if(lastDisplayedDate.difference(currentDate).inDays > 0 ){
+      if(lastDisplayedDate.difference(currentDate).inDays > 0  ){
         if(dayDifference > 3 && dayDifference < 10){
           getSubscriptionDialog("$dayDifference day${dayDifference>0 ? 's' : ''}", context, isDays: true);
           await UserPreferences.setReminderDate();
-        }else if (dayDifference < 4){
+        }else if (dayDifference < 4 && dayDifference >= 0){
           getSubscriptionDialog("$dayDifference day${dayDifference>0 ? 's' : ''}", context);
           await UserPreferences.setReminderDate();
         }
@@ -41,11 +41,16 @@ showAppropriateDialog(context, String date)async{
       if(dayDifference > 3 && dayDifference < 10){
         getSubscriptionDialog("$dayDifference day${dayDifference>0 ? 's' : ''}", context, isDays: true);
         await UserPreferences.setReminderDate();
-      }else if (dayDifference < 4){
+      }else if (dayDifference < 4 && dayDifference >= 0){
         getSubscriptionDialog("$dayDifference day${dayDifference>0 ? 's' : ''}", context);
         await UserPreferences.setReminderDate();
       }
     }
     // print("You have $dayDifference days, $hoursDifference hours and $minuteDifference minutes left");
   }
+}
+
+bool checkDateDifference(SubscriptionModel subscription){
+  DateTime expiryDate = DateTime.parse(subscription.expirationAt ?? "");
+  return expiryDate.difference(DateTime.now()).inMinutes > 0;
 }

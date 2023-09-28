@@ -1,5 +1,6 @@
 import 'package:birds_learning_network/src/features/core/auth/view/auth_screen.dart';
 import 'package:birds_learning_network/src/features/core/settings/view/widgets/card_shimmer.dart';
+import 'package:birds_learning_network/src/features/modules/profile/view/widgets/preference_widget.dart';
 import 'package:birds_learning_network/src/features/modules/profile/view_model/edit_preference.dart';
 import 'package:birds_learning_network/src/utils/custom_widgets/text_field.dart';
 import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
@@ -90,46 +91,39 @@ class _EditPreferenceScreenState extends State<EditPreferenceScreen>
                           itemBuilder: (_, __) {
                             return const FilterCardShimmer();
                           })
-                      : GridView.builder(
-                          // primary: false,
-                          shrinkWrap: true,
-                          itemCount: filter.myList.length,
-                          physics: const NeverScrollableScrollPhysics(),
-                          gridDelegate:
-                              const SliverGridDelegateWithMaxCrossAxisExtent(
-                                  maxCrossAxisExtent: 150,
-                                  mainAxisSpacing: 10,
-                                  crossAxisSpacing: 10,
-                                  childAspectRatio: 21 / 9),
-                          itemBuilder: (BuildContext context, int index) {
-                            if (filter.selectedCards.length < filter.myList.length &&
-                                filter.prefList.contains(filter.myList[index])) {
-                              filter.selectedCards.add(true);
-                            } else if (filter.selectedCards.length <
-                                filter.myList.length) {
-                              filter.selectedCards.add(false);
+                      : Wrap(
+                    spacing: 16,
+                    runSpacing: 16,
+                    children: filter.myList.map((text){
+                      if (filter.selectedCards.length < filter.myList.length &&
+                          filter.prefList.contains(text)) {
+                        filter.selectedCards.add(true);
+                      } else if (filter.selectedCards.length <
+                          filter.myList.length) {
+                        filter.selectedCards.add(false);
+                      }
+                      int index = filter.myList.indexOf(text);
+                      return InkWell(
+                          onTap: () {
+                            filter.setValue(index);
+                            if (filter.selectedCards[index] &&
+                                !textField.text.contains(filter.myList[index])) {
+                              textField.text += "${filter.myList[index]}, ";
+                              filter.addPref(filter.myList[index]);
+                            } else {
+                              textField.text = textField.text.replaceFirst(
+                                  "${filter.myList[index]}, ", "");
+                              filter.removePref(filter.myList[index]);
                             }
-                            return InkWell(
-                              onTap: () {
-                                filter.setValue(index);
-                                if (filter.selectedCards[index] &&
-                                    !textField.text.contains(filter.myList[index])) {
-                                  textField.text += "${filter.myList[index]}, ";
-                                  filter.addPref(filter.myList[index]);
-                                } else {
-                                  textField.text = textField.text.replaceFirst(
-                                      "${filter.myList[index]}, ", "");
-                                  filter.removePref(filter.myList[index]);
-                                }
-                              },
-                              child: topicText(
-                                  filter.myList[index],
-                                  filter.selectedCards[index] ? white : grey700,
-                                  filter.selectedCards[index]
-                                      ? grey700
-                                      : white),
-                            );
-                          }),
+                          },
+                          child: PreferenceCards(
+                            color: filter.selectedCards[index] ? grey700 : white,
+                            backgroundColor: filter.selectedCards[index] ? white : grey700,
+                            topic: filter.myList[index],
+                          )
+                      );
+                    }).toList(),
+                  ),
                   const SizedBox(height: 50),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10),

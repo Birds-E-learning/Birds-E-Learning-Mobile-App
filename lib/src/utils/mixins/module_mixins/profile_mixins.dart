@@ -66,9 +66,9 @@ mixin ProfileWidgets on Object implements ProfileStyles, ProfileTexts {
       height: 100,
       width: 100,
       decoration: BoxDecoration(
-        color: backgroundBlurColor,
+        color: white,
         shape: BoxShape.circle,
-        border: Border.all(width: 1, color: success800),
+        border: Border.all(width: 1, color: black),
         image: DecorationImage(
           fit: BoxFit.fill,
           image: image != ""
@@ -90,7 +90,9 @@ mixin ProfileWidgets on Object implements ProfileStyles, ProfileTexts {
     return Container(
       height: 40,
       width: 40,
-      decoration: const BoxDecoration(shape: BoxShape.circle, color: nextColor),
+      decoration:  BoxDecoration(shape: BoxShape.circle,
+          border: Border.all(color: black, width: 0.5),
+          color: white),
       child: ClipOval(
         child: SvgPicture.asset(
           ImagePath.camera,

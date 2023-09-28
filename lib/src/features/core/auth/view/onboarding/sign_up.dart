@@ -114,13 +114,16 @@ class _SignUpScreenState extends State<SignUpScreen>
                       ),
                       const SizedBox(height: 15),
                       CustomTextField(
-                        prefix: PhoneDropDown(
-                          onSelect: (value) {
-                            setState(() {
-                              phoneCode = value.phoneCode.toString();
-                            });
-                          },
-                          data: phoneCode == null ? "+000" : "+$phoneCode",
+                        prefix: SizedBox(
+                          height: 20,
+                          child: PhoneDropDown(
+                            onSelect: (value) {
+                              setState(() {
+                                phoneCode = value.phoneCode.toString();
+                              });
+                            },
+                            data: phoneCode == null ? "+000" : "+$phoneCode",
+                          ),
                         ),
                         controller: phone,
                         labelText: AuthTexts.number,

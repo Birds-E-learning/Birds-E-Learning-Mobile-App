@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:birds_learning_network/src/features/core/auth/model/response_model/login_response.dart';
+import 'package:birds_learning_network/src/utils/shared_functions/active_subscription.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -12,6 +13,7 @@ class SubscriptionStorage{
   Future setSubscriptionData(SubscriptionModel? data)async{
     try{
       if(data != null){
+        checkDateDifference(data);
         await storage.write(key: _subscriptionKey, value: jsonEncode(data.toJson()));
       }
     }catch(e){

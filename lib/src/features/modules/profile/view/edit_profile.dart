@@ -66,7 +66,7 @@ class _EditProfilePageState extends State<EditProfilePage>
           pinned: true,
           floating: true,
           elevation: 0,
-          backgroundColor: backgroundBlurColor,
+          backgroundColor: white,
           title: appBarText(ProfileTexts.editProfile),
           leading: leadingIcon(context),
         ),
@@ -107,7 +107,6 @@ class _EditProfilePageState extends State<EditProfilePage>
                 CustomTextField(
                   controller: fullName,
                   labelText: ProfileTexts.fullName,
-                  filled: true,
                   hintText: "John Doe",
                   validator: (value) => nameValidator(value, "Full"),
                 ),
@@ -115,18 +114,19 @@ class _EditProfilePageState extends State<EditProfilePage>
                 CustomTextField(
                   controller: email,
                   labelText: ProfileTexts.emailAddress,
-                  filled: true,
                   hintText: ProfileTexts.emailHint,
                   validator: (value) => emailValidator(value),
                 ),
                 const SizedBox(height: 20),
                 CustomTextField(
-                  prefix: PhoneDropDown(
-                    onSelect: (code) => profile.getCountryCode(code.phoneCode),
-                    data: "+${profile.countryCode}",
+                  prefix: SizedBox(
+                    height: 20,
+                    child: PhoneDropDown(
+                      onSelect: (code) => profile.getCountryCode(code.phoneCode),
+                      data: "+${profile.countryCode}",
+                    ),
                   ),
                   controller: phone,
-                  filled: true,
                   labelText: ProfileTexts.phoneNumber,
                   hintText: "1234 567 890",
                   keyboardType: TextInputType.number,
@@ -136,7 +136,6 @@ class _EditProfilePageState extends State<EditProfilePage>
                 CustomTextField(
                   controller: gender,
                   readOnly: true,
-                  filled: true,
                   hintText: "Select Gender",
                   labelText: ProfileTexts.genderText,
                   suffixIcon: DropDownCustom(
@@ -193,19 +192,21 @@ class _EditProfilePageState extends State<EditProfilePage>
 
     String picUrl = await UserPreferences.getUserPhoto();
     setState(() {
-      email.text = user.responseData!.email ?? "";
-      fullName.text = user.responseData!.fullName ??
-          "${user.responseData!.firstName} ${user.responseData!.lastName}";
-      phone.text = user.responseData!.mobileNumber ?? "";
-      gender.text = user.responseData!.gender ?? "";
-      photoLink = user.responseData!.photoLink ==
+      email.text = user.responseData?.email ?? "";
+      fullName.text = user.responseData?.fullName ??
+          "${user.responseData?.firstName} ${user.responseData?.lastName}";
+      phone.text =  user.responseData?.mobileNumber != null
+          && user.responseData!.mobileNumber!.toString().contains("null") 
+          ? user.responseData!.mobileNumber!.toString().replaceAll("null", "") : "";
+      gender.text = user.responseData?.gender ?? "";
+      photoLink = user.responseData?.photoLink ==
                   "https://birds-e-learning.herokuapp.com/img/profile.png" &&
               picUrl != ""
           ? picUrl
           : user.responseData!.photoLink!;
       isLoaded = true;
       gender_ = user.responseData!.gender!.toLowerCase() == "unknown" ||
-              user.responseData!.gender == ""
+              user.responseData?.gender == ""
           ? null
           : "${user.responseData!.gender!.toUpperCase()[0]}${user.responseData!.gender!.toLowerCase().substring(1)}";
     });

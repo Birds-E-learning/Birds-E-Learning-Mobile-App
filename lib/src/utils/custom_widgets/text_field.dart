@@ -72,33 +72,33 @@ class CustomTextField extends StatelessWidget with AuthStyles {
         isDense: true,
         focusColor: deepGrey,
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(filled ? 6 : 4),
+          borderRadius: BorderRadius.circular(6),
           borderSide: BorderSide(
             width: width,
             color: filled ? success500 : bordercolor,
           ),
         ),
         focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(filled ? 6 : 4),
+          borderRadius: BorderRadius.circular(6),
           borderSide: const BorderSide(
             color: Colors.redAccent,
           ),
         ),
         errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(filled ? 6 : 4),
+          borderRadius: BorderRadius.circular(6),
           borderSide: const BorderSide(
             color: Colors.redAccent,
           ),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(filled ? 6 : 4),
+          borderRadius: BorderRadius.circular(6),
           borderSide: BorderSide(
             width: width,
             color: filled ? success500 : bordercolor,
           ),
         ),
         disabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(filled ? 6 : 4),
+          borderRadius: BorderRadius.circular(6),
           borderSide: BorderSide(
             width: width,
             color: filled ? success500 : bordercolor,

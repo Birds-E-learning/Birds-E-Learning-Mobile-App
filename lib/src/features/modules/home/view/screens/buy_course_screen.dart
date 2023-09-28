@@ -235,7 +235,7 @@ class _BuyCourseScreenState extends State<BuyCourseScreen>
                   //         })
                   //   ],
                   // ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 24),
                   Container(
                       child: widget.course.subscriptionBased != null && widget.course.subscriptionBased!
                       ? null

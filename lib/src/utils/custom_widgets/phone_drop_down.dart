@@ -8,6 +8,7 @@ class PhoneDropDown extends StatelessWidget {
     super.key,
     required this.onSelect,
     required this.data,
+
   });
   final ValueChanged<Country> onSelect;
   final String data;
@@ -24,13 +25,11 @@ class PhoneDropDown extends StatelessWidget {
             style: AuthStyles.labelStyle,
           ),
           const SizedBox(width: 5),
-          IconButton(
-              padding: const EdgeInsets.only(bottom: 5),
-              constraints: const BoxConstraints(),
-              onPressed: () {
+          GestureDetector(
+              onTap: () {
                 showCountryCode(context, onSelect);
               }, // showCountryCode(context, onSelect),
-              icon: const Icon(Icons.keyboard_arrow_down, size: 30))
+              child: const Icon(Icons.keyboard_arrow_down, size: 25))
         ],
       ),
     );
