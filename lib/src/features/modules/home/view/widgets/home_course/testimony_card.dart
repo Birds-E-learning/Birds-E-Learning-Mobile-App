@@ -1,11 +1,12 @@
+import 'package:birds_learning_network/src/features/modules/home/model/response_model/get_review.dart';
 import 'package:birds_learning_network/src/utils/global_constants/asset_paths/image_path.dart';
 import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
 import 'package:birds_learning_network/src/utils/helper_widgets/star_widget.dart';
 import 'package:flutter/material.dart';
 
 class TestimonyCard extends StatelessWidget {
-  const TestimonyCard({super.key, this.image});
-  final dynamic image;
+  const TestimonyCard({super.key, required this.review});
+  final Reviews review;
 
   @override
   Widget build(BuildContext context) {
@@ -24,15 +25,14 @@ class TestimonyCard extends StatelessWidget {
               width: 24,
               decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  image: DecorationImage(
-                      image: image != null
-                          ? Image.network(image).image
-                          : Image.asset(ImagePath.testimonyImage).image)),
-            ),
+                  image:  review.reviewerImage != null
+                      ? DecorationImage(
+                      image:Image.network(review.reviewerImage!).image) : null,
+            ),),
             const SizedBox(width: 15),
-            const Text(
-              "John Dee",
-              style: TextStyle(
+            Text(
+              review.reviewerName ?? "",
+              style: const TextStyle(
                   fontSize: 12,
                   fontFamily: "Inter",
                   fontWeight: FontWeight.w500,
@@ -45,19 +45,19 @@ class TestimonyCard extends StatelessWidget {
           children: [
             Row(
               children: getStarList(
-                  4.toString(), ImagePath.starFill, ImagePath.starUnfill,
+                 review.reviewerRating?.toString() ?? "0", ImagePath.starFill, ImagePath.starUnfill,
                   size: 10),
             ),
             const SizedBox(width: 15),
             Text(
-              "3/20/2023",
+              review.dateOfReview ?? "",
               style: style.copyWith(fontSize: 10),
             )
           ],
         ),
         const SizedBox(height: 10),
         Text(
-          "Lorem ipsum dolor sit amet consectetur. Pharetra odio at cursus nulla suspendisse vitae sit nibh. Magnis pharetra nisi nibh ornare magna potenti fames dictum. ",
+          review.reviewerComment ?? "",
           style: style.copyWith(color: deepBlack),
         ),
         const SizedBox(height: 10),

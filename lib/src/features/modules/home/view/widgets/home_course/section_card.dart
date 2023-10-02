@@ -1,10 +1,8 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:birds_learning_network/src/features/modules/home/model/response_model/get_courses.dart';
 import 'package:birds_learning_network/src/features/modules/home/view_model/course_content_provider.dart';
-import 'package:birds_learning_network/src/utils/global_constants/asset_paths/image_path.dart';
 import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
 class SectionCard extends StatelessWidget {
@@ -38,13 +36,15 @@ class SectionCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.8,
+                    width: MediaQuery.of(context).size.width * 0.6,
                     child: AutoSizeText("${index + 1}. ${section.name}",
                         maxLines: 2, style: style),
                   ),
-                  SvgPicture.asset(content.selectedLesson[index]
-                      ? ImagePath.arrowUpLesson
-                      : ImagePath.arrowDownLesson),
+                  Icon(
+                    content.selectedLesson[index]
+                    ? Icons.keyboard_arrow_up_outlined
+                    : Icons.keyboard_arrow_down_outlined,
+                    color: black, size: 40,)
                 ],
               ),
               ListView.builder(

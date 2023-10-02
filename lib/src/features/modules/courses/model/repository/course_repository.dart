@@ -9,6 +9,7 @@ import 'package:birds_learning_network/src/features/modules/user_cart/model/resp
 import 'package:birds_learning_network/src/global_model/services/network/base_header.dart';
 import 'package:birds_learning_network/src/global_model/services/network/base_service.dart';
 import 'package:birds_learning_network/src/global_model/services/network/base_url.dart';
+import 'package:birds_learning_network/src/utils/helper_widgets/response_snack.dart';
 
 class CourseRepository extends NetworkService with BaseUrl, BaseHeaders {
   Future getAllCourses(context) async {
@@ -90,7 +91,13 @@ class CourseRepository extends NetworkService with BaseUrl, BaseHeaders {
       Map<String, String> header_ = await authHeader();
       var json = await postRequest(saveReviewUrl, header_, body.toJson(), context);
       if(json != null){
-        return SaveReviewResponse.fromJson(json);
+        SaveReviewResponse response = SaveReviewResponse.fromJson(json);
+        if(response.responseCode == "00"){
+          return response;
+        }else{
+          showSnack(context, response.responseCode!, response.responseMessage ?? "");
+        }
+        return;
       }
       return null;
     }catch(e){

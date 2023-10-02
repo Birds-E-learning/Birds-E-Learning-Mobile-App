@@ -7,6 +7,7 @@ import 'package:birds_learning_network/src/features/modules/home/view/widgets/co
 import 'package:birds_learning_network/src/features/modules/home/view/widgets/course/course_info.dart';
 import 'package:birds_learning_network/src/features/modules/home/view/widgets/home_course/preview_container.dart';
 import 'package:birds_learning_network/src/features/modules/home/view/widgets/home_course/section_card.dart';
+import 'package:birds_learning_network/src/features/modules/home/view/widgets/reviews/review_widget.dart';
 import 'package:birds_learning_network/src/features/modules/home/view/widgets/shimmer/section_shimmer.dart';
 import 'package:birds_learning_network/src/features/modules/home/view_model/course_content_provider.dart';
 import 'package:birds_learning_network/src/features/modules/subscription/view/screens/subscription_screen.dart';
@@ -218,23 +219,8 @@ class _BuyCourseScreenState extends State<BuyCourseScreen>
                                     section: widget.course.sections![index]);
                               },
                             ),
-                  // const SizedBox(height: 10),
-                  // Column(
-                  //   crossAxisAlignment: CrossAxisAlignment.start,
-                  //   children: [
-                  //     headerText("Student Testimonials"),
-                  //     const SizedBox(height: 5),
-                  //     totalStudentText(5423),
-                  //     const SizedBox(height: 10),
-                  //     ListView.builder(
-                  //         itemCount: 3,
-                  //         physics: const NeverScrollableScrollPhysics(),
-                  //         shrinkWrap: true,
-                  //         itemBuilder: (BuildContext context, int index) {
-                  //           return const TestimonyCard();
-                  //         })
-                  //   ],
-                  // ),
+                  const SizedBox(height: 10),
+                  CourseReviewWidget(courseId: widget.course.id?.toString() ?? "0"),
                   const SizedBox(height: 24),
                   Container(
                       child: widget.course.subscriptionBased != null && widget.course.subscriptionBased!

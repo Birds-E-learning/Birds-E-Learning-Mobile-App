@@ -5,11 +5,9 @@ import 'package:birds_learning_network/src/features/modules/courses/view/widgets
 import 'package:birds_learning_network/src/features/modules/courses/view_model/paid_courses_provider.dart';
 import 'package:birds_learning_network/src/features/modules/home/model/response_model/get_courses.dart';
 import 'package:birds_learning_network/src/global_model/apis/api_response.dart';
-import 'package:birds_learning_network/src/utils/global_constants/asset_paths/image_path.dart';
 import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
 import 'package:birds_learning_network/src/utils/helper_widgets/response_snack.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
 class LectureTabWidget extends StatelessWidget {
@@ -65,16 +63,18 @@ class LectureTabWidget extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.8,
+                            width: MediaQuery.of(context).size.width * 0.6,
                             child: AutoSizeText(
                                 "${index + 1}. ${content.currentSections[index].name}",
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
                                 style: style),
                           ),
-                          SvgPicture.asset(content.selectedSection[index]
-                              ? ImagePath.arrowUpLesson
-                              : ImagePath.arrowDownLesson),
+                          Icon(
+                            content.selectedSection[index]
+                                ? Icons.keyboard_arrow_up_outlined
+                                : Icons.keyboard_arrow_down_outlined,
+                            color: black, size: 40,)
                         ],
                       ),
                       ListView.builder(

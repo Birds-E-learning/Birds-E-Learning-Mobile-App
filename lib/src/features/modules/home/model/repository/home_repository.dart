@@ -1,4 +1,5 @@
 import 'package:birds_learning_network/src/features/modules/home/model/response_model/get_courses.dart';
+import 'package:birds_learning_network/src/features/modules/home/model/response_model/get_review.dart';
 import 'package:birds_learning_network/src/global_model/services/network/base_header.dart';
 import 'package:birds_learning_network/src/global_model/services/network/base_service.dart';
 import 'package:birds_learning_network/src/global_model/services/network/base_url.dart';
@@ -87,6 +88,24 @@ class HomeRepository extends NetworkService with BaseUrl, BaseHeaders {
       return json;
     } catch (e) {
       throw Exception(e);
+    }
+  }
+
+  Future getReviewRepo(context,String id)async{
+    try{
+      Map<String, String> header_ = await authHeader();
+      var json = await getRequest(getReviewUrl(id), header_, context);
+      if(json != null){
+        GetReviewResponse response = GetReviewResponse.fromJson(json);
+        if(response.responseCode == "00"){
+          return response;
+        }else{
+          showSnack(context, response.responseCode!, response.responseMessage ?? "");
+        }
+      }
+      return;
+    }catch(e){
+      return;
     }
   }
 }

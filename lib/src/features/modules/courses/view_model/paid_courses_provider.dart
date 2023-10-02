@@ -216,6 +216,7 @@ class PaidCoursesProvider extends ChangeNotifier {
             });
         return true;
       }
+      return;
     }catch(e){
       setReviewStatus(status: Status.error);
       return;

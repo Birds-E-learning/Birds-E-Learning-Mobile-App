@@ -55,11 +55,6 @@ class HomeProvider extends ChangeNotifier {
         if (_quickCourses.isEmpty) {
           quickCoursesGraph(context);
         }
-        // if (_courses.isEmpty) {
-        //     Future.delayed(const Duration(seconds: 30), () {
-        //       getAllCourses(context);
-        //     });
-        //   }
       });
     } else {
       prefCoursesGraph(context);
@@ -157,31 +152,6 @@ class HomeProvider extends ChangeNotifier {
     });
     notifyListeners();
   }
-
-  // Future getAllCourses(context) async {
-  //   try {
-  //     isCoursesLoading = true;
-  //     var response = await repo.getCompactCourse(context);
-  //     if (response["responseCode"] == "00") {
-  //       Map<String, dynamic> data = response['responseData'];
-  //       _courses = [];
-  //       for (var value in data.keys) {
-  //         List categories_ = data[value];
-  //         for (var element in categories_) {
-  //           Category elem = Category.fromJson(element);
-  //           _courses.addAll(elem.courses!);
-  //         }
-  //         notifyListeners();
-  //       }
-  //       isCoursesLoading = false;
-  //       notifyListeners();
-  //     } else {
-  //       showSnack(context, response.responseCode!, response.responseMessage!);
-  //     }
-  //   } catch (_) {
-  //     throw Exception(_);
-  //   }
-  // }
 
   Future prefCoursesGraph(context) async {
     try {
