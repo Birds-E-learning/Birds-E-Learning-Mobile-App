@@ -25,10 +25,11 @@ class NetworkService {
       {int time = 80}) async {
     dynamic responseJson;
     try {
-      debugPrint("url ===>>> $url");
+      // debugPrint("url ===>>> $url");
       http.Response response = await http
           .get(Uri.parse(url), headers: header)
           .timeout(Duration(seconds: time));
+      // print(response.body);
       responseJson = getReturnResponse(response, context);
     } on SocketException catch (_) {
       throw FetchDataException("No Internet Connection");
@@ -44,7 +45,7 @@ class NetworkService {
           .timeout(const Duration(seconds: 40));
       // print(response.body);
       responseJson = getReturnResponse(response, context);
-      debugPrint("response ===>> $responseJson");
+      // debugPrint("response ===>> $responseJson");
     } on SocketException catch (_) {
       throw FetchDataException("No Internet Connection");
     }
@@ -54,14 +55,14 @@ class NetworkService {
   Future postRequest(
       String url, Map<String, String> header, Object body, context,
       {seconds = 60}) async {
-    debugPrint("url ===>>> $url");
+    // debugPrint("url ===>>> $url");
     dynamic responseJson;
     try {
       http.Response response = await http
           .post(Uri.parse(url), headers: header, body: jsonEncode(body))
           .timeout(Duration(seconds: seconds));
       responseJson = returnResponse(response, context);
-      debugPrint("response ===>> $responseJson");
+      // debugPrint("response ===>> $responseJson");
     } on SocketException catch (_) {
       throw FetchDataException("No Internet Connection");
     }

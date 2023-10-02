@@ -1,6 +1,6 @@
 class CourseAnalysisRequest {
-  final int? courseId;
-  final int? lessonId;
+  final dynamic courseId;
+  final dynamic lessonId;
   final int? percentageOfLessonCompletion;
 
   CourseAnalysisRequest({

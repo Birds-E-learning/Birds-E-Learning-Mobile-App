@@ -82,6 +82,14 @@ class LectureLessonPreview extends StatelessWidget {
                       Text(
                         "$minute $minText $seconds $secText",
                         style: subStyle,
+                      ),
+                      const SizedBox(width: 5),
+                      Container(
+                        child: lesson.progress.toString() == "100.0"
+                            || lesson.progress.toString() == "100"
+                            || (provider.lessonProgress == 100 && lesson.lessonId == provider.currentlyPlayingLesson?.lessonId)
+                        ? const Icon(Icons.check_circle, color: success600, size: 14)
+                        : null
                       )
                     ],
                   ),

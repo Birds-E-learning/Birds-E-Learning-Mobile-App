@@ -42,6 +42,7 @@ dependencies:
   flash: ^2.0.5+1
   flutter_stripe: ^9.2.1
   flutter_share_me: ^1.4.0
+  percent_indicator: ^4.2.3
 #  pod_player: ^0.1.4
 
 dev_dependencies:

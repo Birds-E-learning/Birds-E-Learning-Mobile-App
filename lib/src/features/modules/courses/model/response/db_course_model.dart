@@ -1,5 +1,5 @@
 class CourseModel {
-  final int? id;
+  final dynamic id;
   final String? sectionId;
   final String? lessonId;
   final String? lessonUrl;

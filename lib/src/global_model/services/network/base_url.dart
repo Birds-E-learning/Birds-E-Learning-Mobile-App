@@ -1,8 +1,8 @@
 class BaseUrl {
-  // static const String base = "https://birds-e-learning-dev-e42eb6d4692a.herokuapp.com/";
+  static const String base = "https://birds-e-learning-dev-e42eb6d4692a.herokuapp.com/";
 
   // LOGGER ENDPOINT
-  static const String base = "https://9034-102-89-33-22.ngrok-free.app/";
+  // static const String base = "https://9034-102-89-33-22.ngrok-free.app/";
 
   // USER CORE ENDPOINTS
   final String signUp = "${base}user/basic/signup";
@@ -12,8 +12,7 @@ class BaseUrl {
   final String oAuthUrl = "${base}user/oauth2/consent";
   final String oAuthValidation = "${base}user/oauth2/consent-validation";
   final String resetOtp = "${base}user/credentials/reset/mail?email=";
-  final String validateResetOtp =
-      "${base}user/credentials/reset/verification/otp";
+  final String validateResetOtp = "${base}user/credentials/reset/verification/otp";
   final String resetPassword = "${base}user/credentials/new/submit";
   final String anonUserUrl = "${base}user/anonymous/credential";
   final String autoLogin = "${base}user/basic/remember/login";
@@ -45,10 +44,16 @@ class BaseUrl {
   final String getMiniCoursePref = "${base}course/mini/preference/graph";
   final String getMiniCourseQuick = "${base}course/mini/quick/graph";
   final String getMiniCoursetrending = "${base}course/mini/trending/graph";
+   String getCourseById(String id) => "${base}course/get?courseId=$id";
 
   // Course Analysis
 
   final String courseAnalysisUrl = "${base}course-analysis/course-lesson";
+
+  // Course Review
+
+  final String saveReviewUrl = "${base}course/reviews";
+  String getReviewUrl(String id) => "${base}course/reviews?courseId=$id";
 
   // Cart
 

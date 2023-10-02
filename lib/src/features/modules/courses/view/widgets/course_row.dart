@@ -1,122 +1,119 @@
 import 'package:birds_learning_network/src/config/routing/route.dart';
 import 'package:birds_learning_network/src/features/modules/courses/view/screens/view_course/view_course_screen.dart';
+import 'package:birds_learning_network/src/features/modules/courses/view_model/paid_courses_provider.dart';
 import 'package:birds_learning_network/src/features/modules/home/model/response_model/get_courses.dart';
 import 'package:birds_learning_network/src/features/modules/home/view/screens/facilitator.dart';
-import 'package:birds_learning_network/src/features/modules/user_cart/view_model/cart_provider.dart';
-import 'package:birds_learning_network/src/global_model/services/storage/shared_preferences/course_data.dart';
 import 'package:birds_learning_network/src/utils/global_constants/asset_paths/image_path.dart';
 import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:provider/provider.dart';
 
-class CourseRowWidget extends StatefulWidget {
+class CourseRowWidget extends StatelessWidget {
   const CourseRowWidget(
       {super.key, required this.course, required this.percentage});
-  final double percentage;
+  final dynamic percentage;
   final Courses course;
 
-  @override
-  State<CourseRowWidget> createState() => _CourseRowWidgetState();
-}
-
-class _CourseRowWidgetState extends State<CourseRowWidget> {
-  @override
-  void initState() {
-    widget.course.sections = <Sections>[];
-    SchedulerBinding.instance.addPostFrameCallback((_) async {
-      await getCourseSection(context, widget.course.id.toString());
-    });
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () async {
-        RoutingService.pushRouting(
-            context,
-            ViewCourseScreen(
-              course: widget.course,
-            ));
-      },
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Container(
-            height: 50,
-            width: 50,
-            decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: widget.course.imageUrl!.isEmpty
-                        ? Image.asset(
-                            ImagePath.thumbnail,
-                            fit: BoxFit.fitHeight,
-                          ).image
-                        : Image.network(widget.course.imageUrl ?? "").image)),
-          ),
-          SizedBox(
-            width: MediaQuery.of(context).size.width * 0.92 - 110,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  widget.course.title ?? "",
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                      fontSize: 14,
-                      fontFamily: "Inter",
-                      fontWeight: FontWeight.w500,
-                      color: black),
-                ),
-                InkWell(
-                  onTap: () {
-                    RoutingService.pushRouting(
-                        context,  FacilitatorScreen(
-                      facilitatorId: widget.course.facilitator!.id ?? "0",
-                    ));
-                  },
-                  child: Text(
-                    widget.course.facilitator!.name ?? "",
+    Courses? currentCourse = context.watch<PaidCoursesProvider>().currentCourse;
+    // this is done to dynamically update the course progress on the course screen when the user is watching the course
+    // the progress is tracked by checking if the currentCourse is same as the course being displayed
+    var progress = currentCourse != null && course.id == currentCourse.id ? currentCourse.progress : null;
+
+    return Consumer<PaidCoursesProvider>(
+      builder: (_, ref, __) => InkWell(
+        onTap: () async {
+          RoutingService.pushRouting(
+              context,
+              ViewCourseScreen(
+                course: course,
+              ));
+        },
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(
+              height: 50,
+              width: 50,
+              decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: course.imageUrl!.isEmpty
+                          ? Image.asset(
+                              ImagePath.thumbnail,
+                              fit: BoxFit.fitHeight,
+                            ).image
+                          : Image.network(course.imageUrl ?? "").image)),
+            ),
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 0.92 - 110,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    course.title ?? "",
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
-                        fontSize: 10,
+                        fontSize: 14,
+                        fontFamily: "Inter",
+                        fontWeight: FontWeight.w500,
+                        color: black),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      RoutingService.pushRouting(
+                          context,  FacilitatorScreen(
+                        facilitatorId: course.facilitator!.id ?? "0",
+                      ));
+                    },
+                    child: Text(
+                      course.facilitator!.name ?? "",
+                      style: const TextStyle(
+                          fontSize: 10,
+                          fontFamily: "Inter",
+                          fontWeight: FontWeight.w400,
+                          color: greys200),
+                    ),
+                  )
+                ],
+              ),
+            ),
+            percentage.toString() == "0.0" ||
+                    percentage.toString() == "0"
+                ? const Text(
+                    "Start",
+                    style: TextStyle(
+                        fontSize: 14,
                         fontFamily: "Inter",
                         fontWeight: FontWeight.w400,
-                        color: greys200),
-                  ),
-                )
-              ],
-            ),
-          ),
-          widget.percentage.toString() == "0.0" ||
-                  widget.percentage.toString() == "0"
-              ? const Text(
-                  "Start",
-                  style: TextStyle(
-                      fontSize: 14,
-                      fontFamily: "Inter",
-                      fontWeight: FontWeight.w400,
-                      color: success600),
-                )
-              : CircularProgressIndicator(
-                  value: widget.percentage,
-                  color: success600,
-                )
-        ],
+                        color: success600),
+                  )
+                : CircularPercentIndicator(
+                radius: 20,
+                percent: double.parse(progress?.toString() ?? percentage?.toString() ?? "0")/100,
+                progressColor: success600,
+                backgroundColor: backgroundBlurColor,
+                animation: true,
+                animationDuration: 800,
+                center: Text(
+                  "${progress?.toString() ?? percentage ?? 0}%",
+                  style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 10.0),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
-
-  Future getCourseSection(context, String id) async {
-    var response = await Provider.of<CartProvider>(context, listen: false)
-        .getCourseSection(context, id);
-    if (response != null) {
-      List<Sections> sections = response;
-      widget.course.sections = sections;
-      await CoursePreference.saveCourseById(widget.course);
-    }
-  }
 }
+
+// CircularProgressIndicator(
+// value:  double.parse(percentage.toString())/100,
+// color: success600,
+// backgroundColor: backgroundBlurColor,
+// )

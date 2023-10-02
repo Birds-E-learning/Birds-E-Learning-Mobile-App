@@ -14,6 +14,7 @@ class UserSecureStorage {
   final String _userDataKey = "userData";
 
   Future setToken(String token) async {
+    print("token ====>> $token");
     await storage.write(key: _tokenKey, value: token);
   }
 

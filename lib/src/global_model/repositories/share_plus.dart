@@ -21,10 +21,10 @@ class SharePlus{
       String? response =  await share.shareToFacebook(url: url, msg: msg); //:
             // await share.shareToSystem(msg: "$msg $url");
       if(!response!.toLowerCase().contains("sucess") && !response.toLowerCase().contains("success")){
-        print("is it true ====>>> ${!response.toLowerCase().contains("success")}");
+        // print("is it true ====>>> ${!response.toLowerCase().contains("success")}");
         showSnack(context, "00", response);
       }
-      print("response ====<>>>>> $response");
+      // print("response ====<>>>>> $response");
     }catch(e){
       showSnack(context, "03", e.toString());
     }

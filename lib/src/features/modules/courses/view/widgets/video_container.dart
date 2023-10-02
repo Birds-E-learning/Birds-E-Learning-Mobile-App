@@ -30,6 +30,8 @@ class VideoPlayerContainer extends StatelessWidget {
               handleColor: success900,
             ),
             onEnded: (value)async{
+                // print("course lesson duration ====>> ${value.duration}");
+                if(value.duration.inSeconds == 0)return;
               course.getLessonProgress(controller.value.position.inSeconds, isFinished: true);
               CourseAnalysisRequest body = course.getRequestData(course.currentlyPlayingLesson!, courseId, perc: 100);
               await course.courseAnalysisMethod(context, body);

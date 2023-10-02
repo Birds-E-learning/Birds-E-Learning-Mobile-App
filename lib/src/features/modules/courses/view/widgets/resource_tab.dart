@@ -7,17 +7,19 @@ class ResourcesTabWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Padding(
-      padding:  EdgeInsets.only(top: 20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children:  [
-          ResourceRowWidget(
-              imageUrl: ImagePath.pdfImage,
-              title: "Color Psychology guide.pdf"),
-          // SizedBox(height: 10),
-          ResourceRowWidget(imageUrl: ImagePath.imageZip, title: "title")
-        ],
+    return const SingleChildScrollView(
+      child:  Padding(
+        padding:  EdgeInsets.only(top: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children:  [
+            ResourceRowWidget(
+                imageUrl: ImagePath.pdfImage,
+                title: "Color Psychology guide.pdf"),
+            // SizedBox(height: 10),
+            ResourceRowWidget(imageUrl: ImagePath.imageZip, title: "title")
+          ],
+        ),
       ),
     );
   }

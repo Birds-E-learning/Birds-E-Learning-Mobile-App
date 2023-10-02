@@ -29,14 +29,14 @@ class _ViewCourseScreenState extends State<ViewCourseScreen>
     with SingleTickerProviderStateMixin, ContentWidget, CoursesText {
   TabController? _tabController;
   YoutubePlayerController? _controller;
-  final List<String> _tabs = ['Lectures', 'Resources', 'Assessment'];
+  final List<String> _tabs = ['Description', 'Lessons', 'Assessment'];
   String title = "";
 
   @override
   void initState() {
     _tabController = _tabController = TabController(length: 3, vsync: this);
     SchedulerBinding.instance.addPostFrameCallback((_) async {
-      print(widget.course.toJson());
+      // print(widget.course.toJson());
       context.read<PaidCoursesProvider>().refreshValues();
       context.read<PaidCoursesProvider>().getCourseSection(context, widget.course);
     });
@@ -58,8 +58,7 @@ class _ViewCourseScreenState extends State<ViewCourseScreen>
         ),
         elevation: 0,
         title: Text(
-            context.watch<PaidCoursesProvider>().currentlyPlayingLesson != null ?
-            context.watch<PaidCoursesProvider>().currentlyPlayingLesson!.lessonTitle ?? "" : "",
+            context.watch<PaidCoursesProvider>().currentlyPlayingLesson?.lessonTitle ?? "",
             overflow: TextOverflow.ellipsis,
             style: const TextStyle(
             fontSize: 16, fontWeight: FontWeight.w600)),
@@ -82,7 +81,7 @@ class _ViewCourseScreenState extends State<ViewCourseScreen>
               //     : const SliverPadding(padding: EdgeInsets.zero),
               SliverToBoxAdapter(
                 child: Padding(
-                    padding: const EdgeInsets.only(bottom: 15),
+                    padding: const EdgeInsets.only(bottom: 20),
                     child: !course.isLessonPlayed || _controller == null
                         ? CourseContainer(course: widget.course)
                         : VideoPlayerContainer(
@@ -134,29 +133,33 @@ class _ViewCourseScreenState extends State<ViewCourseScreen>
   }
 
   _updateController(CourseModel lesson){
-    if(lesson.pauseVideo == true && _controller != null){
-      _controller!.pause();
-      return;
-    }
+    // if(lesson.pauseVideo == true && _controller != null){
+    //   _controller!.pause();
+    //   return;
+    // }
+    // print("lesson url ===>> ${lesson.lessonUrl} ===>>> lesson id ===>> ${lesson.lessonId}");
     String? videoId = YoutubePlayer.convertUrlToId(lesson.lessonUrl ?? "");
-    final course = context.read<PaidCoursesProvider>();
-    course.onPlayButtonClick(context, lesson, widget.course.id ?? "0");
+    // print("video id ====>>> $videoId");
+    final ref = context.read<PaidCoursesProvider>();
+    ref.onPlayButtonClick(context, lesson, widget.course.id?.toString() ?? "0");
+
     setState(() {
       title = lesson.lessonTitle ?? "";
     });
     if (videoId != null){
       if(_controller != null){
         _controller!.pause();
-        _controller!.load(videoId, startAt: lesson.lessonLastPlayedDuration);
+        // print("here ======>.>>>>>>> ");
+        _controller!.load(videoId);
       }else{
         setState(() {
           _controller = YoutubePlayerController(
-              initialVideoId: videoId, flags:  YoutubePlayerFlags(
+              initialVideoId: videoId, flags:  const YoutubePlayerFlags(
               autoPlay: false,
               controlsVisibleAtStart: true,
               forceHD: true,
-              startAt: lesson.lessonLastPlayedDuration != null ?
-              int.parse(lesson.lessonLastPlayedDuration!.toString()) : 0
+              // startAt: lesson.lessonLastPlayedDuration != null ?
+              // int.parse(lesson.lessonLastPlayedDuration!.toString()) : 0
           )
           );
         });

@@ -1,6 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:birds_learning_network/src/features/modules/courses/model/response/db_course_model.dart';
-import 'package:birds_learning_network/src/features/modules/courses/view/screens/view_course/widget/lecture_tab_shimmer.dart';
+import 'package:birds_learning_network/src/features/modules/courses/view/widgets/lecture_tab_shimmer.dart';
 import 'package:birds_learning_network/src/features/modules/courses/view/widgets/lesson_preview.dart';
 import 'package:birds_learning_network/src/features/modules/courses/view_model/paid_courses_provider.dart';
 import 'package:birds_learning_network/src/features/modules/home/model/response_model/get_courses.dart';
@@ -97,7 +97,9 @@ class LectureTabWidget extends StatelessWidget {
                                           onTap: content.courseLessons[index][indexx].lessonUrl == null ? (){
                                             showSnack(context, "02", "No video for this course");
                                           }
-                                            : () => updateController(content.courseLessons[index][indexx])
+                                            : () {
+                                            updateController(content.courseLessons[index][indexx]);
+                                          }
                                           // "https://www.youtube.com/watch?v=ZtC7-OpjzOc"
                                         ),
                                       ],

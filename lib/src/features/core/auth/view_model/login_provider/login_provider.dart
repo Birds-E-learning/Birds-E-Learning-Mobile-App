@@ -78,6 +78,7 @@ class LoginProvider extends ChangeNotifier {
       _isClicked ? onClick() : null;
       notifyListeners();
       if (response != null && response.responseCode == "00") {
+        // print("response ===>> ${response.toJson()}");
         await UserPreferences.setUserFirstName(
             response.responseData!.firstName!);
         await UserPreferences.setUserEmail(response.responseData!.email!);

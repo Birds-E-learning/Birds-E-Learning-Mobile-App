@@ -33,7 +33,7 @@ class ResponseData {
 }
 
 class Category {
-  String? id;
+  dynamic id;
   String? name;
   dynamic imageId;
   String? content;
@@ -72,7 +72,7 @@ class Category {
   });
 
   Category.fromJson(Map<String, dynamic> json) {
-    id = json['id'] as String?;
+    id = json['id'] as dynamic;
     name = json['name'] as String?;
     imageId = json['imageId'] as dynamic;
     content = json['content'] as String?;
@@ -96,7 +96,7 @@ class Category {
 
 class Courses {
   dynamic progress;
-  String? id;
+  dynamic id;
   String? title;
   String? slug;
   String? content;
@@ -171,7 +171,7 @@ class Courses {
 
   Courses.fromJson(Map<String, dynamic> json) {
     progress = json['progress'] as dynamic;
-    id = json['id'] as String?;
+    id = json['id'] as dynamic;
     title = json['title'] as String?;
     slug = json['slug'] as String?;
     content = json['content'] as String?;
@@ -254,7 +254,7 @@ class Courses {
 
 class Facilitator {
   dynamic courses;
-  String? id;
+  dynamic id;
   String? email;
   String? name;
   String? degree;
@@ -279,7 +279,7 @@ class Facilitator {
 
   Facilitator.fromJson(Map<String, dynamic> json) {
     courses = json['courses'] as dynamic;
-    id = json['id'] as String?;
+    id = json['id'] as dynamic;
     email = json['email'] as String?;
     name = json['name'] as String?;
     degree = json['degree'] as String?;
@@ -307,7 +307,7 @@ class Facilitator {
 }
 
 class Sections {
-  String? id;
+  dynamic id;
   dynamic courseId;
   String? name;
   String? slug;
@@ -342,7 +342,7 @@ class Sections {
   });
 
   Sections.fromJson(Map<String, dynamic> json) {
-    id = json['id'] as String?;
+    id = json['id'] as dynamic;
     courseId = json['courseId'] as dynamic;
     name = json['name'] as String?;
     slug = json['slug'] as String?;
@@ -383,7 +383,7 @@ class Sections {
 }
 
 class Lessons {
-  String? id;
+  dynamic id;
   dynamic sectionId;
   dynamic courseId;
   String? name;
@@ -436,7 +436,7 @@ class Lessons {
   });
 
   Lessons.fromJson(Map<String, dynamic> json) {
-    id = json['id'] as String?;
+    id = json['id'] as dynamic;
     sectionId = json['sectionId'] as dynamic;
     courseId = json['courseId'] as dynamic;
     name = json['name'] as String?;

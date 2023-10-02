@@ -7,6 +7,7 @@ import 'package:birds_learning_network/src/features/modules/home/view/widgets/sh
 import 'package:birds_learning_network/src/global_model/apis/api_response.dart';
 import 'package:birds_learning_network/src/utils/custom_widgets/custom_bacground.dart';
 import 'package:birds_learning_network/src/utils/global_constants/asset_paths/image_path.dart';
+import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
 import 'package:birds_learning_network/src/utils/global_constants/texts/module_texts/courses_texts.dart';
 import 'package:birds_learning_network/src/utils/helper_widgets/leading_icon.dart';
 import 'package:birds_learning_network/src/utils/mixins/module_mixins/courses_mixins.dart';
@@ -76,18 +77,26 @@ class _MyCoursesPageState extends State<MyCoursesPage>
                         return const MoreCardsShimmer();
                        },
                     )
-                : ListView.separated(
-                    separatorBuilder: (_,__) => const SizedBox(height: 15),
-                    scrollDirection: Axis.vertical,
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: course.courses.length,
-                    itemBuilder: (context, int index) {
-                      course.courses[index].sections = <Sections>[];
-                      return CourseRowWidget(
-                          course: course.courses[index], percentage: 0);
-                        },
+                : Expanded(
+                  child: RefreshIndicator(
+                    onRefresh: ()async{
+                      course.getPaidCoursesMethod(context);
+                    },
+                    color: success1000,
+                    child: ListView.separated(
+                        separatorBuilder: (_,__) => const SizedBox(height: 15),
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        itemCount: course.courses.length,
+                        itemBuilder: (context, int index) {
+                          course.courses[index].sections = <Sections>[];
+                          return CourseRowWidget(
+                              course: course.courses[index], percentage: course.courses[index].progress);
+                            },
             ),
+                  ),
+                ),
           ),
         ),
       ),

@@ -1,6 +1,5 @@
-import 'package:birds_learning_network/src/config/routing/route.dart';
+import 'package:birds_learning_network/src/features/modules/courses/model/request/save_review.dart';
 import 'package:birds_learning_network/src/features/modules/courses/model/response/db_course_model.dart';
-import 'package:birds_learning_network/src/features/modules/courses/view/screens/assessment/assessment_summary.dart';
 import 'package:birds_learning_network/src/features/modules/courses/view_model/paid_courses_provider.dart';
 import 'package:birds_learning_network/src/features/modules/home/model/response_model/get_courses.dart';
 import 'package:birds_learning_network/src/features/modules/home/view/widgets/shimmer/more_card_shimmer.dart';
@@ -66,16 +65,7 @@ class _AssessmentTabWidgetState extends State<AssessmentTabWidget>
                      return Padding(
                        padding: const EdgeInsets.only(bottom: 20),
                        child: AssessmentRow(
-                            onTap: (){
-                              if(widget.updateController != null){
-                                widget.updateController!(CourseModel(
-                                  pauseVideo: true,
-                                ));
-                              }
-                              RoutingService.pushRouting(
-                                  context,
-                                  AssessmentSummary(title: content.currentSections[index].name ?? ""));
-                            },
+                            onTap: (){},
                            index: index + 1,
                            section: content.currentSections[index].name ?? ""),
                      );
@@ -115,8 +105,27 @@ class _AssessmentTabWidgetState extends State<AssessmentTabWidget>
               SizedBox(
                 width: double.infinity,
                 child: WhiteButtonWidget(
-                    onPressed: () {},
-                    child: const Text("Save Review",
+                    onPressed: () async {
+                      FocusScope.of(context).unfocus();
+                      if(content.reviewStatus == Status.loading){
+                        content.setReviewStatus();
+                      }
+                      SaveReviewRequest body = SaveReviewRequest(
+                        reviewerComment: reviewController.text.trim(),
+                        reviewerRating: "$rating",
+                        courseId: widget.course.id?.toString(),
+                        title: widget.course.title
+                      );
+                      bool? response = await content.saveReviewMethod(context, body);
+                      if(response ?? false){
+                        reviewController.clear();
+                        rating = null;
+                        setState(() {});
+                      }
+                    },
+                    child: content.reviewStatus == Status.loading
+                    ? const CircularProgressIndicator(color: skipColor)
+                    : const Text("Save Review",
                         style: TextStyle(
                             fontFamily: "Inter",
                             fontSize: 16,
@@ -152,8 +161,9 @@ class AssessmentRow extends StatelessWidget {
         fontWeight: FontWeight.w400,
         fontFamily: "Inter");
     return InkWell(
-      onTap: onTap ?? () => RoutingService.pushRouting(
-          context, AssessmentSummary(title: section)),
+      onTap: onTap,
+          //     () => RoutingService.pushRouting(
+          // context, AssessmentSummary(title: section)),
       child: Row(
         children: [
           const Icon(Icons.task, size: 25, color: skipColor),
