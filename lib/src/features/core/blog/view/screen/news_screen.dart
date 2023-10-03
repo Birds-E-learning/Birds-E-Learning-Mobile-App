@@ -57,7 +57,7 @@ class _NewsScreenState extends State<NewsScreen> with CourseTextWidgets{
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    bool isLandscape = size.width > size.height;
+    bool isLandscape = size.width > size.height || size.width > 600;
     return Scaffold(
       backgroundColor: white,
       appBar: AppBar(

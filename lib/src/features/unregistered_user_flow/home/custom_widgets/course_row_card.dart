@@ -16,7 +16,6 @@ class UnregisteredCourseRowCards extends StatelessWidget with HomeWidgets {
 
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
     return InkWell(
       onTap: onTap ??
           () async {
@@ -26,7 +25,7 @@ class UnregisteredCourseRowCards extends StatelessWidget with HomeWidgets {
           },
       child: SizedBox(
         // height: 70,
-        width: size.width * 0.92,
+        width: double.infinity,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -34,8 +33,8 @@ class UnregisteredCourseRowCards extends StatelessWidget with HomeWidgets {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 SizedBox(
-                  height: 40,
-                  width: 50,
+                  height: 50,
+                  width: 55,
                   child: CachedNetworkImage(
                     height: 50,
                     width: 50,
@@ -56,35 +55,34 @@ class UnregisteredCourseRowCards extends StatelessWidget with HomeWidgets {
                   ),
                 ),
                 const SizedBox(width: 10),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: size.width - (size.width * 0.08) - 60,
-                      child: courseTitleText(
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      courseTitleText(
                           course.title ?? "Introduction to Technology"),
-                    ),
-                    const SizedBox(height: 2),
-                    Row(
-                      children: [
-                        ownerText(course.facilitator!.name ?? "Anonymous"),
-                        const SizedBox(width: 5),
-                        Row(
-                          children: getStarList(
-                              course.facilitator!.ratings.toString(),
-                              ImagePath.starFill,
-                              ImagePath.starUnfill),
-                        ),
-                        const SizedBox(width: 5),
-                        ratingText(course.facilitator!.reviews == ""
-                            ? "4"
-                            : course.facilitator!.reviews.toString())
-                      ],
-                    ),
-                    const SizedBox(height: 3),
-                    amountText(
-                        course.salePrice ?? "5000", course.price ?? "5500")
-                  ],
+                      const SizedBox(height: 2),
+                      Row(
+                        children: [
+                          ownerText(course.facilitator!.name ?? "Anonymous"),
+                          const SizedBox(width: 5),
+                          Row(
+                            children: getStarList(
+                                course.facilitator!.ratings.toString(),
+                                ImagePath.starFill,
+                                ImagePath.starUnfill),
+                          ),
+                          const SizedBox(width: 5),
+                          ratingText(course.facilitator!.reviews == ""
+                              ? "4"
+                              : course.facilitator!.reviews.toString())
+                        ],
+                      ),
+                      const SizedBox(height: 3),
+                      amountText(
+                          course.salePrice ?? "5000", course.price ?? "5500")
+                    ],
+                  ),
                 )
               ],
             ),

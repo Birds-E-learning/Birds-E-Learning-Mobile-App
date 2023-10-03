@@ -25,7 +25,6 @@ class CourseCartCards extends StatelessWidget with CartWidgets {
 
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
     return Consumer<CartProvider>(
       builder: (_, cart, __) => InkWell(
         onTap: () {
@@ -42,68 +41,70 @@ class CourseCartCards extends StatelessWidget with CartWidgets {
                 height: 50, width: 60, isMore: true,)
             ),
             const SizedBox(width: 10),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  width: size.width - (size.width * 0.08) - 60,
-                  child: courseTitleText(
-                      course.title ?? "Introduction to Technology"),
-                ),
-                const SizedBox(height: 2),
-                Row(
-                  children: [
-                    ownerNameText(course.facilitator == null
-                        ? "Anonymous"
-                        : course.facilitator!.name == ""
-                            ? "Anonymous"
-                            : course.facilitator!.name!),
-                    const SizedBox(width: 5),
-                    Row(
-                      children: getStarList(
-                          course.facilitator!.ratings.toString(),
-                          ImagePath.starFill,
-                          ImagePath.starUnfill),
-                    ),
-                    const SizedBox(width: 5),
-                    ratingText(course.facilitator == null
-                        ? "4"
-                        : course.facilitator!.ratings.toString())
-                  ],
-                ),
-                const SizedBox(height: 3),
-                Container(
-                  child: course.subscriptionBased != null && course.subscriptionBased!
-                      ? SubscriptionTagWidget(course: course)
-                      : amountText(
-                      course.salePrice ?? "5000", course.price ?? "5500"),
-                ),
-                const SizedBox(height: 5),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      child: isWishlist
-                          ? null
-                          : addRemoveCart(
-                              "Buy Now",
-                              skipColor,
-                              Icons.add,
-                              () => RoutingService.pushRouting(
-                                  context, PaymentScreen(course: course))),
-                    ),
-                    SizedBox(width: isWishlist ? 0 : 15),
-                    removeButton,
-                    // isWishlist && cart.removeWishIcon
-                    //     ? loadingIdicator()
-                    //     : !isWishlist && cart.removeCartIcon
-                    //         ? loadingIdicator()
-                    // : addRemoveCart("Remove", errors500, Icons.remove,
-                    //     onRemoveTap),
-                  ],
-                )
-              ],
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: double.infinity,
+                    child: courseTitleText(
+                        course.title ?? "Introduction to Technology"),
+                  ),
+                  const SizedBox(height: 2),
+                  Row(
+                    children: [
+                      ownerNameText(course.facilitator == null
+                          ? "Anonymous"
+                          : course.facilitator!.name == ""
+                              ? "Anonymous"
+                              : course.facilitator!.name!),
+                      const SizedBox(width: 5),
+                      Row(
+                        children: getStarList(
+                            course.facilitator!.ratings.toString(),
+                            ImagePath.starFill,
+                            ImagePath.starUnfill),
+                      ),
+                      const SizedBox(width: 5),
+                      ratingText(course.facilitator == null
+                          ? "4"
+                          : course.facilitator!.ratings.toString())
+                    ],
+                  ),
+                  const SizedBox(height: 3),
+                  Container(
+                    child: course.subscriptionBased != null && course.subscriptionBased!
+                        ? SubscriptionTagWidget(course: course)
+                        : amountText(
+                        course.salePrice ?? "5000", course.price ?? "5500"),
+                  ),
+                  const SizedBox(height: 5),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        child: isWishlist
+                            ? null
+                            : addRemoveCart(
+                                "Buy Now",
+                                skipColor,
+                                Icons.add,
+                                () => RoutingService.pushRouting(
+                                    context, PaymentScreen(course: course))),
+                      ),
+                      SizedBox(width: isWishlist ? 0 : 15),
+                      removeButton,
+                      // isWishlist && cart.removeWishIcon
+                      //     ? loadingIdicator()
+                      //     : !isWishlist && cart.removeCartIcon
+                      //         ? loadingIdicator()
+                      // : addRemoveCart("Remove", errors500, Icons.remove,
+                      //     onRemoveTap),
+                    ],
+                  )
+                ],
+              ),
             )
           ],
         ),

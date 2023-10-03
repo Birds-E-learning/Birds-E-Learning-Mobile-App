@@ -43,12 +43,9 @@ class _MyCoursesPageState extends State<MyCoursesPage>
     return Scaffold(
       appBar: AppBar(
         title: appBarText(CoursesText.myCourses),
-        // pinned: true,
-        // floating: true,
         leading: widget.isFullScreen ? leadingIcon(context) : null,
         elevation: 0,
       ),
-      // controller: _controller,
       body: Consumer<PaidCoursesProvider>(
         builder: (_, course, __) => SafeArea(
           child: RefreshIndicator(
@@ -61,8 +58,8 @@ class _MyCoursesPageState extends State<MyCoursesPage>
             },
             color: success1000,
             child: Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: size.width * 0.05, vertical: size.height * 0.01),
+              padding: const EdgeInsets.symmetric(
+                  horizontal: 24, vertical: 16),
               child: course.courses.isEmpty
                   ? course.loadingStatus != Status.loading
                     ? Column(

@@ -50,7 +50,7 @@ class CourseRowWidget extends StatelessWidget {
                           : Image.network(course.imageUrl ?? "").image)),
             ),
             SizedBox(
-              width: MediaQuery.of(context).size.width * 0.92 - 110,
+              width: MediaQuery.of(context).size.width * 0.8 - 110,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

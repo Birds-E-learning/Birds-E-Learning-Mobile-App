@@ -30,19 +30,19 @@ class MoreCardsShimmer extends StatelessWidget {
                   children: [
                     Container(
                       height: 20,
-                      width: size.width * 0.8 - 50,
+                      width: size.width * 0.7 - 50,
                       color: Colors.black,
                     ),
                     const SizedBox(height: 5),
                     Container(
                       height: 15,
-                      width: size.width * 0.8 - 80,
+                      width: size.width * 0.7 - 80,
                       color: Colors.blueAccent,
                     ),
                     const SizedBox(height: 5),
                     Container(
                       height: 10,
-                      width: size.width * 0.8 - 120,
+                      width: size.width * 0.7 - 120,
                       color: Colors.blueGrey,
                     ),
                   ],
