@@ -65,6 +65,9 @@ class CourseContentProvider extends ChangeNotifier {
     _isVideo = false;
     _showVideo = false;
     selectedLesson = [];
+    reviewClicked = false;
+    reviews = [];
+    reviewers = 0;
     notifyListeners();
   }
 

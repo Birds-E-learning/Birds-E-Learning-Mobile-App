@@ -7,6 +7,7 @@ import 'package:birds_learning_network/src/global_model/apis/api_response.dart';
 import 'package:birds_learning_network/src/utils/custom_widgets/text_field.dart';
 import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
 import 'package:birds_learning_network/src/utils/helper_widgets/button_white.dart';
+import 'package:birds_learning_network/src/utils/helper_widgets/response_snack.dart';
 import 'package:birds_learning_network/src/utils/mixins/module_mixins/courses_mixins.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -110,9 +111,13 @@ class _AssessmentTabWidgetState extends State<AssessmentTabWidget>
                       if(content.reviewStatus == Status.loading){
                         content.setReviewStatus();
                       }
+                      if(reviewController.text.trim().isEmpty || rating == null){
+                        showSnack(context, "02", "Fill required fields");
+                        return;
+                      }
                       SaveReviewRequest body = SaveReviewRequest(
                         reviewerComment: reviewController.text.trim(),
-                        reviewerRating: "$rating",
+                        reviewerRating: "${rating! + 1}",
                         courseId: widget.course.id?.toString(),
                         title: widget.course.title
                       );

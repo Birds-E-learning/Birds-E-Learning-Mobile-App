@@ -6,11 +6,15 @@ import 'package:flutter/material.dart';
 class BackgroundWidget extends StatelessWidget {
   const BackgroundWidget({super.key,
     required this.child, this.appBar,
-    this.isHome = false
+    this.isHome = false,
+    this.physics,
+    this.controller,
   });
   final Widget child;
   final SliverAppBar? appBar;
   final bool isHome;
+  final ScrollPhysics? physics;
+  final ScrollController? controller;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +39,9 @@ class BackgroundWidget extends StatelessWidget {
           ),
           SafeArea(
             child: CustomScrollView(
-              primary: false,
+              primary:  false,
+              controller: controller,
+              physics: physics,
               slivers: [
                 appBar ?? Container(),
                 SliverToBoxAdapter(

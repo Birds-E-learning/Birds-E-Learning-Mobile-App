@@ -5,7 +5,6 @@ import 'package:birds_learning_network/src/features/modules/courses/view_model/p
 import 'package:birds_learning_network/src/features/modules/home/model/response_model/get_courses.dart';
 import 'package:birds_learning_network/src/features/modules/home/view/widgets/shimmer/more_card_shimmer.dart';
 import 'package:birds_learning_network/src/global_model/apis/api_response.dart';
-import 'package:birds_learning_network/src/utils/custom_widgets/custom_bacground.dart';
 import 'package:birds_learning_network/src/utils/global_constants/asset_paths/image_path.dart';
 import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
 import 'package:birds_learning_network/src/utils/global_constants/texts/module_texts/courses_texts.dart';
@@ -26,9 +25,11 @@ class MyCoursesPage extends StatefulWidget {
 
 class _MyCoursesPageState extends State<MyCoursesPage>
     with CourseTextWidgets, CoursesText {
+  late ScrollController _controller;
 
   @override
   void initState() {
+    _controller = ScrollController();
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
       Provider.of<PaidCoursesProvider>(context, listen: false)
           .getPaidCoursesMethod(context);
@@ -39,67 +40,75 @@ class _MyCoursesPageState extends State<MyCoursesPage>
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Consumer<PaidCoursesProvider>(
-      builder: (_, course, __) => BackgroundWidget(
-        appBar: SliverAppBar(
-          title: appBarText(CoursesText.myCourses),
-          pinned: true,
-          floating: true,
-          leading: widget.isFullScreen ? leadingIcon(context) : null,
-          elevation: 0,
-        ),
-        child: SafeArea(
-          child: Padding(
-            padding: EdgeInsets.symmetric(
-                horizontal: size.width * 0.05, vertical: size.height * 0.01),
-            child: course.courses.isEmpty
-                ? course.loadingStatus != Status.loading
-                  ? Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(height: size.height * 0.15),
-                        SvgPicture.asset(ImagePath.noCourse),
-                        const SizedBox(height: 20),
-                        noCourseText(() {
-                          RoutingService.pushRouting(
-                              context, const AllCoursesScreen());
-                        }),
-                      ],
-                    )
-                  :  ListView.separated(
-                      separatorBuilder: (_,__) => const SizedBox(height: 10),
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: 12,
-                      itemBuilder: (context, int index) {
-                        return const MoreCardsShimmer();
-                       },
-                    )
-                : Expanded(
-                  child: RefreshIndicator(
-                    onRefresh: ()async{
-                      course.getPaidCoursesMethod(context);
-                    },
-                    color: success1000,
-                    child: ListView.separated(
-                        separatorBuilder: (_,__) => const SizedBox(height: 15),
+    return Scaffold(
+      appBar: AppBar(
+        title: appBarText(CoursesText.myCourses),
+        // pinned: true,
+        // floating: true,
+        leading: widget.isFullScreen ? leadingIcon(context) : null,
+        elevation: 0,
+      ),
+      // controller: _controller,
+      body: Consumer<PaidCoursesProvider>(
+        builder: (_, course, __) => SafeArea(
+          child: RefreshIndicator(
+            onRefresh: ()async{
+              course.onRefreshStart(true);
+              await course.getPaidCoursesMethod(context);
+              // print(course.isRefreshing);
+              course.onRefreshStart(false);
+              // print(course.isRefreshing);
+            },
+            color: success1000,
+            child: Padding(
+              padding: EdgeInsets.symmetric(
+                  horizontal: size.width * 0.05, vertical: size.height * 0.01),
+              child: course.courses.isEmpty
+                  ? course.loadingStatus != Status.loading
+                    ? Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(height: size.height * 0.15),
+                          SvgPicture.asset(ImagePath.noCourse),
+                          const SizedBox(height: 20),
+                          noCourseText(() {
+                            RoutingService.pushRouting(
+                                context, const AllCoursesScreen());
+                          }),
+                        ],
+                      )
+                    :  ListView.separated(
+                        separatorBuilder: (_,__) => const SizedBox(height: 10),
                         scrollDirection: Axis.vertical,
                         shrinkWrap: true,
-                        physics: const AlwaysScrollableScrollPhysics(),
-                        itemCount: course.courses.length,
+                        itemCount: 12,
                         itemBuilder: (context, int index) {
-                          course.courses[index].sections = <Sections>[];
-                          return CourseRowWidget(
-                              course: course.courses[index], percentage: course.courses[index].progress);
-                            },
+                          return const MoreCardsShimmer();
+                         },
+                      )
+                  : ListView.separated(
+                      separatorBuilder: (_,__) => const SizedBox(height: 15),
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      itemCount: course.courses.length,
+                      itemBuilder: (context, int index) {
+                        course.courses[index].sections = <Sections>[];
+                        return CourseRowWidget(
+                            course: course.courses[index], percentage: course.courses[index].progress);
+                          },
+              ),
             ),
-                  ),
-                ),
           ),
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 }

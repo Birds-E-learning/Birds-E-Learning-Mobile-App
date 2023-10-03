@@ -30,6 +30,7 @@ class PaidCoursesProvider extends ChangeNotifier {
   int _lessonDuration = 0;
   int lessonProgress = 0;
   Courses? currentCourse;
+  bool isRefreshing = false;
 
   List<Courses> get courses => _courses;
 
@@ -38,6 +39,11 @@ class PaidCoursesProvider extends ChangeNotifier {
 
   void onTabClick(int index) {
     _selectedIndex = index;
+    notifyListeners();
+  }
+
+  void onRefreshStart(bool val){
+    isRefreshing = val;
     notifyListeners();
   }
 
@@ -112,6 +118,7 @@ class PaidCoursesProvider extends ChangeNotifier {
     selectedSection = [];
     courseLessons = [];
     currentSections = [];
+    currentCourse = null;
     currentlyPlayingLesson = null;
     isLessonPlayed = false;
     notifyListeners();

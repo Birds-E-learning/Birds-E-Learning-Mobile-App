@@ -55,7 +55,6 @@ class _ChangePasswordPageState extends State<ChangePasswordPage>
                   controller: oldPassword,
                   labelText: ProfileTexts.oldText,
                   maxLines: 1,
-                  filled: true,
                   obscureText: !password.showOldPassword,
                   validator: (value) => passwordValidator(value),
                   suffixIcon: passwordVisibility(
@@ -68,7 +67,6 @@ class _ChangePasswordPageState extends State<ChangePasswordPage>
                   labelText: ProfileTexts.newText,
                   maxLines: 1,
                   obscureText: !password.showNewPassword,
-                  filled: true,
                   validator: (value) =>
                       newPasswordValidator(value, oldPassword.text.trim()),
                   suffixIcon: passwordVisibility(
@@ -81,7 +79,6 @@ class _ChangePasswordPageState extends State<ChangePasswordPage>
                   labelText: ProfileTexts.confirmText,
                   maxLines: 1,
                   obscureText: !password.showConfirmPassword,
-                  filled: true,
                   validator: (value) =>
                       confirmPasswordValidator(value, newPassword.text.trim()),
                   suffixIcon: passwordVisibility(
