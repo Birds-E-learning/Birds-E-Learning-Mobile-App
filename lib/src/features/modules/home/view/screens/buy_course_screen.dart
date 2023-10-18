@@ -219,7 +219,7 @@ class _BuyCourseScreenState extends State<BuyCourseScreen>
                                     section: widget.course.sections![index]);
                               },
                             ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 16),
                   CourseReviewWidget(courseId: widget.course.id?.toString() ?? "0"),
                   const SizedBox(height: 24),
                   Container(

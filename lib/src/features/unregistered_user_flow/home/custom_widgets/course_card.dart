@@ -1,19 +1,24 @@
 import 'package:birds_learning_network/src/config/routing/route.dart';
+import 'package:birds_learning_network/src/features/modules/home/custom_widgets/course_image.dart';
+import 'package:birds_learning_network/src/features/modules/subscription/view/widget/subscription_tag.dart';
 import 'package:birds_learning_network/src/features/modules/home/model/response_model/get_courses.dart';
 import 'package:birds_learning_network/src/features/unregistered_user_flow/home/view/screens/buy_course_screen.dart';
 import 'package:birds_learning_network/src/utils/global_constants/asset_paths/image_path.dart';
 import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
 import 'package:birds_learning_network/src/utils/helper_widgets/star_widget.dart';
 import 'package:birds_learning_network/src/utils/mixins/module_mixins/home_mixins.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class UnregisteredCourseCard extends StatelessWidget with ImagePath, HomeWidgets {
   const UnregisteredCourseCard({
     super.key,
     required this.course,
+    this.iconData = Icons.favorite_outline,
+    this.iconColor = skipColor,
   });
   final Courses course;
+  final Color iconColor;
+  final IconData iconData;
 
   @override
   Widget build(BuildContext context) {
@@ -34,79 +39,60 @@ class UnregisteredCourseCard extends StatelessWidget with ImagePath, HomeWidgets
             )),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             SizedBox(
                 height: 90,
                 width: 165,
-                child: CachedNetworkImage(
-                  imageUrl: course.imageUrl ?? "",
-                  imageBuilder: (context, imageProvider) => Container(
-                    height: 90,
-                    width: 165,
-                    decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(10),
-                          topRight: Radius.circular(10)),
-                      color: Colors.transparent,
-                      image: DecorationImage(
-                        image: imageProvider,
-                        fit: BoxFit.fill,
-                      ),
-                    ),
-                  ),
-                  placeholder: (context, url) => const Center(
-                      child: SizedBox(
-                          height: 30,
-                          width: 30,
-                          child: CircularProgressIndicator())),
-                  errorWidget: (context, url, error) => Container(
-                    height: 90,
-                    width: 165,
-                    decoration: BoxDecoration(
-                      color: Colors.transparent,
-                      image: DecorationImage(
-                        image: Image.asset(ImagePath.thumbnail).image,
-                        fit: BoxFit.fill,
-                      ),
-                    ),
-                  ),
-                )),
+                child: CourseImageWidget(imageUrl: course.imageUrl ?? "",)),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 5),
+              padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 4),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   SizedBox(
+                    height: 28,
                     width: size.width - (size.width * 0.08) - 60,
                     child: courseTitleText(course.title ?? ""),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ownerText(course.facilitator!.name == ""
-                              ? "Anonymous"
-                              : course.facilitator!.name!),
-                          const SizedBox(height: 5),
-                          Row(
-                            children: [
-                              Row(
-                                children: getStarList(
-                                    course.facilitator!.ratings ?? "1",
-                                    ImagePath.starFill,
-                                    ImagePath.starUnfill),
-                              ),
-                              const SizedBox(width: 10),
-                              ratingText(course.facilitator!.reviews.toString())
-                            ],
-                          )
-                        ],
-                      ),
-                    ],
+                  SizedBox(
+                    height: 36,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        ownerText(course.facilitator!.name == ""
+                            ? "Anonymous"
+                            : course.facilitator!.name!),
+                        SizedBox(height: course.subscriptionBased != null &&  course.subscriptionBased! ? 8 : 5),
+                        Row(
+                          children: [
+                            Row(
+                              children: getStarList(
+                                  course.facilitator!.ratings ?? "1",
+                                  ImagePath.starFill,
+                                  ImagePath.starUnfill),
+                            ),
+                            // const SizedBox(width: 10),
+                            ratingText(course.facilitator!.reviews.toString())
+                          ],
+                        )
+                      ],
+                    ),
                   ),
                   const SizedBox(height: 5),
-                  amountText(course.salePrice ?? "5000", course.price ?? "5500")
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: SizedBox(
+                      height: 20,
+                      child: course.subscriptionBased != null &&  course.subscriptionBased!
+                          ?  SubscriptionTagWidget(course: course)
+                          : course.salePrice == "0.00"
+                          ? freeText()
+                          : amountText(course.salePrice ?? "5000", course.price ?? "5500"),
+                    ),
+                  )
                 ],
               ),
             )

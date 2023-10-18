@@ -46,7 +46,7 @@ class _UnregisteredQuickCoursesScreenState extends State<UnregisteredQuickCourse
                 ? course.quickStatus == Status.loading
                   ?  ListView.separated(
                       separatorBuilder: (_, __) => const SizedBox(
-                        height: 10,
+                        height: 30,
                         child: Divider(thickness: 0.2, color: success1000),
                       ),
                       scrollDirection: Axis.vertical,
@@ -59,7 +59,7 @@ class _UnregisteredQuickCoursesScreenState extends State<UnregisteredQuickCourse
                   : const EmptyCategoryWidget(category: "Quick")
                 : ListView.separated(
                     separatorBuilder: (_, __) => const SizedBox(
-                          height: 10,
+                          height: 30,
                           child: Divider(thickness: 0.2, color: success1000),
                         ),
                     shrinkWrap: true,

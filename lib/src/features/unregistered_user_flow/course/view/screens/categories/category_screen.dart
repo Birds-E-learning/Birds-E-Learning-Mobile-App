@@ -36,7 +36,8 @@ class UnregisteredCategoryScreen extends StatelessWidget with HomeWidgets, HomeT
         child: Padding(
           padding: EdgeInsets.symmetric(
               horizontal: size.width * 0.04, vertical: size.height * 0.02),
-          child: ListView.builder(
+          child: ListView.separated(
+            separatorBuilder: (_, __) => const SizedBox(height: 24),
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               itemCount: courses.length,

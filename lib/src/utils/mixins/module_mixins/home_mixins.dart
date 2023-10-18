@@ -92,7 +92,7 @@ mixin HomeWidgets on Object implements HomeText, HomeStyles {
 
   Text ratingText(String rating) {
     return Text(
-      "($rating)",
+      "(${int.parse(rating) > 5 ? 5 : rating})",
       style: HomeStyles.ratingStyle,
     );
   }
@@ -102,12 +102,12 @@ mixin HomeWidgets on Object implements HomeText, HomeStyles {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Text(
-          "\$ $amount",
+          "\$$amount",
           style: HomeStyles.amountStyle,
         ),
         const SizedBox(width: 10),
         Text(
-          "\$ $oldAmount",
+          "\$$oldAmount",
           style: HomeStyles.canceledAmountStyle,
         )
       ],
@@ -116,8 +116,8 @@ mixin HomeWidgets on Object implements HomeText, HomeStyles {
 
   Text freeText(){
     return  Text(
-        "FREE",
-        style: HomeStyles.amountStyle.copyWith(fontSize: 18)
+        "Free",
+        style: HomeStyles.amountStyle.copyWith(fontSize: 16)
     );
   }
 
@@ -166,11 +166,10 @@ mixin HomeWidgets on Object implements HomeText, HomeStyles {
     );
   }
 
-  AutoSizeText authorLabelText(String label) {
-    return AutoSizeText(
+  Text authorLabelText(String label) {
+    return Text(
       label,
       overflow: TextOverflow.ellipsis,
-      minFontSize: 4,
       style: HomeStyles.authorHeaderStyle,
     );
   }

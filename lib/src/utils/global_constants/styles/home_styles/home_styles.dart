@@ -46,12 +46,12 @@ class HomeStyles {
 
   static const TextStyle amountStyle = TextStyle(
       fontWeight: FontWeight.w600,
-      fontSize: 10,
+      fontSize: 14,
       fontFamily: "Inter",
       color: skipColor);
 
   static const TextStyle canceledAmountStyle = TextStyle(
-      fontSize: 8,
+      fontSize: 10,
       decoration: TextDecoration.lineThrough,
       fontWeight: FontWeight.w300,
       fontFamily: "Inter",

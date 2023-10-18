@@ -67,14 +67,11 @@ class _EditPreferenceScreenState extends State<EditPreferenceScreen>
                   ),
                   filterText(),
                   const SizedBox(height: 15),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: CustomFieldNoLabel(
-                      controller: textField,
-                      hintText: FilterTexts.hintText,
-                      maxLines: 7,
-                      readOnly: true,
-                    ),
+                  CustomFieldNoLabel(
+                    controller: textField,
+                    hintText: FilterTexts.hintText,
+                    maxLines: 7,
+                    readOnly: true,
                   ),
                   const SizedBox(height: 30),
                   filter.myList.isEmpty
@@ -125,28 +122,25 @@ class _EditPreferenceScreenState extends State<EditPreferenceScreen>
                     }).toList(),
                   ),
                   const SizedBox(height: 50),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: SizedBox(
-                      width: double.infinity,
-                      child: BlackButtonWidget(
-                          onPressed: () async {
-                            if (filter.doneClicked) {
-                              filter.onDoneClick();
-                              return;
-                            }
-                            if (filter.userPrefList.isEmpty) {
-                              showSnack(
-                                  context, "02", "No Preference selected");
-                            } else {
-                              filter.onDoneClick();
-                              await filter.postPreferenceList(context);
-                            }
-                          },
-                          child: filter.doneClicked
-                              ? loadingIdicator()
-                              : doneButtonText()),
-                    ),
+                  SizedBox(
+                    width: double.infinity,
+                    child: BlackButtonWidget(
+                        onPressed: () async {
+                          if (filter.doneClicked) {
+                            filter.onDoneClick();
+                            return;
+                          }
+                          if (filter.userPrefList.isEmpty) {
+                            showSnack(
+                                context, "02", "No Preference selected");
+                          } else {
+                            filter.onDoneClick();
+                            await filter.postPreferenceList(context);
+                          }
+                        },
+                        child: filter.doneClicked
+                            ? loadingIdicator()
+                            : doneButtonText()),
                   ),
                 ],
               ),

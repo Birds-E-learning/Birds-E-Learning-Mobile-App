@@ -54,7 +54,7 @@ class _UnregisteredTrendingCoursesScreenState extends State<UnregisteredTrending
                 ? course.quickStatus == Status.loading
                   ?  ListView.separated(
                       separatorBuilder: (_, __) => const SizedBox(
-                        height: 10,
+                        height: 30,
                         child: Divider(thickness: 0.2, color: success1000),
                       ),
                       scrollDirection: Axis.vertical,
@@ -67,7 +67,7 @@ class _UnregisteredTrendingCoursesScreenState extends State<UnregisteredTrending
                   : const EmptyCategoryWidget(category: "trending")
                 : ListView.separated(
                     separatorBuilder: (_, __) => const SizedBox(
-                          height: 10,
+                          height: 30,
                           child: Divider(thickness: 0.2, color: success1000),
                         ),
                     shrinkWrap: true,

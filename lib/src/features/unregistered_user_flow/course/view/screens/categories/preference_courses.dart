@@ -47,7 +47,7 @@ class _UnregisteredPreferenceCoursesScreenState extends State<UnregisteredPrefer
                 ? course.prefStatus == Status.loading
                     ?  ListView.separated(
                         separatorBuilder: (_, __) => const SizedBox(
-                              height: 10,
+                              height: 30,
                               child: Divider(thickness: 0.2, color: success1000),
                             ),
                         scrollDirection: Axis.vertical,
@@ -60,7 +60,7 @@ class _UnregisteredPreferenceCoursesScreenState extends State<UnregisteredPrefer
                     : const EmptyCategoryWidget(category: "Preference")
                 : ListView.separated(
                     separatorBuilder: (_, __) => const SizedBox(
-                          height: 10,
+                          height: 30,
                           child: Divider(thickness: 0.2, color: success1000),
                         ),
                     shrinkWrap: true,

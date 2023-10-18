@@ -31,10 +31,10 @@ class CourseReviewWidget extends StatelessWidget with HomeWidgets, ContentWidget
                   },
                   child: !ref.reviewClicked ? const Icon(
                     Icons.keyboard_arrow_down_outlined,
-                    color: black, size: 40,) :
+                    color: black, size: 30,) :
                   const Icon(
                     Icons.keyboard_arrow_up_outlined,
-                    color: black, size: 40,)
+                    color: black, size: 30,)
                 )
               ],
             ),

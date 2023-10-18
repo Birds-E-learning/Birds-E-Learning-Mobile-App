@@ -57,6 +57,7 @@ class _UnregisteredNewsScreenState extends State<UnregisteredNewsScreen> with Co
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    bool isLandscape = size.width > size.height || size.width > 600;
     return Scaffold(
       backgroundColor: white,
       appBar: AppBar(
@@ -88,6 +89,44 @@ class _UnregisteredNewsScreenState extends State<UnregisteredNewsScreen> with Co
                         )
                        ],
                     )
+                : isLandscape
+                ? Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SizedBox(
+                  width: size.width * 0.45,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        height: 210,
+                        child: PageView.builder(
+                            controller: _pageController,
+                            onPageChanged: (int page) {
+                              setState(() {
+                                _currentPage = page;
+                              });
+                            },
+                            itemCount: news.news.length,
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (context, index){
+                              return UnregisteredNewsContainer(
+                                  data: news.news[index]
+                              );
+                            }
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      _buildDotIndicator(news.news.length, _currentPage),
+                      const SizedBox(height: 15),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: UnregisteredNewsSectionWidget(data: news.news[_currentPage]),
+                ),
+              ],
+            )
                 : Column(crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(

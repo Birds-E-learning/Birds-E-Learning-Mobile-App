@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:birds_learning_network/src/config/routing/route.dart';
 import 'package:birds_learning_network/src/features/modules/home/model/response_model/get_courses.dart';
 import 'package:birds_learning_network/src/features/modules/home/view/widgets/shimmer/section_shimmer.dart';
+import 'package:birds_learning_network/src/features/unregistered_user_flow/course/view/widgets/unregistered_review.dart';
 import 'package:birds_learning_network/src/features/unregistered_user_flow/course/view_model/course_content_provider.dart';
 import 'package:birds_learning_network/src/features/unregistered_user_flow/home/custom_widgets/html_page.dart';
 import 'package:birds_learning_network/src/features/unregistered_user_flow/home/view/widgets/course/action_buttons.dart';
@@ -53,6 +54,7 @@ class _UnregisteredBuyCourseScreenState extends State<UnregisteredBuyCourseScree
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
+    // print(widget.course.facilitator?.ratings);
     return Scaffold(
       body: Consumer<UnregisteredCourseContentProvider>(
         builder: (_, content, __) => SafeArea(
@@ -210,23 +212,8 @@ class _UnregisteredBuyCourseScreenState extends State<UnregisteredBuyCourseScree
                                     section: widget.course.sections![index]);
                               },
                             ),
-                  // const SizedBox(height: 10),
-                  // Column(
-                  //   crossAxisAlignment: CrossAxisAlignment.start,
-                  //   children: [
-                  //     headerText("Student Testimonials"),
-                  //     const SizedBox(height: 5),
-                  //     totalStudentText(5423),
-                  //     const SizedBox(height: 10),
-                  //     ListView.builder(
-                  //         itemCount: 3,
-                  //         physics: const NeverScrollableScrollPhysics(),
-                  //         shrinkWrap: true,
-                  //         itemBuilder: (BuildContext context, int index) {
-                  //           return const TestimonyCard();
-                  //         })
-                  //   ],
-                  // ),
+                  const SizedBox(height: 16),
+                  UnregisteredCourseReviewWidget(courseId: widget.course.id?.toString() ?? "0"),
                   const SizedBox(height: 20),
                   bigAmountText(widget.course.salePrice ?? "00.00"),
                   const SizedBox(height: 10),

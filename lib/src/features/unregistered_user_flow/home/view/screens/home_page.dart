@@ -15,7 +15,6 @@ import 'package:birds_learning_network/src/features/unregistered_user_flow/home/
 import 'package:birds_learning_network/src/features/unregistered_user_flow/home/view/widgets/course/trending_listview.dart';
 import 'package:birds_learning_network/src/features/unregistered_user_flow/home/view_model/home_provider.dart';
 import 'package:birds_learning_network/src/global_model/apis/api_response.dart';
-import 'package:birds_learning_network/src/utils/custom_widgets/custom_bacground.dart';
 import 'package:birds_learning_network/src/utils/custom_widgets/text_field.dart';
 import 'package:birds_learning_network/src/utils/global_constants/asset_paths/image_path.dart';
 import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
@@ -23,6 +22,7 @@ import 'package:birds_learning_network/src/utils/global_constants/styles/cart_st
 import 'package:birds_learning_network/src/utils/global_constants/texts/module_texts/home_texts.dart';
 import 'package:birds_learning_network/src/utils/mixins/core_mixins/filter_mixins/filter_mixin.dart';
 import 'package:birds_learning_network/src/utils/mixins/module_mixins/home_mixins.dart';
+import 'package:birds_learning_network/src/utils/ui_utils/app_dialogs/pop_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -56,82 +56,100 @@ class _UnregisteredUserHomePageState extends State<UnregisteredUserHomePage>
     final courseWatch = context.watch<UnregisteredCourseProvider>();
     courseRead.refreshData(context);
     return Consumer<UnregisteredHomeProvider>(
-      builder: (_, home, __) => BackgroundWidget(
-        appBar: SliverAppBar(
+      builder: (_, home, __) => Scaffold(
+        appBar: AppBar(
           title: courseWatch.onSearch ? null : greetingText(courseWatch.firstName),
-          pinned: courseWatch.onSearch ? false : true,
-          floating: courseWatch.onSearch ? false : true,
           elevation: 0,
         ),
-        child: SafeArea(
-          child: Padding(
-            padding: EdgeInsets.symmetric(
-                vertical: courseWatch.onSearch ? 0 : size.height * 0.02),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: size.width * 0.03),
-                  child: CustomFieldNoLabel(
-                    hintText: HomeText.search,
-                    isHome: true,
-                    prefixIcon: IconButton(
-                        onPressed: () {},
-                        icon: const Icon(Icons.search, size: 20)),
-                    controller: _controller,
-                    onChanged: (text) {
-                      if (_controller.text.trim().isEmpty) {
-                        courseRead.onSearchTriggered(false);
-                        courseRead.selectedCards = [];
-                        FocusScope.of(context).unfocus();
-                      } else {
-                        courseRead.onSearchTriggered(true);
-                        courseRead.onSearchClicked(_controller.text.trim());
-                      }
-                    },
-                    suffixIcon: courseWatch.onSearch
-                        ? IconButton(
-                            onPressed: () {
-                              _controller.clear();
-                              setState(() {});
-                              courseRead.selectedCards = [];
+        body: WillPopScope(
+           onWillPop: ()async{
+              if(courseRead.searchResult.isNotEmpty && _controller.text.trim().isNotEmpty){
+                _controller.clear();
+                setState(() {});
+                courseRead.selectedCards = [];
+                courseRead.onSearchTriggered(false);
+                FocusScope.of(context).unfocus();
+                return false;
+              }else{
+                bool shouldPop = await getPopScopeDialog(context);
+                return shouldPop;
+              }},
+          child: SafeArea(
+            child: Padding(
+              padding: EdgeInsets.symmetric(
+                  vertical: courseWatch.onSearch ? 0 : size.height * 0.02),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: size.width * 0.03),
+                        child: CustomFieldNoLabel(
+                          hintText: HomeText.search,
+                          isHome: true,
+                          prefixIcon: IconButton(
+                              onPressed: () {},
+                              icon: const Icon(Icons.search, size: 20)),
+                          controller: _controller,
+                          onChanged: (text) {
+                            if (_controller.text.trim().isEmpty) {
                               courseRead.onSearchTriggered(false);
+                              courseRead.selectedCards = [];
                               FocusScope.of(context).unfocus();
-                            },
-                            icon: const Icon(Icons.clear))
-                        : null,
+                            } else {
+                              courseRead.onSearchTriggered(true);
+                              courseRead.onSearchClicked(_controller.text.trim());
+                            }
+                          },
+                          suffixIcon: courseWatch.onSearch
+                              ? IconButton(
+                              onPressed: () {
+                                _controller.clear();
+                                setState(() {});
+                                courseRead.selectedCards = [];
+                                courseRead.onSearchTriggered(false);
+                                FocusScope.of(context).unfocus();
+                              },
+                              icon: const Icon(Icons.clear))
+                              : null,
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      courseWatch.onSearch
+                          ? Container(child: null) //const FilterCardShimmer()
+                          : home.prefList.isEmpty && home.loadingStatus == Status.loading
+                          ? SizedBox(
+                          height: 40,
+                          child: ListView.separated(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: size.width * 0.03),
+                              separatorBuilder: (_, __) =>
+                              const SizedBox(width: 12),
+                              itemCount: 10,
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (_, __) {
+                                return const FilterCardShimmer();
+                              }))
+                          : home.prefList.isEmpty && home.loadingStatus != Status.loading
+                          ? Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: size.width * 0.03),
+                        child: const Center(
+                          child: Text("No preference list.",
+                              style: CartStyles.richStyle1),
+                        ),
+                      )
+                          : PreferenceRowContainer(controller: _controller),
+                      const SizedBox(height: 20),
+                    ],
                   ),
-                ),
-                const SizedBox(height: 20),
-                courseWatch.onSearch
-                    ? Container(child: null) //const FilterCardShimmer()
-                    : home.prefList.isEmpty && home.loadingStatus == Status.loading
-                        ? SizedBox(
-                            height: 40,
-                            child: ListView.separated(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: size.width * 0.03),
-                                separatorBuilder: (_, __) =>
-                                    const SizedBox(width: 12),
-                                itemCount: 10,
-                                scrollDirection: Axis.horizontal,
-                                itemBuilder: (_, __) {
-                                  return const FilterCardShimmer();
-                                }))
-                        : home.prefList.isEmpty && home.loadingStatus != Status.loading
-                            ? Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: size.width * 0.03),
-                                child: const Center(
-                                  child: Text("No preference list.",
-                                      style: CartStyles.richStyle1),
-                                ),
-                              )
-                            : PreferenceRowContainer(controller: _controller),
-                const SizedBox(height: 20),
-                courseWatch.searchResult.isNotEmpty &&
-                    courseWatch.onSearch
-                    ? Column(
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: courseWatch.searchResult.isNotEmpty &&
+                          courseWatch.onSearch
+                          ? Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
@@ -144,11 +162,11 @@ class _UnregisteredUserHomePageState extends State<UnregisteredUserHomePage>
                               padding: EdgeInsets.symmetric(
                                   horizontal: size.width * 0.03),
                               separatorBuilder: (_, __) => const SizedBox(
-                                    height: 10,
-                                    child: Divider(
-                                        thickness: 0.2, color: success1000),
-                                  ),
-                              itemCount: courseWatch.searchResult.length,
+                                height: 30,
+                                child: Divider(
+                                    thickness: 0.2, color: success1000),
+                              ),
+                              itemCount:  courseWatch.searchResult.length,
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
                               scrollDirection: Axis.vertical,
@@ -159,144 +177,147 @@ class _UnregisteredUserHomePageState extends State<UnregisteredUserHomePage>
                               }),
                         ],
                       )
-                    : courseWatch.searchResult.isEmpty && courseWatch.onSearch
-                        ? Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: size.width * 0.03),
-                                child: searchHeaderText(_controller.text),
-                              ),
-                              SizedBox(height: size.height * 0.1),
-                              Center(
-                                child: Column(
-                                  children: [
-                                    SvgPicture.asset(ImagePath.noCourse),
-                                    const SizedBox(height: 10),
-                                    noCourseText()
-                                  ],
-                                ),
-                              )
-                            ],
-                          )
-                        : SingleChildScrollView(
+                          : courseWatch.searchResult.isEmpty && courseWatch.onSearch
+                          ? Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: size.width * 0.03),
+                            child: searchHeaderText(_controller.text),
+                          ),
+                          SizedBox(height: size.height * 0.1),
+                          Center(
                             child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: size.width * 0.03),
-                                  child: categoryRowText(
-                                    "Top Picks for you",
-                                    () {
-                                      RoutingService.pushFullScreenRouting(
-                                          context,
-                                          const UnregisteredPreferenceCoursesScreen());
-                                    },
-                                  ),
-                                ),
-                                const SizedBox(height: 15),
-                                RefreshIndicator(
-                                    onRefresh: () => courseWatch.refreshData(context,
-                                        reload: false),
-                                    child: const PreferentialListView()),
-                                const SizedBox(height: 15),
-                                Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: size.width * 0.03),
-                                  child: categoryRowText(
-                                    "Trending Courses",
-                                    () {
-                                      RoutingService.pushFullScreenRouting(
-                                          context,
-                                          const UnregisteredTrendingCoursesScreen());
-                                    },
-                                  ),
-                                ),
-                                const SizedBox(height: 15),
-                                RefreshIndicator(
-                                    onRefresh: () => courseWatch.refreshData(context,
-                                        reload: false),
-                                    child: const UnregisteredTrendingListView()),
-                                const SizedBox(height: 20),
-                                Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: size.width * 0.03),
-                                  child: categoryRowText(
-                                    "Quick Courses",
-                                    () {
-                                      RoutingService.pushFullScreenRouting(
-                                          context, const UnregisteredQuickCoursesScreen());
-                                    },
-                                  ),
-                                ),
-                                const SizedBox(height: 15),
-                                RefreshIndicator(
-                                    onRefresh: () => courseWatch.refreshData(context,
-                                        reload: false),
-                                    child: const UnregisteredQuickListView()),
-                                const SizedBox(height: 15),
-                                Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: size.width * 0.03),
-                                  child: categoryHeaderText(
-                                    HomeText.facilitators,
-                                  ),
-                                ),
-                                const SizedBox(height: 16),
-                                courseWatch.trendingCourses.isEmpty
-                                    ? courseWatch.trendingStatus == Status.loading
-                                       ? ListView.separated(
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: size.width * 0.03),
-                                            separatorBuilder: (context, index) =>
-                                                const SizedBox(height: 16),
-                                            itemCount: 4,
-                                            shrinkWrap: true,
-                                            physics:
-                                                const NeverScrollableScrollPhysics(),
-                                            scrollDirection: Axis.vertical,
-                                            itemBuilder:
-                                                (BuildContext context, int index) {
-                                              return const FacilitatorShimmer();
-                                            })
-                                      : const Center(
-                                          child: Text(
-                                            "No available top facilitator.",
-                                            style: CartStyles.richStyle1,
-                                          ),
-                                        )
-                                    : ListView.separated(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: size.width * 0.03),
-                                        separatorBuilder: (_, __) =>
-                                            const SizedBox(height: 16),
-                                        itemCount:
-                                            courseWatch.trendingCourses.length > 4
-                                                ? 4
-                                                : courseWatch.trendingCourses.length,
-                                        shrinkWrap: true,
-                                        physics:
-                                            const NeverScrollableScrollPhysics(),
-                                        scrollDirection: Axis.vertical,
-                                        itemBuilder:
-                                            (BuildContext context, int index) {
-                                          return FacilitatorCard(
-                                            facilitator: courseWatch
-                                                .trendingCourses[index]
-                                                .facilitator!,
-                                          );
-                                        }),
-                                const SizedBox(height: 40),
-                                Padding(
-                                  padding:  EdgeInsets.symmetric(horizontal: size.width * 0.03),
-                                  child: const  UnregisteredBlogNewsSection(),
-                                ),
+                                SvgPicture.asset(ImagePath.noCourse),
+                                const SizedBox(height: 10),
+                                noCourseText()
                               ],
                             ),
                           )
-              ],
+                        ],
+                      )
+                          : SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: size.width * 0.03),
+                              child: categoryRowText(
+                                "Top Picks for you",
+                                    () {
+                                  RoutingService.pushFullScreenRouting(
+                                      context,
+                                      const UnregisteredPreferenceCoursesScreen());
+                                },
+                              ),
+                            ),
+                            const SizedBox(height: 15),
+                            RefreshIndicator(
+                                onRefresh: () => courseWatch.refreshData(context,
+                                    reload: false),
+                                child: const PreferentialListView()),
+                            const SizedBox(height: 15),
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: size.width * 0.03),
+                              child: categoryRowText(
+                                "Trending Courses",
+                                    () {
+                                  RoutingService.pushFullScreenRouting(
+                                      context,
+                                      const UnregisteredTrendingCoursesScreen());
+                                },
+                              ),
+                            ),
+                            const SizedBox(height: 15),
+                            RefreshIndicator(
+                                onRefresh: () => courseWatch.refreshData(context,
+                                    reload: false),
+                                child: const UnregisteredTrendingListView()),
+                            const SizedBox(height: 20),
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: size.width * 0.03),
+                              child: categoryRowText(
+                                "Quick Courses",
+                                    () {
+                                  RoutingService.pushFullScreenRouting(
+                                      context, const UnregisteredQuickCoursesScreen());
+                                },
+                              ),
+                            ),
+                            const SizedBox(height: 15),
+                            RefreshIndicator(
+                                onRefresh: () => courseWatch.refreshData(context,
+                                    reload: false),
+                                child: const UnregisteredQuickListView()),
+                            const SizedBox(height: 15),
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: size.width * 0.03),
+                              child: categoryHeaderText(
+                                HomeText.facilitators,
+                              ),
+                            ),
+                            const SizedBox(height: 16),
+                            courseWatch.trendingCourses.isEmpty
+                                ? courseWatch.trendingStatus == Status.loading
+                                ? ListView.separated(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: size.width * 0.03),
+                                separatorBuilder: (context, index) =>
+                                const SizedBox(height: 16),
+                                itemCount: 4,
+                                shrinkWrap: true,
+                                physics:
+                                const NeverScrollableScrollPhysics(),
+                                scrollDirection: Axis.vertical,
+                                itemBuilder:
+                                    (BuildContext context, int index) {
+                                  return const FacilitatorShimmer();
+                                })
+                                : const Center(
+                              child: Text(
+                                "No available top facilitator.",
+                                style: CartStyles.richStyle1,
+                              ),
+                            )
+                                : ListView.separated(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: size.width * 0.03),
+                                separatorBuilder: (_, __) =>
+                                const SizedBox(height: 16),
+                                itemCount:
+                                courseWatch.trendingCourses.length > 4
+                                    ? 4
+                                    : courseWatch.trendingCourses.length,
+                                shrinkWrap: true,
+                                physics:
+                                const NeverScrollableScrollPhysics(),
+                                scrollDirection: Axis.vertical,
+                                itemBuilder:
+                                    (BuildContext context, int index) {
+                                  return FacilitatorCard(
+                                    facilitator: courseWatch
+                                        .trendingCourses[index]
+                                        .facilitator!,
+                                  );
+                                }),
+                            const SizedBox(height: 40),
+                            Padding(
+                              padding:  EdgeInsets.symmetric(horizontal: size.width * 0.03),
+                              child: const  UnregisteredBlogNewsSection(),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
         ),

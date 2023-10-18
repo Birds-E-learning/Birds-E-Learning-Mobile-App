@@ -15,7 +15,7 @@ class PreferentialListView extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     return Consumer<UnregisteredCourseProvider>(
       builder: (_, course, __) => SizedBox(
-        height: 190,
+        height: 195,
         child: course.prefCourses.isEmpty && course.prefStatus == Status.loading
             ? ListView.builder(
                 padding: EdgeInsets.symmetric(horizontal: size.width * 0.03),

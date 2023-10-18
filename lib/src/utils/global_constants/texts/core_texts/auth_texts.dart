@@ -18,13 +18,13 @@ class AuthTexts {
   static const String googleTextUp = "Sign up with Google";
   static const String googleTextIn = "Sign in with Google";
 
-  static const String loginWelcome = "Welcome back, Kunle-Ola!";
+  static const String loginWelcome = "Welcome back ";
   static const String remember = "Remember me";
   static const String forgotPassword = "Forgot password?";
   static const String loginWith = "Or Login with";
   static const String noAccount = "Don’t have an account? ";
-  static const String firstLogin = "Hi there, 👋";
-  static const String loginHeader = "Welcome back, ";
+  static const String firstLogin = "Hi there 👋";
+  static const String loginHeader = "Welcome back ";
   static const String reset = "Reset Password";
 
   static const String firstNameHint = "John";
@@ -37,7 +37,7 @@ class AuthTexts {
   static const String forgotText =
       "Enter your registered email address to reset your password";
   static const String otp = "Get OTP";
-  static const String noOtp = "Didn’t receive OTP? ";
+  static const String noOtp = "Didn't receive OTP? ";
   static const String resend = "Resend";
   static const String verifyOtp = "OTP Verification";
   static const String otpText =

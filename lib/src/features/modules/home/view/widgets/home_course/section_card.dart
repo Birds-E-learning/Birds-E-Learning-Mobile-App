@@ -44,7 +44,7 @@ class SectionCard extends StatelessWidget {
                     content.selectedLesson[index]
                     ? Icons.keyboard_arrow_up_outlined
                     : Icons.keyboard_arrow_down_outlined,
-                    color: black, size: 40,)
+                    color: black, size: 30,)
                 ],
               ),
               ListView.builder(

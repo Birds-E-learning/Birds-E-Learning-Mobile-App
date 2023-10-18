@@ -4,6 +4,7 @@ import 'package:birds_learning_network/src/features/modules/profile/model/reques
 import 'package:birds_learning_network/src/features/modules/profile/model/request_model/update_profile_model.dart';
 import 'package:birds_learning_network/src/features/modules/profile/model/response_model/add_card_response.dart';
 import 'package:birds_learning_network/src/features/modules/profile/model/response_model/change_password_response.dart';
+import 'package:birds_learning_network/src/features/modules/profile/model/response_model/contact_model.dart';
 import 'package:birds_learning_network/src/features/modules/profile/model/response_model/delete_card_response.dart';
 import 'package:birds_learning_network/src/features/modules/profile/model/response_model/get_card_response.dart';
 import 'package:birds_learning_network/src/features/modules/profile/model/response_model/user_profile_response.dart';
@@ -81,5 +82,23 @@ class ProfileRepository extends NetworkService with BaseHeaders, BaseUrl {
     var json = await deleteRequest("$deleteCardLink$cardNo", header_, context);
     DeleteCardResponse response = DeleteCardResponse.fromJson(json);
     return response;
+  }
+
+  Future contactDetailsRepo(context)async{
+    try{
+      Map<String, String> header_ = await authHeader();
+      var json = await getRequest(contactUrl, header_, context);
+      if(json != null){
+        ContactDetailsModel response = ContactDetailsModel.fromJson(json);
+        if(response.responseCode == "00" || response.responseCode == "000"){
+          return response.responseData;
+        }else{
+          showSnack(context, response.responseCode!, response.responseMessage ?? "unable to load data");
+        }
+      }
+      return null;
+    }catch(e){
+      return null;
+    }
   }
 }

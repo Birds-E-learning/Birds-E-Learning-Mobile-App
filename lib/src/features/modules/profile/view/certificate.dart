@@ -20,38 +20,45 @@ class CertificateScreen extends StatelessWidget with ProfileWidgets {
         elevation: 0,
         backgroundColor: white,
       ),
-      body: SafeArea(
-          child: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: size.width * 0.04),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 50),
-              SvgPicture.asset(
-                ImagePath.certImage,
-                height: 254,
-                width: double.infinity,
-              ),
-              const SizedBox(height: 30),
-              const Center(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 30),
-                  child: Text(
-                    "Your certificates will show up here when you finish a course.",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontFamily: "Inter",
-                        color: deepBlack,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400),
-                  ),
+      body: LayoutBuilder(
+        builder: (_, constraints) => SafeArea(
+            child: SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(minHeight: constraints.maxHeight),
+            child: IntrinsicHeight(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: size.width * 0.04),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SvgPicture.asset(
+                      ImagePath.certImage,
+                      height: 254,
+                      width: double.infinity,
+                    ),
+                    const SizedBox(height: 30),
+                    const Center(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 30),
+                        child: Text(
+                          "Your certificates will show up here when you finish a course.",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontFamily: "Inter",
+                              color: deepBlack,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400),
+                        ),
+                      ),
+                    )
+                  ],
                 ),
-              )
-            ],
+              ),
+            ),
           ),
-        ),
-      )),
+        )),
+      ),
     );
   }
 }

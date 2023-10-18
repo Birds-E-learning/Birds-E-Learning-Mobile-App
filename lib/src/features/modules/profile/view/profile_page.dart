@@ -149,14 +149,14 @@ class _UserProfilePageState extends State<UserProfilePage>
                       icon: ImagePath.terms,
                       text: ProfileTexts.termsText,
                       onTap: () => UrlLauncher().urlLauncher(
-                          "https://blns.dgtechltd.com/public/page/term-of-service",
+                          "https://blnetwork.ca/page/term-of-service",
                           context)),
                   const SizedBox(height: 25),
                   CustomPageRow(
                       icon: ImagePath.privacy,
                       text: ProfileTexts.privacyText,
                       onTap: () => UrlLauncher().urlLauncher(
-                          "https://blns.dgtechltd.com/page/privacy-policy",
+                          "https://blnetwork.ca/page/privacy-policy",
                           context)),
                 ],
               ),

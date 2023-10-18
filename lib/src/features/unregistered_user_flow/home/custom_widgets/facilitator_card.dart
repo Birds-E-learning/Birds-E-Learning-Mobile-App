@@ -41,66 +41,55 @@ class FacilitatorCard extends StatelessWidget with HomeWidgets {
                           .image)),
             ),
             const SizedBox(width: 5),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Row(
-                  children: [
-                    authorNameText(facilitator.name == ""
-                        ? "Anonymous"
-                        : facilitator.name!),
-                    const SizedBox(width: 5),
-                    Align(
-                      alignment: Alignment.topRight,
-                      child: Row(
-                        children: [
-                          SizedBox(
-                            width: 70,
-                            child: authorLabelText(facilitator.degree == "" ||
-                                    facilitator.degree == null
-                                ? ""
-                                : facilitator.degree!),
-                          ),
-                          Container(
-                            height: 2,
-                            width: 2,
-                            margin: const EdgeInsets.symmetric(horizontal: 5),
-                            decoration: const BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: skipColor,
-                            ),
-                          ),
-                          SizedBox(
-                            width: 80,
-                            child: authorLabelText(facilitator.skill == "" ||
-                                    facilitator.degree == null
-                                ? ""
-                                : facilitator.skill!),
-                          ),
-                        ],
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Wrap(
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    children: [
+                      authorNameText(facilitator.name == ""
+                          ? "Anonymous"
+                          : facilitator.name!),
+                      const SizedBox(width: 5),
+                      authorLabelText(facilitator.degree == "" ||
+                              facilitator.degree == null
+                          ? ""
+                          : facilitator.degree!),
+                      Container(
+                        height: 2,
+                        width: 2,
+                        margin: const EdgeInsets.symmetric(horizontal: 5),
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: skipColor,
+                        ),
                       ),
-                    )
-                  ],
-                ),
-                const SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    detailRowText(
-                        "Ratings (${facilitator.ratings})", Icons.stars),
-                    const SizedBox(width: 5),
-                    detailRowText("Courses (${facilitator.courses})",
-                        Icons.library_books),
-                    const SizedBox(width: 5),
-                    detailRowText("Students (${facilitator.students})",
-                        Icons.supervisor_account),
-                    const SizedBox(width: 5),
-                    detailRowText(
-                        "Reviews (${facilitator.reviews})", Icons.reviews)
-                  ],
-                )
-              ],
+                      authorLabelText(facilitator.skill == "" ||
+                              facilitator.degree == null
+                          ? ""
+                          : facilitator.skill!)
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  Row(
+                    children: [
+                      detailRowText(
+                          "Ratings (${facilitator.ratings})", Icons.stars),
+                      const SizedBox(width: 5),
+                      detailRowText("Courses (${facilitator.courses})",
+                          Icons.library_books),
+                      const SizedBox(width: 5),
+                      detailRowText("Students (${facilitator.students})",
+                          Icons.supervisor_account),
+                      const SizedBox(width: 5),
+                      detailRowText(
+                          "Reviews (${facilitator.reviews})", Icons.reviews)
+                    ],
+                  )
+                ],
+              ),
             )
           ],
         ),

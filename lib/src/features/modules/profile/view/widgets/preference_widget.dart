@@ -19,7 +19,7 @@ class PreferenceCards extends StatelessWidget {
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
           color: color,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(8),
           border: Border.all(color: deepBlack)),
       child: Text(
         topic,

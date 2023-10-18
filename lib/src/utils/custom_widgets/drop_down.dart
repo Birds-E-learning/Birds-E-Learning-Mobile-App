@@ -37,7 +37,7 @@ class CustomDropDown extends StatelessWidget {
       itemPadding: const EdgeInsets.only(left: 20),
       // itemHeight: 30,
       dropdownDecoration: BoxDecoration(
-          color: backgroundBlurColor, borderRadius: BorderRadius.circular(10)),
+          color: white, borderRadius: BorderRadius.circular(10)),
     );
   }
 }

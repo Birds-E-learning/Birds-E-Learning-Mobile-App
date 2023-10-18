@@ -3,7 +3,9 @@ import 'package:birds_learning_network/src/features/core/auth/model/response_mod
 import 'package:birds_learning_network/src/features/core/auth/view/login/sign_in.dart';
 import 'package:birds_learning_network/src/features/modules/profile/model/repository/profile_repository.dart';
 import 'package:birds_learning_network/src/features/modules/profile/model/request_model/update_profile_model.dart';
+import 'package:birds_learning_network/src/features/modules/profile/model/response_model/contact_model.dart';
 import 'package:birds_learning_network/src/features/modules/profile/model/response_model/user_profile_response.dart';
+import 'package:birds_learning_network/src/global_model/apis/api_response.dart';
 import 'package:birds_learning_network/src/global_model/services/storage/secure_storage/user_details.dart';
 import 'package:birds_learning_network/src/global_model/services/storage/shared_preferences/user_details.dart';
 import 'package:birds_learning_network/src/utils/helper_widgets/response_snack.dart';
@@ -17,6 +19,8 @@ class ProfileProvider extends ChangeNotifier {
   bool _isClicked = false;
   ProfileRepository repo = ProfileRepository();
   UserSecureStorage storage = UserSecureStorage();
+  Status contactStatus = Status.initial;
+  ContactData? contact;
 
   dynamic get gender => _gender;
   bool get doneClicked => _doneClicked;
@@ -30,6 +34,11 @@ class ProfileProvider extends ChangeNotifier {
 
   void getCountryCode(code) {
     _countryCode = code;
+    notifyListeners();
+  }
+
+  void setContactStatus({Status status = Status.initial}){
+    contactStatus = status;
     notifyListeners();
   }
 
@@ -103,6 +112,22 @@ class ProfileProvider extends ChangeNotifier {
       }
     } catch (e) {
       doneClicked ? onDoneClick() : null;
+    }
+  }
+
+  Future contactDetailsMethod(context)async{
+    try{
+      setContactStatus(status: Status.loading);
+      ContactData? response = await repo.contactDetailsRepo(context);
+      setContactStatus(status: Status.completed);
+      if(response != null){
+        contact = response;
+        print(contact?.toJson());
+        notifyListeners();
+      }
+    }catch(e){
+      setContactStatus(status: Status.error);
+      return;
     }
   }
 }
