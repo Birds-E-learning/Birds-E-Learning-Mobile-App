@@ -35,6 +35,7 @@ class _FacilitatorScreenState extends State<FacilitatorScreen>
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    bool isLandscape = size.width > size.height || size.width > 600;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: white,
@@ -43,95 +44,145 @@ class _FacilitatorScreenState extends State<FacilitatorScreen>
       ),
       body: Consumer<FacilitatorProvider>(
         builder: (_, facilitator, __) => SafeArea(
-            child: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: size.width * 0.04),
-            child: facilitator.loadingStatus != Status.loading ?
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Center(child: profilePicture(
-                    facilitator.facilitator != null ? "${facilitator.facilitator!.imageUrl}" : ""
-                )),
-                const SizedBox(height: 10),
-                nameText(facilitator.facilitator != null ?
-                  "${facilitator.facilitator!.firstName} ${facilitator.facilitator!.lastName}": ""
-                ),
-                labelText(
-                    facilitator.facilitator != null ? "${facilitator.facilitator!.emailAddress}" : ""
-                ),
-                const SizedBox(height: 15),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    titleCard("About Me"),
-                    const SizedBox(height: 10),
-                    // labelText(facilitator.aboutMe)
-                    HTMLPageScreen(
-                      content: facilitator.facilitator != null ?
-                            "${facilitator.facilitator!.aboutMe}" : "",
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: size.width * 0.04),
+              child: facilitator.loadingStatus != Status.loading ?
+              !isLandscape ? Column(
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Center(child: profilePicture(
+                          facilitator.facilitator != null ? "${facilitator.facilitator!.imageUrl}" : ""
+                      )),
+                      const SizedBox(height: 10),
+                      nameText(facilitator.facilitator != null ?
+                      "${facilitator.facilitator!.firstName} ${facilitator.facilitator!.lastName}": ""
+                      ),
+                      labelText(
+                          facilitator.facilitator != null ? "${facilitator.facilitator!.emailAddress}" : ""
+                      ),
+                      const SizedBox(height: 15),
+                    ],
+                  ),
+                  const Expanded(
+                    child: SingleChildScrollView(
+                      // primary: !isLandscape,
+                      // physics: isLandscape ? const NeverScrollableScrollPhysics() : null,
+                      child: FacilitatorBody()
                     ),
-                  ],
-                ),
-                const SizedBox(height: 15),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  ),
+                ],
+              ) : SingleChildScrollView(
+                child: Column(
                   children: [
-                    cardText(
-                        "Total Courses",
-                        facilitator.facilitator != null ? "${facilitator.facilitator!.numberOfCourses}" : ""),
-                    cardText("Avg. Rating",
-                        facilitator.facilitator != null ? "${facilitator.facilitator!.averageRating}" : ""),
-                    cardText("No. of Students",
-                        facilitator.facilitator != null ? "${facilitator.facilitator!.numberOfStudents}": ""),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Center(child: profilePicture(
+                            facilitator.facilitator != null ? "${facilitator.facilitator!.imageUrl}" : ""
+                        )),
+                        const SizedBox(height: 10),
+                        nameText(facilitator.facilitator != null ?
+                        "${facilitator.facilitator!.firstName} ${facilitator.facilitator!.lastName}": ""
+                        ),
+                        labelText(
+                            facilitator.facilitator != null ? "${facilitator.facilitator!.emailAddress}" : ""
+                        ),
+                        const SizedBox(height: 15),
+                      ],
+                    ),
+                    const FacilitatorBody()
                   ],
                 ),
-                const SizedBox(height: 15),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    titleCard("Courses"),
-                    const SizedBox(height: 15),
-                    facilitator.courseList.isEmpty
-                        ?  const Center(
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 15),
-                                child: Text(
-                                  "No course available for this facilitator.",
-                                  style: CartStyles.richStyle1,
-                                ),
-                              ),
-                            )
-                        : ListView.separated(
-                            separatorBuilder: (context, index) => const Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 7.5),
-                                  child: Divider(
-                                    color: success400,
-                                    thickness: 0.7,
-                                  ),
-                                ),
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: facilitator.courseList.length,
-                            scrollDirection: Axis.vertical,
-                            itemBuilder: (BuildContext context, int index) {
-                              facilitator.courseList[index].facilitator = Facilitator();
-                              facilitator.courseList[index].facilitator!.name = facilitator.facilitator != null ?
-                                  "${facilitator.facilitator!.firstName} ${facilitator.facilitator!.lastName}" : "";
-                              facilitator.courseList[index].facilitator!.ratings = facilitator.facilitator != null ?
-                                  "${facilitator.facilitator!.averageRating}": "";
-                              return FacilitatorCourseCards(
-                                  course: facilitator.courseList[index]);
-                            }),
-                  ],
-                ),
-                const SizedBox(height: 20)
-              ],
-            ) : const FacilitatorScreenShimmer(),
-          ),
-        )),
+              )
+                  : const FacilitatorScreenShimmer(),
+            )),
       ),
     );
   }
 }
+
+class FacilitatorBody extends StatelessWidget with FacilitatorMixin {
+  const FacilitatorBody({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<FacilitatorProvider>(
+      builder:(_, facilitator, __) => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              titleCard("About Me"),
+              const SizedBox(height: 10),
+              // labelText(facilitator.aboutMe)
+              HTMLPageScreen(
+                content: facilitator.facilitator != null ?
+                "${facilitator.facilitator!.aboutMe}" : "",
+              ),
+            ],
+          ),
+          const SizedBox(height: 15),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              cardText(
+                  "Total Courses",
+                  facilitator.facilitator != null ? "${facilitator.facilitator!.numberOfCourses}" : ""),
+              cardText("Avg. Rating",
+                  facilitator.facilitator != null ? "${facilitator.facilitator!.averageRating}" : ""),
+              cardText("No. of Students",
+                  facilitator.facilitator != null ? "${facilitator.facilitator!.numberOfStudents}": ""),
+            ],
+          ),
+          const SizedBox(height: 15),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              titleCard("Courses"),
+              const SizedBox(height: 15),
+              facilitator.courseList.isEmpty
+                  ?  const Center(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 15),
+                  child: Text(
+                    "No course available for this facilitator.",
+                    style: CartStyles.richStyle1,
+                  ),
+                ),
+              )
+                  : ListView.separated(
+                  separatorBuilder: (context, index) => const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 7.5),
+                    child: Divider(
+                      color: success1000,
+                      thickness: 0.2,
+                    ),
+                  ),
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: facilitator.courseList.length,
+                  scrollDirection: Axis.vertical,
+                  itemBuilder: (BuildContext context, int index) {
+                    facilitator.courseList[index].facilitator = Facilitator();
+                    facilitator.courseList[index].facilitator!.name = facilitator.facilitator != null ?
+                    "${facilitator.facilitator!.firstName} ${facilitator.facilitator!.lastName}" : "";
+                    facilitator.courseList[index].facilitator!.ratings = facilitator.facilitator != null ?
+                    "${facilitator.facilitator!.averageRating}": "";
+                    return FacilitatorCourseCards(
+                        course: facilitator.courseList[index]);
+                  }),
+            ],
+          ),
+          const SizedBox(height: 20)
+        ],
+      ),
+    );
+  }
+}
+

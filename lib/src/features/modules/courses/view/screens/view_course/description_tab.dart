@@ -19,22 +19,30 @@ class CourseDescriptionTab extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              LinearPercentIndicator( //leaner progress bar
-                animation: true,
-                animationDuration: 800,
-                lineHeight: 15.0,
-                percent: double.parse(ref.currentCourse?.progress.toString()
-                    ?? course.progress?.toString() ?? "0")/100,
-                center: Text(
-                  "${ref.currentCourse?.progress ?? course.progress ?? 0}%",
-                  style: const TextStyle(
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.black),
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: success1000)
                 ),
-                barRadius: const Radius.circular(20),
-                progressColor: success600,
-                backgroundColor: backgroundBlurColor,
+                child: LinearPercentIndicator( //leaner progress bar
+                  animation: true,
+                  animationDuration: 800,
+                  lineHeight: 15.0,
+                  percent: double.parse(ref.currentCourse?.progress.toString()
+                      ?? course.progress?.toString() ?? "0")/100,
+                  center: Text(
+                    "${ref.currentCourse?.progress ?? course.progress ?? 0}%",
+                    style: const TextStyle(
+                        fontSize: 12.0,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black),
+                  ),
+                  barRadius: const Radius.circular(20),
+                  progressColor: success600,
+                  backgroundColor: backgroundBlurColor,
+                ),
               ),
               const SizedBox(height: 20),
               HTMLPageScreen(

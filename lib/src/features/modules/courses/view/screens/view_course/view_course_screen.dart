@@ -29,7 +29,7 @@ class _ViewCourseScreenState extends State<ViewCourseScreen>
     with SingleTickerProviderStateMixin, ContentWidget, CoursesText {
   TabController? _tabController;
   YoutubePlayerController? _controller;
-  final List<String> _tabs = ['Description', 'Lessons', 'Assessment'];
+  final List<String> _tabs = ['Description', 'Lectures', 'Assessments'];
   String title = "";
 
   @override

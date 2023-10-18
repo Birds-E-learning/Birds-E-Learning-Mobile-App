@@ -17,6 +17,7 @@ class UnregisteredFacilitatorScreen extends StatelessWidget with FacilitatorMixi
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    bool isLandscape = size.width > size.height || size.width > 600;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: white,
@@ -25,94 +26,130 @@ class UnregisteredFacilitatorScreen extends StatelessWidget with FacilitatorMixi
       ),
       body: Consumer<UnregisteredHomeProvider>(
         builder: (_, facilitator, __) => SafeArea(
-            child: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: size.width * 0.04),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Center(child: profilePicture(facilitator.facilitatorData.imageUrl ?? "")),
-                const SizedBox(height: 10),
-                nameText("${facilitator.facilitatorData.firstName ?? "John"} ${facilitator.facilitatorData.lastName ?? "Doe"}"),
-                labelText(facilitator.facilitatorData.emailAddress ?? "johndoe@birdsnetwork.com"),
-                const SizedBox(height: 15),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    titleCard("About Me"),
-                    const SizedBox(height: 10),
-                    // labelText(facilitator.aboutMe)
-                    HTMLPageScreen(
-                      content: facilitator.facilitatorData.aboutMe ?? "",
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: size.width * 0.04),
+              child: !isLandscape ? Column(
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Center(child: profilePicture(facilitator.facilitatorData.imageUrl ?? "")),
+                      const SizedBox(height: 10),
+                      nameText("${facilitator.facilitatorData.firstName ?? "John"} ${facilitator.facilitatorData.lastName ?? "Doe"}"),
+                      labelText(facilitator.facilitatorData.emailAddress ?? "johndoe@birdsnetwork.com"),
+                      const SizedBox(height: 15)
+                    ],
+                  ),
+                  const Expanded(
+                    child: SingleChildScrollView(
+                      child: FacilitatorBody(),
                     ),
-                  ],
-                ),
-                const SizedBox(height: 15),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  )
+                ],
+              ) : SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    cardText(
-                        "Total Courses", facilitator.facilitatorData.numberOfCourses.toString()),
-                    cardText("Avg. Rating", facilitator.facilitatorData.averageRating.toString()),
-                    cardText("No. of Students", facilitator.facilitatorData.numberOfStudents.toString()),
-                  ],
-                ),
-                const SizedBox(height: 15),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    titleCard("Courses"),
+                    Center(child: profilePicture(facilitator.facilitatorData.imageUrl ?? "")),
+                    const SizedBox(height: 10),
+                    nameText("${facilitator.facilitatorData.firstName ?? "John"} ${facilitator.facilitatorData.lastName ?? "Doe"}"),
+                    labelText(facilitator.facilitatorData.emailAddress ?? "johndoe@birdsnetwork.com"),
                     const SizedBox(height: 15),
-                    facilitator.courseList.isEmpty
-                        ? facilitator.loadingStatus == Status.loading
-                          ?  ListView.builder(
-                              scrollDirection: Axis.vertical,
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              itemCount: 8,
-                              itemBuilder: (context, int index) {
-                                return const MoreCardsShimmer();
-                              })
-                          : const Center(
-                              child: Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 15),
-                              child: Text(
-                                "No course available for this facilitator.",
-                                style: CartStyles.richStyle1,
-                              ),
-                            ),
-                          )
-                        : ListView.separated(
-                            separatorBuilder: (context, index) => const Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 7.5),
-                                  child: Divider(
-                                    color: success400,
-                                    thickness: 0.7,
-                                  ),
-                                ),
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: facilitator.courseList.length,
-                            scrollDirection: Axis.vertical,
-                            itemBuilder: (BuildContext context, int index) {
-                              facilitator.courseList[index].facilitator =
-                                  Facilitator();
-                              facilitator.courseList[index].facilitator!.name =
-                                  "${facilitator.facilitatorData.firstName} ${facilitator.facilitatorData.lastName}";
-                              facilitator.courseList[index].facilitator!
-                                  .ratings = "${facilitator.facilitatorData.averageRating}";
-                              return FacilitatorCourseCards(
-                                  course: facilitator.courseList[index]);
-                            }),
+                    const FacilitatorBody()
                   ],
                 ),
-                const SizedBox(height: 20)
-              ],
-            ),
-          ),
-        )),
+              ),
+            )),
       ),
     );
   }
 }
+
+class FacilitatorBody extends StatelessWidget with FacilitatorMixin {
+  const FacilitatorBody({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<UnregisteredHomeProvider>(
+      builder: (_, facilitator, __) => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              titleCard("About Me"),
+              const SizedBox(height: 10),
+              // labelText(facilitator.aboutMe)
+              HTMLPageScreen(
+                content: facilitator.facilitatorData.aboutMe ?? "",
+              ),
+            ],
+          ),
+          const SizedBox(height: 15),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              cardText(
+                  "Total Courses", facilitator.facilitatorData.numberOfCourses.toString()),
+              cardText("Avg. Rating", facilitator.facilitatorData.averageRating.toString()),
+              cardText("No. of Students", facilitator.facilitatorData.numberOfStudents.toString()),
+            ],
+          ),
+          const SizedBox(height: 15),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              titleCard("Courses"),
+              const SizedBox(height: 15),
+              facilitator.courseList.isEmpty
+                  ? facilitator.loadingStatus == Status.loading
+                  ?  ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: 8,
+                  itemBuilder: (context, int index) {
+                    return const MoreCardsShimmer();
+                  })
+                  : const Center(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 15),
+                  child: Text(
+                    "No course available for this facilitator.",
+                    style: CartStyles.richStyle1,
+                  ),
+                ),
+              )
+                  : ListView.separated(
+                  separatorBuilder: (context, index) => const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 7.5),
+                    child: Divider(
+                      color: success1000,
+                      thickness: 0.2,
+                    ),
+                  ),
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: facilitator.courseList.length,
+                  scrollDirection: Axis.vertical,
+                  itemBuilder: (BuildContext context, int index) {
+                    facilitator.courseList[index].facilitator =
+                        Facilitator();
+                    facilitator.courseList[index].facilitator!.name =
+                    "${facilitator.facilitatorData.firstName} ${facilitator.facilitatorData.lastName}";
+                    facilitator.courseList[index].facilitator!
+                        .ratings = "${facilitator.facilitatorData.averageRating}";
+                    return FacilitatorCourseCards(
+                        course: facilitator.courseList[index]);
+                  }),
+            ],
+          ),
+          const SizedBox(height: 20)
+        ],
+      ),
+    );
+  }
+}
+
