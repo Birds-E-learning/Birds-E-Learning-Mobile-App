@@ -29,7 +29,7 @@ class NetworkService {
       http.Response response = await http
           .get(Uri.parse(url), headers: header)
           .timeout(Duration(seconds: time));
-      // print(response.body);
+      print(response.body);
       responseJson = getReturnResponse(response, context);
     } on SocketException catch (_) {
       throw FetchDataException("No Internet Connection");

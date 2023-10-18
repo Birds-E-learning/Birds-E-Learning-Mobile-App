@@ -63,14 +63,17 @@ class PaidCoursesProvider extends ChangeNotifier {
   }
 
   Future getPaidCoursesMethod(context) async {
+    print("here ====>>>> ");
     try {
       setLoadingStatus(status: Status.loading);
       var json = await repo.getPaidCourses(context);
+      print(json);
       if (json != null) {
         PaidCoursesResponse response = PaidCoursesResponse.fromJson(json);
         if (response.responseCode == "00") {
           _courses = response.responseData!;
           notifyListeners();
+          print(_courses);
         }
       }
       setLoadingStatus(status: Status.completed);

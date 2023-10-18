@@ -50,13 +50,10 @@ class FacilitatorCard extends StatelessWidget with HomeWidgets {
                           ? "Anonymous"
                           : facilitator.name!),
                       const SizedBox(width: 5),
-                      SizedBox(
-                        width: 70,
-                        child: authorLabelText(facilitator.degree == "" ||
-                                facilitator.degree == null
-                            ? ""
-                            : facilitator.degree!),
-                      ),
+                      authorLabelText(facilitator.degree == "" ||
+                              facilitator.degree == null
+                          ? ""
+                          : facilitator.degree!),
                       Container(
                         height: 2,
                         width: 2,
@@ -66,13 +63,10 @@ class FacilitatorCard extends StatelessWidget with HomeWidgets {
                           color: skipColor,
                         ),
                       ),
-                      SizedBox(
-                        width: 80,
-                        child: authorLabelText(facilitator.skill == "" ||
-                                facilitator.degree == null
-                            ? ""
-                            : facilitator.skill!),
-                      )
+                      authorLabelText(facilitator.skill == "" ||
+                              facilitator.degree == null
+                          ? ""
+                          : facilitator.skill!)
                     ],
                   ),
                   const SizedBox(height: 10),

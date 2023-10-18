@@ -39,7 +39,6 @@ class _MyCoursesPageState extends State<MyCoursesPage>
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         title: appBarText(CoursesText.myCourses),
@@ -52,9 +51,7 @@ class _MyCoursesPageState extends State<MyCoursesPage>
             onRefresh: ()async{
               course.onRefreshStart(true);
               await course.getPaidCoursesMethod(context);
-              // print(course.isRefreshing);
               course.onRefreshStart(false);
-              // print(course.isRefreshing);
             },
             color: success1000,
             child: Padding(
@@ -62,19 +59,21 @@ class _MyCoursesPageState extends State<MyCoursesPage>
                   horizontal: 24, vertical: 16),
               child: course.courses.isEmpty
                   ? course.loadingStatus != Status.loading
-                    ? Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SizedBox(height: size.height * 0.15),
-                          SvgPicture.asset(ImagePath.noCourse),
-                          const SizedBox(height: 20),
-                          noCourseText(() {
-                            RoutingService.pushRouting(
-                                context, const AllCoursesScreen());
-                          }),
-                        ],
-                      )
+                    ? Align(
+                      alignment: Alignment.center,
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SvgPicture.asset(ImagePath.noCourse),
+                            const SizedBox(height: 20),
+                            noCourseText(() {
+                              RoutingService.pushRouting(
+                                  context, const AllCoursesScreen());
+                            }),
+                          ],
+                        ),
+                    )
                     :  ListView.separated(
                         separatorBuilder: (_,__) => const SizedBox(height: 10),
                         scrollDirection: Axis.vertical,

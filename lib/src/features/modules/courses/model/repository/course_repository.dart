@@ -41,6 +41,7 @@ class CourseRepository extends NetworkService with BaseUrl, BaseHeaders {
       var json = await getRequest(coursePaid, header_, context);
       return json;
     } catch (e) {
+      print(e);
       return null;
     }
   }
