@@ -62,7 +62,7 @@ class NetworkService {
           .post(Uri.parse(url), headers: header, body: jsonEncode(body))
           .timeout(Duration(seconds: seconds));
       responseJson = returnResponse(response, context);
-      // debugPrint("response ===>> $responseJson");
+      // debugPrint("response ===>> ${response.body}");
     } on SocketException catch (_) {
       throw FetchDataException("No Internet Connection");
     }

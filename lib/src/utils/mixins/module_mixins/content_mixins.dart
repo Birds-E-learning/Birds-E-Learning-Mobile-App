@@ -62,8 +62,9 @@ mixin ContentWidget on Object implements CourseContentStyle {
   }
 
   Text ratingText(dynamic rating) {
+    int ratings = int.parse(rating.toString()) > 5 ? 5 : int.parse(rating.toString());
     return Text(
-      "(${rating.toString()})",
+      "($ratings)",
       style: CourseContentStyle.richStyle1,
     );
   }

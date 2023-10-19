@@ -64,6 +64,7 @@ class SubscriptionProvider extends SubscriptionRepo with ChangeNotifier{
 
   Future makeChargePayment(
       context, SubscriptionPaymentRequest data, {Courses? course}) async {
+    print(data.toJson());
     SubscriptionPaymentResponse? response = await subscriptionPaymentRepo(context, data);
     if (response != null) {
       if (response.responseCode == "00" || response.responseCode == "000") {
@@ -99,7 +100,7 @@ class SubscriptionProvider extends SubscriptionRepo with ChangeNotifier{
       await Provider.of<PaymentProvider>(context, listen: false).getStripeKeys(context);
       StripePaymentModel body = StripePaymentModel(
           amount: calculateAmount(card.amount ?? "0"),
-          currency: plan.currency.toString(),
+          currency: plan.currency.toString().toUpperCase(),
           paymentMethodTypes: "card");
       data = await PaymentRepository().stripePaymentIntent(body, context);
       notifyListeners();
@@ -118,7 +119,7 @@ class SubscriptionProvider extends SubscriptionRepo with ChangeNotifier{
       );
       SubscriptionPaymentRequest chargeData = SubscriptionPaymentRequest(
         amount: calculateAmount(plan.amount),
-        currency: plan.currency ?? "USD",
+        currency: plan.currency?.toString().toUpperCase() ?? "USD",
         description: "Subscription",
         token: token.id,
         subscriptionSlug: plan.slug

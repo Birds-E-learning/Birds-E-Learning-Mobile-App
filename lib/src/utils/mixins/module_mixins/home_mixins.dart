@@ -90,9 +90,9 @@ mixin HomeWidgets on Object implements HomeText, HomeStyles {
     );
   }
 
-  Text ratingText(String rating) {
+  Text ratingText(dynamic rating) {
     return Text(
-      "(${int.parse(rating) > 5 ? 5 : rating})",
+      "(${int.parse(rating.toString()) > 5 ? 5 : rating})",
       style: HomeStyles.ratingStyle,
     );
   }

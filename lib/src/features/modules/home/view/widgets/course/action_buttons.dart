@@ -19,7 +19,7 @@ class CourseActionButtons extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    // Size size = MediaQuery.of(context).size;
     final toastKey = GlobalKey();
     CartProvider cart = context.watch<CartProvider>();
     CartProvider cartRead = context.read<CartProvider>();
@@ -46,9 +46,7 @@ class CourseActionButtons extends StatelessWidget
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            SizedBox(
-              height: 60,
-              width: size.width * 0.45,
+            Expanded(
               child: WhiteButtonWidget(
                   onPressed: () async {
                     if (cartRead.cartClicked) {
@@ -62,9 +60,8 @@ class CourseActionButtons extends StatelessWidget
                       ? loadingIdicator()
                       : buttonText("Add to Cart", skipColor)),
             ),
-            SizedBox(
-              height: 60,
-              width: size.width * 0.45,
+            const SizedBox(width: 16),
+            Expanded(
               child: WhiteButtonWidget(
                   onPressed: () async {
                     if (cartRead.wishlistClicked) {

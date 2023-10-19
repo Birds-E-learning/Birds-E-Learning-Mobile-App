@@ -4,12 +4,14 @@ import 'package:flutter/material.dart';
 class BlackButtonWidget extends StatelessWidget {
   const BlackButtonWidget({
     Key? key,
-    required this.onPressed,
+    this.onPressed,
     required this.child,
+    this.isDisabled = false,
     this.backgroundColor = deepGrey,
   }) : super(key: key);
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final Widget child;
+  final bool isDisabled;
   final Color backgroundColor;
 
   @override
@@ -23,7 +25,7 @@ class BlackButtonWidget extends StatelessWidget {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(4),
             ),
-            backgroundColor: backgroundColor,
+            backgroundColor: isDisabled ? backgroundColor.withOpacity(0.6) : backgroundColor,
             elevation: 3,
             shadowColor: Colors.grey[100],
           ),

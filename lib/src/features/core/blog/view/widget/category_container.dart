@@ -30,6 +30,7 @@ class NewsCategoryContainer extends StatelessWidget {
                 ),
               ],
             image: DecorationImage(
+              fit: BoxFit.fill,
               onError: (_, __)=> Image.asset(ImagePath.thumbnail),
               image: data.defaultImageUrl != null ? Image.network(data.defaultImageUrl ?? "").image
                   : Image.asset(ImagePath.thumbnail).image

@@ -122,7 +122,6 @@ class ProfileProvider extends ChangeNotifier {
       setContactStatus(status: Status.completed);
       if(response != null){
         contact = response;
-        print(contact?.toJson());
         notifyListeners();
       }
     }catch(e){

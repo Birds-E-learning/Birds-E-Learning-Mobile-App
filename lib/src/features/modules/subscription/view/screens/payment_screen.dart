@@ -34,6 +34,7 @@ class _SubscriptionPaymentScreenState extends State<SubscriptionPaymentScreen>
   TextEditingController expiryDate = TextEditingController();
   TextEditingController ccv = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  bool isDisabled = true;
 
   @override
   void dispose() {
@@ -71,12 +72,12 @@ class _SubscriptionPaymentScreenState extends State<SubscriptionPaymentScreen>
                     text: PaymentTexts.cardNo,
                     keyboardType: TextInputType.number,
                     hintText: PaymentTexts.cardHint,
+                    onChanged: (val)=>validateFields(),
                     inputFormatters: [
                       LengthLimitingTextInputFormatter(19),
                       FilteringTextInputFormatter.digitsOnly,
                       CardNumberFormatter(),
-                    ],
-                    validator: (value) => cardNoValidator(cardNo.text.trim()),
+                    ]
                   ),
                   const SizedBox(height: 20),
                   Row(
@@ -88,12 +89,12 @@ class _SubscriptionPaymentScreenState extends State<SubscriptionPaymentScreen>
                             text: PaymentTexts.expiryText,
                             keyboardType: TextInputType.number,
                             hintText: PaymentTexts.expiryHint,
+                          onChanged: (val)=>validateFields(),
                             inputFormatters: [
                               LengthLimitingTextInputFormatter(5),
                               FilteringTextInputFormatter.digitsOnly,
                               CardExpirationFormatter(),
-                            ],
-                            validator: (value) => dateValidator(value)),
+                            ],),
                       ),
                       const SizedBox(width: 20),
                       Expanded(
@@ -102,11 +103,11 @@ class _SubscriptionPaymentScreenState extends State<SubscriptionPaymentScreen>
                           text: PaymentTexts.ccvText,
                           keyboardType: TextInputType.number,
                           hintText: PaymentTexts.ccvHint,
+                          onChanged: (val)=>validateFields(),
                           inputFormatters: [
                             LengthLimitingTextInputFormatter(3),
                             FilteringTextInputFormatter.digitsOnly,
                           ],
-                          validator: (value) => cvvValidator(value),
                         ),
                       ),
                     ],
@@ -116,7 +117,8 @@ class _SubscriptionPaymentScreenState extends State<SubscriptionPaymentScreen>
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       BlackButtonWidget(
-                          onPressed: () async {
+                          isDisabled: isDisabled,
+                          onPressed: isDisabled ? null : () async {
                             FocusScope.of(context).unfocus();
                             if (_formKey.currentState!.validate()) {
                               StripePaymentRequest data = StripePaymentRequest(
@@ -153,5 +155,15 @@ class _SubscriptionPaymentScreenState extends State<SubscriptionPaymentScreen>
         )),
       ),
     );
+  }
+
+  void validateFields(){
+    if(cardNo.text.length == 19
+        && expiryDate.text.length == 5 && ccv.text.length == 3){
+      isDisabled = false;
+    }else{
+      isDisabled = true;
+    }
+    setState(() {});
   }
 }

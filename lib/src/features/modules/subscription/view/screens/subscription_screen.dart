@@ -89,6 +89,8 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> with PaymentWid
                       ),),)
                     : ListView.separated(
                         shrinkWrap: true,
+                        primary: false,
+                        physics: const NeverScrollableScrollPhysics(),
                         itemBuilder: (_ ,index) {
                           return SubscriptionCardWidget(
                             duration: sub.subscriptionPlans[index],

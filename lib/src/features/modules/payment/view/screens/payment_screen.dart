@@ -28,6 +28,7 @@ class _PaymentScreenState extends State<PaymentScreen>
   TextEditingController cardNo = TextEditingController();
   TextEditingController expiryDate = TextEditingController();
   TextEditingController ccv = TextEditingController();
+  bool isDisabled = true;
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -64,6 +65,7 @@ class _PaymentScreenState extends State<PaymentScreen>
                   CustomTextColumn(
                     controller: cardNo,
                     text: PaymentTexts.cardNo,
+                    onChanged: (val) => validateFields(),
                     keyboardType: TextInputType.number,
                     hintText: PaymentTexts.cardHint,
                     inputFormatters: [
@@ -71,7 +73,6 @@ class _PaymentScreenState extends State<PaymentScreen>
                       FilteringTextInputFormatter.digitsOnly,
                       CardNumberFormatter(),
                     ],
-                    validator: (value) => cardNoValidator(cardNo.text.trim()),
                   ),
                   const SizedBox(height: 20),
                   Row(
@@ -81,6 +82,7 @@ class _PaymentScreenState extends State<PaymentScreen>
                         child: CustomTextColumn(
                             controller: expiryDate,
                             text: PaymentTexts.expiryText,
+                            onChanged: (val) => validateFields(),
                             keyboardType: TextInputType.number,
                             hintText: PaymentTexts.expiryHint,
                             inputFormatters: [
@@ -88,12 +90,13 @@ class _PaymentScreenState extends State<PaymentScreen>
                               FilteringTextInputFormatter.digitsOnly,
                               CardExpirationFormatter(),
                             ],
-                            validator: (value) => dateValidator(value)),
+                        ),
                       ),
                       const SizedBox(width: 20),
                       Expanded(
                         child: CustomTextColumn(
                           controller: ccv,
+                          onChanged: (val) => validateFields(),
                           text: PaymentTexts.ccvText,
                           keyboardType: TextInputType.number,
                           hintText: PaymentTexts.ccvHint,
@@ -101,7 +104,6 @@ class _PaymentScreenState extends State<PaymentScreen>
                             LengthLimitingTextInputFormatter(3),
                             FilteringTextInputFormatter.digitsOnly,
                           ],
-                          validator: (value) => cvvValidator(value),
                         ),
                       ),
                     ],
@@ -115,7 +117,8 @@ class _PaymentScreenState extends State<PaymentScreen>
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       BlackButtonWidget(
-                          onPressed: () async {
+                        isDisabled: isDisabled,
+                          onPressed: isDisabled ? null : () async {
                             FocusScope.of(context).unfocus();
                             if (payment.payClicked) {
                               payment.onPayClick();
@@ -156,5 +159,15 @@ class _PaymentScreenState extends State<PaymentScreen>
         )),
       ),
     );
+  }
+
+  void validateFields(){
+    if(cardNo.text.length == 19
+    && expiryDate.text.length == 5 && ccv.text.length == 3){
+      isDisabled = false;
+    }else{
+      isDisabled = true;
+    }
+    setState(() {});
   }
 }

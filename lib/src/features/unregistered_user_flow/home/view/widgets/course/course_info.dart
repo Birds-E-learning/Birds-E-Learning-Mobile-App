@@ -37,25 +37,23 @@ class CourseInfoWidget extends StatelessWidget with HomeWidgets, ContentWidget {
         Row(
           children: [
             contentOwnerText(
-                course.facilitator!.name == ""
-                    ? "Anonymous"
-                    : course.facilitator!.name!, () {
+                course.facilitator?.name ?? "" , () {
               if (isFacilitator) {
                 RoutingService.popRouting(context);
               } else {
                 RoutingService.pushRouting(context, FacilitatorScreen(
-                  facilitatorId: course.facilitator!.id ?? "",
+                  facilitatorId: course.facilitator?.id ?? "",
                 ));
               }
             }),
             const SizedBox(width: 5),
             Row(
-              children: getStarList(course.facilitator!.ratings ?? 0,
+              children: getStarList(course.facilitator?.ratings ?? 0,
                   ImagePath.starFill, ImagePath.starUnfill,
                   size: 12),
             ),
             const SizedBox(width: 5),
-            ratingText(course.facilitator!.ratings ?? 0)
+            ratingText(course.facilitator?.ratings ?? 0)
           ],
         ),
         const SizedBox(height: 10),

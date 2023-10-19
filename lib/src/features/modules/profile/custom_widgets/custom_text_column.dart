@@ -23,6 +23,7 @@ class CustomTextColumn extends StatelessWidget with AuthStyles, ProfileWidgets {
     this.filled = false,
     this.maxLines = 1,
     this.minLines,
+    this.onChanged,
     super.key,
   });
   final TextEditingController controller;
@@ -41,6 +42,7 @@ class CustomTextColumn extends StatelessWidget with AuthStyles, ProfileWidgets {
   final Color suffixColor;
   final AutovalidateMode autovalidateMode;
   final List<TextInputFormatter>? inputFormatters;
+  final ValueChanged<String?>? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -59,6 +61,7 @@ class CustomTextColumn extends StatelessWidget with AuthStyles, ProfileWidgets {
           readOnly: readOnly,
           maxLines: maxLines,
           minLines: minLines,
+          onChanged: onChanged,
           style: const TextStyle(fontFamily: "Inter"),
           decoration: InputDecoration(
             prefix: prefix,

@@ -46,9 +46,7 @@ class CourseInfoWidget extends StatelessWidget with HomeWidgets, ContentWidget {
         Row(
           children: [
             contentOwnerText(
-                course.facilitator!.name == ""
-                    ? "Anonymous"
-                    : course.facilitator!.name!, () {
+                course.facilitator?.name ?? "Anonymous", () {
               if (isFacilitator) {
                 RoutingService.popRouting(context);
               } else {
@@ -64,7 +62,7 @@ class CourseInfoWidget extends StatelessWidget with HomeWidgets, ContentWidget {
                   size: 12),
             ),
             const SizedBox(width: 5),
-            ratingText(course.facilitator!.reviews ?? 0)
+            ratingText(course.facilitator!.ratings ?? 0)
           ],
         ),
         const SizedBox(height: 10),

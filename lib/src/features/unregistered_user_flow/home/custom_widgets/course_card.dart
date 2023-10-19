@@ -70,12 +70,12 @@ class UnregisteredCourseCard extends StatelessWidget with ImagePath, HomeWidgets
                           children: [
                             Row(
                               children: getStarList(
-                                  course.facilitator!.ratings ?? "1",
+                                  course.facilitator?.ratings ?? "0",
                                   ImagePath.starFill,
                                   ImagePath.starUnfill),
                             ),
                             // const SizedBox(width: 10),
-                            ratingText(course.facilitator!.reviews.toString())
+                            ratingText(course.facilitator?.reviews ?? "0")
                           ],
                         )
                       ],
