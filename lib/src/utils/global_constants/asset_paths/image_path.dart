@@ -40,6 +40,7 @@ class ImagePath {
   static const String phoneCall = "assets/icons/phone_call.svg";
   static const String outgoingMail = "assets/icons/outgoing_mail.svg";
   static const String preferences = "assets/icons/preferences.svg";
+  static const String subscriptions = "assets/icons/subscriptions.svg";
   static const String noProfile = "assets/icons/no_profile.svg";
 
   // Courses
@@ -58,6 +59,7 @@ class ImagePath {
   static const String starUnfill = "assets/icons/star_unfill.svg";
   static const String thumbnail = "assets/images/thumbnail.png";
   static const String titlePics = "assets/images/title_pics.png";
+  static const String emptySubscription = "assets/images/subscription_empty.svg";
   static const String facilitator = "assets/images/facilitator.png";
   static const String arrowUpLesson = "assets/icons/arrow_up_lesson.svg";
   static const String arrowDownLesson = "assets/icons/arrow_down_lesson.svg";
@@ -93,4 +95,11 @@ class ImagePath {
   static const String linkedin = "assets/icons/linkedin.svg";
   static const String link = "assets/icons/link.svg";
   static const String x = "assets/icons/x.svg";
+
+  // Subscription icons
+
+  static const String currentPlan = "assets/icons/current_plan.svg";
+  static const String billingCycle = "assets/icons/billing_cycle.svg";
+  static const String startedOn = "assets/icons/started_on.svg";
+  static const String dueDate = "assets/icons/due_date.svg";
 }

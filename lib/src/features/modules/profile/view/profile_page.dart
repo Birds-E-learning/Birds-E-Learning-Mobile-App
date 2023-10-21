@@ -7,6 +7,7 @@ import 'package:birds_learning_network/src/features/modules/profile/view/change_
 import 'package:birds_learning_network/src/features/modules/profile/view/contact_us.dart';
 import 'package:birds_learning_network/src/features/modules/profile/view/edit_profile.dart';
 import 'package:birds_learning_network/src/features/modules/profile/view/preferences_screen.dart';
+import 'package:birds_learning_network/src/features/modules/profile/view/subscription_screen.dart';
 import 'package:birds_learning_network/src/features/modules/profile/view/widgets/profile_shimmer.dart';
 import 'package:birds_learning_network/src/features/modules/profile/view_model/profile_provider.dart';
 import 'package:birds_learning_network/src/global_model/repositories/url_launcher.dart';
@@ -124,6 +125,14 @@ class _UserProfilePageState extends State<UserProfilePage>
                       onTap: () {
                         RoutingService.pushFullScreenRouting(
                             context, const EditPreferenceScreen());
+                      }),
+                  const SizedBox(height: 25),
+                  CustomPageRow(
+                      icon: ImagePath.subscriptions,
+                      text: ProfileTexts.subscriptions,
+                      onTap: () {
+                        RoutingService.pushFullScreenRouting(
+                            context, const ProfileSubscriptionScreen());
                       }),
                   const SizedBox(height: 25),
                   CustomPageRow(

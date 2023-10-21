@@ -5,6 +5,7 @@ class ProfileTexts {
   static const String myCourses = "My Courses";
   static const String certificate = "Certificate";
   static const String cardSetting = "Card Settings";
+  static const String subscriptions = "Subscriptions";
   static const String preferences = "Preferences";
   static const String contactText = "Contact Us";
   static const String termsText = "Terms of Service";
@@ -49,4 +50,8 @@ class ProfileTexts {
   static const String logoutText = "Are you sure you want to log out?";
   static const String cancelText = "CANCEL";
   static const String confirmButton = "CONFIRM";
+
+  static const String emptySubText1 = "No active subscription, ";
+  static const String emptySubText2 = "click here to \nstart your subscription.";
+  static const String subTitle = "Manage your subscription.";
 }
