@@ -1,18 +1,22 @@
+import 'package:birds_learning_network/src/features/core/auth/model/response_model/login_response.dart';
 import 'package:birds_learning_network/src/utils/global_constants/asset_paths/image_path.dart';
 import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
 import 'package:birds_learning_network/src/utils/global_constants/texts/module_texts/profile_texts.dart';
+import 'package:birds_learning_network/src/utils/shared_functions/convert_currency.dart';
+import 'package:birds_learning_network/src/utils/shared_functions/convert_date.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class SubscriptionCardWidget extends StatelessWidget {
-  const SubscriptionCardWidget({super.key});
+  const SubscriptionCardWidget({super.key, this.subscription});
+  final SubscriptionModel? subscription;
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
+    return  Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
+        const Text(
           ProfileTexts.subTitle,
           style: TextStyle(
             fontWeight: FontWeight.w400,
@@ -20,28 +24,28 @@ class SubscriptionCardWidget extends StatelessWidget {
             color: grey700
           ),
         ),
-        SizedBox(height: 24),
+        const SizedBox(height: 24),
         SubscriptionContainer(
           text: "Current plan",
-          value: "\$20",
+          value: "${convertCurrency(subscription?.currency ?? "USD")}${subscription?.amount ?? 0}",
           imagePath: ImagePath.currentPlan,
         ),
-        SizedBox(height: 16),
+        const SizedBox(height: 16),
         SubscriptionContainer(
           text: "Billing cycle",
-          value: "Monthly",
+          value: "${subscription?.package}",
           imagePath: ImagePath.billingCycle,
         ),
-        SizedBox(height: 16),
+        const SizedBox(height: 16),
         SubscriptionContainer(
           text: "Started on",
-          value: "12 Dec 2020",
+          value: convertDate(subscription?.createdAt ?? ""),
           imagePath: ImagePath.startedOn,
         ),
-        SizedBox(height: 16),
+        const SizedBox(height: 16),
         SubscriptionContainer(
           text: "Due date",
-          value: "28 days",
+          value: "${dateDifference(subscription?.expirationAt ?? DateTime.now().toString())} days",
           imagePath: ImagePath.dueDate,
         )
       ],

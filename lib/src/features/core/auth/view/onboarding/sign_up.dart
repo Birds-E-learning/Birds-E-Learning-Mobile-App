@@ -185,19 +185,19 @@ class _SignUpScreenState extends State<SignUpScreen>
                                 : nextButtonText()),
                       ),
                       const SizedBox(height: 20),
-                      optionWidget(size, AuthTexts.signUpWith),
-                      const SizedBox(height: 20),
-                      GoogleCard(
-                          text: AuthTexts.googleTextUp,
-                          onTap: () async {
-                            auth.onGoogleClicked();
-                            AuthModel body = AuthModel(
-                                authServiceProvider: "GOOGLE",
-                                deviceId: deviceId_ ?? "");
-                            if (!mounted) return;
-                            await auth.oAuthCall(body, "SIGNUP", context);
-                          }),
-                      const SizedBox(height: 15),
+                      // optionWidget(size, AuthTexts.signUpWith),
+                      // const SizedBox(height: 20),
+                      // GoogleCard(
+                      //     text: AuthTexts.googleTextUp,
+                      //     onTap: () async {
+                      //       auth.onGoogleClicked();
+                      //       AuthModel body = AuthModel(
+                      //           authServiceProvider: "GOOGLE",
+                      //           deviceId: deviceId_ ?? "");
+                      //       if (!mounted) return;
+                      //       await auth.oAuthCall(body, "SIGNUP", context);
+                      //     }),
+                      // const SizedBox(height: 15),
                       accountCheck(
                         AuthTexts.hasAccount1,
                         AuthTexts.login,

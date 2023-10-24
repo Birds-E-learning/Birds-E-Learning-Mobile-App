@@ -126,49 +126,61 @@ class ResponseData {
 
 
 class SubscriptionModel {
-final String? userId;
-final String? userEmail;
-final dynamic subscriptionId;
-final String? subscriptionSlug;
-final String? createdAt;
-final dynamic updatedAt;
-final String? subscribedAt;
-final String? expirationAt;
-final String? status;
+  final String? userId;
+  final String? userEmail;
+  final dynamic subscriptionId;
+  final String? subscriptionSlug;
+  final String? createdAt;
+  final dynamic updatedAt;
+  final String? subscribedAt;
+  final String? expirationAt;
+  final String? status;
+  final dynamic amount;
+  final String? currency;
+  final String? package;
 
-SubscriptionModel({
-this.userId,
-this.userEmail,
-this.subscriptionId,
-this.subscriptionSlug,
-this.createdAt,
-this.updatedAt,
-this.subscribedAt,
-this.expirationAt,
-this.status,
-});
+  SubscriptionModel({
+    this.userId,
+    this.userEmail,
+    this.subscriptionId,
+    this.subscriptionSlug,
+    this.createdAt,
+    this.updatedAt,
+    this.subscribedAt,
+    this.expirationAt,
+    this.status,
+    this.amount,
+    this.currency,
+    this.package
+  });
 
-SubscriptionModel.fromJson(Map<String, dynamic> json)
-    : userId = json['userId'] as String?,
-userEmail = json['userEmail'] as String?,
-subscriptionId = json['subscriptionId'] as dynamic,
-subscriptionSlug = json['subscriptionSlug'] as String?,
-createdAt = json['createdAt'] as String?,
-updatedAt = json['updatedAt'] as dynamic,
-subscribedAt = json['subscribedAt'] as String?,
-expirationAt = json['expirationAt'] as String?,
-status = json['status'] as String?;
+  SubscriptionModel.fromJson(Map<String, dynamic> json)
+        : userId = json['userId'] as String?,
+    userEmail = json['userEmail'] as String?,
+    subscriptionId = json['subscriptionId'] as dynamic,
+    subscriptionSlug = json['subscriptionSlug'] as String?,
+    createdAt = json['createdAt'] as String?,
+    updatedAt = json['updatedAt'] as dynamic,
+    subscribedAt = json['subscribedAt'] as String?,
+    expirationAt = json['expirationAt'] as String?,
+    amount = json['amount'] as dynamic,
+    package = json['package'] as String?,
+    currency = json['currency'] as String?,
+    status = json['status'] as String?;
 
-Map<String, dynamic> toJson() => {
-'userId' : userId,
-'userEmail' : userEmail,
-'subscriptionId' : subscriptionId,
-'subscriptionSlug' : subscriptionSlug,
-'createdAt' : createdAt,
-'updatedAt' : updatedAt,
-'subscribedAt' : subscribedAt,
-'expirationAt' : expirationAt,
-'status' : status
-};
+  Map<String, dynamic> toJson() => {
+    'userId' : userId,
+    'userEmail' : userEmail,
+    'subscriptionId' : subscriptionId,
+    'subscriptionSlug' : subscriptionSlug,
+    'createdAt' : createdAt,
+    'updatedAt' : updatedAt,
+    'subscribedAt' : subscribedAt,
+    'expirationAt' : expirationAt,
+    'status' : status,
+    'amount' : amount,
+    'currency' : currency,
+    'package' : package,
+  };
 }
 

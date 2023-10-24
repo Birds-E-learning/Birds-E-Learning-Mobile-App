@@ -131,22 +131,22 @@ class _LoginScreenState extends State<LoginScreen>
                         ),
                       ),
                       const SizedBox(height: 20),
-                      optionWidget(size, AuthTexts.loginWith),
-                      const SizedBox(height: 20),
-                      GoogleCard(
-                          text: AuthTexts.googleTextIn,
-                          onTap: () async {
-                            if (auth.googleClicked) {
-                              auth.onGoogleClicked();
-                              return;
-                            }
-                            auth.onGoogleClicked();
-                            AuthModel body = AuthModel(
-                                authServiceProvider: "GOOGLE",
-                                deviceId: deviceId_ ?? "");
-                            await auth.oAuthCall(body, "LOGIN", context);
-                          }),
-                      const SizedBox(height: 15),
+                      // optionWidget(size, AuthTexts.loginWith),
+                      // const SizedBox(height: 20),
+                      // GoogleCard(
+                      //     text: AuthTexts.googleTextIn,
+                      //     onTap: () async {
+                      //       if (auth.googleClicked) {
+                      //         auth.onGoogleClicked();
+                      //         return;
+                      //       }
+                      //       auth.onGoogleClicked();
+                      //       AuthModel body = AuthModel(
+                      //           authServiceProvider: "GOOGLE",
+                      //           deviceId: deviceId_ ?? "");
+                      //       await auth.oAuthCall(body, "LOGIN", context);
+                      //     }),
+                      // const SizedBox(height: 15),
                       accountCheck(
                         AuthTexts.noAccount,
                         AuthTexts.signUp,

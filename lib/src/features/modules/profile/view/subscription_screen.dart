@@ -1,6 +1,5 @@
 import 'package:birds_learning_network/src/features/core/auth/model/response_model/login_response.dart';
 import 'package:birds_learning_network/src/features/modules/profile/view/widgets/subscription_card.dart';
-import 'package:birds_learning_network/src/features/modules/subscription/model/response_model/subscription_type.dart';
 import 'package:birds_learning_network/src/features/modules/subscription/view/screens/subscription_screen.dart';
 import 'package:birds_learning_network/src/global_model/services/storage/secure_storage/subscription_plan.dart';
 import 'package:birds_learning_network/src/utils/global_constants/asset_paths/image_path.dart';
@@ -59,7 +58,7 @@ class _ProfileSubscriptionScreenState extends State<ProfileSubscriptionScreen> {
                 ),
                 child: IntrinsicHeight(
                   child: Center(
-                    child: subscription?.status?.toUpperCase() == "EXPIRED" ? Column(
+                    child: subscription == null || subscription?.status?.toUpperCase() == "EXPIRED" ? Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         SvgPicture.asset(ImagePath.emptySubscription),
@@ -76,14 +75,13 @@ class _ProfileSubscriptionScreenState extends State<ProfileSubscriptionScreen> {
                                   text: ProfileTexts.emptySubText2,
                                   style: AuthStyles.termsStyle.copyWith(fontSize: 16, color: skipColor),
                                   recognizer: TapGestureRecognizer()
-                                    ..onTap = () => Navigator.pushAndRemoveUntil(context,
-                                        MaterialPageRoute(builder: (context)=> const SubscriptionScreen()),
-                                            (route) => false),
+                                    ..onTap = () => Navigator.push(context,
+                                        MaterialPageRoute(builder: (context)=> const SubscriptionScreen())),
                                 ),
                               ],
                             ))
                       ],
-                    ) : const SubscriptionCardWidget(),
+                    ) : SubscriptionCardWidget(subscription: subscription),
                   ),
                 ),
               ),

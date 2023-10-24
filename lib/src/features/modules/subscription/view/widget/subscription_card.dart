@@ -56,7 +56,7 @@ class SubscriptionCardWidget extends StatelessWidget {
               )
           ),
           RichText(
-            textAlign: TextAlign.center,
+            textAlign: TextAlign.justify,
             text:  TextSpan(
                 text: convertCurrency(duration.currency),
                 style: const TextStyle(
