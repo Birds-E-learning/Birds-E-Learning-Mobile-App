@@ -22,11 +22,22 @@ class DevicePreference {
     return await prefs.setString("id", id);
   }
 
+  static Future<bool> setUUId(String id) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return await prefs.setString("uuid", id);
+  }
+
   static getDeviceId() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var deviceId = prefs.getString("id");
     // print(deviceId);
-    return deviceId;
+    return deviceId ?? "";
+  }
+
+  static Future<String> getUUId() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? uuid = prefs.getString("uuid");
+    return uuid ?? "";
   }
 
   // Future getIOSDetails() async {

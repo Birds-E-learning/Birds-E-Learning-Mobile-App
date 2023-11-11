@@ -29,7 +29,6 @@ class CertificateScreen extends StatelessWidget with ProfileWidgets {
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: size.width * 0.04),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     SvgPicture.asset(

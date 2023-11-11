@@ -32,6 +32,9 @@ class _SplashScreenState extends State<SplashScreen> {
     SchedulerBinding.instance.addPostFrameCallback((_) async {
         try{
           await getDeviceDetails(context);
+          await DevicePreference.getUUId().then((value){
+            value.isEmpty ? getUUId() : null;
+          });
           if (!mounted) return;
           String key = await Provider.of<PaymentProvider>(context, listen: false)
               .getStripeKeys(context);
@@ -48,6 +51,7 @@ class _SplashScreenState extends State<SplashScreen> {
         try {
           Provider.of<LoginProvider>(context, listen: false).autoLogin(await getData(), context);
         } catch (e) {
+          if(!mounted)return;
           RoutingService.pushReplacementRouting(context, const LoginScreen());
         }
       } else {
@@ -83,6 +87,8 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<AutomaticLoginModel> getData() async {
-    return AutomaticLoginModel(deviceId: await DevicePreference.getDeviceId());
+    String deviceId = await DevicePreference.getDeviceId();
+    String uuid = await DevicePreference.getUUId();
+    return AutomaticLoginModel(deviceId: deviceId.isEmpty ? uuid : deviceId);
   }
 }

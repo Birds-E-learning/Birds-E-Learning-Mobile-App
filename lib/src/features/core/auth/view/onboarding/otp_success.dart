@@ -36,10 +36,10 @@ class OtpSuccessPage extends StatelessWidget with AuthTextWidgets {
                   width: double.infinity,
                   child: BlackButtonWidget(
                     onPressed: () async {
-                      login.onCompleteClick();
+                      login.onClick();
                       await login.userLogin(context, login.loginData, true);
                     },
-                    child: login.completeClicked
+                    child: login.isClicked
                         ? loadingIdicator()
                         : AuthTextWidgets.buttonText(AuthTexts.complete),
                   ),

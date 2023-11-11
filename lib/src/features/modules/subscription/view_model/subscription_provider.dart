@@ -64,7 +64,6 @@ class SubscriptionProvider extends SubscriptionRepo with ChangeNotifier{
 
   Future makeChargePayment(
       context, SubscriptionPaymentRequest data, {Courses? course}) async {
-    print(data.toJson());
     SubscriptionPaymentResponse? response = await subscriptionPaymentRepo(context, data);
     if (response != null) {
       if (response.responseCode == "00" || response.responseCode == "000") {

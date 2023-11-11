@@ -6,7 +6,6 @@ String convertDate(String date){
 
   // Format the DateTime object into the desired output format
   String outputDateStr = DateFormat('d MMM y').format(inputDate);
-  print(outputDateStr);
   return outputDateStr;
 }
 

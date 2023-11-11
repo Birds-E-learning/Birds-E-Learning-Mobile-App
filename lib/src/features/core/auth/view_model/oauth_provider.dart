@@ -1,17 +1,16 @@
-import 'package:birds_learning_network/src/config/routing/route.dart';
+// import 'package:birds_learning_network/src/config/routing/route.dart';
 import 'package:birds_learning_network/src/features/core/auth/model/repositories/auth_repository.dart';
 import 'package:birds_learning_network/src/features/core/auth/model/request_model/auth_consent_model.dart';
 import 'package:birds_learning_network/src/features/core/auth/model/request_model/auth_model.dart';
 import 'package:birds_learning_network/src/features/core/auth/model/response_model/auth_response.dart';
 import 'package:birds_learning_network/src/features/core/auth/model/response_model/json_response.dart';
 import 'package:birds_learning_network/src/features/core/auth/model/response_model/login_response.dart';
-import 'package:birds_learning_network/src/features/core/auth/view/web_view.dart';
 import 'package:birds_learning_network/src/global_model/services/network/base_service.dart';
 import 'package:birds_learning_network/src/global_model/services/storage/secure_storage/user_details.dart';
 import 'package:birds_learning_network/src/global_model/services/storage/shared_preferences/user_details.dart';
 import 'package:birds_learning_network/src/utils/helper_widgets/response_snack.dart';
 import 'package:flutter/material.dart';
-import 'package:webview_flutter/webview_flutter.dart';
+// import 'package:webview_flutter/webview_flutter.dart';
 
 class OAuthProvider extends ChangeNotifier {
   bool _webviewCompleted = false;
@@ -19,7 +18,7 @@ class OAuthProvider extends ChangeNotifier {
   bool _googleClicked = false;
   bool _appleClicked = false;
   String _serviceProvider = "FACEBOOK";
-  final WebViewController controller = WebViewController();
+  // final WebViewController controller = WebViewController();
   // Map _userData = {};
   bool isDone = false;
   String url = "";
@@ -147,14 +146,14 @@ class OAuthProvider extends ChangeNotifier {
           url = response.responseData!.authorizationConsentUrl!;
           notifyListeners();
           checkServiceClicked(_serviceProvider);
-          RoutingService.pushRouting(
-              context,
-              WebView(
-                data: body,
-                url: url,
-                serviceProvider: _serviceProvider,
-                validationType: validationType,
-              ));
+          // RoutingService.pushRouting(
+          //     context,
+          //     WebView(
+          //       data: body,
+          //       url: url,
+          //       serviceProvider: _serviceProvider,
+          //       validationType: validationType,
+          //     ));
         } else {
           checkServiceClicked(_serviceProvider);
           showSnack(context, response.responseCode!, response.responseMessage!);

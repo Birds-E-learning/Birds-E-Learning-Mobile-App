@@ -170,13 +170,13 @@ class _ViewCourseScreenState extends State<ViewCourseScreen>
 
   @override
   void dispose() {
-    _controller != null ? _controller!.dispose() : null;
+    _controller?.dispose();
     super.dispose();
   }
 
   @override
   void deactivate() {
-    _controller != null ? _controller!.pause() : null;
+    _controller?.pause();
     super.deactivate();
   }
 }

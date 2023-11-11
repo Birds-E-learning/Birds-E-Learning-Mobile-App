@@ -4,7 +4,9 @@ import 'package:birds_learning_network/src/global_model/apis/app_exception.dart'
 import 'package:birds_learning_network/src/global_model/model/device_details.dart';
 import 'package:birds_learning_network/src/global_model/services/storage/shared_preferences/device_info.dart';
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:uuid/uuid.dart';
 
 Future getDeviceDetails(context) async {
   final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
@@ -46,5 +48,14 @@ Future getDeviceDetails(context) async {
   } on PlatformException {
     // showSnack(context, "02", "Failed to get Device ID");
     throw FetchDataException("Failed to get Device ID");
+  }
+}
+
+Future getUUId()async{
+  try{
+    String userUId = const Uuid().v4();
+    await DevicePreference.setUUId(userUId);
+  }catch(e){
+    debugPrint(e.toString());
   }
 }

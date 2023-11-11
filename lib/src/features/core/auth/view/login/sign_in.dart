@@ -1,19 +1,15 @@
 import 'package:birds_learning_network/src/config/routing/route.dart';
-import 'package:birds_learning_network/src/features/core/auth/model/request_model/auth_model.dart';
 import 'package:birds_learning_network/src/features/core/auth/model/request_model/login_model.dart';
 import 'package:birds_learning_network/src/features/core/auth/view/auth_screen.dart';
 import 'package:birds_learning_network/src/features/core/auth/view/forgot_password/forgot_password.dart';
 import 'package:birds_learning_network/src/features/core/auth/view/onboarding/sign_up.dart';
 import 'package:birds_learning_network/src/features/core/auth/view_model/login_provider/login_provider.dart';
-import 'package:birds_learning_network/src/features/core/auth/view_model/oauth_provider.dart';
 import 'package:birds_learning_network/src/global_model/services/storage/shared_preferences/device_info.dart';
 import 'package:birds_learning_network/src/global_model/services/storage/shared_preferences/user_details.dart';
-import 'package:birds_learning_network/src/utils/custom_widgets/social_cards.dart';
 import 'package:birds_learning_network/src/utils/custom_widgets/text_field.dart';
 import 'package:birds_learning_network/src/utils/global_constants/texts/core_texts/auth_texts.dart';
 import 'package:birds_learning_network/src/utils/helper_widgets/button_black.dart';
 import 'package:birds_learning_network/src/utils/helper_widgets/loading_indicator.dart';
-import 'package:birds_learning_network/src/utils/helper_widgets/option_row.dart';
 import 'package:birds_learning_network/src/utils/mixins/core_mixins/auth_mixins/auth_mixins.dart';
 import 'package:birds_learning_network/src/utils/validators/validators.dart';
 import 'package:flutter/material.dart';
@@ -54,7 +50,7 @@ class _LoginScreenState extends State<LoginScreen>
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    OAuthProvider auth = context.read<OAuthProvider>();
+    // OAuthProvider auth = context.read<OAuthProvider>();
     return Scaffold(
       body: SafeArea(
         child: Consumer<LoginProvider>(
@@ -172,7 +168,9 @@ class _LoginScreenState extends State<LoginScreen>
     if (!mounted) return;
     password.text = await context.read<LoginProvider>().getPassword();
     userFirstName = await UserPreferences.getUserFirstName();
-    deviceId_ = await DevicePreference.getDeviceId();
+    String id = await DevicePreference.getDeviceId();
+    String uuid = await DevicePreference.getUUId();
+    deviceId_ = id.isEmpty ? uuid : id;
     setState(() {});
   }
 }

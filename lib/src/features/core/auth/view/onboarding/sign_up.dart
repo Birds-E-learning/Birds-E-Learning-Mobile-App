@@ -1,22 +1,18 @@
 import 'package:birds_learning_network/src/config/routing/route.dart';
-import 'package:birds_learning_network/src/features/core/auth/model/request_model/auth_model.dart';
 import 'package:birds_learning_network/src/features/core/auth/model/request_model/login_model.dart';
 import 'package:birds_learning_network/src/features/core/auth/model/request_model/sign_up_model.dart';
 import 'package:birds_learning_network/src/features/core/auth/view/auth_screen.dart';
 import 'package:birds_learning_network/src/features/core/auth/view/login/sign_in.dart';
 import 'package:birds_learning_network/src/features/core/auth/view_model/login_provider/login_provider.dart';
-import 'package:birds_learning_network/src/features/core/auth/view_model/oauth_provider.dart';
 import 'package:birds_learning_network/src/features/core/auth/view_model/sign_up_provider/sign_up.dart';
 import 'package:birds_learning_network/src/global_model/services/storage/shared_preferences/device_info.dart';
 import 'package:birds_learning_network/src/global_model/services/storage/shared_preferences/user_details.dart';
 import 'package:birds_learning_network/src/utils/custom_widgets/phone_drop_down.dart';
-import 'package:birds_learning_network/src/utils/custom_widgets/social_cards.dart';
 import 'package:birds_learning_network/src/utils/custom_widgets/text_field.dart';
 import 'package:birds_learning_network/src/utils/global_constants/texts/core_texts/auth_texts.dart';
 import 'package:birds_learning_network/src/utils/helper_widgets/button_black.dart';
 import 'package:birds_learning_network/src/utils/helper_widgets/check_box.dart';
 import 'package:birds_learning_network/src/utils/helper_widgets/loading_indicator.dart';
-import 'package:birds_learning_network/src/utils/helper_widgets/option_row.dart';
 import 'package:birds_learning_network/src/utils/helper_widgets/response_snack.dart';
 import 'package:birds_learning_network/src/utils/mixins/core_mixins/auth_mixins/auth_mixins.dart';
 import 'package:birds_learning_network/src/utils/validators/validators.dart';
@@ -59,7 +55,7 @@ class _SignUpScreenState extends State<SignUpScreen>
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    OAuthProvider auth = context.read<OAuthProvider>();
+    // OAuthProvider auth = context.read<OAuthProvider>();
     return Scaffold(
       body: SafeArea(
         child: Consumer<SignUpProvider>(
@@ -224,7 +220,9 @@ class _SignUpScreenState extends State<SignUpScreen>
   }
 
   void setData() async {
-    deviceId_ = await DevicePreference.getDeviceId();
+    String id = await DevicePreference.getDeviceId();
+    String uuid = await DevicePreference.getUUId();
+    deviceId_ = id.isEmpty ? uuid : id;
     setState(() {});
   }
 }

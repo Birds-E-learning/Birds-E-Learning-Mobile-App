@@ -312,9 +312,9 @@ class _BuyCourseScreenState extends State<BuyCourseScreen>
 
   @override
   void dispose() {
-    _ytController == null ? null : _ytController!.dispose();
-    videoPlayerController == null ? null : videoPlayerController!.dispose();
-    _controller == null ? null : _controller!.dispose();
+    _ytController?.dispose();
+    videoPlayerController?.dispose();
+    _controller?.dispose();
     super.dispose();
   }
 

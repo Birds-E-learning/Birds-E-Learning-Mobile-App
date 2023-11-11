@@ -35,7 +35,6 @@ class _ProfileSubscriptionScreenState extends State<ProfileSubscriptionScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    print(subscription?.toJson());
     return Scaffold(
       appBar: AppBar(
         title: const Text(
