@@ -18,7 +18,7 @@ class CustomPageRow extends StatelessWidget with ProfileWidgets {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          SvgPicture.asset(icon),
+          SvgPicture.asset(icon, height: 18, width: 18,),
           const SizedBox(width: 20),
           pageText(text),
           const Spacer(),

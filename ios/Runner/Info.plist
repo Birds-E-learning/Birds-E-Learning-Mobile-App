@@ -22,8 +22,6 @@
 	<string>$(FLUTTER_BUILD_NAME)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
-	<key>CFBundleVersion</key>
-	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -33,38 +31,40 @@
 			</array>
 		</dict>
 	</array>
+	<key>CFBundleVersion</key>
+	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>FacebookAppID</key>
-    <string>898205968133509</string>
+	<string>898205968133509</string>
 	<key>FacebookClientToken</key>
-	    <string>b23f8ccecc40f763554a4fdd378694f9</string>
+	<string>b23f8ccecc40f763554a4fdd378694f9</string>
 	<key>FacebookDisplayName</key>
 	<string>Birds Learning Network</string>
-    <key>LSApplicationQueriesSchemes</key>
-    <array>
-    	<string>tg</string>
-    	<string>instagram</string>
-   		<string>x</string>
-   		<string>twitter</string>
-   		<string>fb</string>
-   		<string>http</string>
-   		<string>fbauth2</string>
-   		<string>whatsapp</string>
-   		<string>fbapi</string>
-    	<string>fbapi20130214</string>
-   		<string>fbapi20130410</string>
-   		<string>fbapi20130702</string>
-   		<string>fbapi20131010</string>
-   		<string>fbapi20131219</string>
-    	<string>fbapi20140410</string>
-   		<string>fbapi20140116</string>
-   		<string>fbapi20150313</string>
-   		<string>fbapi20150629</string>
-   		<string>fbapi20160328</string>
-    	<string>fbauth</string>
-   		<string>fb-messenger-api</string>
-   		<string>fb-messenger-share-api</string>
-   		<string>fbauth2</string>
-   		<string>fbshareextension</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>tg</string>
+		<string>instagram</string>
+		<string>x</string>
+		<string>twitter</string>
+		<string>fb</string>
+		<string>http</string>
+		<string>fbauth2</string>
+		<string>whatsapp</string>
+		<string>fbapi</string>
+		<string>fbapi20130214</string>
+		<string>fbapi20130410</string>
+		<string>fbapi20130702</string>
+		<string>fbapi20131010</string>
+		<string>fbapi20131219</string>
+		<string>fbapi20140410</string>
+		<string>fbapi20140116</string>
+		<string>fbapi20150313</string>
+		<string>fbapi20150629</string>
+		<string>fbapi20160328</string>
+		<string>fbauth</string>
+		<string>fb-messenger-api</string>
+		<string>fb-messenger-share-api</string>
+		<string>fbauth2</string>
+		<string>fbshareextension</string>
 		<string>sms</string>
 		<string>tel</string>
 		<string>whatsapp</string>
@@ -74,6 +74,10 @@
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>Birds Learning Network needs access user phone camera,to upload in app</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Birds Learning Network needs access your Gallery, To Create post or profile picture </string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>

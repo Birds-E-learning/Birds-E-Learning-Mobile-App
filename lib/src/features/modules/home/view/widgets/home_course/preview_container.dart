@@ -1,4 +1,4 @@
-import 'package:birds_learning_network/src/utils/global_constants/asset_paths/image_path.dart';
+import 'package:birds_learning_network/src/global_model/services/native_app/cached_image.dart';
 import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -18,37 +18,34 @@ class PreviewContainer extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     return Stack(
       children: [
-        Container(
-          width: double.infinity,
-          height: 200,
-          decoration: BoxDecoration(
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
-                  spreadRadius: 2,
-                  blurRadius: 10,
-                  offset: const Offset(0, 6),
-                ),
-              ],
-              image: DecorationImage(
-                  image: image.toString().contains(".com")
-                      ? Image.network(
-                          image.toString(),
-                        ).image
-                      : Image.asset(
-                          ImagePath.thumbnail,
-                        ).image,
-                  filterQuality: FilterQuality.high,
-                  fit: BoxFit.cover),
-              border: Border.all(width: 1, color: borderColor),
-              borderRadius: BorderRadius.circular(10)),
-          child: loaded
-              ? const Icon(
-                  Icons.error,
-                  color: deepBlack,
-                  size: 60,
-                )
-              : null,
+        CachedImage(
+          imageUrl: image,
+          imageBuilder: (_, imageProvider) => Container(
+            width: double.infinity,
+            height: 200,
+            decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    spreadRadius: 2,
+                    blurRadius: 10,
+                    offset: const Offset(0, 6),
+                  ),
+                ],
+                image: DecorationImage(
+                    image: imageProvider,
+                    filterQuality: FilterQuality.high,
+                    fit: BoxFit.cover),
+                border: Border.all(width: 1, color: borderColor),
+                borderRadius: BorderRadius.circular(10)),
+            child: loaded
+                ? const Icon(
+              Icons.error,
+              color: deepBlack,
+              size: 60,
+            )
+                : null,
+          ),
         ),
         Container(
           height: 200,

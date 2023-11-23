@@ -1,5 +1,5 @@
 import 'package:birds_learning_network/src/features/core/blog/model/response_model/blog_category_response.dart';
-import 'package:birds_learning_network/src/utils/global_constants/asset_paths/image_path.dart';
+import 'package:birds_learning_network/src/global_model/services/native_app/cached_image.dart';
 import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -15,34 +15,29 @@ class NewsCategoryContainer extends StatelessWidget {
     return Stack(
       alignment: Alignment.center,
       children: [
-        Container(
-          alignment: Alignment.center,
-          height: 207,
-          width: size.width > 400 ? 341 : size.width * 0.90,
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 44),
-          decoration: BoxDecoration(
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
-                  spreadRadius: 2,
-                  blurRadius: 10,
-                  offset: const Offset(0, 6),
+        CachedImage(
+          imageUrl: data.defaultImageUrl ?? "",
+          imageBuilder: (context, imageProvider) => Container(
+            alignment: Alignment.center,
+            height: 207,
+            width: size.width > 400 ? 341 : size.width * 0.90,
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 44),
+            decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.05),
+                    spreadRadius: 2,
+                    blurRadius: 10,
+                    offset: const Offset(0, 6),
+                  ),
+                ],
+                image: DecorationImage(
+                    fit: BoxFit.fill,
+                    image: imageProvider
                 ),
-              ],
-            image: DecorationImage(
-              fit: BoxFit.fill,
-              onError: (_, __)=> Image.asset(ImagePath.thumbnail),
-              image: data.defaultImageUrl != null ? Image.network(data.defaultImageUrl ?? "").image
-                  : Image.asset(ImagePath.thumbnail).image
+                borderRadius: BorderRadius.circular(20)
             ),
-            borderRadius: BorderRadius.circular(20)
           ),
-          // child: CourseImageWidget(
-          //   imageUrl: data.defaultImageUrl ?? "",
-          //   height: 207,
-          //   isMore: true,
-          //   width: size.width > 400 ? 341 : size.width * 0.90,
-          // ),
         ),
         Container(
           height: 207,

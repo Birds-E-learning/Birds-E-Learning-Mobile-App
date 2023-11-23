@@ -63,18 +63,26 @@ class ProfileRepository extends NetworkService with BaseHeaders, BaseUrl {
   }
 
   Future updateUser(context, UpdateProfileModel data) async {
-    Map<String, String> header_ = await authHeader();
-    var json =
-        await postRequest(updateProfile, header_, data.toJson(), context);
-    UpdateProfileResponse response = UpdateProfileResponse.fromJson(json);
-    return response;
+    try{
+      Map<String, String> header_ = await authHeader();
+      var json =
+      await postRequest(updateProfile, header_, data.toJson(), context);
+      UpdateProfileResponse response = UpdateProfileResponse.fromJson(json);
+      return response;
+    }catch(e){
+      return null;
+    }
   }
 
   Future getSingleUser(context, String email) async {
     // Map<String, String> header_ = await authHeader();
-    var json = await getRequest("$singleUserDetail$email", header, context);
-    LoginResponse response = LoginResponse.fromJson(json);
-    return response;
+    try{
+      var json = await getRequest("$singleUserDetail$email", header, context);
+      LoginResponse response = LoginResponse.fromJson(json);
+      return response;
+    }catch(e){
+      return null;
+    }
   }
 
   Future deleteDebitCard(context, String cardNo) async {

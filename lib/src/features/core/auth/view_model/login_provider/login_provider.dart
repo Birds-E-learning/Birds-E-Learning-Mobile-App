@@ -83,6 +83,7 @@ class LoginProvider extends ChangeNotifier {
             response.responseData!.firstName!);
         await UserPreferences.setUserEmail(response.responseData!.email!);
         await UserPreferences.setLoginStatus(true);
+        await UserPreferences.setUserPhoto(response.responseData?.photoLink ?? "");
         await storage.setToken(response.responseData!.authToken!);
         await storage.setUserData(response);
         Provider.of<HomeProvider>(context, listen: false).getHomeData(context);

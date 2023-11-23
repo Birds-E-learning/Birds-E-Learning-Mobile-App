@@ -2,6 +2,7 @@ import 'package:birds_learning_network/src/config/routing/route.dart';
 import 'package:birds_learning_network/src/features/modules/home/model/response_model/get_courses.dart';
 import 'package:birds_learning_network/src/features/unregistered_user_flow/home/view/screens/facilitator.dart';
 import 'package:birds_learning_network/src/features/unregistered_user_flow/home/view_model/home_provider.dart';
+import 'package:birds_learning_network/src/global_model/services/native_app/cached_image.dart';
 import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
 import 'package:birds_learning_network/src/utils/mixins/module_mixins/home_mixins.dart';
 import 'package:flutter/material.dart';
@@ -30,15 +31,20 @@ class FacilitatorCard extends StatelessWidget with HomeWidgets {
           // mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Container(
+            CachedImage(
               height: 50,
               width: 50,
-              decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                      image: Image.network(facilitator.imageUrl ??
-                              "https://birds-e-learning.herokuapp.com/img/profile.png")
-                          .image)),
+              imageUrl: facilitator.imageUrl ?? "",
+              imageBuilder: (context, imageProvider) => Container(
+                height: 50,
+                width: 50,
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                        image: imageProvider
+                    )
+                ),
+              ),
             ),
             const SizedBox(width: 5),
             Expanded(

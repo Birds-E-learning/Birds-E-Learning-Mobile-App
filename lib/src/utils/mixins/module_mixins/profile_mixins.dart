@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:birds_learning_network/src/config/routing/route.dart';
+import 'package:birds_learning_network/src/global_model/services/native_app/cached_image.dart';
 import 'package:birds_learning_network/src/utils/global_constants/asset_paths/image_path.dart';
 import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
 import 'package:birds_learning_network/src/utils/global_constants/styles/profile_styles/profile_styles.dart';
@@ -61,8 +62,36 @@ mixin ProfileWidgets on Object implements ProfileStyles, ProfileTexts {
     );
   }
 
-  Container profilePicture(String image, XFile? imageReceived) {
-    return Container(
+  Widget profilePicture(String image, XFile? imageReceived) {
+    return imageReceived == null ?
+    CachedImage(
+      imageUrl: image,
+      height: 100,
+      width: 100,
+      errorWidget: Container(
+        height: 100,
+        width: 100,
+        decoration: BoxDecoration(
+          color: white,
+          shape: BoxShape.circle,
+          border: Border.all(width: 1, color: black),
+        ),
+        child: const Icon(Icons.error, size: 30),
+      ),
+      imageBuilder:(_, imageProvider) => Container(
+        height: 100,
+        width: 100,
+        decoration: BoxDecoration(
+          color: white,
+          shape: BoxShape.circle,
+          border: Border.all(width: 1, color: black),
+          image: DecorationImage(
+            fit: BoxFit.cover,
+            image: imageProvider
+          ),
+        ),
+      ),
+    ): Container(
       height: 100,
       width: 100,
       decoration: BoxDecoration(
@@ -70,19 +99,10 @@ mixin ProfileWidgets on Object implements ProfileStyles, ProfileTexts {
         shape: BoxShape.circle,
         border: Border.all(width: 1, color: black),
         image: DecorationImage(
-          fit: BoxFit.fill,
-          image: image != ""
-              ? NetworkImage(image)
-              : imageReceived != null
-                  ? FileImage(File(imageReceived.path)) as ImageProvider
-                  : const AssetImage(ImagePath.profilePics),
+            fit: BoxFit.cover,
+            image: FileImage(File(imageReceived.path))
         ),
       ),
-      // backgroundImage: image != ""
-      //     ? NetworkImage(image)
-      //     : imageReceived != null
-      //         ? FileImage(File(imageReceived.path)) as ImageProvider
-      //         : const AssetImage(ImagePath.profilePics),
     );
   }
 

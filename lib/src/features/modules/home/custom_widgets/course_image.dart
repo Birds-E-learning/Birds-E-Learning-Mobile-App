@@ -1,5 +1,4 @@
-import 'package:birds_learning_network/src/utils/global_constants/asset_paths/image_path.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:birds_learning_network/src/global_model/services/native_app/cached_image.dart';
 import 'package:flutter/material.dart';
 
 class CourseImageWidget extends StatelessWidget {
@@ -15,9 +14,9 @@ class CourseImageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CachedNetworkImage(
+    return CachedImage(
       imageUrl: imageUrl,
-      imageBuilder: (context, imageProvider) => Container(
+      imageBuilder:(context, imageProvider) => Container(
         height: height,
         width: width,
         decoration: BoxDecoration(
@@ -31,22 +30,17 @@ class CourseImageWidget extends StatelessWidget {
           ),
         ),
       ),
-      placeholder: (context, url) => const Center(
-          child: SizedBox(
-              height: 30,
-              width: 30,
-              child: CircularProgressIndicator())),
-      errorWidget: (context, url, error) => Container(
-        height: height,
-        width: width,
-        decoration: BoxDecoration(
-          color: Colors.transparent,
-          image: DecorationImage(
-            image: Image.asset(ImagePath.thumbnail).image,
-            fit: BoxFit.fill,
-          ),
-        ),
-      ),
+      // errorWidget: Container(
+      //   height: height,
+      //   width: width,
+      //   decoration: BoxDecoration(
+      //     color: Colors.transparent,
+      //     image: DecorationImage(
+      //       image: Image.asset(ImagePath.thumbnail).image,
+      //       fit: BoxFit.fill,
+      //     ),
+      //   ),
+      // ),
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:birds_learning_network/src/features/modules/home/model/response_model/get_review.dart';
+import 'package:birds_learning_network/src/global_model/services/native_app/cached_image.dart';
 import 'package:birds_learning_network/src/utils/global_constants/asset_paths/image_path.dart';
 import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
 import 'package:birds_learning_network/src/utils/helper_widgets/star_widget.dart';
@@ -20,15 +21,18 @@ class TestimonyCard extends StatelessWidget {
       children: [
         Row(
           children: [
-            Container(
-              height: 24,
-              width: 24,
-              decoration: BoxDecoration(
+            CachedImage(
+              imageUrl: review.reviewerImage ?? "",
+              imageBuilder: (context, imageProvider) => Container(
+                height: 24,
+                width: 24,
+                decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  image:  review.reviewerImage != null
-                      ? DecorationImage(
-                      image:Image.network(review.reviewerImage!).image) : null,
-            ),),
+                  image:  DecorationImage(
+                    image: imageProvider
+                  ),
+                ),),
+            ),
             const SizedBox(width: 15),
             Text(
               review.reviewerName ?? "",

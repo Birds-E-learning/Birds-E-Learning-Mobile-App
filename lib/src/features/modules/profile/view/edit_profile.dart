@@ -1,10 +1,8 @@
 import 'dart:convert';
-
 import 'package:birds_learning_network/src/features/core/auth/model/response_model/login_response.dart';
 import 'package:birds_learning_network/src/features/modules/profile/model/request_model/update_profile_model.dart';
 import 'package:birds_learning_network/src/features/modules/profile/view/widgets/profile_shimmer.dart';
 import 'package:birds_learning_network/src/features/modules/profile/view_model/profile_provider.dart';
-import 'package:birds_learning_network/src/global_model/services/storage/shared_preferences/user_details.dart';
 import 'package:birds_learning_network/src/utils/custom_widgets/custom_bacground.dart';
 import 'package:birds_learning_network/src/utils/custom_widgets/drop_down.dart';
 import 'package:birds_learning_network/src/utils/custom_widgets/phone_drop_down.dart';
@@ -187,28 +185,19 @@ class _EditProfilePageState extends State<EditProfilePage>
 
   void setUser() async {
     LoginResponse user =
-        await Provider.of<ProfileProvider>(context, listen: false)
-            .getUserData();
-
-    String picUrl = await UserPreferences.getUserPhoto();
+        await Provider.of<ProfileProvider>(context, listen: false).getUserData();
     setState(() {
       email.text = user.responseData?.email ?? "";
       fullName.text = user.responseData?.fullName ??
           "${user.responseData?.firstName} ${user.responseData?.lastName}";
-      phone.text =  user.responseData?.mobileNumber != null
-          && user.responseData!.mobileNumber!.toString().contains("null") 
-          ? user.responseData!.mobileNumber!.toString().replaceAll("null", "") : "";
+      phone.text =   user.responseData?.mobileNumber ?? "";
       gender.text = user.responseData?.gender ?? "";
-      photoLink = user.responseData?.photoLink ==
-                  "https://birds-e-learning.herokuapp.com/img/profile.png" &&
-              picUrl != ""
-          ? picUrl
-          : user.responseData!.photoLink!;
+      photoLink = user.responseData?.photoLink ?? "";
       isLoaded = true;
-      gender_ = user.responseData!.gender!.toLowerCase() == "unknown" ||
+      gender_ = user.responseData?.gender?.toLowerCase() == "unknown" ||
               user.responseData?.gender == ""
           ? null
-          : "${user.responseData!.gender!.toUpperCase()[0]}${user.responseData!.gender!.toLowerCase().substring(1)}";
+          : "${user.responseData?.gender?.toUpperCase()[0]}${user.responseData?.gender?.toLowerCase().substring(1)}";
     });
   }
 

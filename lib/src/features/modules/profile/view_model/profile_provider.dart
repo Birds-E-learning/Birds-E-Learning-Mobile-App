@@ -83,32 +83,36 @@ class ProfileProvider extends ChangeNotifier {
 
   Future updateUserProfile(context, UpdateProfileModel data) async {
     try {
-      UpdateProfileResponse response = await repo.updateUser(context, data);
-      if (response.responseCode == "00") {
-        LoginResponse loginResponse =
-            await repo.getSingleUser(context, data.emailAddress!);
-        doneClicked ? onDoneClick() : null;
-        if (loginResponse.responseCode == "00") {
-          successDialog(
-              context, "Successful", "Profile Successfully Updated", "OK", () {
-            RoutingService.popRouting(context);
-            RoutingService.popRouting(context);
-          });
-          await UserPreferences.setUserFirstName(
-              loginResponse.responseData!.firstName!);
-          await UserPreferences.setUserEmail(
-              response.responseData!.newEmail ?? "");
-
-          await UserPreferences.setUserEmail(
-              response.responseData!.newPhotoLink ?? "");
-          await storage.setUserData(loginResponse);
-        } else {
-          showSnack(context, loginResponse.responseCode!,
-              loginResponse.responseMessage!);
+      UpdateProfileResponse? response = await repo.updateUser(context, data);
+      if(response != null){
+        if (response.responseCode == "00") {
+          LoginResponse? loginResponse = await repo.getSingleUser(context, data.emailAddress!);
+          doneClicked ? onDoneClick() : null;
+          if(loginResponse != null){
+            if (loginResponse.responseCode == "00") {
+              // print(loginResponse.responseData?.toJson());
+              successDialog(
+                  context, "Successful", "Profile Successfully Updated", "OK", () {
+                RoutingService.popRouting(context);
+                RoutingService.popRouting(context);
+              });
+              await UserPreferences.setUserFirstName(
+                  loginResponse.responseData!.firstName!);
+              await UserPreferences.setUserEmail(
+                  response.responseData!.newEmail ?? "");
+              await storage.setUserData(loginResponse);
+            } else {
+              showSnack(context, loginResponse.responseCode!,
+                  loginResponse.responseMessage!);
+            }
+          } else {
+            doneClicked ? onDoneClick() : null;
+            showSnack(context, response.responseCode!, response.responseMessage!);
+          }
         }
-      } else {
+      }else{
         doneClicked ? onDoneClick() : null;
-        showSnack(context, response.responseCode!, response.responseMessage!);
+        showSnack(context, "02", "Profile update failed!.");
       }
     } catch (e) {
       doneClicked ? onDoneClick() : null;

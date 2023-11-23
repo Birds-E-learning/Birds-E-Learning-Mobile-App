@@ -54,7 +54,7 @@ class CourseCard extends StatelessWidget with ImagePath, HomeWidgets {
                 // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   SizedBox(
-                    height: 28,
+                    height: 30,
                     width: size.width - (size.width * 0.08) - 60,
                     child: courseTitleText(course.title ?? ""),
                   ),

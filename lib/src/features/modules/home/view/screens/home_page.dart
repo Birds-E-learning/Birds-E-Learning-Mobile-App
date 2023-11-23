@@ -80,249 +80,245 @@ class _UserHomePageState extends State<UserHomePage>
             }
           },
           child: SafeArea(
-            child: Padding(
-              padding: EdgeInsets.symmetric(
-                  vertical: home.onSearch ? 0 : size.height * 0.02),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                 Column(
-                   crossAxisAlignment: CrossAxisAlignment.start,
-                   children: [
-                     Padding(
-                       padding: EdgeInsets.symmetric(horizontal: size.width * 0.03),
-                       child: CustomFieldNoLabel(
-                         hintText: HomeText.search,
-                         isHome: true,
-                         prefixIcon: IconButton(
-                             onPressed: () {},
-                             icon: const Icon(Icons.search, size: 20)),
-                         controller: _controller,
-                         onChanged: (text) {
-                           if (_controller.text.trim().isEmpty) {
-                             home.onSearchTriggered(false);
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+               Column(
+                 crossAxisAlignment: CrossAxisAlignment.start,
+                 children: [
+                   Padding(
+                     padding: EdgeInsets.symmetric(horizontal: size.width * 0.03),
+                     child: CustomFieldNoLabel(
+                       hintText: HomeText.search,
+                       isHome: true,
+                       prefixIcon: IconButton(
+                           onPressed: () {},
+                           icon: const Icon(Icons.search, size: 20)),
+                       controller: _controller,
+                       onChanged: (text) {
+                         if (_controller.text.trim().isEmpty) {
+                           home.onSearchTriggered(false);
+                           home.selectedCards = [];
+                           FocusScope.of(context).unfocus();
+                         } else {
+                           home.onSearchTriggered(true);
+                           home.onSearchClicked(_controller.text.trim());
+                         }
+                       },
+                       suffixIcon: home.onSearch
+                           ? IconButton(
+                           onPressed: () {
+                             _controller.clear();
+                             setState(() {});
                              home.selectedCards = [];
+                             home.onSearchTriggered(false);
                              FocusScope.of(context).unfocus();
-                           } else {
-                             home.onSearchTriggered(true);
-                             home.onSearchClicked(_controller.text.trim());
-                           }
-                         },
-                         suffixIcon: home.onSearch
-                             ? IconButton(
-                             onPressed: () {
-                               _controller.clear();
-                               setState(() {});
-                               home.selectedCards = [];
-                               home.onSearchTriggered(false);
-                               FocusScope.of(context).unfocus();
-                             },
-                             icon: const Icon(Icons.clear))
-                             : null,
-                       ),
+                           },
+                           icon: const Icon(Icons.clear))
+                           : null,
                      ),
-                     const SizedBox(height: 16),
-                     home.onSearch
-                         ? Padding(
-                             padding: EdgeInsets.symmetric(
-                                 horizontal: size.width * 0.03),
-                             child: searchHeaderText(_controller.text),
-                           )//const FilterCardShimmer()
-                         : pref.prefList.isEmpty && pref.isLoading
-                         ? SizedBox(
-                         height: 40,
-                         child: ListView.separated(
-                             padding: EdgeInsets.symmetric(
-                                 horizontal: size.width * 0.03),
-                             separatorBuilder: (_, __) =>
-                             const SizedBox(width: 12),
-                             itemCount: 10,
-                             scrollDirection: Axis.horizontal,
-                             itemBuilder: (_, __) {
-                               return const FilterCardShimmer();
-                             }))
-                         : pref.prefList.isEmpty && !pref.isLoading
-                         ? Padding(
-                       padding: EdgeInsets.symmetric(
-                           horizontal: size.width * 0.03),
-                       child: const Center(
-                         child: Text("No preference list.",
-                             style: CartStyles.richStyle1),
-                       ),
-                     )
-                         : PreferenceRowContainer(controller: _controller),
-                     const SizedBox(height: 16),
-                   ],
-                 ),
-                  Expanded(
-                    child: SingleChildScrollView(
-                      child: context.watch<HomeProvider>().searchResult.isNotEmpty &&
-                          home.onSearch
-                          ? Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ListView.separated(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: size.width * 0.03),
-                              separatorBuilder: (_, __) => const SizedBox(
-                                height: 30,
-                                child: Divider(
-                                    thickness: 0.2, color: success1000),
-                              ),
-                              itemCount: home.searchResult.length,
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              scrollDirection: Axis.vertical,
-                              itemBuilder: (BuildContext context, int index) {
-                                return CourseRowCards(
-                                  course: home.searchResult[index],
-                                );
-                              }),
-                        ],
-                      )
-                          : context.watch<HomeProvider>().searchResult.isEmpty &&
-                          home.onSearch
-                          ? Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
+                   ),
+                   const SizedBox(height: 16),
+                   home.onSearch
+                       ? Padding(
+                           padding: EdgeInsets.symmetric(
+                               horizontal: size.width * 0.03),
+                           child: searchHeaderText(_controller.text),
+                         )//const FilterCardShimmer()
+                       : pref.prefList.isEmpty && pref.isLoading
+                       ? SizedBox(
+                       height: 40,
+                       child: ListView.separated(
+                           padding: EdgeInsets.symmetric(
+                               horizontal: size.width * 0.03),
+                           separatorBuilder: (_, __) =>
+                           const SizedBox(width: 12),
+                           itemCount: 10,
+                           scrollDirection: Axis.horizontal,
+                           itemBuilder: (_, __) {
+                             return const FilterCardShimmer();
+                           }))
+                       : pref.prefList.isEmpty && !pref.isLoading
+                       ? Padding(
+                     padding: EdgeInsets.symmetric(
+                         horizontal: size.width * 0.03),
+                     child: const Center(
+                       child: Text("No preference list.",
+                           style: CartStyles.richStyle1),
+                     ),
+                   )
+                       : PreferenceRowContainer(controller: _controller),
+                   const SizedBox(height: 16),
+                 ],
+               ),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: context.watch<HomeProvider>().searchResult.isNotEmpty &&
+                        home.onSearch
+                        ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ListView.separated(
                             padding: EdgeInsets.symmetric(
                                 horizontal: size.width * 0.03),
-                            child: searchHeaderText(_controller.text),
-                          ),
-                          SizedBox(height: size.height * 0.1),
-                          Center(
-                            child: Column(
-                              children: [
-                                SvgPicture.asset(ImagePath.noCourse),
-                                const SizedBox(height: 10),
-                                noCourseText()
-                              ],
+                            separatorBuilder: (_, __) => const SizedBox(
+                              height: 30,
+                              child: Divider(
+                                  thickness: 0.2, color: success1000),
                             ),
-                          )
-                        ],
-                      )
-                          : Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                            itemCount: home.searchResult.length,
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            scrollDirection: Axis.vertical,
+                            itemBuilder: (BuildContext context, int index) {
+                              return CourseRowCards(
+                                course: home.searchResult[index],
+                              );
+                            }),
+                      ],
+                    )
+                        : context.watch<HomeProvider>().searchResult.isEmpty &&
+                        home.onSearch
+                        ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: size.width * 0.03),
+                          child: searchHeaderText(_controller.text),
+                        ),
+                        SizedBox(height: size.height * 0.1),
+                        Center(
+                          child: Column(
                             children: [
-                              Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: size.width * 0.03),
-                                child: categoryRowText(
-                                  "Top Picks for you",
-                                      () {
-                                    RoutingService.pushFullScreenRouting(
-                                        context,
-                                        const PreferenceCoursesScreen());
-                                  },
-                                ),
-                              ),
-                              const SizedBox(height: 15),
-                              RefreshIndicator(
-                                  onRefresh: () => home.refreshData(context,
-                                      reload: false),
-                                  child: const PreferentialListView()),
-                              const SizedBox(height: 15),
-                              Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: size.width * 0.03),
-                                child: categoryRowText(
-                                  "Trending Courses",
-                                      () {
-                                    RoutingService.pushFullScreenRouting(
-                                        context,
-                                        const TrendingCoursesScreen());
-                                  },
-                                ),
-                              ),
-                              const SizedBox(height: 15),
-                              RefreshIndicator(
-                                  onRefresh: () => home.refreshData(context,
-                                      reload: false),
-                                  child: const TrendingListView()),
-                              const SizedBox(height: 20),
-                              Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: size.width * 0.03),
-                                child: categoryRowText(
-                                  "Quick Courses",
-                                      () {
-                                    RoutingService.pushFullScreenRouting(
-                                        context, const QuickCoursesScreen());
-                                  },
-                                ),
-                              ),
-                              const SizedBox(height: 15),
-                              RefreshIndicator(
-                                  onRefresh: () => home.refreshData(context,
-                                      reload: false),
-                                  child: const QuickListView()),
-                              const SizedBox(height: 15),
-                              Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: size.width * 0.03),
-                                child: categoryHeaderText(
-                                  HomeText.facilitators,
-                                ),
-                              ),
-                              const SizedBox(height: 16),
-                              home.trendingCourses.isEmpty
-                                  ? home.isTrendingLoading
-                                  ? ListView.separated(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: size.width * 0.03),
-                                  separatorBuilder: (context, index) =>
-                                  const SizedBox(height: 16),
-                                  itemCount: 4,
-                                  shrinkWrap: true,
-                                  physics:
-                                  const NeverScrollableScrollPhysics(),
-                                  scrollDirection: Axis.vertical,
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    return const FacilitatorShimmer();
-                                  })
-                                  : const Center(
-                                child: Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 15),
-                                  child: Text(
-                                    "No top facilitator available.", // note that we are using the facilitators in the trending courses.
-                                    style: CartStyles.richStyle1,
-                                  ),
-                                ),
-                              )
-                                  : ListView.separated(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: size.width * 0.03),
-                                  separatorBuilder: (_, __) =>
-                                  const SizedBox(height: 16),
-                                  itemCount:
-                                  home.trendingCourses.length > 4
-                                      ? 4
-                                      : home.trendingCourses.length,
-                                  shrinkWrap: true,
-                                  physics:
-                                  const NeverScrollableScrollPhysics(),
-                                  scrollDirection: Axis.vertical,
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    return FacilitatorCard(
-                                      facilitator: home
-                                          .trendingCourses[index]
-                                          .facilitator!,
-                                    );
-                                  }),
-                              const SizedBox(height: 40),
-                              Padding(
-                                padding:  EdgeInsets.symmetric(horizontal: size.width * 0.03),
-                                child:const  BlogNewsSection(),
-                              ),
+                              SvgPicture.asset(ImagePath.noCourse),
+                              const SizedBox(height: 10),
+                              noCourseText()
                             ],
                           ),
-                    ),
-                  )
-                  ],
-              ),
+                        )
+                      ],
+                    )
+                        : Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: size.width * 0.03),
+                              child: categoryRowText(
+                                "Top Picks for you",
+                                    () {
+                                  RoutingService.pushFullScreenRouting(
+                                      context,
+                                      const PreferenceCoursesScreen());
+                                },
+                              ),
+                            ),
+                            const SizedBox(height: 15),
+                            RefreshIndicator(
+                                onRefresh: () => home.refreshData(context,
+                                    reload: false),
+                                child: const PreferentialListView()),
+                            const SizedBox(height: 15),
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: size.width * 0.03),
+                              child: categoryRowText(
+                                "Trending Courses",
+                                    () {
+                                  RoutingService.pushFullScreenRouting(
+                                      context,
+                                      const TrendingCoursesScreen());
+                                },
+                              ),
+                            ),
+                            const SizedBox(height: 15),
+                            RefreshIndicator(
+                                onRefresh: () => home.refreshData(context,
+                                    reload: false),
+                                child: const TrendingListView()),
+                            const SizedBox(height: 20),
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: size.width * 0.03),
+                              child: categoryRowText(
+                                "Quick Courses",
+                                    () {
+                                  RoutingService.pushFullScreenRouting(
+                                      context, const QuickCoursesScreen());
+                                },
+                              ),
+                            ),
+                            const SizedBox(height: 15),
+                            RefreshIndicator(
+                                onRefresh: () => home.refreshData(context,
+                                    reload: false),
+                                child: const QuickListView()),
+                            const SizedBox(height: 15),
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: size.width * 0.03),
+                              child: categoryHeaderText(
+                                HomeText.facilitators,
+                              ),
+                            ),
+                            const SizedBox(height: 16),
+                            home.trendingCourses.isEmpty
+                                ? home.isTrendingLoading
+                                ? ListView.separated(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: size.width * 0.03),
+                                separatorBuilder: (context, index) =>
+                                const SizedBox(height: 16),
+                                itemCount: 4,
+                                shrinkWrap: true,
+                                physics:
+                                const NeverScrollableScrollPhysics(),
+                                scrollDirection: Axis.vertical,
+                                itemBuilder:
+                                    (BuildContext context, int index) {
+                                  return const FacilitatorShimmer();
+                                })
+                                : const Center(
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 15),
+                                child: Text(
+                                  "No top facilitator available.", // note that we are using the facilitators in the trending courses.
+                                  style: CartStyles.richStyle1,
+                                ),
+                              ),
+                            )
+                                : ListView.separated(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: size.width * 0.03),
+                                separatorBuilder: (_, __) =>
+                                const SizedBox(height: 16),
+                                itemCount:
+                                home.trendingCourses.length > 4
+                                    ? 4
+                                    : home.trendingCourses.length,
+                                shrinkWrap: true,
+                                physics:
+                                const NeverScrollableScrollPhysics(),
+                                scrollDirection: Axis.vertical,
+                                itemBuilder:
+                                    (BuildContext context, int index) {
+                                  return FacilitatorCard(
+                                    facilitator: home
+                                        .trendingCourses[index]
+                                        .facilitator!,
+                                  );
+                                }),
+                            const SizedBox(height: 40),
+                            Padding(
+                              padding:  EdgeInsets.symmetric(horizontal: size.width * 0.03),
+                              child:const  BlogNewsSection(),
+                            ),
+                          ],
+                        ),
+                  ),
+                )
+                ],
             ),
           ),
         ),
