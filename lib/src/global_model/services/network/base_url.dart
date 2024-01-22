@@ -1,5 +1,7 @@
 class BaseUrl {
-  static const String base = "https://birds-e-learning-dev-e42eb6d4692a.herokuapp.com/";
+  // static const String base = "https://birds-e-learning-dev-e42eb6d4692a.herokuapp.com/";
+
+  static const String base = "https://birds-e-learning-prod-76217aeb38b9.herokuapp.com/";
 
   // LOGGER ENDPOINT
   // static const String base = "https://9034-102-89-33-22.ngrok-free.app/";

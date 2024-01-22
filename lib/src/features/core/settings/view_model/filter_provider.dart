@@ -3,6 +3,7 @@ import 'package:birds_learning_network/src/features/core/settings/model/reposito
 import 'package:birds_learning_network/src/features/core/settings/model/request_model/save_preference.dart';
 import 'package:birds_learning_network/src/features/core/settings/model/response_model/get_preference.dart';
 import 'package:birds_learning_network/src/features/core/settings/view/filter/get_started_screen.dart';
+import 'package:birds_learning_network/src/global_model/apis/api_response.dart';
 import 'package:birds_learning_network/src/global_model/services/storage/shared_preferences/device_info.dart';
 import 'package:birds_learning_network/src/global_model/services/storage/shared_preferences/user_details.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,7 @@ class FilterProvider extends ChangeNotifier {
   int selectedIndex = -1;
   FilterRepository repo = FilterRepository();
   bool _buttonClicked = false;
+  Status getStatus = Status.initial;
 
   bool get buttonClicked => _buttonClicked;
   List<String> get myList => _myList;
@@ -30,6 +32,11 @@ class FilterProvider extends ChangeNotifier {
   //     notifyListeners();
   //   }
   // }
+
+  void setGetStatus({Status status = Status.initial}){
+    getStatus = status;
+    notifyListeners();
+  }
 
   void setValue(index) {
     selectedCards[index] = !selectedCards[index];
@@ -58,21 +65,22 @@ class FilterProvider extends ChangeNotifier {
 
   Future getPreferenceList(context) async {
     try {
-      List<String> list = [];
+      setGetStatus(status: Status.loading);
+      _myList = [];
       // _myList = [];
       List<PreferenceResponseData>? prefList =
           await repo.getFilterData(context);
+      setGetStatus(status: Status.completed);
       if (prefList != null && prefList.isNotEmpty) {
         for (PreferenceResponseData val in prefList) {
-          if (!_myList.contains(val.name)) {
-            list.add(val.name!);
+          if (!(_myList.contains(val.name))) {
+            _myList.add(val.name ?? "");
           }
         }
-        _myList = list;
       }
       notifyListeners();
     } catch (_) {
-      _myList = ["Technology", "Fashion", "health", "Design", "IT & Software"];
+      setGetStatus(status: Status.error);
     }
   }
 
@@ -82,7 +90,6 @@ class FilterProvider extends ChangeNotifier {
       String deviceId = await DevicePreference.getDeviceId();
       SavePreferenceModel data = SavePreferenceModel(
           userEmail: email, deviceId: deviceId, preferenceList: _userPrefList);
-
       String code = await repo.saveUserPreference(context, data);
       buttonClicked ? onButtonClick() : null;
       if (code == "00") {

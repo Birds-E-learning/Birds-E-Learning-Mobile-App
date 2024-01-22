@@ -5,6 +5,7 @@ import 'package:birds_learning_network/src/features/core/settings/view/widgets/c
 import 'package:birds_learning_network/src/features/core/settings/view_model/filter_provider.dart';
 import 'package:birds_learning_network/src/features/modules/home/view/home.dart';
 import 'package:birds_learning_network/src/features/modules/home/view_model/home_provider.dart';
+import 'package:birds_learning_network/src/global_model/apis/api_response.dart';
 import 'package:birds_learning_network/src/utils/custom_widgets/text_field.dart';
 import 'package:birds_learning_network/src/utils/global_constants/colors/colors.dart';
 import 'package:birds_learning_network/src/utils/global_constants/texts/core_texts/filter_texts.dart';
@@ -12,6 +13,7 @@ import 'package:birds_learning_network/src/utils/helper_widgets/button_black.dar
 import 'package:birds_learning_network/src/utils/helper_widgets/loading_indicator.dart';
 import 'package:birds_learning_network/src/utils/mixins/core_mixins/filter_mixins/filter_mixin.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 
 class FilterScreen extends StatefulWidget {
@@ -34,8 +36,9 @@ class _FilterScreenState extends State<FilterScreen>
 
   @override
   void initState() {
-    Provider.of<FilterProvider>(context, listen: false)
-        .getPreferenceList(context);
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      Provider.of<FilterProvider>(context, listen: false).getPreferenceList(context);
+    });
     super.initState();
   }
 
@@ -69,7 +72,7 @@ class _FilterScreenState extends State<FilterScreen>
                     ),
                   ),
                   const SizedBox(height: 30),
-                  filter.myList.isEmpty
+                  filter.getStatus == Status.loading
                       ? GridView.builder(
                           shrinkWrap: true,
                           itemCount: 6,
@@ -83,7 +86,8 @@ class _FilterScreenState extends State<FilterScreen>
                           itemBuilder: (_, __) {
                             return const FilterCardShimmer();
                           })
-                      : GridView.builder(
+                      : filter.myList.isNotEmpty
+                      ?   GridView.builder(
                           // primary: false,
                           shrinkWrap: true,
                           itemCount: filter.myList.length,
@@ -120,7 +124,19 @@ class _FilterScreenState extends State<FilterScreen>
                                       ? grey700
                                       : white),
                             );
-                          }),
+                          }): const Padding(
+                    padding:  EdgeInsets.symmetric(horizontal: 40, vertical: 60),
+                    child: Center(
+                      child: Text(
+                        "There is no available area of interest, proceed to setup your profile",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                          color: black
+                        ),
+                      ),
+                    ),
+                  ),
                   const SizedBox(height: 50),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10),

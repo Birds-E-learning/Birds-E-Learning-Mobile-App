@@ -58,7 +58,7 @@ class SubscriptionCardWidget extends StatelessWidget {
           RichText(
             textAlign: TextAlign.justify,
             text:  TextSpan(
-                text: convertCurrency(duration.currency),
+                text: duration.currency ?? "CAD",
                 style: const TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w400,
@@ -67,7 +67,7 @@ class SubscriptionCardWidget extends StatelessWidget {
                 ),
                 children: [
                   TextSpan(
-                    text: "${duration.amount ?? 0}",
+                    text: " ${duration.amount ?? 0}",
                     style: const TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.w400,
